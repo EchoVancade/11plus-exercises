@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IL — Monday Stars</title>
+<style>
+:root{--bg:#fdf6ff;--bg2:#fff;--purple:#7c3aed;--purple2:#a78bfa;--purple3:#ede9fe;--teal:#0d9488;--teal2:#ccfbf1;--green:#059669;--green2:#d1fae5;--yellow:#f59e0b;--yellow2:#fef3c7;--red:#ef4444;--red2:#fee2e2;--dark:#1e1b4b;--muted:#6b7280;--border:#e5e7eb;--radius:16px;--radius-sm:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--dark);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;padding-bottom:60px}
+.hero{background:linear-gradient(135deg,var(--purple) 0%,#4c1d95 100%);padding:28px 24px 24px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'⭐';position:absolute;top:10px;left:20px;font-size:40px;opacity:.15}
+.hero::after{content:'⭐';position:absolute;bottom:10px;right:20px;font-size:32px;opacity:.12}
+.day-badge{display:inline-block;padding:4px 14px;background:var(--yellow);color:var(--dark);border-radius:20px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:26px;font-weight:800;color:#fff;margin-bottom:4px}
+.hero p{font-size:14px;color:rgba(255,255,255,.7)}
+.stars-row{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.star-box{width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s}
+.star-box.lit{background:var(--yellow)}
+.prog-wrap{padding:16px 20px 0}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple2));border-radius:4px;transition:width .5s ease}
+.section{margin:18px 14px 0}
+.sec-head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:var(--radius) var(--radius) 0 0;border:2px solid var(--border);border-bottom:none}
+.sec-head.purple{background:var(--purple3);border-color:var(--purple2)}
+.sec-head.teal{background:var(--teal2);border-color:var(--teal)}
+.sec-head.dict{background:var(--green2);border-color:var(--green)}
+.sec-icon{font-size:22px}.sec-title{font-size:15px;font-weight:700;flex:1;color:var(--dark)}.sec-pts{font-size:12px;font-weight:700}
+.sec-pts.p{color:var(--purple)}.sec-pts.t{color:var(--teal)}.sec-pts.g{color:var(--green)}
+.sec-body{background:var(--bg2);border:2px solid var(--border);border-radius:0 0 var(--radius) var(--radius);overflow:hidden}
+.sec-body.dict{border-color:var(--green)}
+.q{padding:18px;border-bottom:1px solid var(--border)}.q:last-child{border-bottom:none}
+.q-num{font-size:10px;font-weight:800;color:var(--purple);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.q-num.g{color:var(--green)}
+.q-text{font-size:15px;font-weight:500;line-height:1.5;margin-bottom:12px;color:var(--dark)}
+.q-hint{font-size:12px;color:var(--muted);margin-bottom:10px;padding:8px 12px;background:var(--yellow2);border-left:3px solid var(--yellow);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.star-badge{display:inline-block;background:var(--yellow);color:var(--dark);font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px}
+.word-card{background:var(--green2);border:2px solid var(--green);border-radius:var(--radius);padding:20px;margin-bottom:14px;text-align:center}
+.word-display{font-size:28px;font-weight:900;color:var(--green);letter-spacing:2px;margin-bottom:6px}
+.word-type{font-size:12px;color:var(--muted);margin-bottom:4px}
+.word-context{font-size:13px;color:var(--muted);font-style:italic}
+.dict-instruction{background:var(--yellow2);border:1.5px solid var(--yellow);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.7;color:var(--dark)}
+.field-label{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.dict-input{width:100%;padding:10px 14px;background:var(--bg);border:2px solid var(--green);border-radius:var(--radius-sm);color:var(--dark);font-size:14px;font-family:inherit;outline:none;transition:border .15s;margin-bottom:12px}
+.dict-input:focus{border-color:var(--purple)}
+.dict-textarea{width:100%;padding:10px 14px;background:var(--bg);border:2px solid var(--green);border-radius:var(--radius-sm);color:var(--dark);font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;margin-bottom:12px;transition:border .15s}
+.dict-textarea:focus{border-color:var(--purple)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts.single{grid-template-columns:1fr}
+.opt{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg);border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-size:14px;color:var(--dark);transition:all .15s;user-select:none;font-weight:500}
+.opt:hover{border-color:var(--purple2);background:var(--purple3)}
+.opt .letter{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.opt.correct{background:var(--green2);border-color:var(--green);color:#065f46;pointer-events:none}
+.opt.correct .letter{background:var(--green);color:#fff}
+.opt.wrong{background:var(--red2);border-color:var(--red);color:#991b1b;pointer-events:none}
+.opt.wrong .letter{background:var(--red);color:#fff}
+.opt.reveal{background:rgba(5,150,105,.07);border-color:var(--green);color:var(--green);opacity:.75;pointer-events:none}
+.opt.disabled{pointer-events:none;opacity:.4}
+.fill-wrap{display:flex;gap:8px}
+.fill-input{flex:1;padding:10px 14px;background:var(--bg);border:2px solid var(--border);border-radius:var(--radius-sm);color:var(--dark);font-size:15px;font-family:inherit;outline:none;transition:border .15s}
+.fill-input:focus{border-color:var(--purple2)}
+.fill-input.correct{border-color:var(--green);background:var(--green2)}
+.fill-input.wrong{border-color:var(--red);background:var(--red2)}
+.check-btn{padding:10px 16px;background:var(--purple);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.check-btn:hover{opacity:.85}.check-btn:disabled{opacity:.4;cursor:not-allowed}
+.save-btn{width:100%;padding:11px;background:var(--green2);color:var(--green);border:2px solid var(--green);border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+.save-btn:hover{background:var(--green);color:#fff}
+.save-btn:disabled{opacity:.4;cursor:not-allowed}
+.feedback{margin-top:10px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;line-height:1.5;display:none}
+.feedback.ok{background:var(--green2);border:1.5px solid var(--green);color:#065f46}
+.feedback.bad{background:var(--red2);border:1.5px solid var(--red);color:#991b1b}
+.submit-wrap{padding:24px 14px 0}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:800;cursor:pointer;transition:opacity .15s}
+.submit-btn:hover{opacity:.9}.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.result{margin:20px 14px 0;padding:24px;background:linear-gradient(135deg,var(--purple3),#fce7f3);border:2px solid var(--purple2);border-radius:var(--radius);display:none;text-align:center}
+.result-emoji{font-size:52px;margin-bottom:10px}
+.result h2{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--purple)}
+.result p{font-size:14px;color:var(--muted);line-height:1.7}
+.result-pts{font-size:36px;font-weight:900;color:var(--purple);margin:12px 0 2px}
+.stars-earned{font-size:26px;letter-spacing:4px;margin:10px 0}
+.breakdown{text-align:left;background:rgba(255,255,255,.6);border-radius:var(--radius-sm);padding:14px;margin-top:14px}
+.bd-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+.bd-row:last-child{border-bottom:none;font-weight:700}
+.bd-row span:last-child{color:var(--purple);font-weight:700}
+.q-track{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.qt{padding:3px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.qt.ok{background:var(--green2);color:var(--green)}
+.qt.bad{background:var(--red2);color:var(--red)}
+.qt.saved{background:var(--green2);color:var(--green)}
+.sent-ok{margin-top:12px;font-size:12px;color:#065f46;padding:8px 12px;background:var(--green2);border-radius:var(--radius-sm);border:1px solid var(--green)}
+.sent-err{margin-top:12px;font-size:12px;color:#991b1b;padding:8px 12px;background:var(--red2);border-radius:var(--radius-sm)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="day-badge">Week 1 · Monday</div>
+  <h1>IL's Star Academy</h1>
+  <p>Maths · English · Dictionary — 20 minutes · Collect your stars!</p>
+  <div class="stars-row" id="starsRow">
+    <div class="star-box">⭐</div><div class="star-box">⭐</div><div class="star-box">⭐</div>
+    <div class="star-box">⭐</div><div class="star-box">⭐</div><div class="star-box">⭐</div>
+    <div class="star-box">⭐</div><div class="star-box">⭐</div><div class="star-box">⭐</div>
+    <div class="star-box">⭐</div><div class="star-box">⭐</div><div class="star-box">⭐</div>
+  </div>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-label"><span>Progress</span><span id="prog-txt">0 / 12 tasks</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<!-- MATHS -->
+<div class="section">
+  <div class="sec-head purple"><div class="sec-icon">🔢</div><div class="sec-title">Maths — Numbers</div><div class="sec-pts p">5 pts</div></div>
+  <div class="sec-body">
+    <div class="q">
+      <div class="q-num">Question 1</div>
+      <div class="q-text">What is 24 + 13?</div>
+      <div class="opts" id="il1">
+        <div class="opt" onclick="mcq('il1',this,'A')"><span class="letter">A</span>36</div>
+        <div class="opt" onclick="mcq('il1',this,'B')"><span class="letter">B</span>37</div>
+        <div class="opt" onclick="mcq('il1',this,'C')"><span class="letter">C</span>38</div>
+        <div class="opt" onclick="mcq('il1',this,'D')"><span class="letter">D</span>47</div>
+      </div>
+      <div class="feedback" id="il1-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 2</div>
+      <div class="q-text">Which number has a 5 in the <strong>tens</strong> place?</div>
+      <div class="q-hint">💡 Hundreds | Tens | Ones — in 152: 1=hundreds, 5=tens, 2=ones</div>
+      <div class="opts" id="il2">
+        <div class="opt" onclick="mcq('il2',this,'A')"><span class="letter">A</span>512</div>
+        <div class="opt" onclick="mcq('il2',this,'B')"><span class="letter">B</span>251</div>
+        <div class="opt" onclick="mcq('il2',this,'C')"><span class="letter">C</span>125</div>
+        <div class="opt" onclick="mcq('il2',this,'D')"><span class="letter">D</span>152</div>
+      </div>
+      <div class="feedback" id="il2-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 3</div>
+      <div class="q-text">What is 56 − 23?</div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="il3" placeholder="Your answer…" type="number">
+        <button class="check-btn" onclick="checkNum('il3','il3-fb',33,'56−23=33.')">Check</button>
+      </div>
+      <div class="feedback" id="il3-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 4</div>
+      <div class="q-text">What is 7 × 4?</div>
+      <div class="opts" id="il4">
+        <div class="opt" onclick="mcq('il4',this,'A')"><span class="letter">A</span>21</div>
+        <div class="opt" onclick="mcq('il4',this,'B')"><span class="letter">B</span>24</div>
+        <div class="opt" onclick="mcq('il4',this,'C')"><span class="letter">C</span>28</div>
+        <div class="opt" onclick="mcq('il4',this,'D')"><span class="letter">D</span>32</div>
+      </div>
+      <div class="feedback" id="il4-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 5</div>
+      <div class="q-text">What is 15 + 28 + 12? <span class="star-badge">⭐ STAR</span></div>
+      <div class="q-hint">💡 Try: 15 + 12 = 27 first. Then add 28.</div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="il5" placeholder="Your answer…" type="number">
+        <button class="check-btn" onclick="checkNum('il5','il5-fb',55,'15+12=27, +28=55!')">Check</button>
+      </div>
+      <div class="feedback" id="il5-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ENGLISH -->
+<div class="section">
+  <div class="sec-head teal"><div class="sec-icon">📚</div><div class="sec-title">English — Words & Sentences</div><div class="sec-pts t">5 pts</div></div>
+  <div class="sec-body">
+    <div class="q">
+      <div class="q-num">Question 6</div>
+      <div class="q-text">Which word means "very happy"?</div>
+      <div class="opts" id="il6">
+        <div class="opt" onclick="mcq('il6',this,'A')"><span class="letter">A</span>grumpy</div>
+        <div class="opt" onclick="mcq('il6',this,'B')"><span class="letter">B</span>anxious</div>
+        <div class="opt" onclick="mcq('il6',this,'C')"><span class="letter">C</span>joyful</div>
+        <div class="opt" onclick="mcq('il6',this,'D')"><span class="letter">D</span>reluctant</div>
+      </div>
+      <div class="feedback" id="il6-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 7</div>
+      <div class="q-text">"She _______ to finish her homework before dinner." Which word fits?</div>
+      <div class="opts" id="il7">
+        <div class="opt" onclick="mcq('il7',this,'A')"><span class="letter">A</span>lazy</div>
+        <div class="opt" onclick="mcq('il7',this,'B')"><span class="letter">B</span>determined</div>
+        <div class="opt" onclick="mcq('il7',this,'C')"><span class="letter">C</span>hesitant</div>
+        <div class="opt" onclick="mcq('il7',this,'D')"><span class="letter">D</span>relaxed</div>
+      </div>
+      <div class="feedback" id="il7-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 8</div>
+      <div class="q-text">Which sentence uses capital letters correctly?</div>
+      <div class="opts single" id="il8">
+        <div class="opt" onclick="mcq('il8',this,'A')"><span class="letter">A</span>the dog ran fast.</div>
+        <div class="opt" onclick="mcq('il8',this,'B')"><span class="letter">B</span>The dog ran fast.</div>
+        <div class="opt" onclick="mcq('il8',this,'C')"><span class="letter">C</span>The Dog Ran Fast.</div>
+        <div class="opt" onclick="mcq('il8',this,'D')"><span class="letter">D</span>the Dog ran fast.</div>
+      </div>
+      <div class="feedback" id="il8-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 9</div>
+      <div class="q-text">Which word is a <strong>doing word</strong> (verb)?</div>
+      <div class="opts" id="il9">
+        <div class="opt" onclick="mcq('il9',this,'A')"><span class="letter">A</span>quickly</div>
+        <div class="opt" onclick="mcq('il9',this,'B')"><span class="letter">B</span>happy</div>
+        <div class="opt" onclick="mcq('il9',this,'C')"><span class="letter">C</span>jumped</div>
+        <div class="opt" onclick="mcq('il9',this,'D')"><span class="letter">D</span>bright</div>
+      </div>
+      <div class="feedback" id="il9-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">Write one sentence using the word <strong style="color:var(--purple)">"joyful"</strong>. <span class="star-badge">⭐ STAR</span></div>
+      <div class="q-hint">💡 Capital letter at the start. Full stop at the end. Use "joyful" in your sentence.</div>
+      <textarea style="width:100%;padding:10px 14px;background:var(--bg);border:2px solid var(--border);border-radius:var(--radius-sm);color:var(--dark);font-size:14px;font-family:inherit;resize:vertical;min-height:70px;outline:none" id="il10" placeholder="Write your sentence here…"></textarea>
+      <div style="margin-top:8px"><button class="check-btn" onclick="checkSentence()">Check my sentence</button></div>
+      <div class="feedback" id="il10-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DICTIONARY BUILDER -->
+<div class="section">
+  <div class="sec-head dict"><div class="sec-icon">📖</div><div class="sec-title">Dictionary Builder</div><div class="sec-pts g">2 pts · 5 mins</div></div>
+  <div class="sec-body dict">
+    <div class="q">
+      <div class="q-num g">Your Word of the Day</div>
+
+      <div class="word-card">
+        <div class="word-display">CURIOUS</div>
+        <div class="word-type">adjective</div>
+        <div class="word-context">A great word for describing characters in stories!</div>
+      </div>
+
+      <div class="dict-instruction">
+        📖 <strong>Detective mission!</strong> Look up "curious" in a dictionary or dictionary.com. Then:<br>
+        1. Write what it means <strong>in your own words</strong> (don't just copy!)<br>
+        2. Write a sentence using the word.<br>
+        Your word goes into your very own 11+ Dictionary! 🌟
+      </div>
+
+      <div class="field-label">What does it mean? (my own words)</div>
+      <input class="dict-input" id="il-dict-def" placeholder="e.g. When you really want to know about something and ask lots of questions…">
+
+      <div class="field-label">My sentence:</div>
+      <textarea class="dict-textarea" id="il-dict-sent" placeholder="e.g. The curious cat peered around the corner to see what was making the noise."></textarea>
+
+      <button class="save-btn" id="dict-save-btn" onclick="saveDict()">💾 Save my word!</button>
+      <div class="feedback" id="dict-fb"></div>
+    </div>
+  </div>
+</div>
+
+<div class="submit-wrap">
+  <button class="submit-btn" id="submitBtn" onclick="finish()">⭐ I'm done — collect my stars!</button>
+</div>
+
+<div class="result" id="result">
+  <div class="result-emoji" id="result-emoji">🌟</div>
+  <h2 id="result-title">Star Collector!</h2>
+  <div class="stars-earned" id="stars-earned"></div>
+  <div class="result-pts" id="result-pts">0 pts</div>
+  <p id="result-msg" style="margin-top:8px"></p>
+  <div class="breakdown" id="breakdown"></div>
+  <div class="q-track" id="q-track"></div>
+  <div id="send-status"></div>
+</div>
+
+<script>
+const WEBHOOK="https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx";
+const DICT_WORD="curious";
+const DICT_AREA="Creative Writing";
+const DICT_DIFFICULTY="Foundation";
+
+const QUESTIONS={
+  il1:{section:"Maths",topic:"Addition — two digit numbers",hashtags:"#maths #addition",correct:"B"},
+  il2:{section:"Maths",topic:"Place value — tens column",hashtags:"#maths #placevalue",correct:"D"},
+  il4:{section:"Maths",topic:"Multiplication — 7 times table",hashtags:"#maths #multiplication #timestables",correct:"C"},
+  il6:{section:"English",topic:"Vocabulary — emotion words",hashtags:"#vocabulary #english #emotions",correct:"C"},
+  il7:{section:"English",topic:"Vocabulary in context",hashtags:"#vocabulary #english #contextualmeaning",correct:"B"},
+  il8:{section:"English",topic:"Capital letters — sentence start",hashtags:"#grammar #english #capitalletters",correct:"B"},
+  il9:{section:"English",topic:"Parts of speech — verbs",hashtags:"#grammar #english #partofspeech",correct:"C"},
+};
+
+const explain={
+  il1:"24+13=37. Tens: 20+10=30. Ones: 4+3=7.",
+  il2:"152 — the 5 is in the tens place.",
+  il4:"7×4=28. Seven groups of four.",
+  il6:"Joyful = very happy, full of joy!",
+  il7:"Determined = decided to do it and would not give up.",
+  il8:"Sentences start with ONE capital letter — just the first word.",
+  il9:"Jumped is a doing word (verb). Quickly=adverb, happy/bright=describing words.",
+};
+
+let results={},answered=0,pts=0,starLit=0,dictSaved=false;
+const totalTasks=12;
+const breakdown={Maths:0,English:0,Dictionary:0};
+
+function lightStar(){
+  starLit++;
+  const boxes=document.getElementById('starsRow').querySelectorAll('.star-box');
+  if(starLit<=boxes.length)boxes[starLit-1].classList.add('lit');
+}
+
+function updateProgress(){
+  const pct=Math.round((answered/totalTasks)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-txt').textContent=answered+' / '+totalTasks+' tasks';
+}
+
+function recordResult(id,correct,section,topic,hashtags){
+  results[id]={q_number:Object.keys(results).length+1,section,topic,hashtags,correct};
+  if(correct){pts++;lightStar();breakdown[section]++;}
+  answered++;updateProgress();
+}
+
+function mcq(id,el,chosen){
+  const c=document.getElementById(id);if(c.dataset.done)return;c.dataset.done='1';
+  const ans=QUESTIONS[id].correct;
+  c.querySelectorAll('.opt').forEach((o,i)=>{
+    const l=String.fromCharCode(65+i);
+    if(l===ans)o.classList.add(chosen===ans?'correct':'reveal');
+    else if(l===chosen)o.classList.add('wrong');
+    else o.classList.add('disabled');
+  });
+  const isRight=chosen===ans;
+  const fb=document.getElementById(id+'-fb');
+  fb.style.display='block';fb.className='feedback '+(isRight?'ok':'bad');
+  fb.textContent=isRight?('✓ '+(explain[id]||'Correct!')):('✗ '+(explain[id]||'Not quite.'));
+  recordResult(id,isRight,QUESTIONS[id].section,QUESTIONS[id].topic,QUESTIONS[id].hashtags);
+}
+
+function checkNum(inputId,fbId,answer,explanation){
+  const inp=document.getElementById(inputId);if(inp.dataset.done)return;inp.dataset.done='1';
+  const btn=inp.nextElementSibling;if(btn)btn.disabled=true;
+  const val=parseFloat(inp.value.trim());
+  const isRight=val===answer;
+  inp.classList.add(isRight?'correct':'wrong');
+  const fb=document.getElementById(fbId);
+  fb.style.display='block';fb.className='feedback '+(isRight?'ok':'bad');
+  if(isRight){
+    fb.textContent='✓ '+explanation;
+    if(inputId==='il5'){pts++;lightStar();breakdown.Maths++;}
+  } else {
+    fb.textContent='✗ The answer is '+answer+'. '+explanation;
+  }
+  const sec=inputId.startsWith('il')&&parseInt(inputId.slice(2))<=5?'Maths':'English';
+  const topics={il3:{t:'Subtraction — two digit',h:'#maths #subtraction'},il5:{t:'Addition — three numbers star',h:'#maths #addition'}};
+  const tp=topics[inputId]||{t:'Maths calculation',h:'#maths'};
+  recordResult(inputId,isRight,sec,tp.t,tp.h);
+}
+
+function checkSentence(){
+  const ta=document.getElementById('il10');
+  const btn=ta.nextElementSibling.querySelector('button');if(btn)btn.disabled=true;
+  const val=ta.value.trim();
+  const hasWord=val.toLowerCase().includes('joyful');
+  const hasCap=val.length>0&&val[0]===val[0].toUpperCase()&&isNaN(val[0]);
+  const hasStop=val.endsWith('.')||val.endsWith('!')||val.endsWith('?');
+  const isLong=val.split(' ').length>=4;
+  const isRight=hasWord&&hasCap&&hasStop&&isLong;
+  const fb=document.getElementById('il10-fb');
+  fb.style.display='block';
+  if(isRight){
+    fb.className='feedback ok';
+    fb.textContent='✓ Wonderful sentence! Capital letter ✓, full stop ✓, "joyful" used ✓. Two stars earned!';
+    pts+=2;lightStar();lightStar();breakdown.English++;
+  } else if(!hasWord){
+    fb.className='feedback bad';fb.textContent='✗ Remember to use the word "joyful"!';
+  } else if(!hasCap||!hasStop){
+    fb.className='feedback bad';fb.textContent='✗ Nearly! Check capital letter at start and full stop at end.';
+  } else {
+    fb.className='feedback bad';fb.textContent='✗ Try to write a longer sentence — at least 4 words!';
+  }
+  recordResult('il10',isRight,'English','Sentence writing — joyful star','#writing #english #sentencestructure');
+}
+
+function saveDict(){
+  const def=document.getElementById('il-dict-def').value.trim();
+  const sent=document.getElementById('il-dict-sent').value.trim();
+  const fb=document.getElementById('dict-fb');
+  const btn=document.getElementById('dict-save-btn');
+  fb.style.display='block';
+  if(def.length<8){fb.className='feedback bad';fb.textContent='✗ Tell me what the word means in your own words — a bit more!';return;}
+  if(!sent.toLowerCase().includes(DICT_WORD)){fb.className='feedback bad';fb.textContent='✗ Remember to use the word "'+DICT_WORD+'" in your sentence!';return;}
+  if(sent.split(' ').length<4){fb.className='feedback bad';fb.textContent='✗ Make your sentence a bit longer!';return;}
+
+  btn.disabled=true;dictSaved=true;
+  pts+=2;lightStar();lightStar();breakdown.Dictionary+=2;
+  answered+=2;updateProgress();
+  fb.className='feedback ok';
+  fb.textContent='✓ Amazing! "'+DICT_WORD+'" is now in your 11+ Dictionary! You\'re building your own word collection! 📖⭐';
+
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    type:'dictionary_entry',child:'IL',
+    date:new Date().toISOString().split('T')[0],
+    word:DICT_WORD,curriculum_area:DICT_AREA,difficulty:DICT_DIFFICULTY,
+    their_definition:def,their_sentence:sent,points_earned:2
+  })}).catch(()=>{});
+}
+
+function buildPayload(){
+  return{
+    type:'exercise_result',child:'IL',
+    date:new Date().toISOString().split('T')[0],
+    week:1,day:'Monday',exercise_type:'Weekday 15-min',subject_focus:'Mixed',
+    total_correct:pts,total_questions:totalTasks,points_earned:pts,
+    score_summary:`Maths:${breakdown.Maths}/5 · English:${breakdown.English}/5 · Dict:${breakdown.Dictionary}/2 · Total:${pts}/${totalTasks}`,
+    weaknesses_addressed:[...new Set(Object.values(results).filter(r=>!r.correct).flatMap(r=>r.hashtags.split(' ')))].join(' '),
+    dict_word:DICT_WORD,dict_saved:dictSaved,
+    questions:Object.entries(results).map(([id,r],i)=>({q_number:i+1,question_id:id,section:r.section,topic:r.topic,hashtags:r.hashtags,correct:r.correct}))
+  };
+}
+
+async function finish(){
+  document.getElementById('submitBtn').disabled=true;
+  const result=document.getElementById('result');
+  result.style.display='block';result.scrollIntoView({behavior:'smooth',block:'start'});
+  const pct=pts/14;
+  let emoji,title,msg;
+  if(pct>=0.8){emoji='🌟';title='Superstar!';msg='Amazing work! Your dictionary is growing and that makes you smarter every day!';}
+  else if(pct>=0.5){emoji='🎯';title='Star Collector!';msg='Great effort! Check the feedback on tricky questions and try again tomorrow.';}
+  else{emoji='💫';title='Mission Complete!';msg='Well done for finishing! Every word you learn goes into your dictionary forever.';}
+  document.getElementById('result-emoji').textContent=emoji;
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('stars-earned').textContent='⭐'.repeat(Math.min(pts,12));
+  document.getElementById('result-pts').textContent=pts+' pts';
+  document.getElementById('result-msg').textContent=msg;
+  document.getElementById('breakdown').innerHTML=`
+    <div class="bd-row"><span>🔢 Maths</span><span>${breakdown.Maths} pts</span></div>
+    <div class="bd-row"><span>📚 English</span><span>${breakdown.English} pts</span></div>
+    <div class="bd-row"><span>📖 Dictionary</span><span>${breakdown.Dictionary} pts</span></div>
+    <div class="bd-row"><span>Total</span><span>${pts} pts</span></div>`;
+  const qt=document.getElementById('q-track');
+  Object.entries(results).forEach(([id,r],i)=>{
+    const span=document.createElement('div');span.className='qt '+(r.correct?'ok':'bad');
+    span.textContent='Q'+(i+1)+' '+(r.correct?'✓':'✗');span.title=r.topic;qt.appendChild(span);
+  });
+  if(dictSaved){const s=document.createElement('div');s.className='qt saved';s.textContent='📖 Dict ✓';qt.appendChild(s);}
+  const statusEl=document.getElementById('send-status');
+  statusEl.innerHTML='<p style="font-size:12px;color:var(--muted);margin-top:12px">Sending results…</p>';
+  try{
+    const ok=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
+    statusEl.innerHTML=ok.ok?'<div class="sent-ok">✓ Results sent! Well done, IL!</div>':'<div class="sent-err">⚠ Tell a parent your score: '+pts+' pts</div>';
+  }catch(e){statusEl.innerHTML='<div class="sent-err">⚠ No internet — tell a parent: '+pts+' pts</div>';}
+}
+</script>
+</body>
+</html>
