@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CL — Monday Mission</title>
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--navy3:#334155;--amber:#f59e0b;--amber2:#fbbf24;--green:#10b981;--red:#ef4444;--white:#f8fafc;--muted:#94a3b8;--radius:14px;--radius-sm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);color:var(--white);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;padding-bottom:60px}
+.hero{background:linear-gradient(135deg,#1e3a5f 0%,#0f172a 60%);border-bottom:2px solid var(--amber);padding:28px 24px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(245,158,11,0.08)}
+.day-badge{display:inline-block;padding:4px 14px;background:var(--amber);color:var(--navy);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:26px;font-weight:800;margin-bottom:4px}
+.hero p{font-size:14px;color:var(--muted)}
+.pts-pill{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--amber2)}
+.progress-wrap{padding:16px 20px 0}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:6px;background:var(--navy3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--amber2));border-radius:3px;transition:width .5s ease}
+.section{margin:20px 16px 0}
+.sec-head{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--navy2);border:1px solid var(--navy3);border-bottom:none;border-radius:var(--radius) var(--radius) 0 0}
+.sec-head.dict-head{background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.3)}
+.sec-icon{font-size:20px}.sec-title{font-size:15px;font-weight:700;flex:1}.sec-pts{font-size:12px;color:var(--amber);font-weight:600}
+.sec-pts.green{color:var(--green)}
+.sec-body{background:var(--navy2);border:1px solid var(--navy3);border-radius:0 0 var(--radius) var(--radius);overflow:hidden}
+.sec-body.dict-body{border-color:rgba(16,185,129,0.3)}
+.q{padding:18px;border-bottom:1px solid var(--navy3)}.q:last-child{border-bottom:none}
+.q-num{font-size:10px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.q-num.green{color:var(--green)}
+.q-text{font-size:15px;font-weight:500;line-height:1.5;margin-bottom:10px}
+.q-hint{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:10px;padding:8px 12px;background:rgba(255,255,255,0.03);border-left:2px solid var(--amber);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.q-hint.green{border-color:var(--green)}
+.word-card{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:var(--radius);padding:20px;margin-bottom:14px;text-align:center}
+.word-display{font-size:32px;font-weight:900;color:var(--green);letter-spacing:2px;margin-bottom:6px}
+.word-type{font-size:12px;color:var(--muted);margin-bottom:4px}
+.word-context{font-size:13px;color:var(--muted);font-style:italic}
+.dict-instruction{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.6;color:var(--amber2)}
+.dict-instruction strong{color:var(--amber)}
+.field-label{font-size:12px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.dict-input{width:100%;padding:10px 14px;background:var(--navy3);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);color:var(--white);font-size:14px;font-family:inherit;outline:none;transition:border .15s;margin-bottom:12px}
+.dict-input:focus{border-color:var(--green)}
+.dict-textarea{width:100%;padding:10px 14px;background:var(--navy3);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);color:var(--white);font-size:14px;font-family:inherit;outline:none;transition:border .15s;resize:vertical;min-height:80px;margin-bottom:12px}
+.dict-textarea:focus{border-color:var(--green)}
+.star-badge{background:var(--amber);color:var(--navy);font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;letter-spacing:.5px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--navy3);border:1px solid transparent;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;color:var(--white);transition:all .15s;user-select:none}
+.opt:hover{border-color:var(--amber);background:rgba(245,158,11,0.1)}
+.opt .letter{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.opt.correct{background:rgba(16,185,129,0.15);border-color:var(--green);color:var(--green);pointer-events:none}
+.opt.correct .letter{background:var(--green);color:#fff}
+.opt.wrong{background:rgba(239,68,68,0.1);border-color:var(--red);color:var(--red);pointer-events:none}
+.opt.wrong .letter{background:var(--red);color:#fff}
+.opt.reveal{background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.4);color:rgba(16,185,129,0.7);pointer-events:none}
+.opt.disabled{pointer-events:none;opacity:.45}
+.fill-wrap{display:flex;gap:8px}
+.fill-input{flex:1;padding:10px 14px;background:var(--navy3);border:1px solid var(--navy3);border-radius:var(--radius-sm);color:var(--white);font-size:14px;font-family:inherit;outline:none;transition:border .15s}
+.fill-input:focus{border-color:var(--amber)}
+.fill-input.correct{border-color:var(--green);background:rgba(16,185,129,0.1)}
+.fill-input.wrong{border-color:var(--red);background:rgba(239,68,68,0.1)}
+.check-btn{padding:10px 16px;background:var(--amber);color:var(--navy);border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.check-btn:hover{opacity:.85}.check-btn:disabled{opacity:.4;cursor:not-allowed}
+.save-btn{width:100%;padding:11px;background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.4);border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+.save-btn:hover{background:rgba(16,185,129,0.25)}
+.save-btn:disabled{opacity:.4;cursor:not-allowed}
+.feedback{margin-top:10px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;line-height:1.5;display:none}
+.feedback.ok{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7}
+.feedback.bad{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#fca5a5}
+.feedback.info{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:var(--amber2)}
+.submit-wrap{padding:24px 16px 0}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--amber),var(--amber2));color:var(--navy);border:none;border-radius:var(--radius);font-size:16px;font-weight:800;cursor:pointer;transition:opacity .15s}
+.submit-btn:hover{opacity:.9}.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.result{margin:20px 16px 0;padding:24px;background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(16,185,129,0.1));border:1px solid rgba(245,158,11,0.4);border-radius:var(--radius);display:none;text-align:center}
+.result-emoji{font-size:48px;margin-bottom:12px}
+.result h2{font-size:22px;font-weight:800;margin-bottom:8px;color:var(--amber2)}
+.result p{font-size:14px;color:var(--muted);line-height:1.7}
+.result-pts{font-size:36px;font-weight:900;color:var(--amber);margin:12px 0 4px}
+.breakdown{margin-top:16px;text-align:left;background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:14px}
+.bd-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.bd-row:last-child{border-bottom:none;font-weight:700}
+.bd-row span:last-child{color:var(--amber2)}
+.q-track{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.qt{padding:3px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.qt.ok{background:rgba(16,185,129,0.15);color:var(--green)}
+.qt.bad{background:rgba(239,68,68,0.1);color:var(--red)}
+.qt.saved{background:rgba(16,185,129,0.15);color:var(--green)}
+.sent-ok{margin-top:12px;font-size:12px;color:#6ee7b7;padding:8px 12px;background:rgba(16,185,129,0.1);border-radius:var(--radius-sm);border:1px solid rgba(16,185,129,0.2)}
+.sent-err{margin-top:12px;font-size:12px;color:#fca5a5;padding:8px 12px;background:rgba(239,68,68,0.1);border-radius:var(--radius-sm)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="day-badge">Week 1 · Monday</div>
+  <h1>CL's Daily Mission</h1>
+  <p>Vocabulary · Spelling · Maths · Dictionary — 20 minutes</p>
+  <div class="pts-pill">⭐ Up to 17 pts today</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="prog-label"><span>Progress</span><span id="prog-txt">0 / 14 tasks</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<!-- VOCAB WARM-UP -->
+<div class="section">
+  <div class="sec-head"><div class="sec-icon">📖</div><div class="sec-title">Vocabulary Warm-up</div><div class="sec-pts">2 pts · 5 mins</div></div>
+  <div class="sec-body">
+    <div class="q">
+      <div class="q-num">Question 1</div>
+      <div class="q-text">Which word means "moved gently through air"?</div>
+      <div class="opts" id="v1">
+        <div class="opt" onclick="mcq('v1',this,'A')"><span class="letter">A</span>fluttered</div>
+        <div class="opt" onclick="mcq('v1',this,'B')"><span class="letter">B</span>floated</div>
+        <div class="opt" onclick="mcq('v1',this,'C')"><span class="letter">C</span>flowted</div>
+        <div class="opt" onclick="mcq('v1',this,'D')"><span class="letter">D</span>flowed</div>
+      </div>
+      <div class="feedback" id="v1-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 2</div>
+      <div class="q-text">Choose the correct spelling:</div>
+      <div class="opts" id="v2">
+        <div class="opt" onclick="mcq('v2',this,'A')"><span class="letter">A</span>hight</div>
+        <div class="opt" onclick="mcq('v2',this,'B')"><span class="letter">B</span>hieght</div>
+        <div class="opt" onclick="mcq('v2',this,'C')"><span class="letter">C</span>height</div>
+        <div class="opt" onclick="mcq('v2',this,'D')"><span class="letter">D</span>heigt</div>
+      </div>
+      <div class="feedback" id="v2-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 3</div>
+      <div class="q-text">"The cat _______ across the yard to chase the bird." Which word fits best?</div>
+      <div class="opts" id="v3">
+        <div class="opt" onclick="mcq('v3',this,'A')"><span class="letter">A</span>crept</div>
+        <div class="opt" onclick="mcq('v3',this,'B')"><span class="letter">B</span>stumbled</div>
+        <div class="opt" onclick="mcq('v3',this,'C')"><span class="letter">C</span>sprinted</div>
+        <div class="opt" onclick="mcq('v3',this,'D')"><span class="letter">D</span>crawled</div>
+      </div>
+      <div class="feedback" id="v3-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SPELLING -->
+<div class="section">
+  <div class="sec-head"><div class="sec-icon">✏️</div><div class="sec-title">Spelling Challenge</div><div class="sec-pts">5 pts · 5 mins</div></div>
+  <div class="sec-body">
+    <div class="q">
+      <div class="q-num">Question 4</div>
+      <div class="q-text">Rewrite the sentence correcting the spelling:<br><br><em>"The <u>athelete</u> won the race."</em></div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="s1" placeholder="Type the corrected sentence…">
+        <button class="check-btn" onclick="checkFill('s1','s1-fb','athlete','Spelling','Spelling — athlete (extra vowel)','#spelling #english #vowelpatterns')">Check</button>
+      </div>
+      <div class="feedback" id="s1-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 5</div>
+      <div class="q-text">Rewrite the sentence correctly:<br><br><em>"She always <u>recieves</u> presents on her birthday."</em></div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="s2" placeholder="Type the corrected sentence…">
+        <button class="check-btn" onclick="checkFill('s2','s2-fb','receives','Spelling','Spelling — ie/ei rule (receives)','#spelling #english #ieei')">Check</button>
+      </div>
+      <div class="feedback" id="s2-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 6</div>
+      <div class="q-text">Which spelling is correct?</div>
+      <div class="opts" id="s3">
+        <div class="opt" onclick="mcq('s3',this,'A')"><span class="letter">A</span>displai</div>
+        <div class="opt" onclick="mcq('s3',this,'B')"><span class="letter">B</span>display</div>
+        <div class="opt" onclick="mcq('s3',this,'C')"><span class="letter">C</span>displaie</div>
+        <div class="opt" onclick="mcq('s3',this,'D')"><span class="letter">D</span>displaye</div>
+      </div>
+      <div class="feedback" id="s3-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 7</div>
+      <div class="q-text">The ie/ei rule: "i before e, except after c." Which is correct?</div>
+      <div class="opts" id="s4">
+        <div class="opt" onclick="mcq('s4',this,'A')"><span class="letter">A</span>recieve</div>
+        <div class="opt" onclick="mcq('s4',this,'B')"><span class="letter">B</span>beleive</div>
+        <div class="opt" onclick="mcq('s4',this,'C')"><span class="letter">C</span>achieve</div>
+        <div class="opt" onclick="mcq('s4',this,'D')"><span class="letter">D</span>freind</div>
+      </div>
+      <div class="feedback" id="s4-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 8</div>
+      <div class="q-text">Write the correct spelling of: <strong style="color:var(--amber)">HIGHT</strong></div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="s5" placeholder="Correct spelling…">
+        <button class="check-btn" onclick="checkFill('s5','s5-fb','height','Spelling','Spelling — vowel patterns (height)','#spelling #english #vowelpatterns')">Check</button>
+      </div>
+      <div class="feedback" id="s5-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MATHS -->
+<div class="section">
+  <div class="sec-head"><div class="sec-icon">🔢</div><div class="sec-title">Maths — Percentages</div><div class="sec-pts">5 pts + ⭐ bonus</div></div>
+  <div class="sec-body">
+    <div class="q">
+      <div class="q-num">Question 9</div>
+      <div class="q-text">What is 10% of 300?</div>
+      <div class="q-hint">💡 Divide by 10 to find 10%.</div>
+      <div class="opts" id="m1">
+        <div class="opt" onclick="mcq('m1',this,'A')"><span class="letter">A</span>3</div>
+        <div class="opt" onclick="mcq('m1',this,'B')"><span class="letter">B</span>30</div>
+        <div class="opt" onclick="mcq('m1',this,'C')"><span class="letter">C</span>300</div>
+        <div class="opt" onclick="mcq('m1',this,'D')"><span class="letter">D</span>3000</div>
+      </div>
+      <div class="feedback" id="m1-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">What is 50% of 80?</div>
+      <div class="q-hint">💡 50% = half.</div>
+      <div class="opts" id="m2">
+        <div class="opt" onclick="mcq('m2',this,'A')"><span class="letter">A</span>8</div>
+        <div class="opt" onclick="mcq('m2',this,'B')"><span class="letter">B</span>80</div>
+        <div class="opt" onclick="mcq('m2',this,'C')"><span class="letter">C</span>40</div>
+        <div class="opt" onclick="mcq('m2',this,'D')"><span class="letter">D</span>20</div>
+      </div>
+      <div class="feedback" id="m2-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 11</div>
+      <div class="q-text">What is 25% of 200?</div>
+      <div class="q-hint">💡 25% = ¼. Divide by 4.</div>
+      <div class="opts" id="m3">
+        <div class="opt" onclick="mcq('m3',this,'A')"><span class="letter">A</span>25</div>
+        <div class="opt" onclick="mcq('m3',this,'B')"><span class="letter">B</span>50</div>
+        <div class="opt" onclick="mcq('m3',this,'C')"><span class="letter">C</span>75</div>
+        <div class="opt" onclick="mcq('m3',this,'D')"><span class="letter">D</span>100</div>
+      </div>
+      <div class="feedback" id="m3-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 12</div>
+      <div class="q-text">What is 20% of 150?</div>
+      <div class="q-hint">💡 10% = 15. Double it for 20%.</div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="m4" placeholder="Your answer…" type="number">
+        <button class="check-btn" onclick="checkNum('m4','m4-fb',30,'Maths','Percentages — find 20%','#maths #percentages','10% of 150=15, ×2=30.')">Check</button>
+      </div>
+      <div class="feedback" id="m4-fb"></div>
+    </div>
+    <div class="q">
+      <div class="q-num">Question 13</div>
+      <div class="q-text">What is 45% of 200? <span class="star-badge">⭐ STAR</span></div>
+      <div class="q-hint">💡 10%=20, ×4=80 (40%), +10=90 (50%), −10=90. Wait... 10%=20, 40%=80, 5%=10, so 45%=90!</div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="m5" placeholder="Show working on paper first…" type="number">
+        <button class="check-btn" onclick="checkNum('m5','m5-fb',90,'Maths','Percentages — 45% of 200 star','#maths #percentages','10%=20, 40%=80, 5%=10, 45%=90!')">Check</button>
+      </div>
+      <div class="feedback" id="m5-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DICTIONARY BUILDER -->
+<div class="section">
+  <div class="sec-head dict-head">
+    <div class="sec-icon">📚</div>
+    <div class="sec-title">Dictionary Builder</div>
+    <div class="sec-pts green">2 pts · 5 mins</div>
+  </div>
+  <div class="sec-body dict-body">
+    <div class="q">
+      <div class="q-num green">Your Word of the Day</div>
+
+      <div class="word-card">
+        <div class="word-display">METICULOUS</div>
+        <div class="word-type">adjective</div>
+        <div class="word-context">Often used in 11+ comprehension passages and writing.</div>
+      </div>
+
+      <div class="dict-instruction">
+        📖 <strong>Your mission:</strong> Look up this word in a real dictionary (or dictionary.com). Then:<br>
+        1. Write the meaning <strong>in your own words</strong> — don't just copy!<br>
+        2. Write one original sentence using the word.<br>
+        This will be saved to your personal 11+ Dictionary in Notion.
+      </div>
+
+      <div class="field-label">My definition (in my own words):</div>
+      <input class="dict-input" id="dict-def" placeholder="e.g. Doing something very carefully and paying attention to every small detail…">
+
+      <div class="field-label">My sentence:</div>
+      <textarea class="dict-textarea" id="dict-sent" placeholder="e.g. The meticulous scientist checked every measurement three times before recording the result."></textarea>
+
+      <button class="save-btn" id="dict-save-btn" onclick="saveDict()">💾 Save to my Dictionary</button>
+      <div class="feedback" id="dict-fb"></div>
+    </div>
+  </div>
+</div>
+
+<div class="submit-wrap">
+  <button class="submit-btn" id="submitBtn" onclick="finish()">✅ Mission complete — submit results!</button>
+</div>
+
+<div class="result" id="result">
+  <div class="result-emoji" id="result-emoji">🏆</div>
+  <h2 id="result-title">Mission Complete!</h2>
+  <div class="result-pts" id="result-pts">0 pts</div>
+  <p id="result-msg" style="margin-top:10px"></p>
+  <div class="breakdown" id="breakdown"></div>
+  <div class="q-track" id="q-track"></div>
+  <div id="send-status"></div>
+</div>
+
+<script>
+const WEBHOOK = "https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx";
+const DICT_WORD = "meticulous";
+const DICT_AREA = "Comprehension";
+const DICT_DIFFICULTY = "Target";
+
+const QUESTIONS = {
+  v1:{section:"Vocabulary",topic:"Motion verbs in context",hashtags:"#vocabulary #english #contextualmeaning",correct:"B"},
+  v2:{section:"Vocabulary",topic:"Spelling — vowel patterns (height)",hashtags:"#spelling #english #vowelpatterns",correct:"C"},
+  v3:{section:"Vocabulary",topic:"Motion verbs in context",hashtags:"#vocabulary #english #contextualmeaning",correct:"C"},
+  s3:{section:"Spelling",topic:"Spelling — display vowel pattern",hashtags:"#spelling #english #vowelpatterns",correct:"B"},
+  s4:{section:"Spelling",topic:"Spelling — ie/ei rule",hashtags:"#spelling #english #ieei",correct:"C"},
+  m1:{section:"Maths",topic:"Percentages — find 10%",hashtags:"#maths #percentages #methodconfusion",correct:"B"},
+  m2:{section:"Maths",topic:"Percentages — find 50%",hashtags:"#maths #percentages #methodconfusion",correct:"C"},
+  m3:{section:"Maths",topic:"Percentages — find 25%",hashtags:"#maths #percentages #methodconfusion",correct:"B"},
+};
+
+const explain={
+  v1:"Floated — moved gently. Flowted is not a real word!",
+  v2:"Height — the tricky 'eigh' pattern: H-E-I-G-H-T.",
+  v3:"Sprinted — ran very fast. Crept means slow and quiet.",
+  s3:"Display — ends in -ay, like play and stay.",
+  s4:"Achieve — i before e. reCEIve has ei because of the c.",
+  m1:"300 ÷ 10 = 30.",
+  m2:"50% = half. Half of 80 = 40.",
+  m3:"25% = ¼. 200 ÷ 4 = 50.",
+};
+
+let results={}, answered=0, pts=0, dictSaved=false;
+const totalTasks=14;
+const breakdown={Vocabulary:0,Spelling:0,Maths:0,Dictionary:0};
+
+function updateProgress(){
+  const pct=Math.round((answered/totalTasks)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-txt').textContent=answered+' / '+totalTasks+' tasks';
+}
+
+function recordResult(id,correct,section,topic,hashtags){
+  results[id]={q_number:Object.keys(results).length+1,section,topic,hashtags,correct};
+  if(correct){pts++;breakdown[section]++;}
+  answered++;updateProgress();
+}
+
+function mcq(id,el,chosen){
+  const c=document.getElementById(id);
+  if(c.dataset.done)return;c.dataset.done='1';
+  const ans=QUESTIONS[id].correct;
+  c.querySelectorAll('.opt').forEach((o,i)=>{
+    const l=String.fromCharCode(65+i);
+    if(l===ans)o.classList.add(chosen===ans?'correct':'reveal');
+    else if(l===chosen)o.classList.add('wrong');
+    else o.classList.add('disabled');
+  });
+  const isRight=chosen===ans;
+  const fb=document.getElementById(id+'-fb');
+  fb.style.display='block';fb.className='feedback '+(isRight?'ok':'bad');
+  fb.textContent=isRight?('✓ '+(explain[id]||'Correct!')):('✗ '+(explain[id]||'Not quite.'));
+  recordResult(id,isRight,QUESTIONS[id].section,QUESTIONS[id].topic,QUESTIONS[id].hashtags);
+}
+
+function checkFill(inputId,fbId,keyword,section,topic,hashtags){
+  const inp=document.getElementById(inputId);
+  if(inp.dataset.done)return;inp.dataset.done='1';
+  const btn=inp.nextElementSibling;if(btn)btn.disabled=true;
+  const val=inp.value.trim().toLowerCase();
+  const isRight=val.includes(keyword.toLowerCase())&&val.length>keyword.length;
+  inp.classList.add(isRight?'correct':'wrong');
+  const fb=document.getElementById(fbId);
+  fb.style.display='block';fb.className='feedback '+(isRight?'ok':'bad');
+  fb.textContent=isRight?('✓ Correct! "'+keyword+'" is right.'):('✗ The correct word is: '+keyword);
+  recordResult(inputId,isRight,section,topic,hashtags);
+}
+
+function checkNum(inputId,fbId,answer,section,topic,hashtags,explanation){
+  const inp=document.getElementById(inputId);
+  if(inp.dataset.done)return;inp.dataset.done='1';
+  const btn=inp.nextElementSibling;if(btn)btn.disabled=true;
+  const val=parseFloat(inp.value.trim());
+  const isRight=val===answer;
+  inp.classList.add(isRight?'correct':'wrong');
+  const fb=document.getElementById(fbId);
+  fb.style.display='block';fb.className='feedback '+(isRight?'ok':'bad');
+  if(isRight){
+    fb.textContent='✓ '+explanation;
+    if(inputId==='m5'){pts++;breakdown.Maths++;}
+  } else {
+    fb.textContent='✗ The answer is '+answer+'. '+explanation;
+  }
+  recordResult(inputId,isRight,section,topic,hashtags);
+}
+
+function saveDict(){
+  const def=document.getElementById('dict-def').value.trim();
+  const sent=document.getElementById('dict-sent').value.trim();
+  const fb=document.getElementById('dict-fb');
+  const btn=document.getElementById('dict-save-btn');
+  fb.style.display='block';
+
+  if(def.length<10){
+    fb.className='feedback bad';
+    fb.textContent='✗ Your definition is too short — describe what the word means in your own words!';
+    return;
+  }
+  if(sent.split(' ').length<5){
+    fb.className='feedback bad';
+    fb.textContent='✗ Your sentence needs to be longer — at least 5 words using "'+DICT_WORD+'"!';
+    return;
+  }
+  if(!sent.toLowerCase().includes(DICT_WORD)){
+    fb.className='feedback bad';
+    fb.textContent='✗ Make sure your sentence uses the word "'+DICT_WORD+'"!';
+    return;
+  }
+
+  btn.disabled=true;
+  dictSaved=true;
+  pts+=2;breakdown.Dictionary+=2;
+  answered++;updateProgress();
+
+  fb.className='feedback ok';
+  fb.textContent='✓ Saved! "'+DICT_WORD+'" is now in your 11+ Dictionary. Great definition and sentence!';
+
+  // Send dictionary entry to webhook
+  fetch(WEBHOOK,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      type:'dictionary_entry',
+      child:'CL',
+      date:new Date().toISOString().split('T')[0],
+      word:DICT_WORD,
+      curriculum_area:DICT_AREA,
+      difficulty:DICT_DIFFICULTY,
+      their_definition:def,
+      their_sentence:sent,
+      points_earned:2
+    })
+  }).catch(()=>{});
+}
+
+function buildPayload(){
+  return {
+    type:'exercise_result',
+    child:'CL',
+    date:new Date().toISOString().split('T')[0],
+    week:1,day:'Monday',
+    exercise_type:'Weekday 15-min',
+    subject_focus:'Mixed',
+    total_correct:pts,
+    total_questions:totalTasks,
+    points_earned:pts,
+    score_summary:`Vocab:${breakdown.Vocabulary}/3 · Spelling:${breakdown.Spelling}/5 · Maths:${breakdown.Maths}/5 · Dict:${breakdown.Dictionary}/2 · Total:${pts}/${totalTasks}`,
+    weaknesses_addressed:[...new Set(Object.values(results).filter(r=>!r.correct).flatMap(r=>r.hashtags.split(' ')))].join(' '),
+    dict_word:DICT_WORD,
+    dict_saved:dictSaved,
+    questions:Object.entries(results).map(([id,r],i)=>({q_number:i+1,question_id:id,section:r.section,topic:r.topic,hashtags:r.hashtags,correct:r.correct}))
+  };
+}
+
+async function finish(){
+  document.getElementById('submitBtn').disabled=true;
+  const result=document.getElementById('result');
+  result.style.display='block';
+  result.scrollIntoView({behavior:'smooth',block:'start'});
+
+  const pct=pts/totalTasks;
+  let emoji,title,msg;
+  if(pct>=0.85){emoji='🏆';title='Outstanding Mission!';msg='Incredible work — and building your dictionary is a superpower for 11+ success!';}
+  else if(pct>=0.65){emoji='🎯';title='Great Work!';msg='Solid session. Keep building that dictionary every day — it adds up fast!';}
+  else{emoji='💪';title='Mission Attempted!';msg='Well done for finishing! Check the spelling rule feedback and try again tomorrow.';}
+
+  document.getElementById('result-emoji').textContent=emoji;
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('result-pts').textContent=pts+' pts';
+  document.getElementById('result-msg').textContent=msg;
+
+  document.getElementById('breakdown').innerHTML=`
+    <div class="bd-row"><span>📖 Vocabulary</span><span>${breakdown.Vocabulary} pts</span></div>
+    <div class="bd-row"><span>✏️ Spelling</span><span>${breakdown.Spelling} pts</span></div>
+    <div class="bd-row"><span>🔢 Maths</span><span>${breakdown.Maths} pts</span></div>
+    <div class="bd-row"><span>📚 Dictionary</span><span>${breakdown.Dictionary} pts</span></div>
+    <div class="bd-row"><span>Total</span><span>${pts} pts</span></div>`;
+
+  const qt=document.getElementById('q-track');
+  Object.entries(results).forEach(([id,r],i)=>{
+    const span=document.createElement('div');
+    span.className='qt '+(r.correct?'ok':'bad');
+    span.textContent='Q'+(i+1)+' '+(r.correct?'✓':'✗');
+    span.title=r.topic;qt.appendChild(span);
+  });
+  if(dictSaved){
+    const span=document.createElement('div');
+    span.className='qt saved';span.textContent='📚 Dict ✓';span.title='Dictionary: '+DICT_WORD;
+    qt.appendChild(span);
+  }
+
+  const statusEl=document.getElementById('send-status');
+  statusEl.innerHTML='<p style="font-size:12px;color:var(--muted);margin-top:12px">Sending to Notion…</p>';
+  try{
+    const ok=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
+    statusEl.innerHTML=ok.ok
+      ?'<div class="sent-ok">✓ Results sent to Notion. Well done, CL!</div>'
+      :'<div class="sent-err">⚠ Could not send — tell a parent your score: '+pts+' pts</div>';
+  }catch(e){
+    statusEl.innerHTML='<div class="sent-err">⚠ No internet — tell a parent your score: '+pts+' pts</div>';
+  }
+}
+</script>
+</body>
+</html>
