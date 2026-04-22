@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>🎯 CL Mission — Thursday</title>
+  <style>
+    :root{--navy:#0f172a;--card:#1a2744;--amber:#f59e0b;--amberlt:#fcd34d;--amberdim:#92400e;--text:#e2e8f0;--dim:#94a3b8;--border:#2d3f5e}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--navy);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;-webkit-text-size-adjust:100%;padding-bottom:40px}
+    header{background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:3px solid var(--amber);padding:18px 16px 14px;position:sticky;top:0;z-index:100}
+    .htitle{font-size:21px;font-weight:800;color:var(--amber)}
+    .hsub{font-size:13px;color:var(--dim);margin-top:2px}
+    .pbar-wrap{background:#334155;border-radius:4px;height:6px;margin-top:10px}
+    .pbar{background:var(--amber);height:100%;border-radius:4px;transition:width .4s;width:0%}
+    main{padding:14px;max-width:640px;margin:0 auto}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+    .badge{display:inline-block;background:var(--amberdim);color:var(--amberlt);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+    .sec-title{font-size:17px;font-weight:700;color:var(--amber);margin-bottom:14px}
+    .q{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .qlabel{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:10px}
+    .star .qlabel::before{content:'⭐ '}
+    .opts{display:flex;flex-direction:column;gap:7px}
+    .opt{display:flex;align-items:center;gap:10px;background:#0f172a;border:1.5px solid #334155;border-radius:8px;padding:10px 14px;font-size:15px;cursor:pointer}
+    .opt:has(input:checked){border-color:var(--amber);background:#1a1a00}
+    input[type=radio]{accent-color:var(--amber);width:18px;height:18px;flex-shrink:0}
+    input[type=text]{background:#0f172a;border:1.5px solid #334155;border-radius:8px;color:var(--text);font-size:16px;padding:10px 14px;width:100%}
+    input[type=text]:focus{border-color:var(--amber);outline:none}
+    textarea{background:#0f172a;border:1.5px solid #334155;border-radius:8px;color:var(--text);font-size:15px;padding:10px 14px;width:100%;min-height:70px;resize:vertical}
+    textarea:focus{border-color:var(--amber);outline:none}
+    .dict-word{font-size:26px;font-weight:800;color:var(--amber);margin-bottom:2px}
+    .dict-hint{font-size:13px;color:var(--dim);font-style:italic;margin-bottom:12px}
+    .flabel{font-size:13px;color:var(--dim);margin-bottom:5px;margin-top:10px;display:block}
+    .sub-area{padding:14px;max-width:640px;margin:0 auto}
+    .sub-btn{width:100%;background:var(--amber);color:var(--navy);border:none;border-radius:12px;font-size:17px;font-weight:800;padding:16px;cursor:pointer}
+    #result{display:none;text-align:center;padding:28px 16px;max-width:640px;margin:0 auto}
+    .big-score{font-size:64px;font-weight:900;color:var(--amber)}
+    .score-label{font-size:17px;color:var(--dim);margin-top:4px}
+    .breakdown{background:var(--card);border-radius:12px;padding:16px;margin-top:18px;text-align:left}
+    .brow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
+    .brow:last-child{border-bottom:none}
+    .pts-box{background:var(--amberdim);border-radius:10px;padding:12px 16px;margin-top:14px;text-align:center}
+    .pts-num{font-size:32px;font-weight:800;color:var(--amberlt)}
+    .pts-lbl{font-size:13px;color:var(--amberlt)}
+    .sending{color:var(--dim);font-size:14px;margin-top:12px}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="htitle">🎯 CL Mission — Thursday</div>
+  <div class="hsub">Week 1 · 6 May 2026 · 13 questions</div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar"></div></div>
+</header>
+
+<main id="exercise">
+
+<!-- SECTION 1: VOCAB — sprinted, display, athlete -->
+<div class="card">
+  <div class="badge">Section 1</div>
+  <div class="sec-title">⚡ Vocab Warm-Up</div>
+
+  <div class="q" id="q1">
+    <div class="qlabel">1. Which word means "ran very fast"?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q1" value="crept"> crept</label>
+      <label class="opt"><input type="radio" name="q1" value="sprinted"> sprinted</label>
+      <label class="opt"><input type="radio" name="q1" value="floated"> floated</label>
+      <label class="opt"><input type="radio" name="q1" value="glided"> glided</label>
+    </div>
+  </div>
+
+  <div class="q" id="q2">
+    <div class="qlabel">2. Which spelling is correct for the word meaning "to show or exhibit"?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q2" value="displai"> displai</label>
+      <label class="opt"><input type="radio" name="q2" value="display"> display</label>
+      <label class="opt"><input type="radio" name="q2" value="diplay"> diplay</label>
+      <label class="opt"><input type="radio" name="q2" value="dysplay"> dysplay</label>
+    </div>
+  </div>
+
+  <div class="q" id="q3">
+    <div class="qlabel">3. In the sentence "The athlete won the gold medal", what does <em>athlete</em> mean?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q3" value="a"> a referee who judges sport</label>
+      <label class="opt"><input type="radio" name="q3" value="b"> someone who competes in physical sport</label>
+      <label class="opt"><input type="radio" name="q3" value="c"> a person who coaches others</label>
+      <label class="opt"><input type="radio" name="q3" value="d"> someone who watches sport</label>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: ENGLISH — VOCAB/CONTEXT -->
+<div class="card">
+  <div class="badge">Section 2</div>
+  <div class="sec-title">📖 English — Vocabulary &amp; Context</div>
+
+  <div class="q" id="q4">
+    <div class="qlabel">4. Choose the motion verb that means "to move smoothly and effortlessly":</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q4" value="sprint"> sprint</label>
+      <label class="opt"><input type="radio" name="q4" value="glide"> glide</label>
+      <label class="opt"><input type="radio" name="q4" value="stomp"> stomp</label>
+      <label class="opt"><input type="radio" name="q4" value="crash"> crash</label>
+    </div>
+  </div>
+
+  <div class="q" id="q5">
+    <div class="qlabel">5. Which word best describes feeling extremely scared?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q5" value="brave"> brave</label>
+      <label class="opt"><input type="radio" name="q5" value="joyful"> joyful</label>
+      <label class="opt"><input type="radio" name="q5" value="terrified"> terrified</label>
+      <label class="opt"><input type="radio" name="q5" value="curious"> curious</label>
+    </div>
+  </div>
+
+  <div class="q" id="q6">
+    <div class="qlabel">6. What type of word is <em>quickly</em> in the sentence "She ran quickly"?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q6" value="noun"> noun</label>
+      <label class="opt"><input type="radio" name="q6" value="verb"> verb</label>
+      <label class="opt"><input type="radio" name="q6" value="adverb"> adverb</label>
+      <label class="opt"><input type="radio" name="q6" value="adjective"> adjective</label>
+    </div>
+  </div>
+
+  <div class="q" id="q7">
+    <div class="qlabel">7. Choose the best motion verb: "The ballet dancer ___ across the stage."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q7" value="stomped"> stomped</label>
+      <label class="opt"><input type="radio" name="q7" value="sprinted"> sprinted</label>
+      <label class="opt"><input type="radio" name="q7" value="glided"> glided</label>
+      <label class="opt"><input type="radio" name="q7" value="crashed"> crashed</label>
+    </div>
+  </div>
+
+  <div class="q" id="q8">
+    <div class="qlabel">8. Which is a <strong>describing word</strong> in: "The tiny bird sang a sweet song."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q8" value="sang"> sang</label>
+      <label class="opt"><input type="radio" name="q8" value="tiny"> tiny</label>
+      <label class="opt"><input type="radio" name="q8" value="bird"> bird</label>
+      <label class="opt"><input type="radio" name="q8" value="song"> song</label>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: MATHS -->
+<div class="card">
+  <div class="badge">Section 3</div>
+  <div class="sec-title">🔢 Maths</div>
+
+  <div class="q" id="q9">
+    <div class="qlabel">9. Find 40% of 50.</div>
+    <input type="text" id="q9t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q" id="q10">
+    <div class="qlabel">10. Work out: 2 − 7</div>
+    <input type="text" id="q10t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q" id="q11">
+    <div class="qlabel">11. Write <sup>2</sup>/<sub>5</sub> as a decimal.</div>
+    <input type="text" id="q11t" placeholder="Your answer..." inputmode="decimal">
+  </div>
+
+  <div class="q" id="q12">
+    <div class="qlabel">12. Lemon juice and water are mixed in ratio 1 : 4. How much water is needed for 3 cups of lemon juice?</div>
+    <input type="text" id="q12t" placeholder="cups of water..." inputmode="numeric">
+  </div>
+
+  <div class="q star" id="q13">
+    <div class="qlabel">13. 70% of 120 children bought tickets to a show. How many children is that?</div>
+    <input type="text" id="q13t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+</div>
+
+<!-- SECTION 4: DICTIONARY -->
+<div class="card">
+  <div class="badge">Section 4</div>
+  <div class="sec-title">📚 Dictionary Builder</div>
+  <div class="dict-word">determined</div>
+  <div class="dict-hint">Today's word — word #4 in your list</div>
+  <span class="flabel">Look up "determined". Write what it means:</span>
+  <textarea id="dict-def" placeholder="Definition..."></textarea>
+  <span class="flabel">Write your own sentence using "determined":</span>
+  <textarea id="dict-sent" placeholder="My sentence..."></textarea>
+</div>
+
+</main>
+
+<div class="sub-area">
+  <button class="sub-btn" onclick="submitAll()">🚀 Submit Mission Report</button>
+</div>
+
+<div id="result">
+  <div class="big-score" id="rscore"></div>
+  <div class="score-label">Questions correct</div>
+  <div class="breakdown" id="rbreakdown"></div>
+  <div class="pts-box">
+    <div class="pts-num" id="rpts"></div>
+    <div class="pts-lbl">points earned today</div>
+  </div>
+  <div class="sending" id="rstatus">Sending results...</div>
+</div>
+
+<script>
+const WEBHOOK = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const ANSWERS = {
+  q1:  { correct:'sprinted', tax:'E4.3', topic:'Motion verbs', section:'Vocab', hashtags:'#vocabulary #motionverbs' },
+  q2:  { correct:'display',  tax:'E1.1', topic:'Spelling — vowel patterns', section:'Vocab', hashtags:'#spelling #vowelpatterns' },
+  q3:  { correct:'b',        tax:'E4.3', topic:'Contextual vocabulary meaning', section:'Vocab', hashtags:'#vocabulary #contextualmeaning' },
+  q4:  { correct:'glide',    tax:'E4.3', topic:'Motion verbs', section:'English', hashtags:'#vocabulary #motionverbs' },
+  q5:  { correct:'terrified',tax:'E4.4', topic:'Emotion and state words', section:'English', hashtags:'#vocabulary' },
+  q6:  { correct:'adverb',   tax:'E2.8', topic:'Parts of speech', section:'English', hashtags:'#grammar' },
+  q7:  { correct:'glided',   tax:'E4.3', topic:'Motion verbs in context', section:'English', hashtags:'#vocabulary #motionverbs' },
+  q8:  { correct:'tiny',     tax:'E2.7', topic:'Adjectives and adverbs', section:'English', hashtags:'#grammar #adjectives' },
+  q9:  { correct:['20'],                  tax:'M2.7', topic:'Find a percentage of a quantity', section:'Maths', hashtags:'#percentages', star:false },
+  q10: { correct:['-5'],                  tax:'M1.8', topic:'Negative number operations', section:'Maths', hashtags:'#negatives', star:false },
+  q11: { correct:['0.4'],                 tax:'M2.5', topic:'Fraction to decimal', section:'Maths', hashtags:'#fractions #decimals', star:false },
+  q12: { correct:['12'],                  tax:'M3.3', topic:'Ratio word problems', section:'Maths', hashtags:'#ratio #wordedproblems', star:false },
+  q13: { correct:['84'],                  tax:'M2.7', topic:'Percentage of a quantity — applied', section:'Maths', hashtags:'#percentages #wordedproblems', star:true }
+};
+
+function getRadio(n){ const s=document.querySelector(`input[name="${n}"]:checked`); return s?s.value:''; }
+function getText(id){ const e=document.getElementById(id); return e?e.value.trim().toLowerCase().replace(/^£/,''):''; }
+function checkQ(k){ const m=ANSWERS[k]; if(Array.isArray(m.correct)){ const v=getText(k+'t'); return m.correct.map(c=>c.toLowerCase().replace(/^£/,'')).includes(v); } return getRadio(k)===m.correct; }
+setInterval(()=>{ const d=Object.keys(ANSWERS).filter(k=>Array.isArray(ANSWERS[k].correct)?getText(k+'t')!=='':getRadio(k)!=='').length; document.getElementById('pbar').style.width=(d/13*100)+'%'; },600);
+
+function submitAll(){
+  let vC=0,eC=0,mC=0,tC=0; const qa=[];
+  Object.keys(ANSWERS).forEach((k,i)=>{ const m=ANSWERS[k],c=checkQ(k); if(c)tC++; if(m.section==='Vocab')vC+=c?1:0; if(m.section==='English')eC+=c?1:0; if(m.section==='Maths')mC+=c?1:0; qa.push({q_number:i+1,question_id:k,section:m.section,topic:m.topic,taxonomy_code:m.tax,hashtags:m.hashtags,correct:c}); });
+  const sC=checkQ('q13'), dF=document.getElementById('dict-sent').value.trim().length>3;
+  const pts=5+(sC?3:0)+(dF?2:0);
+  const pct=Math.round(tC/13*100), msg=pct>=80?'🔥 Brilliant work agent!':pct>=60?'💪 Solid effort!':'📚 Keep training!';
+  const payload={type:'exercise_result',child:'CL',date:'2026-05-06',week:1,day:'Thursday',exercise_type:'Weekday 15-min',subject_focus:'Mixed',total_correct:tC,total_questions:13,points_earned:pts,score_summary:`Vocab:${vC}/3 · English:${eC}/5 · Maths:${mC}/5`,weaknesses_addressed:'#vocabulary #motionverbs #percentages #negatives #fractions #ratio',dict_word:'determined',dict_saved:dF,questions:qa};
+  document.getElementById('exercise').style.display='none';
+  document.querySelector('.sub-area').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('rscore').textContent=tC+'/13';
+  let bh=`<div class="brow"><span>Vocab</span><span>${vC}/3</span></div><div class="brow"><span>English</span><span>${eC}/5</span></div><div class="brow"><span>Maths</span><span>${mC}/5</span></div><div class="brow"><span>⭐ Star Q</span><span>${sC?'✅':'❌'}</span></div><div class="brow" style="font-style:italic;color:#94a3b8"><span>${msg}</span></div>`;
+  qa.forEach(q=>{bh+=`<div class="brow" style="font-size:13px"><span>${q.correct?'✅':'❌'} Q${q.q_number}: ${q.topic}</span></div>`;});
+  document.getElementById('rbreakdown').innerHTML=bh;
+  document.getElementById('rpts').textContent='+'+pts+' pts';
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(()=>{ if(dF) return fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'dictionary_entry',child:'CL',date:'2026-05-06',week:1,word:'determined',word_position:4,definition:document.getElementById('dict-def').value.trim(),sentence:document.getElementById('dict-sent').value.trim()})}); })
+    .then(()=>{document.getElementById('rstatus').textContent='✅ Results sent!';})
+    .catch(()=>{document.getElementById('rstatus').textContent='⚠️ Could not send — ask a parent to check.';});
+}
+</script>
+</body>
+</html>
