@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IL — Saturday Reading</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#fdf6ff;color:#1e1b4b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
+
+  /* HEADER */
+  .hero{background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'⭐';position:absolute;top:10px;left:14px;font-size:28px;opacity:0.4}
+  .hero::after{content:'⭐';position:absolute;top:10px;right:14px;font-size:28px;opacity:0.4}
+  .day-badge{display:inline-block;background:#fbbf24;color:#1e1b4b;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:10px}
+  .hero h1{font-size:26px;font-weight:800;color:#fff;line-height:1.2}
+  .hero h1 span{color:#fbbf24}
+  .star-row{display:flex;justify-content:center;gap:12px;margin-top:14px}
+  .star-dot{width:28px;height:28px;border-radius:50%;background:#ffffff33;border:2px solid #ffffff55;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .3s}
+  .star-dot.lit{background:#fbbf24;border-color:#f59e0b;box-shadow:0 0 10px #fbbf2488}
+  .meta-row{display:flex;justify-content:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .meta-pill{background:#ffffff22;border:1px solid #ffffff33;border-radius:20px;padding:5px 14px;font-size:13px;color:#ede9fe}
+
+  /* INSTRUCTION */
+  .instr{margin:20px 16px;background:#f5f0ff;border-left:4px solid #7c3aed;border-radius:10px;padding:16px 18px}
+  .instr p{font-size:15px;line-height:1.6;color:#4c1d95}
+  .instr strong{color:#7c3aed}
+  .steps{margin-top:10px;list-style:none;padding:0}
+  .steps li{padding:5px 0;font-size:14px;color:#6d28d9;display:flex;gap:10px;align-items:flex-start}
+  .steps li .num{background:#7c3aed;color:#fff;font-weight:800;font-size:12px;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+  /* SECTION HEADER */
+  .section-hdr{margin:24px 16px 10px;display:flex;align-items:center;gap:10px}
+  .section-hdr .icon{font-size:20px}
+  .section-hdr h2{font-size:16px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px}
+
+  /* PASSAGE */
+  .passage-box{margin:0 16px;background:#fff;border:2px solid #c4b5fd;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px #7c3aed11}
+  .passage-title-row{background:#7c3aed;padding:12px 18px;display:flex;align-items:center;gap:10px}
+  .passage-title-row .title-text{font-size:15px;font-weight:800;color:#fff;letter-spacing:0.5px}
+  .passage-title-row .origin{font-size:11px;color:#c4b5fd;margin-left:auto}
+  .passage-text{padding:20px 18px;font-size:17px;line-height:1.9;color:#1e1b4b}
+  .passage-text p{margin-bottom:14px}
+  .passage-text p:last-child{margin-bottom:0}
+  .word-count{padding:10px 18px;border-top:1px solid #ede9fe;font-size:12px;color:#a78bfa;text-align:right}
+
+  /* QUESTIONS */
+  .q-box{margin:0 16px 12px;background:#fff;border:2px solid #c4b5fd;border-radius:14px;padding:18px;box-shadow:0 2px 8px #7c3aed0d}
+  .q-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .q-num-circle{background:#7c3aed;color:#fff;font-weight:800;font-size:14px;min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .q-num-circle.star-q{background:#fbbf24;color:#1e1b4b}
+  .q-type{font-size:11px;background:#ede9fe;color:#7c3aed;border-radius:10px;padding:3px 10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+  .q-text{font-size:16px;color:#1e1b4b;line-height:1.5;margin-bottom:10px}
+  .q-hint{font-size:13px;color:#8b5cf6;font-style:italic;line-height:1.4;margin-bottom:8px}
+  .q-space{border-top:1px dashed #c4b5fd;padding-top:10px;font-size:12px;color:#a78bfa;font-style:italic}
+
+  .draw-box{background:#fdf6ff;border:2px dashed #c4b5fd;border-radius:10px;padding:16px;text-align:center;margin:10px 0}
+  .draw-box .draw-label{font-size:13px;color:#a78bfa;margin-bottom:6px}
+  .draw-box .draw-space{font-size:40px;margin-bottom:6px}
+  .draw-box .draw-tip{font-size:12px;color:#c4b5fd}
+
+  .star-badge{display:inline-flex;align-items:center;gap:4px;background:#fef3c7;border:1px solid #fbbf24;border-radius:10px;padding:3px 10px;font-size:12px;color:#d97706;font-weight:700;margin-bottom:8px}
+
+  /* RUBRIC */
+  .rubric-toggle{display:block;margin:20px 16px 0;background:#ede9fe;border:1px solid #c4b5fd;border-radius:10px;padding:12px 16px;font-size:13px;color:#7c3aed;cursor:pointer;text-align:left;width:calc(100%-32px);width:calc(100% - 32px)}
+  .rubric-panel{display:none;margin:0 16px;background:#ede9fe;border:1px solid #c4b5fd;border-radius:0 0 10px 10px;padding:16px;font-size:13px;line-height:1.6;color:#4c1d95}
+  .rubric-panel.open{display:block}
+  .rubric-panel h4{color:#7c3aed;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin:10px 0 4px}
+  .rubric-panel h4:first-child{margin-top:0}
+  .rubric-panel ul{padding-left:16px}
+  .rubric-panel li{margin-bottom:4px}
+
+  /* SUBMIT */
+  .submit-area{margin:28px 16px 0;text-align:center}
+  .submit-btn{background:#7c3aed;color:#fff;font-size:18px;font-weight:800;border:none;border-radius:16px;padding:18px 40px;cursor:pointer;width:100%;max-width:400px;-webkit-tap-highlight-color:transparent}
+  .submit-btn:active{background:#5b21b6}
+  .submit-btn.sent{background:#22c55e}
+  .result-card{display:none;margin:20px 16px;background:#fff;border:3px solid #fbbf24;border-radius:16px;padding:24px;text-align:center;box-shadow:0 4px 20px #fbbf2433}
+  .result-card.show{display:block}
+  .result-card .big-icon{font-size:52px;margin-bottom:10px}
+  .result-card h2{font-size:22px;font-weight:800;color:#7c3aed;margin-bottom:8px}
+  .result-card p{font-size:15px;color:#6d28d9;line-height:1.6;margin-bottom:6px}
+  .pts-earned{font-size:32px;font-weight:800;color:#fbbf24;margin:10px 0}
+  .scan-tip{background:#fdf6ff;border-radius:10px;padding:14px;margin-top:14px;font-size:14px;color:#8b5cf6;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hero">
+  <div class="day-badge">📖 Saturday · Week 1</div>
+  <h1>Reading <span>Adventure</span></h1>
+  <div class="star-row">
+    <div class="star-dot" id="s1">⭐</div>
+    <div class="star-dot" id="s2">⭐</div>
+    <div class="star-dot" id="s3">⭐</div>
+    <div class="star-dot" id="s4">⭐</div>
+  </div>
+  <div class="meta-row">
+    <div class="meta-pill" id="date-pill">Loading…</div>
+    <div class="meta-pill">⏱ 30 mins</div>
+    <div class="meta-pill">⭐ +8 pts</div>
+  </div>
+</div>
+
+<!-- INSTRUCTIONS -->
+<div class="instr">
+  <p><strong>Today you are a story detective!</strong> Read the story below. Then answer the questions on your paper. You can look back at the story as much as you like!</p>
+  <ul class="steps">
+    <li><div class="num">1</div>Read the whole story first. Enjoy it!</li>
+    <li><div class="num">2</div>Read the questions and answer them on paper.</li>
+    <li><div class="num">3</div>For Question 3, draw your picture on the paper too.</li>
+    <li><div class="num">4</div>Tap the star button when you're all done!</div></li>
+  </ul>
+</div>
+
+<!-- PASSAGE -->
+<div class="section-hdr"><div class="icon">📚</div><h2>Today's Story</h2></div>
+<div class="passage-box">
+  <div class="passage-title-row">
+    <div class="title-text">The Lion and the Mouse</div>
+    <div class="origin">Aesop's Fables</div>
+  </div>
+  <div class="passage-text">
+    <p>One afternoon, a tiny mouse was running across the grass when — whoops! — he ran right over a sleeping lion's nose.</p>
+    <p>The lion woke up with a roar. He slapped his giant paw down and caught the little mouse.</p>
+    <p>"Please let me go!" squeaked the mouse. "I'm so sorry! If you spare me, I promise I will help you one day."</p>
+    <p>The lion laughed. What could a tiny mouse ever do to help a mighty lion? But he felt kind, so he lifted his paw and let the mouse go free.</p>
+    <p>Some days later, the lion was walking through the forest when — SNAP! — he fell into a hunter's net. He roared and struggled, but he could not get free.</p>
+    <p>The little mouse heard the roaring. He ran to help. With his sharp little teeth, he nibbled and nibbled at the ropes until — at last — the net fell apart.</p>
+    <p>"You laughed when I said I would help you," said the mouse. "But even a small friend can do great things!"</p>
+    <p>The lion smiled warmly. "You are right, little friend. I will never laugh at a small kindness again."</p>
+  </div>
+  <div class="word-count">~160 words · Adapted for age 7</div>
+</div>
+
+<!-- QUESTIONS -->
+<div class="section-hdr" style="margin-top:28px"><div class="icon">✏️</div><h2>Questions — Write on Paper</h2></div>
+
+<div class="q-box">
+  <div class="q-header">
+    <div class="q-num-circle">1</div>
+    <div class="q-type">Find it in the story</div>
+  </div>
+  <div class="q-text">What did the mouse do that woke up the lion?</div>
+  <div class="q-hint">💡 Look at the very beginning of the story.</div>
+  <div class="q-space">Write one sentence · You can use words from the story</div>
+</div>
+
+<div class="q-box">
+  <div class="q-header">
+    <div class="q-num-circle">2</div>
+    <div class="q-type">What do you think?</div>
+  </div>
+  <div class="q-text">Why do you think the lion decided to let the mouse go free?</div>
+  <div class="q-hint">💡 Think about how the lion was feeling. The story gives you a clue!</div>
+  <div class="q-space">Write 1–2 sentences · Start with "I think…"</div>
+</div>
+
+<div class="q-box">
+  <div class="q-header">
+    <div class="q-num-circle">3</div>
+    <div class="q-type">Draw it!</div>
+  </div>
+  <div class="q-text">Draw your favourite moment from the story.</div>
+  <div class="draw-box">
+    <div class="draw-space">🖍️</div>
+    <div class="draw-label">Draw on your paper in the space below your answers</div>
+    <div class="draw-tip">Draw the lion, the mouse, or the net scene — your choice!</div>
+  </div>
+  <div class="q-space">Label your drawing with the characters' names</div>
+</div>
+
+<div class="q-box">
+  <div class="q-header">
+    <div class="q-num-circle star-q">⭐</div>
+    <div class="q-type">Star Challenge</div>
+  </div>
+  <div class="star-badge">⭐ STAR QUESTION</div>
+  <div class="q-text">Write one question you would like to ask the lion <em>or</em> the mouse.</div>
+  <div class="q-hint">💡 Imagine you could talk to them! What would you really want to know?</div>
+  <div class="q-space">Write your question with a question mark · There's no wrong answer!</div>
+</div>
+
+<!-- RUBRIC -->
+<button class="rubric-toggle" onclick="toggleRubric()">🔍 Parent / Claude marking guide — tap to show</button>
+<div class="rubric-panel" id="rubric">
+  <h4>Q1 — Retrieval (1 mark)</h4>
+  <ul><li>The mouse ran over the lion's nose / ran across the lion's nose. Accept any clear reference to this event. No mark if unrelated.</li></ul>
+  <h4>Q2 — Inference (2 marks)</h4>
+  <ul><li>1 mark: "He felt kind" / the lion had a kind heart / took pity on the mouse.</li><li>2 marks: Also references the mouse's promise ("I will help you one day") as a reason, or shows empathy for the mouse.</li></ul>
+  <h4>Q3 — Drawing (1 mark)</h4>
+  <ul><li>Any relevant scene drawn. Check it's labelled. 1 mark if any attempt made. Encourage colour and detail as bonus.</li></ul>
+  <h4>Q4 ⭐ — Open response (2 marks)</h4>
+  <ul><li>Any genuine, grammatically complete question in correct format (with ?). 1 mark for a question, 2 marks if it shows empathy or curiosity about the story's theme (e.g. "Were you embarrassed that a tiny mouse saved you?" earns full marks).</li></ul>
+  <h4>Total: 6 marks · Points: complete = 8 pts. Bonus: full marks = +2 pts</h4>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-area">
+  <button class="submit-btn" id="submit-btn" onclick="submitDone()">All done! ⭐ Tap here!</button>
+</div>
+
+<div class="result-card" id="result-card">
+  <div class="big-icon">🦁🐭</div>
+  <h2>Amazing reading, IL!</h2>
+  <p>You are a reading superstar!</p>
+  <div class="pts-earned">+8 ⭐ pts!</div>
+  <div class="scan-tip">📸 Ask a parent to take a photo of your answers and drawing, then send it to Claude for marking!</div>
+</div>
+
+<script>
+const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const now=new Date();
+document.getElementById('date-pill').textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+
+// Light up stars as encouragement (not tied to questions — just ambient)
+const stars=['s1','s2','s3','s4'];
+let lit=0;
+function lightNext(){if(lit<4){document.getElementById(stars[lit]).classList.add('lit');lit++;}}
+setTimeout(()=>lightNext(),1500);
+setTimeout(()=>lightNext(),3000);
+
+function toggleRubric(){document.getElementById('rubric').classList.toggle('open');}
+
+function submitDone(){
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='Sending…';
+  lightNext();lightNext();
+  const dateStr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  fetch('https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({type:'weekend_session',child:'IL',date:dateStr,week:1,day:'Saturday',session_type:'comprehension',passage_title:'The Lion and the Mouse',questions_count:4,points_earned:8})
+  }).catch(()=>{});
+  setTimeout(()=>{
+    btn.textContent='Logged ✓ ⭐';btn.classList.add('sent');
+    const rc=document.getElementById('result-card');rc.classList.add('show');rc.scrollIntoView({behavior:'smooth'});
+  },1200);
+}
+</script>
+</body>
+</html>
