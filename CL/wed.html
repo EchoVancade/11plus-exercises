@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>🎯 CL Mission — Wednesday</title>
+  <style>
+    :root{--navy:#0f172a;--navy2:#1e293b;--card:#1a2744;--amber:#f59e0b;--amberlt:#fcd34d;--amberdim:#92400e;--text:#e2e8f0;--dim:#94a3b8;--border:#2d3f5e;--green:#10b981;--red:#ef4444}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--navy);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;-webkit-text-size-adjust:100%;padding-bottom:40px}
+    header{background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:3px solid var(--amber);padding:18px 16px 14px;position:sticky;top:0;z-index:100}
+    .htitle{font-size:21px;font-weight:800;color:var(--amber)}
+    .hsub{font-size:13px;color:var(--dim);margin-top:2px}
+    .pbar-wrap{background:#334155;border-radius:4px;height:6px;margin-top:10px}
+    .pbar{background:var(--amber);height:100%;border-radius:4px;transition:width .4s;width:0%}
+    main{padding:14px;max-width:640px;margin:0 auto}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+    .badge{display:inline-block;background:var(--amberdim);color:var(--amberlt);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+    .sec-title{font-size:17px;font-weight:700;color:var(--amber);margin-bottom:14px}
+    .q{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .qlabel{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:10px}
+    .star .qlabel::before{content:'⭐ '}
+    .opts{display:flex;flex-direction:column;gap:7px}
+    .opt{display:flex;align-items:center;gap:10px;background:#0f172a;border:1.5px solid #334155;border-radius:8px;padding:10px 14px;font-size:15px;cursor:pointer}
+    .opt:has(input:checked){border-color:var(--amber);background:#1a1a00}
+    input[type=radio]{accent-color:var(--amber);width:18px;height:18px;flex-shrink:0}
+    input[type=text]{background:#0f172a;border:1.5px solid #334155;border-radius:8px;color:var(--text);font-size:16px;padding:10px 14px;width:100%}
+    input[type=text]:focus{border-color:var(--amber);outline:none}
+    textarea{background:#0f172a;border:1.5px solid #334155;border-radius:8px;color:var(--text);font-size:15px;padding:10px 14px;width:100%;min-height:70px;resize:vertical}
+    textarea:focus{border-color:var(--amber);outline:none}
+    .dict-word{font-size:26px;font-weight:800;color:var(--amber);margin-bottom:2px}
+    .dict-hint{font-size:13px;color:var(--dim);font-style:italic;margin-bottom:12px}
+    .flabel{font-size:13px;color:var(--dim);margin-bottom:5px;margin-top:10px;display:block}
+    .sub-area{padding:14px;max-width:640px;margin:0 auto}
+    .sub-btn{width:100%;background:var(--amber);color:var(--navy);border:none;border-radius:12px;font-size:17px;font-weight:800;padding:16px;cursor:pointer}
+    #result{display:none;text-align:center;padding:28px 16px;max-width:640px;margin:0 auto}
+    .big-score{font-size:64px;font-weight:900;color:var(--amber)}
+    .score-label{font-size:17px;color:var(--dim);margin-top:4px}
+    .breakdown{background:var(--card);border-radius:12px;padding:16px;margin-top:18px;text-align:left}
+    .brow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
+    .brow:last-child{border-bottom:none}
+    .pts-box{background:var(--amberdim);border-radius:10px;padding:12px 16px;margin-top:14px;text-align:center}
+    .pts-num{font-size:32px;font-weight:800;color:var(--amberlt)}
+    .pts-lbl{font-size:13px;color:var(--amberlt)}
+    .sending{color:var(--dim);font-size:14px;margin-top:12px}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="htitle">🎯 CL Mission — Wednesday</div>
+  <div class="hsub">Week 1 · 5 May 2026 · 13 questions</div>
+  <div class="pbar-wrap"><div class="pbar" id="pbar"></div></div>
+</header>
+
+<main id="exercise">
+
+<!-- SECTION 1: VOCAB -->
+<div class="card">
+  <div class="badge">Section 1</div>
+  <div class="sec-title">⚡ Vocab Warm-Up</div>
+
+  <div class="q" id="q1">
+    <div class="qlabel">1. Which spelling is correct for "how tall something is"?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q1" value="hight"> hight</label>
+      <label class="opt"><input type="radio" name="q1" value="height"> height</label>
+      <label class="opt"><input type="radio" name="q1" value="heigth"> heigth</label>
+      <label class="opt"><input type="radio" name="q1" value="higth"> higth</label>
+    </div>
+  </div>
+
+  <div class="q" id="q2">
+    <div class="qlabel">2. Fill in the ie/ei gap: "She rec___ves the prize."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q2" value="recives"> recives (i only)</label>
+      <label class="opt"><input type="radio" name="q2" value="receives"> receives (ei)</label>
+      <label class="opt"><input type="radio" name="q2" value="recieves"> recieves (ie)</label>
+      <label class="opt"><input type="radio" name="q2" value="receavs"> receavs (ea)</label>
+    </div>
+  </div>
+
+  <div class="q" id="q3">
+    <div class="qlabel">3. Choose the best word: "The balloon ___ up into the sky."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q3" value="flowted"> flowted</label>
+      <label class="opt"><input type="radio" name="q3" value="floated"> floated</label>
+      <label class="opt"><input type="radio" name="q3" value="floted"> floted</label>
+      <label class="opt"><input type="radio" name="q3" value="floted2"> flooted</label>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: ENGLISH — SPELLING FOCUS -->
+<div class="card">
+  <div class="badge">Section 2</div>
+  <div class="sec-title">📖 English — Spelling Focus</div>
+
+  <div class="q" id="q4">
+    <div class="qlabel">4. Choose the correct spelling: "I bel___ve you."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q4" value="beleive"> beleive</label>
+      <label class="opt"><input type="radio" name="q4" value="believe"> believe</label>
+      <label class="opt"><input type="radio" name="q4" value="beleve"> beleve</label>
+      <label class="opt"><input type="radio" name="q4" value="beleeve"> beleeve</label>
+    </div>
+  </div>
+
+  <div class="q" id="q5">
+    <div class="qlabel">5. Which word contains the <strong>'ai' vowel pattern</strong>?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q5" value="pen"> pen</label>
+      <label class="opt"><input type="radio" name="q5" value="pin"> pin</label>
+      <label class="opt"><input type="radio" name="q5" value="pain"> pain</label>
+      <label class="opt"><input type="radio" name="q5" value="pun"> pun</label>
+    </div>
+  </div>
+
+  <div class="q" id="q6">
+    <div class="qlabel">6. Which word contains the <strong>'ea' vowel pattern</strong> meaning a type of food?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q6" value="bred"> bred</label>
+      <label class="opt"><input type="radio" name="q6" value="bread"> bread</label>
+      <label class="opt"><input type="radio" name="q6" value="brid"> brid</label>
+      <label class="opt"><input type="radio" name="q6" value="breed"> breed</label>
+    </div>
+  </div>
+
+  <div class="q" id="q7">
+    <div class="qlabel">7. Correct the spelling in this sentence: "The frend came to visit." What is the correct spelling?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q7" value="frend"> frend (keep it)</label>
+      <label class="opt"><input type="radio" name="q7" value="friend"> friend</label>
+      <label class="opt"><input type="radio" name="q7" value="freind"> freind</label>
+      <label class="opt"><input type="radio" name="q7" value="friand"> friand</label>
+    </div>
+  </div>
+
+  <div class="q" id="q8">
+    <div class="qlabel">8. Fill in the gap: "Neither she nor he ___ finished yet."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q8" value="have"> have</label>
+      <label class="opt"><input type="radio" name="q8" value="has"> has</label>
+      <label class="opt"><input type="radio" name="q8" value="had"> had</label>
+      <label class="opt"><input type="radio" name="q8" value="having"> having</label>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: MATHS -->
+<div class="card">
+  <div class="badge">Section 3</div>
+  <div class="sec-title">🔢 Maths</div>
+
+  <div class="q" id="q9">
+    <div class="qlabel">9. Find 15% of 200.</div>
+    <input type="text" id="q9t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q" id="q10">
+    <div class="qlabel">10. Work out: −8 + 3</div>
+    <input type="text" id="q10t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q" id="q11">
+    <div class="qlabel">11. Write <sup>1</sup>/<sub>4</sub> as a decimal.</div>
+    <input type="text" id="q11t" placeholder="Your answer..." inputmode="decimal">
+  </div>
+
+  <div class="q" id="q12">
+    <div class="qlabel">12. Share 20 sweets in the ratio 3 : 2. How many sweets are in the <em>larger</em> share?</div>
+    <input type="text" id="q12t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q star" id="q13">
+    <div class="qlabel">13. A book costs £12. The price goes up by 25%. What is the new price?</div>
+    <input type="text" id="q13t" placeholder="£..." inputmode="decimal">
+  </div>
+</div>
+
+<!-- SECTION 4: DICTIONARY -->
+<div class="card">
+  <div class="badge">Section 4</div>
+  <div class="sec-title">📚 Dictionary Builder</div>
+  <div class="dict-word">perseverance</div>
+  <div class="dict-hint">Today's word — word #3 in your list</div>
+  <span class="flabel">Look up "perseverance". Write down what it means:</span>
+  <textarea id="dict-def" placeholder="Definition..."></textarea>
+  <span class="flabel">Write your own sentence using "perseverance":</span>
+  <textarea id="dict-sent" placeholder="My sentence..."></textarea>
+</div>
+
+</main>
+
+<div class="sub-area">
+  <button class="sub-btn" onclick="submitAll()">🚀 Submit Mission Report</button>
+</div>
+
+<div id="result">
+  <div class="big-score" id="rscore"></div>
+  <div class="score-label">Questions correct</div>
+  <div class="breakdown" id="rbreakdown"></div>
+  <div class="pts-box">
+    <div class="pts-num" id="rpts"></div>
+    <div class="pts-lbl">points earned today</div>
+  </div>
+  <div class="sending" id="rstatus">Sending results...</div>
+</div>
+
+<script>
+const WEBHOOK = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const ANSWERS = {
+  q1:  { correct:'height',   tax:'E1.1', topic:'Spelling — vowel patterns', section:'Vocab', hashtags:'#spelling #vowelpatterns' },
+  q2:  { correct:'receives', tax:'E1.2', topic:'ie/ei rule', section:'Vocab', hashtags:'#spelling #ieei' },
+  q3:  { correct:'floated',  tax:'E4.3', topic:'Motion verbs', section:'Vocab', hashtags:'#vocabulary #motionverbs' },
+  q4:  { correct:'believe',  tax:'E1.2', topic:'ie/ei rule', section:'English', hashtags:'#spelling #ieei' },
+  q5:  { correct:'pain',     tax:'E1.1', topic:'Vowel digraphs — ai', section:'English', hashtags:'#spelling #vowelpatterns' },
+  q6:  { correct:'bread',    tax:'E1.1', topic:'Vowel digraphs — ea', section:'English', hashtags:'#spelling #vowelpatterns' },
+  q7:  { correct:'friend',   tax:'E1.7', topic:'High-frequency tricky words', section:'English', hashtags:'#spelling #vocabulary' },
+  q8:  { correct:'has',      tax:'E2.4', topic:'Neither/nor subject-verb agreement', section:'English', hashtags:'#grammar #subjectverb' },
+  q9:  { correct:['30'],     tax:'M2.7', topic:'Find a percentage of a quantity', section:'Maths', hashtags:'#percentages', star:false },
+  q10: { correct:['-5','-5'],tax:'M1.8', topic:'Negative number operations', section:'Maths', hashtags:'#negatives', star:false },
+  q11: { correct:['0.25'],   tax:'M2.5', topic:'Fraction to decimal', section:'Maths', hashtags:'#fractions #decimals', star:false },
+  q12: { correct:['12'],     tax:'M3.3', topic:'Ratio word problems', section:'Maths', hashtags:'#ratio #wordedproblems', star:false },
+  q13: { correct:['15','£15','15.00','£15.00'], tax:'M2.8', topic:'Percentage increase', section:'Maths', hashtags:'#percentages', star:true }
+};
+
+function getRadio(name){ const s=document.querySelector(`input[name="${name}"]:checked`); return s?s.value:''; }
+function getText(id){ const e=document.getElementById(id); return e?e.value.trim().toLowerCase().replace(/^£/,''):''; }
+function checkQ(key){
+  const m=ANSWERS[key];
+  if(Array.isArray(m.correct)){ const v=getText(key+'t'); return m.correct.map(c=>c.toLowerCase().replace(/^£/,'')).includes(v); }
+  return getRadio(key)===m.correct;
+}
+setInterval(()=>{
+  const done=Object.keys(ANSWERS).filter(k=>Array.isArray(ANSWERS[k].correct)?getText(k+'t')!=='':getRadio(k)!=='').length;
+  document.getElementById('pbar').style.width=(done/13*100)+'%';
+},600);
+
+function submitAll(){
+  let vocabC=0,engC=0,mathC=0,totalC=0; const qArr=[];
+  Object.keys(ANSWERS).forEach((key,i)=>{
+    const m=ANSWERS[key],c=checkQ(key);
+    if(c)totalC++;
+    if(m.section==='Vocab')vocabC+=c?1:0;
+    if(m.section==='English')engC+=c?1:0;
+    if(m.section==='Maths')mathC+=c?1:0;
+    qArr.push({q_number:i+1,question_id:key,section:m.section,topic:m.topic,taxonomy_code:m.tax,hashtags:m.hashtags,correct:c});
+  });
+  const starC=checkQ('q13');
+  const dictF=document.getElementById('dict-sent').value.trim().length>3;
+  const pts=5+(starC?3:0)+(dictF?2:0);
+  const pct=Math.round(totalC/13*100);
+  const msg=pct>=80?'🔥 Excellent work, agent!':pct>=60?'💪 Good effort today!':'📚 Keep training hard!';
+  const payload={type:'exercise_result',child:'CL',date:'2026-05-05',week:1,day:'Wednesday',exercise_type:'Weekday 15-min',subject_focus:'Mixed',total_correct:totalC,total_questions:13,points_earned:pts,score_summary:`Vocab:${vocabC}/3 · English:${engC}/5 · Maths:${mathC}/5`,weaknesses_addressed:'#spelling #ieei #vowelpatterns #percentages #negatives #fractions #ratio',dict_word:'perseverance',dict_saved:dictF,questions:qArr};
+  document.getElementById('exercise').style.display='none';
+  document.querySelector('.sub-area').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('rscore').textContent=totalC+'/13';
+  let bhtml=`<div class="brow"><span>Vocab Warm-Up</span><span>${vocabC}/3</span></div><div class="brow"><span>English</span><span>${engC}/5</span></div><div class="brow"><span>Maths</span><span>${mathC}/5</span></div><div class="brow"><span>⭐ Star Question</span><span>${starC?'✅ Correct!':'❌ Keep trying'}</span></div><div class="brow" style="font-style:italic;color:#94a3b8"><span>${msg}</span></div>`;
+  qArr.forEach(q=>{bhtml+=`<div class="brow" style="font-size:13px"><span>${q.correct?'✅':'❌'} Q${q.q_number}: ${q.topic}</span></div>`;});
+  document.getElementById('rbreakdown').innerHTML=bhtml;
+  document.getElementById('rpts').textContent='+'+pts+' pts';
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(()=>{ if(dictF) return fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'dictionary_entry',child:'CL',date:'2026-05-05',week:1,word:'perseverance',word_position:3,definition:document.getElementById('dict-def').value.trim(),sentence:document.getElementById('dict-sent').value.trim()})}); })
+    .then(()=>{document.getElementById('rstatus').textContent='✅ Results sent!';})
+    .catch(()=>{document.getElementById('rstatus').textContent='⚠️ Could not send — ask a parent to check connection.';});
+}
+</script>
+</body>
+</html>
