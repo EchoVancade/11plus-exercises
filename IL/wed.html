@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>⭐ IL Star Academy — Wednesday</title>
+  <style>
+    :root{--bg:#fdf6ff;--card:#f3e8ff;--purple:#7c3aed;--purpdim:#ede9fe;--text:#1e1b4b;--dim:#6b7280;--border:#c4b5fd;--gold:#f59e0b}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;-webkit-text-size-adjust:100%;padding-bottom:40px}
+    header{background:linear-gradient(135deg,#7c3aed,#9333ea);padding:18px 16px 14px;position:sticky;top:0;z-index:100}
+    .htitle{font-size:21px;font-weight:800;color:#fff}
+    .hsub{font-size:13px;color:#ddd6fe;margin-top:2px}
+    .stars-row{display:flex;gap:4px;margin-top:10px}
+    .star-dot{width:18px;height:18px;border-radius:50%;background:#4c1d95;font-size:12px;display:flex;align-items:center;justify-content:center;color:#4c1d95;transition:background .4s}
+    .star-dot.lit{background:var(--gold);color:var(--gold)}
+    main{padding:14px;max-width:640px;margin:0 auto}
+    .card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px}
+    .badge{display:inline-block;background:var(--purple);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+    .sec-title{font-size:17px;font-weight:700;color:var(--purple);margin-bottom:14px}
+    .q{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .qlabel{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:10px}
+    .star .qlabel::before{content:'⭐ '}
+    .opts{display:flex;flex-direction:column;gap:8px}
+    .opt{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
+    .opt:has(input:checked){border-color:var(--purple);background:var(--purpdim)}
+    input[type=radio]{accent-color:var(--purple);width:18px;height:18px;flex-shrink:0}
+    input[type=text]{background:#fff;border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:16px;padding:10px 14px;width:100%}
+    input[type=text]:focus{border-color:var(--purple);outline:none}
+    textarea{background:#fff;border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;padding:10px 14px;width:100%;min-height:70px;resize:vertical}
+    textarea:focus{border-color:var(--purple);outline:none}
+    .dict-word{font-size:26px;font-weight:800;color:var(--purple);margin-bottom:2px}
+    .dict-hint{font-size:13px;color:var(--dim);font-style:italic;margin-bottom:12px}
+    .flabel{font-size:13px;color:var(--dim);margin-bottom:5px;margin-top:10px;display:block}
+    .sub-area{padding:14px;max-width:640px;margin:0 auto}
+    .sub-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:800;padding:16px;cursor:pointer}
+    #result{display:none;text-align:center;padding:28px 16px;max-width:640px;margin:0 auto}
+    .big-score{font-size:64px;font-weight:900;color:var(--purple)}
+    .score-label{font-size:17px;color:var(--dim);margin-top:4px}
+    .star-result{font-size:40px;margin-top:14px;letter-spacing:4px}
+    .breakdown{background:var(--card);border-radius:12px;padding:16px;margin-top:18px;text-align:left}
+    .brow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
+    .brow:last-child{border-bottom:none}
+    .pts-box{background:var(--purple);border-radius:10px;padding:12px 16px;margin-top:14px;text-align:center}
+    .pts-num{font-size:32px;font-weight:800;color:#fcd34d}
+    .pts-lbl{font-size:13px;color:#ddd6fe}
+    .sending{color:var(--dim);font-size:14px;margin-top:12px}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="htitle">⭐ Star Academy — Wednesday</div>
+  <div class="hsub">Week 1 · 5 May 2026 · 10 questions</div>
+  <div class="stars-row" id="stars">
+    <div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div>
+    <div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div>
+  </div>
+</header>
+
+<main id="exercise">
+
+<!-- SECTION 1: MATHS -->
+<div class="card">
+  <div class="badge">Section 1</div>
+  <div class="sec-title">🔢 Number Maths</div>
+
+  <div class="q" id="q1">
+    <div class="qlabel">1. What is 43 + 29?</div>
+    <input type="text" id="q1t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q" id="q2">
+    <div class="qlabel">2. What is 61 − 27?</div>
+    <input type="text" id="q2t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q" id="q3">
+    <div class="qlabel">3. What is 4 × 9?</div>
+    <input type="text" id="q3t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+
+  <div class="q" id="q4">
+    <div class="qlabel">4. What is the <strong>tens digit</strong> in the number 385?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q4" value="3"> 3</label>
+      <label class="opt"><input type="radio" name="q4" value="8"> 8</label>
+      <label class="opt"><input type="radio" name="q4" value="5"> 5</label>
+      <label class="opt"><input type="radio" name="q4" value="38"> 38</label>
+    </div>
+  </div>
+
+  <div class="q star" id="q5">
+    <div class="qlabel">5. Sam had 52 stickers. She gave 17 to her friend. How many stickers did Sam have left?</div>
+    <input type="text" id="q5t" placeholder="Your answer..." inputmode="numeric">
+  </div>
+</div>
+
+<!-- SECTION 2: ENGLISH -->
+<div class="card">
+  <div class="badge">Section 2</div>
+  <div class="sec-title">📖 Words &amp; Sentences</div>
+
+  <div class="q" id="q6">
+    <div class="qlabel">6. Which sentence has the correct capital letter at the start?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q6" value="a"> the sun is bright.</label>
+      <label class="opt"><input type="radio" name="q6" value="b"> The sun is bright.</label>
+      <label class="opt"><input type="radio" name="q6" value="c"> the Sun is bright.</label>
+      <label class="opt"><input type="radio" name="q6" value="d"> The Sun Is Bright.</label>
+    </div>
+  </div>
+
+  <div class="q" id="q7">
+    <div class="qlabel">7. Which word means feeling worried or nervous?</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q7" value="happy"> happy</label>
+      <label class="opt"><input type="radio" name="q7" value="worried"> worried</label>
+      <label class="opt"><input type="radio" name="q7" value="excited"> excited</label>
+      <label class="opt"><input type="radio" name="q7" value="sleepy"> sleepy</label>
+    </div>
+  </div>
+
+  <div class="q" id="q8">
+    <div class="qlabel">8. Choose the best <strong>describing word</strong> to fill the gap:<br>"The ___ kitten played with the yarn."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q8" value="ran"> ran</label>
+      <label class="opt"><input type="radio" name="q8" value="fluffy"> fluffy</label>
+      <label class="opt"><input type="radio" name="q8" value="meowed"> meowed</label>
+      <label class="opt"><input type="radio" name="q8" value="slept"> slept</label>
+    </div>
+  </div>
+
+  <div class="q" id="q9">
+    <div class="qlabel">9. Find the <strong>doing word</strong> in this sentence:<br>"The children laughed at the funny clown."</div>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q9" value="children"> children</label>
+      <label class="opt"><input type="radio" name="q9" value="laughed"> laughed</label>
+      <label class="opt"><input type="radio" name="q9" value="funny"> funny</label>
+      <label class="opt"><input type="radio" name="q9" value="clown"> clown</label>
+    </div>
+  </div>
+
+  <div class="q star" id="q10">
+    <div class="qlabel">10. Write a sentence about something that is <strong>gentle</strong>. Remember your capital letter and full stop!</div>
+    <textarea id="q10t" placeholder="My sentence..."></textarea>
+  </div>
+</div>
+
+<!-- SECTION 3: DICTIONARY -->
+<div class="card">
+  <div class="badge">Section 3</div>
+  <div class="sec-title">📚 Word of the Day</div>
+  <div class="dict-word">gentle</div>
+  <div class="dict-hint">Today's word — word #3 ⭐</div>
+  <span class="flabel">What does "gentle" mean? Write it in your own words:</span>
+  <textarea id="dict-def" placeholder="It means..."></textarea>
+  <span class="flabel">Write a sentence using "gentle":</span>
+  <textarea id="dict-sent" placeholder="My sentence..."></textarea>
+</div>
+
+</main>
+
+<div class="sub-area">
+  <button class="sub-btn" onclick="submitAll()">⭐ Submit My Stars!</button>
+</div>
+
+<div id="result">
+  <div class="big-score" id="rscore"></div>
+  <div class="score-label">Questions correct</div>
+  <div class="star-result" id="rstarrow"></div>
+  <div class="breakdown" id="rbreakdown"></div>
+  <div class="pts-box">
+    <div class="pts-num" id="rpts"></div>
+    <div class="pts-lbl">points earned today ⭐</div>
+  </div>
+  <div class="sending" id="rstatus">Sending your stars...</div>
+</div>
+
+<script>
+const WEBHOOK = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const ANSWERS = {
+  q1:  { correct:['72'],   tax:'M1.1', topic:'Addition — 2-digit', section:'Maths', hashtags:'#arithmetic #addition', star:false },
+  q2:  { correct:['34'],   tax:'M1.2', topic:'Subtraction — 2-digit', section:'Maths', hashtags:'#arithmetic #subtraction', star:false },
+  q3:  { correct:['36'],   tax:'M1.3', topic:'Multiplication — times tables', section:'Maths', hashtags:'#multiplication #timestables', star:false },
+  q4:  { correct:'8',      tax:'M1.1', topic:'Place value — tens digit', section:'Maths', hashtags:'#placevalue', star:false },
+  q5:  { correct:['35'],   tax:'M1.2', topic:'Subtraction — word problem', section:'Maths', hashtags:'#subtraction #wordedproblems', star:true },
+  q6:  { correct:'b',      tax:'E3.1', topic:'Capital letters', section:'English', hashtags:'#punctuation #capitals', star:false },
+  q7:  { correct:'worried',tax:'E4.4', topic:'Emotion and state words', section:'English', hashtags:'#vocabulary', star:false },
+  q8:  { correct:'fluffy', tax:'E2.7', topic:'Describing words', section:'English', hashtags:'#grammar #adjectives', star:false },
+  q9:  { correct:'laughed',tax:'E2.8', topic:'Doing words', section:'English', hashtags:'#grammar', star:false },
+  q10: { correct:'FREE',   tax:'E2.9', topic:'Sentence writing', section:'English', hashtags:'#grammar #sentencestructure', star:true }
+};
+function getRadio(n){ const s=document.querySelector(`input[name="${n}"]:checked`); return s?s.value:''; }
+function getText(id){ const e=document.getElementById(id); return e?e.value.trim().toLowerCase():''; }
+function checkQ(k){ const m=ANSWERS[k]; if(m.correct==='FREE') return document.getElementById(k+'t').value.trim().length>3; if(Array.isArray(m.correct)) return m.correct.includes(getText(k+'t')); return getRadio(k)===m.correct; }
+setInterval(()=>{ const dots=document.querySelectorAll('.star-dot'); const d=Object.keys(ANSWERS).filter(k=>{ const m=ANSWERS[k]; if(m.correct==='FREE') return document.getElementById(k+'t')&&document.getElementById(k+'t').value.trim().length>0; if(Array.isArray(m.correct)) return getText(k+'t')!==''; return getRadio(k)!==''; }).length; dots.forEach((dot,i)=>dot.classList.toggle('lit',i<d)); },600);
+function submitAll(){
+  let mC=0,eC=0,tC=0; const qa=[];
+  Object.keys(ANSWERS).forEach((k,i)=>{ const m=ANSWERS[k],c=checkQ(k); if(c)tC++; if(m.section==='Maths')mC+=c?1:0; if(m.section==='English')eC+=c?1:0; qa.push({q_number:i+1,question_id:k,section:m.section,topic:m.topic,taxonomy_code:m.tax,hashtags:m.hashtags,correct:c}); });
+  const sC=checkQ('q5')||checkQ('q10'), dF=document.getElementById('dict-sent').value.trim().length>3;
+  const pts=5+(sC?3:0)+(dF?2:0), stars='⭐'.repeat(Math.round(tC/10*5));
+  const msg=tC>=8?'🌟 Superstar!':tC>=6?'⭐ Great work!':'💜 Well done for trying!';
+  const payload={type:'exercise_result',child:'IL',date:'2026-05-05',week:1,day:'Wednesday',exercise_type:'Weekday 15-min',subject_focus:'Mixed',total_correct:tC,total_questions:10,points_earned:pts,score_summary:`Maths:${mC}/5 · English:${eC}/5`,weaknesses_addressed:'#arithmetic #placevalue #subtraction #capitals #vocabulary #grammar',dict_word:'gentle',dict_saved:dF,questions:qa};
+  document.getElementById('exercise').style.display='none';
+  document.querySelector('.sub-area').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('rscore').textContent=tC+'/10';
+  document.getElementById('rstarrow').textContent=stars;
+  let bh=`<div class="brow"><span>Maths</span><span>${mC}/5</span></div><div class="brow"><span>Words &amp; Sentences</span><span>${eC}/5</span></div><div class="brow" style="font-style:italic;color:#6b7280"><span>${msg}</span></div>`;
+  qa.forEach(q=>{bh+=`<div class="brow" style="font-size:13px"><span>${q.correct?'✅':'❌'} Q${q.q_number}: ${q.topic}</span></div>`;});
+  document.getElementById('rbreakdown').innerHTML=bh;
+  document.getElementById('rpts').textContent='+'+pts;
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(()=>{ if(dF) return fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'dictionary_entry',child:'IL',date:'2026-05-05',week:1,word:'gentle',word_position:3,definition:document.getElementById('dict-def').value.trim(),sentence:document.getElementById('dict-sent').value.trim()})}); })
+    .then(()=>{document.getElementById('rstatus').textContent='✅ Stars sent!';})
+    .catch(()=>{document.getElementById('rstatus').textContent='⚠️ Could not send — ask a parent to check.';});
+}
+</script>
+</body>
+</html>
