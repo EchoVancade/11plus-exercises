@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IL — Sunday Creative Writing</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#fdf6ff;color:#1e1b4b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
+
+  /* HEADER */
+  .hero{background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'🐉';position:absolute;top:12px;left:14px;font-size:26px;opacity:0.6}
+  .hero::after{content:'🔥';position:absolute;top:12px;right:14px;font-size:26px;opacity:0.6}
+  .day-badge{display:inline-block;background:#fbbf24;color:#1e1b4b;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:10px}
+  .hero h1{font-size:26px;font-weight:800;color:#fff;line-height:1.2}
+  .hero h1 span{color:#fbbf24}
+  .star-row{display:flex;justify-content:center;gap:10px;margin-top:14px}
+  .star-dot{width:28px;height:28px;border-radius:50%;background:#ffffff33;border:2px solid #ffffff55;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .4s}
+  .star-dot.lit{background:#fbbf24;border-color:#f59e0b;box-shadow:0 0 12px #fbbf2488}
+  .meta-row{display:flex;justify-content:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .meta-pill{background:#ffffff22;border:1px solid #ffffff33;border-radius:20px;padding:5px 14px;font-size:13px;color:#ede9fe}
+
+  /* TIMELINE */
+  .timeline{margin:20px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .tl-step{background:#fff;border:2px solid #c4b5fd;border-radius:12px;padding:12px 8px;text-align:center}
+  .tl-step .emoji{font-size:22px;margin-bottom:4px}
+  .tl-step .mins{font-size:20px;font-weight:800;color:#7c3aed}
+  .tl-step .mins span{font-size:11px;font-weight:400;color:#a78bfa}
+  .tl-step .label{font-size:11px;color:#8b5cf6;margin-top:3px;text-transform:uppercase;letter-spacing:1px}
+
+  /* PROMPT CARD */
+  .section-hdr{margin:24px 16px 10px;display:flex;align-items:center;gap:10px}
+  .section-hdr .icon{font-size:20px}
+  .section-hdr h2{font-size:16px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px}
+
+  .prompt-card{margin:0 16px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:16px;padding:22px 20px;text-align:center}
+  .prompt-emoji{font-size:50px;margin-bottom:10px}
+  .prompt-text{font-size:20px;font-weight:700;color:#fff;line-height:1.4;font-style:italic;margin-bottom:12px}
+  .prompt-note{font-size:14px;color:#c4b5fd;line-height:1.5}
+
+  /* STEP CARDS */
+  .step-card{margin:12px 16px;background:#fff;border:2px solid #c4b5fd;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px #7c3aed0d}
+  .step-header{background:#ede9fe;padding:12px 16px;display:flex;align-items:center;gap:10px}
+  .step-num{background:#7c3aed;color:#fff;font-weight:800;font-size:13px;min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step-header h3{font-size:15px;font-weight:700;color:#4c1d95}
+  .step-header .time{margin-left:auto;font-size:12px;color:#7c3aed;font-weight:700;background:#fff;padding:3px 10px;border-radius:10px;border:1px solid #c4b5fd}
+  .step-body{padding:16px}
+  .step-body p{font-size:14px;color:#6d28d9;line-height:1.6;margin-bottom:10px}
+  .step-body p:last-child{margin-bottom:0}
+
+  /* DRAW BOX */
+  .draw-box{background:#fdf6ff;border:3px dashed #c4b5fd;border-radius:12px;padding:20px;text-align:center;margin:10px 0}
+  .draw-box .draw-emoji{font-size:36px;margin-bottom:8px}
+  .draw-box .draw-label{font-size:14px;color:#8b5cf6;font-weight:600;margin-bottom:4px}
+  .draw-box .draw-tip{font-size:12px;color:#a78bfa}
+
+  /* SENTENCE STARTERS */
+  .starters{margin:8px 0;display:flex;flex-direction:column;gap:10px}
+  .starter-row{background:#fdf6ff;border:1px solid #c4b5fd;border-radius:10px;padding:12px 14px}
+  .starter-num{font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+  .starter-num .star{color:#fbbf24}
+  .starter-text{font-size:16px;color:#1e1b4b;font-weight:600;line-height:1.4}
+  .starter-space{font-size:13px;color:#a78bfa;font-style:italic;margin-top:4px}
+
+  /* DESCRIBING WORD BOOST */
+  .describe-box{background:#fef3c7;border:2px solid #fbbf24;border-radius:12px;padding:14px 16px;margin:10px 0}
+  .describe-box h4{font-size:13px;font-weight:700;color:#d97706;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .describe-box p{font-size:14px;color:#92400e;line-height:1.5}
+  .describe-examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .describe-word{background:#fff;border:1px solid #fbbf24;border-radius:8px;padding:4px 10px;font-size:13px;color:#d97706;font-style:italic}
+
+  /* STAR REWARD */
+  .star-reward{margin:10px 0;padding:12px;background:#f5f0ff;border-radius:10px}
+  .star-reward p{font-size:14px;color:#6d28d9;text-align:center}
+  .star-icons{display:flex;justify-content:center;gap:8px;margin-top:8px;font-size:22px}
+
+  /* RUBRIC */
+  .rubric-toggle{display:block;margin:20px 16px 0;background:#ede9fe;border:1px solid #c4b5fd;border-radius:10px;padding:12px 16px;font-size:13px;color:#7c3aed;cursor:pointer;text-align:left;width:calc(100% - 32px)}
+  .rubric-panel{display:none;margin:0 16px;background:#ede9fe;border:1px solid #c4b5fd;border-radius:0 0 10px 10px;padding:16px;font-size:13px;line-height:1.6;color:#4c1d95}
+  .rubric-panel.open{display:block}
+  .rubric-panel h4{color:#7c3aed;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin:10px 0 4px}
+  .rubric-panel h4:first-child{margin-top:0}
+  .rubric-panel ul{padding-left:16px}
+  .rubric-panel li{margin-bottom:4px}
+
+  /* SUBMIT */
+  .submit-area{margin:28px 16px 0;text-align:center}
+  .submit-btn{background:#7c3aed;color:#fff;font-size:18px;font-weight:800;border:none;border-radius:16px;padding:18px 40px;cursor:pointer;width:100%;max-width:400px;-webkit-tap-highlight-color:transparent}
+  .submit-btn:active{background:#5b21b6}
+  .submit-btn.sent{background:#22c55e}
+  .result-card{display:none;margin:20px 16px;background:#fff;border:3px solid #fbbf24;border-radius:16px;padding:24px;text-align:center;box-shadow:0 4px 20px #fbbf2433}
+  .result-card.show{display:block}
+  .result-card .big-icon{font-size:52px;margin-bottom:10px}
+  .result-card h2{font-size:22px;font-weight:800;color:#7c3aed;margin-bottom:8px}
+  .result-card p{font-size:15px;color:#6d28d9;line-height:1.6;margin-bottom:6px}
+  .pts-earned{font-size:32px;font-weight:800;color:#fbbf24;margin:10px 0}
+  .scan-tip{background:#fdf6ff;border-radius:10px;padding:14px;margin-top:14px;font-size:14px;color:#8b5cf6;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hero">
+  <div class="day-badge">✍️ Sunday · Week 1</div>
+  <h1>Story <span>Writing</span> Time!</h1>
+  <div class="star-row">
+    <div class="star-dot" id="s1">⭐</div>
+    <div class="star-dot" id="s2">⭐</div>
+    <div class="star-dot" id="s3">⭐</div>
+    <div class="star-dot" id="s4">⭐</div>
+    <div class="star-dot" id="s5">⭐</div>
+  </div>
+  <div class="meta-row">
+    <div class="meta-pill" id="date-pill">Loading…</div>
+    <div class="meta-pill">⏱ 30 mins</div>
+    <div class="meta-pill">⭐ +8 pts</div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline">
+  <div class="tl-step">
+    <div class="emoji">🎨</div>
+    <div class="mins">5 <span>min</span></div>
+    <div class="label">Draw</div>
+  </div>
+  <div class="tl-step">
+    <div class="emoji">✍️</div>
+    <div class="mins">20 <span>min</span></div>
+    <div class="label">Write</div>
+  </div>
+  <div class="tl-step">
+    <div class="emoji">🌟</div>
+    <div class="mins">5 <span>min</span></div>
+    <div class="label">Improve</div>
+  </div>
+</div>
+
+<!-- PROMPT -->
+<div class="section-hdr"><div class="icon">🐉</div><h2>Your Story Today</h2></div>
+<div class="prompt-card">
+  <div class="prompt-emoji">🐉🔥</div>
+  <div class="prompt-text">A tiny dragon has lost its flame. Help it find it!</div>
+  <div class="prompt-note">You get to decide where the flame went, how the dragon feels, and how the story ends. It's your story!</div>
+</div>
+
+<!-- STEP 1: DRAW -->
+<div class="step-card">
+  <div class="step-header">
+    <div class="step-num">1</div>
+    <h3>Draw Your Dragon First!</h3>
+    <div class="time">5 min</div>
+  </div>
+  <div class="step-body">
+    <p>Before you write, draw your dragon on your paper. This helps you imagine the story!</p>
+    <div class="draw-box">
+      <div class="draw-emoji">🎨</div>
+      <div class="draw-label">Draw your dragon on your paper</div>
+      <div class="draw-tip">What colour is it? Is it tiny or huge? Does it look sad without its flame?</div>
+    </div>
+    <p style="font-size:13px;color:#a78bfa">Give your dragon a name! You'll use it in your sentences.</p>
+  </div>
+</div>
+
+<!-- STEP 2: WRITE -->
+<div class="step-card">
+  <div class="step-header">
+    <div class="step-num">2</div>
+    <h3>Write Your Story</h3>
+    <div class="time">20 min</div>
+  </div>
+  <div class="step-body">
+    <p>Use these sentence starters to help you. Finish each one on your paper — then keep writing if you want to!</p>
+    <div class="starters">
+      <div class="starter-row">
+        <div class="starter-num">Sentence 1 — Who</div>
+        <div class="starter-text">My dragon is called __________ and it lives __________</div>
+        <div class="starter-space">Finish the sentence. Tell us about your dragon!</div>
+      </div>
+      <div class="starter-row">
+        <div class="starter-num">Sentence 2 — The problem</div>
+        <div class="starter-text">One day, __________ woke up and its flame had gone because __________</div>
+        <div class="starter-space">Where did the flame go? Make up a reason!</div>
+      </div>
+      <div class="starter-row">
+        <div class="starter-num">Sentence 3 — The search</div>
+        <div class="starter-text">The dragon looked everywhere. It searched __________ and __________</div>
+        <div class="starter-space">Name two places the dragon looked!</div>
+      </div>
+      <div class="starter-row">
+        <div class="starter-num">Sentence 4 — The happy ending</div>
+        <div class="starter-text">At last, __________ found its flame! It felt __________</div>
+        <div class="starter-space">How did it end? How did the dragon feel?</div>
+      </div>
+      <div class="starter-row">
+        <div class="starter-num star">⭐ Bonus sentence — try this too!</div>
+        <div class="starter-text">Write one more sentence of your own. Tell us something surprising or exciting!</div>
+        <div class="starter-space">No starter this time — it's all yours!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: DESCRIBING WORDS -->
+<div class="step-card">
+  <div class="step-header">
+    <div class="step-num">3</div>
+    <h3>Add Describing Words!</h3>
+    <div class="time">5 min</div>
+  </div>
+  <div class="step-body">
+    <p>Read your sentences back. Can you add a <strong>describing word</strong> to make them more interesting?</p>
+    <div class="describe-box">
+      <h4>🌟 Describing words you could use:</h4>
+      <p>Try adding one of these to your sentences — or make up your own!</p>
+      <div class="describe-examples">
+        <div class="describe-word">tiny</div>
+        <div class="describe-word">fierce</div>
+        <div class="describe-word">sparkly</div>
+        <div class="describe-word">scared</div>
+        <div class="describe-word">golden</div>
+        <div class="describe-word">brave</div>
+        <div class="describe-word">enormous</div>
+        <div class="describe-word">magical</div>
+      </div>
+    </div>
+    <div class="star-reward">
+      <p>You earn a ⭐ for every sentence you finish — and an extra ⭐ for each describing word you add!</p>
+      <div class="star-icons">⭐⭐⭐⭐⭐</div>
+    </div>
+  </div>
+</div>
+
+<!-- RUBRIC -->
+<button class="rubric-toggle" onclick="toggleRubric()">🔍 Parent / Claude marking guide — tap to show</button>
+<div class="rubric-panel" id="rubric">
+  <h4>What to look for (age 7 appropriate)</h4>
+  <ul>
+    <li>4 sentences completed = full marks for structure</li>
+    <li>Bonus sentence attempted = +1 mark</li>
+    <li>Each describing word used correctly = +0.5 mark (up to +2)</li>
+    <li>Dragon named and given personality = great sign of creative engagement</li>
+    <li>Capital letters at sentence starts = basic standard for Y2/3</li>
+    <li>Full stops present = 1 mark</li>
+  </ul>
+  <h4>Feedback approach for IL</h4>
+  <ul>
+    <li>Name a specific word she used well: "I love the word 'sparkly' — perfect for a dragon!"</li>
+    <li>One gentle nudge only: "Next time, can you make the ending even more exciting?"</li>
+    <li>Celebrate the drawing too — it's part of the creative process</li>
+  </ul>
+  <h4>Points: 8 base + up to 4 bonus for quality + drawing</h4>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-area">
+  <button class="submit-btn" id="submit-btn" onclick="submitDone()">My story is done! ⭐ Tap here!</button>
+</div>
+
+<div class="result-card" id="result-card">
+  <div class="big-icon">🐉🌟</div>
+  <h2>WOW! Amazing story, IL!</h2>
+  <p>You wrote your very own dragon story! That is SO brilliant!</p>
+  <div class="pts-earned">+8 ⭐ pts!</div>
+  <div class="scan-tip">📸 Ask a parent to take a photo of your drawing AND your story. Send it to Claude — you might earn even more stars!</div>
+</div>
+
+<script>
+const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const now=new Date();
+document.getElementById('date-pill').textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+
+const stars=['s1','s2','s3','s4','s5'];
+let lit=0;
+function lightNext(){if(lit<5){document.getElementById(stars[lit]).classList.add('lit');lit++;}}
+setTimeout(()=>lightNext(),1000);
+setTimeout(()=>lightNext(),2500);
+setTimeout(()=>lightNext(),4000);
+
+function toggleRubric(){document.getElementById('rubric').classList.toggle('open');}
+
+function submitDone(){
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='Sending…';
+  stars.forEach(s=>document.getElementById(s).classList.add('lit'));
+  const dateStr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  fetch('https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({type:'weekend_session',child:'IL',date:dateStr,week:1,day:'Sunday',session_type:'creative_writing',prompt:'A tiny dragon has lost its flame',points_earned:8})
+  }).catch(()=>{});
+  setTimeout(()=>{
+    btn.textContent='Done! ⭐⭐⭐';btn.classList.add('sent');
+    const rc=document.getElementById('result-card');rc.classList.add('show');rc.scrollIntoView({behavior:'smooth'});
+  },1200);
+}
+</script>
+</body>
+</html>
