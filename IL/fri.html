@@ -1,219 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>⭐ IL Star Academy — Friday</title>
-  <style>
-    :root{--bg:#fdf6ff;--card:#f3e8ff;--purple:#7c3aed;--purpdim:#ede9fe;--text:#1e1b4b;--dim:#6b7280;--border:#c4b5fd;--gold:#f59e0b}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;-webkit-text-size-adjust:100%;padding-bottom:40px}
-    header{background:linear-gradient(135deg,#7c3aed,#9333ea);padding:18px 16px 14px;position:sticky;top:0;z-index:100}
-    .htitle{font-size:21px;font-weight:800;color:#fff}
-    .hsub{font-size:13px;color:#ddd6fe;margin-top:2px}
-    .stars-row{display:flex;gap:4px;margin-top:10px}
-    .star-dot{width:18px;height:18px;border-radius:50%;background:#4c1d95;font-size:12px;display:flex;align-items:center;justify-content:center;color:#4c1d95;transition:background .4s}
-    .star-dot.lit{background:var(--gold);color:var(--gold)}
-    main{padding:14px;max-width:640px;margin:0 auto}
-    .card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px}
-    .badge{display:inline-block;background:var(--purple);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:10px}
-    .sec-title{font-size:17px;font-weight:700;color:var(--purple);margin-bottom:14px}
-    .q{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-    .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-    .qlabel{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:10px}
-    .star .qlabel::before{content:'⭐ '}
-    .opts{display:flex;flex-direction:column;gap:8px}
-    .opt{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
-    .opt:has(input:checked){border-color:var(--purple);background:var(--purpdim)}
-    input[type=radio]{accent-color:var(--purple);width:18px;height:18px;flex-shrink:0}
-    input[type=text]{background:#fff;border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:16px;padding:10px 14px;width:100%}
-    input[type=text]:focus{border-color:var(--purple);outline:none}
-    textarea{background:#fff;border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;padding:10px 14px;width:100%;min-height:70px;resize:vertical}
-    textarea:focus{border-color:var(--purple);outline:none}
-    .dict-word{font-size:26px;font-weight:800;color:var(--purple);margin-bottom:2px}
-    .dict-hint{font-size:13px;color:var(--dim);font-style:italic;margin-bottom:12px}
-    .flabel{font-size:13px;color:var(--dim);margin-bottom:5px;margin-top:10px;display:block}
-    .sub-area{padding:14px;max-width:640px;margin:0 auto}
-    .sub-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:800;padding:16px;cursor:pointer}
-    #result{display:none;text-align:center;padding:28px 16px;max-width:640px;margin:0 auto}
-    .big-score{font-size:64px;font-weight:900;color:var(--purple)}
-    .score-label{font-size:17px;color:var(--dim);margin-top:4px}
-    .star-result{font-size:40px;margin-top:14px;letter-spacing:4px}
-    .breakdown{background:var(--card);border-radius:12px;padding:16px;margin-top:18px;text-align:left}
-    .brow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
-    .brow:last-child{border-bottom:none}
-    .pts-box{background:var(--purple);border-radius:10px;padding:12px 16px;margin-top:14px;text-align:center}
-    .pts-num{font-size:32px;font-weight:800;color:#fcd34d}
-    .pts-lbl{font-size:13px;color:#ddd6fe}
-    .sending{color:var(--dim);font-size:14px;margin-top:12px}
-    .end-banner{background:linear-gradient(135deg,#7c3aed,#4c1d95);border-radius:12px;padding:16px;margin-top:14px;text-align:center;font-size:15px;color:#fff;font-weight:700}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>IL — Friday Week 19</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height:100vh;padding-bottom:2rem}
+.header{background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;padding:1rem 1.25rem 0.875rem;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header h1{font-size:1.1rem;font-weight:800;margin-bottom:0.25rem}
+.pts-bar{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.pts-num{font-size:1.5rem;font-weight:800}
+.pts-sub{font-size:0.8rem;opacity:.9}
+.milestone-track{height:6px;background:rgba(255,255,255,.3);border-radius:3px;flex:1;min-width:80px;margin:0 0.25rem}
+.milestone-fill{height:100%;background:#fff;border-radius:3px;transition:width .5s}
+.rules{margin:1rem;background:#fff;border-left:4px solid #FF6B35;border-radius:0 10px 10px 0;padding:0.875rem 1rem;display:flex;flex-direction:column;gap:0.5rem}
+.rule-item{font-size:0.85rem;color:#444;line-height:1.5}
+.rule-item strong{color:#E85D04}
+.section{margin:1rem;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.section-header{padding:0.75rem 1rem;font-weight:800;font-size:0.9rem;letter-spacing:0.03em;color:#fff}
+.sh-vocab{background:#7B2D8B}
+.sh-english{background:#0077B6}
+.sh-maths{background:#2D9E2D}
+.sh-dict{background:#C77800}
+.sh-comp{background:#0077B6}
+.sh-cw{background:#7B2D8B}
+.question{padding:0.875rem 1rem;border-bottom:1px solid #F5F0EB}
+.question:last-child{border-bottom:none}
+.q-text{font-size:0.95rem;font-weight:700;line-height:1.5;margin-bottom:0.625rem}
+.q-star{color:#FF6B35;font-size:0.85rem;margin-left:4px}
+.options{display:flex;flex-direction:column;gap:0.375rem}
+.opt{display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.75rem;border-radius:10px;border:2px solid #E8E0D8;background:#FAFAF8;cursor:pointer;font-size:0.9rem;font-weight:600;min-height:44px;transition:all .15s}
+.opt:active{background:#F0EBE3}
+.opt input{position:absolute;opacity:0;width:0}
+.opt-letter{width:22px;height:22px;border-radius:50%;border:2px solid #C0B8B0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;flex-shrink:0;color:#888;transition:all .15s}
+.opt.selected{border-color:#FF6B35;background:#FFF3EE}
+.opt.selected .opt-letter{background:#FF6B35;border-color:#FF6B35;color:#fff}
+.opt.correct{border-color:#2D9E2D;background:#F0FAF0}
+.opt.correct .opt-letter{background:#2D9E2D;border-color:#2D9E2D;color:#fff}
+.opt.wrong{border-color:#D62828;background:#FFF0F0}
+.opt.wrong .opt-letter{background:#D62828;border-color:#D62828;color:#fff}
+.dict-card{padding:1rem}
+.dict-word{font-size:1.2rem;font-weight:800;color:#C77800;margin-bottom:0.25rem}
+.dict-def{font-size:0.9rem;color:#555;margin-bottom:0.5rem;line-height:1.5}
+.dict-eg{font-size:0.85rem;font-style:italic;color:#777;margin-bottom:0.75rem}
+.dict-input{width:100%;border:2px solid #E8E0D8;border-radius:10px;padding:0.625rem 0.75rem;font-size:0.9rem;font-family:'Nunito',sans-serif;min-height:44px;color:#2D2D2D}
+.dict-input:focus{outline:none;border-color:#C77800}
+.submit-wrap{margin:1.25rem}
+.btn-submit{width:100%;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:14px;padding:1rem;font-size:1.1rem;font-weight:800;font-family:'Nunito',sans-serif;min-height:54px;cursor:pointer;letter-spacing:0.02em;box-shadow:0 4px 12px rgba(255,107,53,.4);transition:transform .1s}
+.btn-submit:active{transform:scale(.98)}
+.btn-submit:disabled{background:#ccc;box-shadow:none;cursor:default}
+.result{display:none;padding:1.25rem;text-align:center}
+.result-title{font-size:1.6rem;font-weight:800;margin-bottom:0.5rem}
+.result-score{font-size:3rem;font-weight:800;color:#FF6B35;margin:0.5rem 0}
+.result-breakdown{background:#fff;border-radius:14px;padding:1rem;margin:0.75rem 0;text-align:left}
+.result-row{display:flex;justify-content:space-between;padding:0.375rem 0;border-bottom:1px solid #F5F0EB;font-size:0.9rem}
+.result-row:last-child{border:none;font-weight:800;font-size:1rem}
+.pts-award{font-size:1.2rem;font-weight:800;color:#2D9E2D;margin:0.5rem 0}
+.pts-total{font-size:2rem;font-weight:800;color:#7B2D8B}
+.pts-next{font-size:0.85rem;color:#888;margin-top:0.25rem}
+.passage{background:#F5F5F5;border-radius:10px;padding:1rem;margin:0.875rem 1rem 0;font-size:0.88rem;line-height:1.7;color:#333}
+.passage h3{font-size:1rem;font-weight:800;margin-bottom:0.5rem;color:#0077B6}
+.writing-prompt{margin:0.875rem 1rem;background:#FFF8F0;border:2px dashed #FF6B35;border-radius:10px;padding:1rem}
+.writing-prompt p{font-size:0.9rem;color:#555;line-height:1.5;margin-bottom:0.625rem}
+.writing-input{width:100%;border:2px solid #E8E0D8;border-radius:10px;padding:0.625rem 0.75rem;font-size:0.9rem;font-family:'Nunito',sans-serif;min-height:100px;resize:vertical;color:#2D2D2D}
+</style>
 </head>
 <body>
-
-<header>
-  <div class="htitle">⭐ Star Academy — Friday</div>
-  <div class="hsub">Week 1 · 7 May 2026 · 10 questions · Week complete!</div>
-  <div class="stars-row" id="stars">
-    <div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div>
-    <div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div><div class="star-dot">★</div>
-  </div>
-</header>
-
-<main id="exercise">
-
-<!-- SECTION 1: MATHS -->
-<div class="card">
-  <div class="badge">Section 1</div>
-  <div class="sec-title">🔢 Number Maths</div>
-
-  <div class="q" id="q1">
-    <div class="qlabel">1. What is 38 + 45?</div>
-    <input type="text" id="q1t" placeholder="Your answer..." inputmode="numeric">
-  </div>
-
-  <div class="q" id="q2">
-    <div class="qlabel">2. What is 75 − 36?</div>
-    <input type="text" id="q2t" placeholder="Your answer..." inputmode="numeric">
-  </div>
-
-  <div class="q" id="q3">
-    <div class="qlabel">3. What is 3 × 9?</div>
-    <input type="text" id="q3t" placeholder="Your answer..." inputmode="numeric">
-  </div>
-
-  <div class="q" id="q4">
-    <div class="qlabel">4. Put these numbers in order from <strong>smallest to biggest</strong>:<br>45, 23, 67, 12</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q4" value="a"> 12, 23, 45, 67</label>
-      <label class="opt"><input type="radio" name="q4" value="b"> 67, 45, 23, 12</label>
-      <label class="opt"><input type="radio" name="q4" value="c"> 23, 12, 45, 67</label>
-      <label class="opt"><input type="radio" name="q4" value="d"> 12, 45, 23, 67</label>
+<div class="header" style="background:linear-gradient(135deg,#00B4D8,#0077B6)">
+  <h1>IL — Friday · Week 19</h1>
+  <div class="pts-bar">
+    <span class="pts-num" id="pts-num">0 pts</span>
+    <div class="milestone-track"><div class="milestone-fill" id="mil-fill" style="width:0%"></div></div>
+    <div>
+      <div class="pts-sub" id="mil-cur">Pre-Bronze</div>
+      <div class="pts-sub" id="mil-next">40 to Bronze 🥉</div>
     </div>
   </div>
+</div>
 
-  <div class="q star" id="q5">
-    <div class="qlabel">5. A packet of crisps costs 30p. How much do 8 packets cost altogether? (Write in pence or pounds)</div>
-    <input type="text" id="q5t" placeholder="e.g. 240p or £2.40" inputmode="numeric">
+<div id="exercise">
+<div class="section">
+  <div class="section-header sh-english">✏️ Section A — English</div>
+  <div class="question" id="q0">
+          <div class="q-text">Which word has a double letter?</div>
+          <div class="options"><label class="opt" id="opt-0-A" data-letter="A" onclick="selectOpt(0,'A')">
+            <input type="radio" name="q0" value="A">
+            <span class="opt-letter">A</span>
+            <span>happy</span>
+          </label><label class="opt" id="opt-0-B" data-letter="B" onclick="selectOpt(0,'B')">
+            <input type="radio" name="q0" value="B">
+            <span class="opt-letter">B</span>
+            <span>jump</span>
+          </label><label class="opt" id="opt-0-C" data-letter="C" onclick="selectOpt(0,'C')">
+            <input type="radio" name="q0" value="C">
+            <span class="opt-letter">C</span>
+            <span>run</span>
+          </label><label class="opt" id="opt-0-D" data-letter="D" onclick="selectOpt(0,'D')">
+            <input type="radio" name="q0" value="D">
+            <span class="opt-letter">D</span>
+            <span>play</span>
+          </label></div>
+        </div><div class="question" id="q1">
+          <div class="q-text">Which sentence is correct?<span class="q-star">⭐</span></div>
+          <div class="options"><label class="opt" id="opt-1-A" data-letter="A" onclick="selectOpt(1,'A')">
+            <input type="radio" name="q1" value="A">
+            <span class="opt-letter">A</span>
+            <span>We goes to school.</span>
+          </label><label class="opt" id="opt-1-B" data-letter="B" onclick="selectOpt(1,'B')">
+            <input type="radio" name="q1" value="B">
+            <span class="opt-letter">B</span>
+            <span>We go to school.</span>
+          </label><label class="opt" id="opt-1-C" data-letter="C" onclick="selectOpt(1,'C')">
+            <input type="radio" name="q1" value="C">
+            <span class="opt-letter">C</span>
+            <span>We going to school.</span>
+          </label><label class="opt" id="opt-1-D" data-letter="D" onclick="selectOpt(1,'D')">
+            <input type="radio" name="q1" value="D">
+            <span class="opt-letter">D</span>
+            <span>We goed to school.</span>
+          </label></div>
+        </div><div class="question" id="q2">
+          <div class="q-text">"Last week, I baked a cake." When did this happen?</div>
+          <div class="options"><label class="opt" id="opt-2-A" data-letter="A" onclick="selectOpt(2,'A')">
+            <input type="radio" name="q2" value="A">
+            <span class="opt-letter">A</span>
+            <span>Now</span>
+          </label><label class="opt" id="opt-2-B" data-letter="B" onclick="selectOpt(2,'B')">
+            <input type="radio" name="q2" value="B">
+            <span class="opt-letter">B</span>
+            <span>In the future</span>
+          </label><label class="opt" id="opt-2-C" data-letter="C" onclick="selectOpt(2,'C')">
+            <input type="radio" name="q2" value="C">
+            <span class="opt-letter">C</span>
+            <span>In the past</span>
+          </label><label class="opt" id="opt-2-D" data-letter="D" onclick="selectOpt(2,'D')">
+            <input type="radio" name="q2" value="D">
+            <span class="opt-letter">D</span>
+            <span>Every day</span>
+          </label></div>
+        </div><div class="question" id="q3">
+          <div class="q-text">Choose the word that means the same as 'frightened':</div>
+          <div class="options"><label class="opt" id="opt-3-A" data-letter="A" onclick="selectOpt(3,'A')">
+            <input type="radio" name="q3" value="A">
+            <span class="opt-letter">A</span>
+            <span>brave</span>
+          </label><label class="opt" id="opt-3-B" data-letter="B" onclick="selectOpt(3,'B')">
+            <input type="radio" name="q3" value="B">
+            <span class="opt-letter">B</span>
+            <span>scared</span>
+          </label><label class="opt" id="opt-3-C" data-letter="C" onclick="selectOpt(3,'C')">
+            <input type="radio" name="q3" value="C">
+            <span class="opt-letter">C</span>
+            <span>angry</span>
+          </label><label class="opt" id="opt-3-D" data-letter="D" onclick="selectOpt(3,'D')">
+            <input type="radio" name="q3" value="D">
+            <span class="opt-letter">D</span>
+            <span>confused</span>
+          </label></div>
+        </div><div class="question" id="q4">
+          <div class="q-text">Which sentence needs a full stop?</div>
+          <div class="options"><label class="opt" id="opt-4-A" data-letter="A" onclick="selectOpt(4,'A')">
+            <input type="radio" name="q4" value="A">
+            <span class="opt-letter">A</span>
+            <span>What is your name</span>
+          </label><label class="opt" id="opt-4-B" data-letter="B" onclick="selectOpt(4,'B')">
+            <input type="radio" name="q4" value="B">
+            <span class="opt-letter">B</span>
+            <span>Please sit down</span>
+          </label><label class="opt" id="opt-4-C" data-letter="C" onclick="selectOpt(4,'C')">
+            <input type="radio" name="q4" value="C">
+            <span class="opt-letter">C</span>
+            <span>Can you help me</span>
+          </label><label class="opt" id="opt-4-D" data-letter="D" onclick="selectOpt(4,'D')">
+            <input type="radio" name="q4" value="D">
+            <span class="opt-letter">D</span>
+            <span>Where is the cat</span>
+          </label></div>
+        </div>
+</div>
+
+<div class="section">
+  <div class="section-header sh-maths">🔢 Section B — Maths</div>
+  <div class="question" id="q5">
+          <div class="q-text">What is 156 + 234?<span class="q-star">⭐</span></div>
+          <div class="options"><label class="opt" id="opt-5-A" data-letter="A" onclick="selectOpt(5,'A')">
+            <input type="radio" name="q5" value="A">
+            <span class="opt-letter">A</span>
+            <span>380</span>
+          </label><label class="opt" id="opt-5-B" data-letter="B" onclick="selectOpt(5,'B')">
+            <input type="radio" name="q5" value="B">
+            <span class="opt-letter">B</span>
+            <span>390</span>
+          </label><label class="opt" id="opt-5-C" data-letter="C" onclick="selectOpt(5,'C')">
+            <input type="radio" name="q5" value="C">
+            <span class="opt-letter">C</span>
+            <span>400</span>
+          </label><label class="opt" id="opt-5-D" data-letter="D" onclick="selectOpt(5,'D')">
+            <input type="radio" name="q5" value="D">
+            <span class="opt-letter">D</span>
+            <span>360</span>
+          </label></div>
+        </div><div class="question" id="q6">
+          <div class="q-text">What is 200 − 87?</div>
+          <div class="options"><label class="opt" id="opt-6-A" data-letter="A" onclick="selectOpt(6,'A')">
+            <input type="radio" name="q6" value="A">
+            <span class="opt-letter">A</span>
+            <span>103</span>
+          </label><label class="opt" id="opt-6-B" data-letter="B" onclick="selectOpt(6,'B')">
+            <input type="radio" name="q6" value="B">
+            <span class="opt-letter">B</span>
+            <span>113</span>
+          </label><label class="opt" id="opt-6-C" data-letter="C" onclick="selectOpt(6,'C')">
+            <input type="radio" name="q6" value="C">
+            <span class="opt-letter">C</span>
+            <span>123</span>
+          </label><label class="opt" id="opt-6-D" data-letter="D" onclick="selectOpt(6,'D')">
+            <input type="radio" name="q6" value="D">
+            <span class="opt-letter">D</span>
+            <span>133</span>
+          </label></div>
+        </div><div class="question" id="q7">
+          <div class="q-text">What is 12 × 3?</div>
+          <div class="options"><label class="opt" id="opt-7-A" data-letter="A" onclick="selectOpt(7,'A')">
+            <input type="radio" name="q7" value="A">
+            <span class="opt-letter">A</span>
+            <span>33</span>
+          </label><label class="opt" id="opt-7-B" data-letter="B" onclick="selectOpt(7,'B')">
+            <input type="radio" name="q7" value="B">
+            <span class="opt-letter">B</span>
+            <span>36</span>
+          </label><label class="opt" id="opt-7-C" data-letter="C" onclick="selectOpt(7,'C')">
+            <input type="radio" name="q7" value="C">
+            <span class="opt-letter">C</span>
+            <span>39</span>
+          </label><label class="opt" id="opt-7-D" data-letter="D" onclick="selectOpt(7,'D')">
+            <input type="radio" name="q7" value="D">
+            <span class="opt-letter">D</span>
+            <span>42</span>
+          </label></div>
+        </div><div class="question" id="q8">
+          <div class="q-text">What is 36 ÷ 4?</div>
+          <div class="options"><label class="opt" id="opt-8-A" data-letter="A" onclick="selectOpt(8,'A')">
+            <input type="radio" name="q8" value="A">
+            <span class="opt-letter">A</span>
+            <span>7</span>
+          </label><label class="opt" id="opt-8-B" data-letter="B" onclick="selectOpt(8,'B')">
+            <input type="radio" name="q8" value="B">
+            <span class="opt-letter">B</span>
+            <span>8</span>
+          </label><label class="opt" id="opt-8-C" data-letter="C" onclick="selectOpt(8,'C')">
+            <input type="radio" name="q8" value="C">
+            <span class="opt-letter">C</span>
+            <span>9</span>
+          </label><label class="opt" id="opt-8-D" data-letter="D" onclick="selectOpt(8,'D')">
+            <input type="radio" name="q8" value="D">
+            <span class="opt-letter">D</span>
+            <span>10</span>
+          </label></div>
+        </div><div class="question" id="q9">
+          <div class="q-text">A bag has 40 marbles. 1/4 are red. How many red marbles?</div>
+          <div class="options"><label class="opt" id="opt-9-A" data-letter="A" onclick="selectOpt(9,'A')">
+            <input type="radio" name="q9" value="A">
+            <span class="opt-letter">A</span>
+            <span>4</span>
+          </label><label class="opt" id="opt-9-B" data-letter="B" onclick="selectOpt(9,'B')">
+            <input type="radio" name="q9" value="B">
+            <span class="opt-letter">B</span>
+            <span>8</span>
+          </label><label class="opt" id="opt-9-C" data-letter="C" onclick="selectOpt(9,'C')">
+            <input type="radio" name="q9" value="C">
+            <span class="opt-letter">C</span>
+            <span>10</span>
+          </label><label class="opt" id="opt-9-D" data-letter="D" onclick="selectOpt(9,'D')">
+            <input type="radio" name="q9" value="D">
+            <span class="opt-letter">D</span>
+            <span>15</span>
+          </label></div>
+        </div>
+</div>
+
+<div class="section">
+  <div class="section-header sh-dict">🌟 Word of the Day</div>
+  <div class="dict-card">
+    <div class="dict-word">thoughtful</div>
+    <div class="dict-def">Adjective — thinking carefully before doing or saying something; also, considerate of others' feelings.</div>
+    <div class="dict-eg"><em>"It was thoughtful of him to bring flowers for his teacher."</em></div>
+    <input class="dict-input" type="text" placeholder="Can you write your own sentence?" autocomplete="off">
   </div>
 </div>
 
-<!-- SECTION 2: ENGLISH -->
-<div class="card">
-  <div class="badge">Section 2</div>
-  <div class="sec-title">📖 Words &amp; Sentences</div>
-
-  <div class="q" id="q6">
-    <div class="qlabel">6. Fix this sentence — which version is correct?<br><em>"london is a big city."</em></div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q6" value="a"> london is a big city.</label>
-      <label class="opt"><input type="radio" name="q6" value="b"> London is a big city.</label>
-      <label class="opt"><input type="radio" name="q6" value="c"> London Is A Big City.</label>
-      <label class="opt"><input type="radio" name="q6" value="d"> LONDON is a big city.</label>
-    </div>
-  </div>
-
-  <div class="q" id="q7">
-    <div class="qlabel">7. Which word means feeling proud of something you did?</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q7" value="ashamed"> ashamed</label>
-      <label class="opt"><input type="radio" name="q7" value="proud"> proud</label>
-      <label class="opt"><input type="radio" name="q7" value="tired"> tired</label>
-      <label class="opt"><input type="radio" name="q7" value="lonely"> lonely</label>
-    </div>
-  </div>
-
-  <div class="q" id="q8">
-    <div class="qlabel">8. Write a <strong>describing word</strong> to improve this sentence:<br>"The ___ dog barked."<br>What describing word could you use?</div>
-    <textarea id="q8t" placeholder="My describing word..."></textarea>
-  </div>
-
-  <div class="q" id="q9">
-    <div class="qlabel">9. Find the <strong>doing word</strong> in this sentence:<br>"The baby giggled loudly."</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q9" value="baby"> baby</label>
-      <label class="opt"><input type="radio" name="q9" value="giggled"> giggled</label>
-      <label class="opt"><input type="radio" name="q9" value="loudly"> loudly</label>
-      <label class="opt"><input type="radio" name="q9" value="the"> the</label>
-    </div>
-  </div>
-
-  <div class="q star" id="q10">
-    <div class="qlabel">10. Write a <strong>question sentence</strong> about your favourite food. Remember the question mark at the end!</div>
-    <textarea id="q10t" placeholder="My question..."></textarea>
-  </div>
+<div class="submit-wrap">
+  <button class="btn-submit" id="btn-submit" onclick="submitExercise()" disabled>
+    ✅ Submit — Done!
+  </button>
+</div>
 </div>
 
-<!-- SECTION 3: DICTIONARY -->
-<div class="card">
-  <div class="badge">Section 3</div>
-  <div class="sec-title">📚 Word of the Day</div>
-  <div class="dict-word">patient</div>
-  <div class="dict-hint">Today's word — word #5 ⭐</div>
-  <span class="flabel">What does "patient" mean? Write it in your own words:</span>
-  <textarea id="dict-def" placeholder="It means..."></textarea>
-  <span class="flabel">Write a sentence using "patient":</span>
-  <textarea id="dict-sent" placeholder="My sentence..."></textarea>
+<div class="result" id="result">
+  <div class="result-title" id="res-emoji">⭐</div>
+  <div class="result-score" id="res-score">0/10</div>
+  <div style="font-size:1rem;color:#888;margin-bottom:0.5rem" id="res-pct">0%</div>
+  <div class="result-breakdown" id="res-breakdown"></div>
+  <div class="pts-award" id="res-pts">+0 pts</div>
+  <div class="pts-total" id="res-prev"></div>
+  <div style="font-size:1.1rem;font-weight:800;margin-top:0.5rem" id="res-milestone"></div>
+  <div class="pts-next" id="res-next"></div>
 </div>
 
-</main>
-
-<div class="sub-area">
-  <button class="sub-btn" onclick="submitAll()">⭐ Submit My Stars!</button>
-</div>
-
-<div id="result">
-  <div class="big-score" id="rscore"></div>
-  <div class="score-label">Questions correct</div>
-  <div class="star-result" id="rstarrow"></div>
-  <div class="breakdown" id="rbreakdown"></div>
-  <div class="pts-box">
-    <div class="pts-num" id="rpts"></div>
-    <div class="pts-lbl">points earned today ⭐</div>
-  </div>
-  <div class="end-banner">🌟 Week 1 Complete! You are a Star Academy superstar!</div>
-  <div class="sending" id="rstatus">Sending your stars...</div>
-</div>
 
 <script>
-const WEBHOOK = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-const ANSWERS = {
-  q1:  { correct:['83'],    tax:'M1.1', topic:'Addition — 2-digit', section:'Maths', hashtags:'#arithmetic #addition', star:false },
-  q2:  { correct:['39'],    tax:'M1.2', topic:'Subtraction — 2-digit', section:'Maths', hashtags:'#arithmetic #subtraction', star:false },
-  q3:  { correct:['27'],    tax:'M1.3', topic:'Multiplication — times tables', section:'Maths', hashtags:'#multiplication #timestables', star:false },
-  q4:  { correct:'a',       tax:'M1.1', topic:'Ordering numbers', section:'Maths', hashtags:'#placevalue #accuracy', star:false },
-  q5:  { correct:['240','240p','£2.40','2.40','£2.40p'], tax:'M1.3', topic:'Multiplication — money word problem', section:'Maths', hashtags:'#multiplication #wordedproblems', star:true },
-  q6:  { correct:'b',       tax:'E3.1', topic:'Capital letters — proper noun', section:'English', hashtags:'#punctuation #capitals', star:false },
-  q7:  { correct:'proud',   tax:'E4.4', topic:'Emotion and state words', section:'English', hashtags:'#vocabulary', star:false },
-  q8:  { correct:'FREE',    tax:'E2.7', topic:'Describing words — creative', section:'English', hashtags:'#grammar #adjectives', star:false },
-  q9:  { correct:'giggled', tax:'E2.8', topic:'Doing words', section:'English', hashtags:'#grammar', star:false },
-  q10: { correct:'FREE',    tax:'E2.9', topic:'Question sentences', section:'English', hashtags:'#grammar #sentencestructure #punctuation', star:true }
-};
-function getRadio(n){ const s=document.querySelector(`input[name="${n}"]:checked`); return s?s.value:''; }
-function getText(id){ const e=document.getElementById(id); return e?e.value.trim().toLowerCase():''; }
-function checkQ(k){ const m=ANSWERS[k]; if(m.correct==='FREE') return document.getElementById(k+'t').value.trim().length>2; if(Array.isArray(m.correct)) return m.correct.includes(getText(k+'t')); return getRadio(k)===m.correct; }
-setInterval(()=>{ const dots=document.querySelectorAll('.star-dot'); const d=Object.keys(ANSWERS).filter(k=>{ const m=ANSWERS[k]; if(m.correct==='FREE') return document.getElementById(k+'t')&&document.getElementById(k+'t').value.trim().length>0; if(Array.isArray(m.correct)) return getText(k+'t')!==''; return getRadio(k)!==''; }).length; dots.forEach((dot,i)=>dot.classList.toggle('lit',i<d)); },600);
-function submitAll(){
-  let mC=0,eC=0,tC=0; const qa=[];
-  Object.keys(ANSWERS).forEach((k,i)=>{ const m=ANSWERS[k],c=checkQ(k); if(c)tC++; if(m.section==='Maths')mC+=c?1:0; if(m.section==='English')eC+=c?1:0; qa.push({q_number:i+1,question_id:k,section:m.section,topic:m.topic,taxonomy_code:m.tax,hashtags:m.hashtags,correct:c}); });
-  const sC=checkQ('q5')||checkQ('q10'), dF=document.getElementById('dict-sent').value.trim().length>3;
-  const pts=5+(sC?3:0)+(dF?2:0), stars='⭐'.repeat(Math.round(tC/10*5));
-  const msg=tC>=8?'🌟 What a fantastic week!':tC>=6?'⭐ Great week, well done!':'💜 Amazing effort this week!';
-  const payload={type:'exercise_result',child:'IL',date:'2026-05-07',week:1,day:'Friday',exercise_type:'Weekday 15-min',subject_focus:'Mixed',total_correct:tC,total_questions:10,points_earned:pts,score_summary:`Maths:${mC}/5 · English:${eC}/5`,weaknesses_addressed:'#arithmetic #placevalue #multiplication #capitals #vocabulary #grammar',dict_word:'patient',dict_saved:dF,questions:qa};
-  document.getElementById('exercise').style.display='none';
-  document.querySelector('.sub-area').style.display='none';
-  document.getElementById('result').style.display='block';
-  document.getElementById('rscore').textContent=tC+'/10';
-  document.getElementById('rstarrow').textContent=stars;
-  let bh=`<div class="brow"><span>Maths</span><span>${mC}/5</span></div><div class="brow"><span>Words &amp; Sentences</span><span>${eC}/5</span></div><div class="brow" style="font-style:italic;color:#6b7280"><span>${msg}</span></div>`;
-  qa.forEach(q=>{bh+=`<div class="brow" style="font-size:13px"><span>${q.correct?'✅':'❌'} Q${q.q_number}: ${q.topic}</span></div>`;});
-  document.getElementById('rbreakdown').innerHTML=bh;
-  document.getElementById('rpts').textContent='+'+pts;
-  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-    .then(()=>{ if(dF) return fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'dictionary_entry',child:'IL',date:'2026-05-07',week:1,word:'patient',word_position:5,definition:document.getElementById('dict-def').value.trim(),sentence:document.getElementById('dict-sent').value.trim()})}); })
-    .then(()=>{document.getElementById('rstatus').textContent='✅ Stars sent!';})
-    .catch(()=>{document.getElementById('rstatus').textContent='⚠️ Could not send — ask a parent to check.';});
+
+const MILESTONES = [[40, "Bronze \ud83e\udd49"], [190, "Silver \ud83e\udd48"], [340, "Gold \ud83e\udd47"], [830, "Platinum \ud83c\udfc6"], [1800, "Diamond \ud83d\udc8e"], [2800, "Champion \ud83c\udfc5"], [4000, "Grand Master \ud83d\udc51"]];
+function getMilestone(pts) {
+  let cur = 'Pre-Bronze', nxt = 'Bronze 🥉', gap = 40 - pts;
+  for (const [t,n] of MILESTONES) {
+    if (pts < t) { nxt = n; gap = t - pts; break; }
+    cur = n; nxt = ''; gap = 0;
+  }
+  return {cur, nxt, gap};
 }
+const CHILD='IL', DAY='Friday', WEEK=19, WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const PTS_KEY='pts_IL', BASE_PTS=0;
+const SECTIONS=["English", "English", "English", "English", "English", "Maths", "Maths", "Maths", "Maths", "Maths"];
+const CODES=["E1.4", "E2.3", "E2.1", "E4.1", "E3.1", "M1.1", "M1.2", "M1.3", "M1.5", "M2.1"];
+const ANSWERS=["A", "B", "C", "B", "B", "B", "B", "B", "C", "C"];
+const IS_STAR=[false, true, false, false, false, true, false, false, false, false];
+const TOTAL_QS=10;
+const HAS_DICT=false;
+
+let basePts = parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
+if(basePts < BASE_PTS) basePts = BASE_PTS;
+let chosen = new Array(TOTAL_QS).fill(null);
+let submitted = false;
+
+function updateBanner() {
+  const m = getMilestone(basePts);
+  document.getElementById('pts-num').textContent = basePts + ' pts';
+  document.getElementById('mil-cur').textContent = m.cur;
+  if(m.nxt) {
+    document.getElementById('mil-next').textContent = m.gap + ' to ' + m.nxt;
+    const pctPrev = MILESTONES.findIndex(([t])=>basePts<t);
+    const prevT = pctPrev>0?MILESTONES[pctPrev-1][0]:0;
+    const nextT = MILESTONES[pctPrev]?MILESTONES[pctPrev][0]:4000;
+    const pct = Math.round((basePts-prevT)/(nextT-prevT)*100);
+    document.getElementById('mil-fill').style.width = Math.min(100,pct)+'%';
+  } else {
+    document.getElementById('mil-next').textContent = '🏆 MAX!';
+    document.getElementById('mil-fill').style.width = '100%';
+  }
+}
+
+function selectOpt(qIdx, optLetter) {
+  if(submitted) return;
+  chosen[qIdx] = optLetter;
+  const qEl = document.querySelector('#q'+qIdx);
+  qEl.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+  qEl.querySelector('[data-letter="'+optLetter+'"]').classList.add('selected');
+  checkAllAnswered();
+}
+
+function checkAllAnswered() {
+  const done = chosen.slice(0,TOTAL_QS).every(c=>c!==null);
+  document.getElementById('btn-submit').disabled = !done;
+}
+
+function submitExercise() {
+  if(submitted) return;
+  submitted = true;
+  document.getElementById('btn-submit').disabled = true;
+
+  const results = [];
+  let correct=0, vocabC=0, vocabT=0, engC=0, engT=0, mathC=0, mathT=0;
+  const secTrack = {};
+
+  chosen.forEach((ans,i) => {
+    const isRight = ans === ANSWERS[i];
+    if(isRight) correct++;
+    results.push({q_number:i+1, code:CODES[i], section:SECTIONS[i], correct:isRight});
+    const s = SECTIONS[i];
+    if(!secTrack[s]) secTrack[s]={c:0,t:0};
+    secTrack[s].t++;
+    if(isRight) secTrack[s].c++;
+    // Section counts for scoring
+    if(s==='Vocab'){ vocabT++; if(isRight) vocabC++; }
+    if(s==='English'){ engT++; if(isRight) engC++; }
+    if(s==='Maths'){ mathT++; if(isRight) mathC++; }
+  });
+
+  // Show correct/wrong on each question
+  chosen.forEach((ans,i) => {
+    const isRight = ans === ANSWERS[i];
+    const el = document.querySelector('#q'+i+' [data-letter="'+ans+'"]');
+    if(el) el.classList.add(isRight?'correct':'wrong');
+    if(!isRight) {
+      const corEl = document.querySelector('#q'+i+' [data-letter="'+ANSWERS[i]+'"]');
+      if(corEl) corEl.classList.add('correct');
+    }
+  });
+
+  // Points calculation
+  let pts = 0;
+  if(CHILD==='CL') {
+    pts = 3; // base completion
+    const starQ = IS_STAR.findIndex(s=>s);
+    if(starQ>=0 && chosen[starQ]===ANSWERS[starQ]) pts += 2;
+    const fullSections = ['Vocab','English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts += fullSections.length * 2;
+    pts = Math.min(7, pts);
+  } else {
+    pts = 5;
+    const fullSections = ['English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts += fullSections.length * 3;
+    pts = Math.min(8, pts);
+  }
+
+  const newTotal = basePts + pts;
+  localStorage.setItem(PTS_KEY, newTotal);
+
+  // Score summary
+  let summary = '';
+  if(CHILD==='CL') summary = 'Vocab:'+vocabC+'/'+vocabT+' English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
+  else summary = 'English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
+
+  // Fire webhook
+  const payload = {
+    type:'exercise_result', child:CHILD, date:new Date().toISOString().split('T')[0],
+    week:WEEK, day:DAY, total_correct:correct, total_questions:TOTAL_QS,
+    points_earned:pts, score_summary:summary, subject_focus:'Mixed',
+    questions:results
+  };
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .catch(()=>{});
+
+  // Show result screen
+  showResult(correct, pts, newTotal, summary, secTrack);
+}
+
+function showResult(correct, pts, newTotal, summary, secTrack) {
+  document.getElementById('exercise').style.display='none';
+  const res = document.getElementById('result');
+  res.style.display='block';
+  const pct = Math.round(correct/TOTAL_QS*100);
+  const emoji = pct>=90?'🌟':pct>=75?'⭐':pct>=60?'👍':'💪';
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-score').textContent = correct+'/'+TOTAL_QS;
+  document.getElementById('res-pct').textContent = pct+'%';
+  document.getElementById('res-pts').textContent = '+'+pts+' pts';
+  document.getElementById('res-prev').textContent = (newTotal-pts)+' → '+newTotal+' pts';
+  const m = getMilestone(newTotal);
+  document.getElementById('res-milestone').textContent = m.cur;
+  if(m.nxt) document.getElementById('res-next').textContent = m.gap+' to '+m.nxt;
+
+  // Breakdown
+  let breakdown = '';
+  for(const [s,d] of Object.entries(secTrack)) {
+    breakdown += '<div class="result-row"><span>'+s+'</span><span>'+d.c+'/'+d.t+'</span></div>';
+  }
+  breakdown += '<div class="result-row"><span>Total</span><span>'+correct+'/'+TOTAL_QS+' ('+pct+'%)</span></div>';
+  document.getElementById('res-breakdown').innerHTML = breakdown;
+}
+
+window.onload = updateBanner;
 </script>
 </body>
 </html>
