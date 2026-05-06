@@ -1,360 +1,535 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>🎯 CL Mission — Tuesday</title>
-  <style>
-    :root {
-      --navy:#0f172a; --navy2:#1e293b; --card:#1a2744;
-      --amber:#f59e0b; --amberlt:#fcd34d; --amberdim:#92400e;
-      --text:#e2e8f0; --dim:#94a3b8; --border:#2d3f5e;
-      --green:#10b981; --red:#ef4444;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--navy);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;-webkit-text-size-adjust:100%;padding-bottom:40px}
-    header{background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:3px solid var(--amber);padding:18px 16px 14px;position:sticky;top:0;z-index:100}
-    .htitle{font-size:21px;font-weight:800;color:var(--amber)}
-    .hsub{font-size:13px;color:var(--dim);margin-top:2px}
-    .pbar-wrap{background:#334155;border-radius:4px;height:6px;margin-top:10px}
-    .pbar{background:var(--amber);height:100%;border-radius:4px;transition:width .4s;width:0%}
-    main{padding:14px;max-width:640px;margin:0 auto}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
-    .badge{display:inline-block;background:var(--amberdim);color:var(--amberlt);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:10px}
-    .sec-title{font-size:17px;font-weight:700;color:var(--amber);margin-bottom:14px}
-    .q{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-    .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-    .qlabel{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:10px}
-    .star .qlabel::before{content:'⭐ '}
-    .opts{display:flex;flex-direction:column;gap:7px}
-    .opt{display:flex;align-items:center;gap:10px;background:#0f172a;border:1.5px solid #334155;border-radius:8px;padding:10px 14px;font-size:15px;cursor:pointer;transition:border-color .15s}
-    .opt:has(input:checked){border-color:var(--amber);background:#1a1a00}
-    input[type=radio]{accent-color:var(--amber);width:18px;height:18px;flex-shrink:0}
-    input[type=text]{background:#0f172a;border:1.5px solid #334155;border-radius:8px;color:var(--text);font-size:16px;padding:10px 14px;width:100%}
-    input[type=text]:focus{border-color:var(--amber);outline:none}
-    textarea{background:#0f172a;border:1.5px solid #334155;border-radius:8px;color:var(--text);font-size:15px;padding:10px 14px;width:100%;min-height:70px;resize:vertical}
-    textarea:focus{border-color:var(--amber);outline:none}
-    .dict-word{font-size:26px;font-weight:800;color:var(--amber);margin-bottom:2px}
-    .dict-hint{font-size:13px;color:var(--dim);font-style:italic;margin-bottom:12px}
-    .flabel{font-size:13px;color:var(--dim);margin-bottom:5px;margin-top:10px;display:block}
-    .sub-area{padding:14px;max-width:640px;margin:0 auto}
-    .sub-btn{width:100%;background:var(--amber);color:var(--navy);border:none;border-radius:12px;font-size:17px;font-weight:800;padding:16px;cursor:pointer}
-    .sub-btn:active{opacity:.85}
-    #result{display:none;text-align:center;padding:28px 16px;max-width:640px;margin:0 auto}
-    .big-score{font-size:64px;font-weight:900;color:var(--amber)}
-    .score-label{font-size:17px;color:var(--dim);margin-top:4px}
-    .breakdown{background:var(--card);border-radius:12px;padding:16px;margin-top:18px;text-align:left}
-    .brow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
-    .brow:last-child{border-bottom:none}
-    .pts-box{background:var(--amberdim);border-radius:10px;padding:12px 16px;margin-top:14px;text-align:center}
-    .pts-num{font-size:32px;font-weight:800;color:var(--amberlt)}
-    .pts-lbl{font-size:13px;color:var(--amberlt)}
-    .qfb{font-size:12px;margin-top:6px;padding:5px 10px;border-radius:6px}
-    .qfb.c{background:#052e16;color:#34d399}
-    .qfb.w{background:#2d0a0a;color:#fca5a5}
-    .sending{color:var(--dim);font-size:14px;margin-top:12px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>CL — Tuesday Week 19</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height:100vh;padding-bottom:2rem}
+.header{background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;padding:1rem 1.25rem 0.875rem;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header h1{font-size:1.1rem;font-weight:800;margin-bottom:0.25rem}
+.pts-bar{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.pts-num{font-size:1.5rem;font-weight:800}
+.pts-sub{font-size:0.8rem;opacity:.9}
+.milestone-track{height:6px;background:rgba(255,255,255,.3);border-radius:3px;flex:1;min-width:80px;margin:0 0.25rem}
+.milestone-fill{height:100%;background:#fff;border-radius:3px;transition:width .5s}
+.rules{margin:1rem;background:#fff;border-left:4px solid #FF6B35;border-radius:0 10px 10px 0;padding:0.875rem 1rem;display:flex;flex-direction:column;gap:0.5rem}
+.rule-item{font-size:0.85rem;color:#444;line-height:1.5}
+.rule-item strong{color:#E85D04}
+.section{margin:1rem;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.section-header{padding:0.75rem 1rem;font-weight:800;font-size:0.9rem;letter-spacing:0.03em;color:#fff}
+.sh-vocab{background:#7B2D8B}
+.sh-english{background:#0077B6}
+.sh-maths{background:#2D9E2D}
+.sh-dict{background:#C77800}
+.sh-comp{background:#0077B6}
+.sh-cw{background:#7B2D8B}
+.question{padding:0.875rem 1rem;border-bottom:1px solid #F5F0EB}
+.question:last-child{border-bottom:none}
+.q-text{font-size:0.95rem;font-weight:700;line-height:1.5;margin-bottom:0.625rem}
+.q-star{color:#FF6B35;font-size:0.85rem;margin-left:4px}
+.options{display:flex;flex-direction:column;gap:0.375rem}
+.opt{display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.75rem;border-radius:10px;border:2px solid #E8E0D8;background:#FAFAF8;cursor:pointer;font-size:0.9rem;font-weight:600;min-height:44px;transition:all .15s}
+.opt:active{background:#F0EBE3}
+.opt input{position:absolute;opacity:0;width:0}
+.opt-letter{width:22px;height:22px;border-radius:50%;border:2px solid #C0B8B0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;flex-shrink:0;color:#888;transition:all .15s}
+.opt.selected{border-color:#FF6B35;background:#FFF3EE}
+.opt.selected .opt-letter{background:#FF6B35;border-color:#FF6B35;color:#fff}
+.opt.correct{border-color:#2D9E2D;background:#F0FAF0}
+.opt.correct .opt-letter{background:#2D9E2D;border-color:#2D9E2D;color:#fff}
+.opt.wrong{border-color:#D62828;background:#FFF0F0}
+.opt.wrong .opt-letter{background:#D62828;border-color:#D62828;color:#fff}
+.dict-card{padding:1rem}
+.dict-word{font-size:1.2rem;font-weight:800;color:#C77800;margin-bottom:0.25rem}
+.dict-def{font-size:0.9rem;color:#555;margin-bottom:0.5rem;line-height:1.5}
+.dict-eg{font-size:0.85rem;font-style:italic;color:#777;margin-bottom:0.75rem}
+.dict-input{width:100%;border:2px solid #E8E0D8;border-radius:10px;padding:0.625rem 0.75rem;font-size:0.9rem;font-family:'Nunito',sans-serif;min-height:44px;color:#2D2D2D}
+.dict-input:focus{outline:none;border-color:#C77800}
+.submit-wrap{margin:1.25rem}
+.btn-submit{width:100%;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:14px;padding:1rem;font-size:1.1rem;font-weight:800;font-family:'Nunito',sans-serif;min-height:54px;cursor:pointer;letter-spacing:0.02em;box-shadow:0 4px 12px rgba(255,107,53,.4);transition:transform .1s}
+.btn-submit:active{transform:scale(.98)}
+.btn-submit:disabled{background:#ccc;box-shadow:none;cursor:default}
+.result{display:none;padding:1.25rem;text-align:center}
+.result-title{font-size:1.6rem;font-weight:800;margin-bottom:0.5rem}
+.result-score{font-size:3rem;font-weight:800;color:#FF6B35;margin:0.5rem 0}
+.result-breakdown{background:#fff;border-radius:14px;padding:1rem;margin:0.75rem 0;text-align:left}
+.result-row{display:flex;justify-content:space-between;padding:0.375rem 0;border-bottom:1px solid #F5F0EB;font-size:0.9rem}
+.result-row:last-child{border:none;font-weight:800;font-size:1rem}
+.pts-award{font-size:1.2rem;font-weight:800;color:#2D9E2D;margin:0.5rem 0}
+.pts-total{font-size:2rem;font-weight:800;color:#7B2D8B}
+.pts-next{font-size:0.85rem;color:#888;margin-top:0.25rem}
+.passage{background:#F5F5F5;border-radius:10px;padding:1rem;margin:0.875rem 1rem 0;font-size:0.88rem;line-height:1.7;color:#333}
+.passage h3{font-size:1rem;font-weight:800;margin-bottom:0.5rem;color:#0077B6}
+.writing-prompt{margin:0.875rem 1rem;background:#FFF8F0;border:2px dashed #FF6B35;border-radius:10px;padding:1rem}
+.writing-prompt p{font-size:0.9rem;color:#555;line-height:1.5;margin-bottom:0.625rem}
+.writing-input{width:100%;border:2px solid #E8E0D8;border-radius:10px;padding:0.625rem 0.75rem;font-size:0.9rem;font-family:'Nunito',sans-serif;min-height:100px;resize:vertical;color:#2D2D2D}
+</style>
 </head>
 <body>
-
-<header>
-  <div class="htitle">🎯 CL Mission — Tuesday</div>
-  <div class="hsub">Week 1 · 3 May 2026 · 13 questions</div>
-  <div class="pbar-wrap"><div class="pbar" id="pbar"></div></div>
-</header>
-
-<main id="exercise">
-
-<!-- ═══ SECTION 1: VOCAB WARM-UP ═══ -->
-<div class="card">
-  <div class="badge">Section 1</div>
-  <div class="sec-title">⚡ Vocab Warm-Up</div>
-
-  <div class="q" id="q1">
-    <div class="qlabel">1. Which spelling is correct for the word meaning "moved through air lightly"?</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q1" value="flowted"> flowted</label>
-      <label class="opt"><input type="radio" name="q1" value="floated"> floated</label>
-      <label class="opt"><input type="radio" name="q1" value="floted"> floted</label>
-      <label class="opt"><input type="radio" name="q1" value="flooted"> flooted</label>
-    </div>
-  </div>
-
-  <div class="q" id="q2">
-    <div class="qlabel">2. Which spelling is correct for the word meaning "to show or exhibit"?</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q2" value="displai"> displai</label>
-      <label class="opt"><input type="radio" name="q2" value="disply"> disply</label>
-      <label class="opt"><input type="radio" name="q2" value="display"> display</label>
-      <label class="opt"><input type="radio" name="q2" value="diplay"> diplay</label>
-    </div>
-  </div>
-
-  <div class="q" id="q3">
-    <div class="qlabel">3. Which spelling is correct for a person who competes in sports?</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q3" value="athelete"> athelete</label>
-      <label class="opt"><input type="radio" name="q3" value="athlete"> athlete</label>
-      <label class="opt"><input type="radio" name="q3" value="athalete"> athalete</label>
-      <label class="opt"><input type="radio" name="q3" value="atlhete"> atlhete</label>
+<div class="header">
+  <h1>CL — Tuesday · Week 19</h1>
+  <div class="pts-bar">
+    <span class="pts-num" id="pts-num">510 pts</span>
+    <div class="milestone-track"><div class="milestone-fill" id="mil-fill" style="width:50%"></div></div>
+    <div>
+      <div class="pts-sub" id="mil-cur">Gold 🥇</div>
+      <div class="pts-sub" id="mil-next">320 to Platinum 🏆</div>
     </div>
   </div>
 </div>
 
-<!-- ═══ SECTION 2: ENGLISH ═══ -->
-<div class="card">
-  <div class="badge">Section 2</div>
-  <div class="sec-title">📖 English — Grammar Focus</div>
+<div id="exercise">
+<div class="rules">
+  <div style="font-size:0.8rem;font-weight:800;color:#E85D04;margin-bottom:0.25rem">💡 REMEMBER TODAY:</div>
+  <div class="rule-item">📝 <strong>E5.5 Headings:</strong> The correct heading must cover <strong>ALL</strong> sentences in the paragraph — not just one detail. Skim every sentence before choosing.</div><div class="rule-item">💰 <strong>M2.8 % Bigger or Smaller?</strong> Increase: new = old × (100+%)÷100. Decrease: new = old × (100−%)÷100. A 20% discount → you pay <strong>80%</strong>, not 120%.</div>
+</div>
 
-  <div class="q" id="q4">
-    <div class="qlabel">4. Fill in the gap: "Neither Jack nor his friends ___ going to the park."</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q4" value="is"> is</label>
-      <label class="opt"><input type="radio" name="q4" value="are"> are</label>
-      <label class="opt"><input type="radio" name="q4" value="were"> were</label>
-      <label class="opt"><input type="radio" name="q4" value="am"> am</label>
-    </div>
-  </div>
+<div class="section">
+  <div class="section-header sh-vocab">🔤 Section A — Vocab Warm-up</div>
+  <div class="question" id="q0">
+          <div class="q-text">"Miserable" means:</div>
+          <div class="options"><label class="opt" id="opt-0-A" data-letter="A" onclick="selectOpt(0,'A')">
+            <input type="radio" name="q0" value="A">
+            <span class="opt-letter">A</span>
+            <span>Happy</span>
+          </label><label class="opt" id="opt-0-B" data-letter="B" onclick="selectOpt(0,'B')">
+            <input type="radio" name="q0" value="B">
+            <span class="opt-letter">B</span>
+            <span>Very unhappy</span>
+          </label><label class="opt" id="opt-0-C" data-letter="C" onclick="selectOpt(0,'C')">
+            <input type="radio" name="q0" value="C">
+            <span class="opt-letter">C</span>
+            <span>Excited</span>
+          </label><label class="opt" id="opt-0-D" data-letter="D" onclick="selectOpt(0,'D')">
+            <input type="radio" name="q0" value="D">
+            <span class="opt-letter">D</span>
+            <span>Calm</span>
+          </label></div>
+        </div><div class="question" id="q1">
+          <div class="q-text">"Radiant" means:</div>
+          <div class="options"><label class="opt" id="opt-1-A" data-letter="A" onclick="selectOpt(1,'A')">
+            <input type="radio" name="q1" value="A">
+            <span class="opt-letter">A</span>
+            <span>Dull</span>
+          </label><label class="opt" id="opt-1-B" data-letter="B" onclick="selectOpt(1,'B')">
+            <input type="radio" name="q1" value="B">
+            <span class="opt-letter">B</span>
+            <span>Dark</span>
+          </label><label class="opt" id="opt-1-C" data-letter="C" onclick="selectOpt(1,'C')">
+            <input type="radio" name="q1" value="C">
+            <span class="opt-letter">C</span>
+            <span>Glowing and bright</span>
+          </label><label class="opt" id="opt-1-D" data-letter="D" onclick="selectOpt(1,'D')">
+            <input type="radio" name="q1" value="D">
+            <span class="opt-letter">D</span>
+            <span>Heavy</span>
+          </label></div>
+        </div><div class="question" id="q2">
+          <div class="q-text">"Cautious" means:<span class="q-star">⭐</span></div>
+          <div class="options"><label class="opt" id="opt-2-A" data-letter="A" onclick="selectOpt(2,'A')">
+            <input type="radio" name="q2" value="A">
+            <span class="opt-letter">A</span>
+            <span>Reckless</span>
+          </label><label class="opt" id="opt-2-B" data-letter="B" onclick="selectOpt(2,'B')">
+            <input type="radio" name="q2" value="B">
+            <span class="opt-letter">B</span>
+            <span>Careful and avoiding danger</span>
+          </label><label class="opt" id="opt-2-C" data-letter="C" onclick="selectOpt(2,'C')">
+            <input type="radio" name="q2" value="C">
+            <span class="opt-letter">C</span>
+            <span>Brave</span>
+          </label><label class="opt" id="opt-2-D" data-letter="D" onclick="selectOpt(2,'D')">
+            <input type="radio" name="q2" value="D">
+            <span class="opt-letter">D</span>
+            <span>Fast</span>
+          </label></div>
+        </div>
+</div>
 
-  <div class="q" id="q5">
-    <div class="qlabel">5. Find the <strong>describing word</strong> in this sentence: "The cat ran quickly across the smooth floor."</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q5" value="ran"> ran</label>
-      <label class="opt"><input type="radio" name="q5" value="quickly"> quickly</label>
-      <label class="opt"><input type="radio" name="q5" value="smooth"> smooth</label>
-      <label class="opt"><input type="radio" name="q5" value="across"> across</label>
-    </div>
-  </div>
+<div class="section">
+  <div class="section-header sh-english">✏️ Section B — English</div>
+  <div class="question" id="q3">
+          <div class="q-text">A paragraph describes the speed of cheetahs, their hunting habits, and the savannah habitat they live in. Best heading?</div>
+          <div class="options"><label class="opt" id="opt-3-A" data-letter="A" onclick="selectOpt(3,'A')">
+            <input type="radio" name="q3" value="A">
+            <span class="opt-letter">A</span>
+            <span>Cheetahs are fast</span>
+          </label><label class="opt" id="opt-3-B" data-letter="B" onclick="selectOpt(3,'B')">
+            <input type="radio" name="q3" value="B">
+            <span class="opt-letter">B</span>
+            <span>The Cheetah: Hunter of the Savannah</span>
+          </label><label class="opt" id="opt-3-C" data-letter="C" onclick="selectOpt(3,'C')">
+            <input type="radio" name="q3" value="C">
+            <span class="opt-letter">C</span>
+            <span>Africa has many animals</span>
+          </label><label class="opt" id="opt-3-D" data-letter="D" onclick="selectOpt(3,'D')">
+            <input type="radio" name="q3" value="D">
+            <span class="opt-letter">D</span>
+            <span>Big cats like to hunt</span>
+          </label></div>
+        </div><div class="question" id="q4">
+          <div class="q-text">A persuasive letter says: 'Imagine a world without bees — no flowers, no fruit, no food.' Why?</div>
+          <div class="options"><label class="opt" id="opt-4-A" data-letter="A" onclick="selectOpt(4,'A')">
+            <input type="radio" name="q4" value="A">
+            <span class="opt-letter">A</span>
+            <span>To entertain with a story</span>
+          </label><label class="opt" id="opt-4-B" data-letter="B" onclick="selectOpt(4,'B')">
+            <input type="radio" name="q4" value="B">
+            <span class="opt-letter">B</span>
+            <span>To help the reader picture the problem</span>
+          </label><label class="opt" id="opt-4-C" data-letter="C" onclick="selectOpt(4,'C')">
+            <input type="radio" name="q4" value="C">
+            <span class="opt-letter">C</span>
+            <span>To provide statistics</span>
+          </label><label class="opt" id="opt-4-D" data-letter="D" onclick="selectOpt(4,'D')">
+            <input type="radio" name="q4" value="D">
+            <span class="opt-letter">D</span>
+            <span>To confuse</span>
+          </label></div>
+        </div><div class="question" id="q5">
+          <div class="q-text">The author writes: 'We MUST act NOW.' Why are capital letters used?<span class="q-star">⭐</span></div>
+          <div class="options"><label class="opt" id="opt-5-A" data-letter="A" onclick="selectOpt(5,'A')">
+            <input type="radio" name="q5" value="A">
+            <span class="opt-letter">A</span>
+            <span>To fill space</span>
+          </label><label class="opt" id="opt-5-B" data-letter="B" onclick="selectOpt(5,'B')">
+            <input type="radio" name="q5" value="B">
+            <span class="opt-letter">B</span>
+            <span>To create emphasis and urgency</span>
+          </label><label class="opt" id="opt-5-C" data-letter="C" onclick="selectOpt(5,'C')">
+            <input type="radio" name="q5" value="C">
+            <span class="opt-letter">C</span>
+            <span>To show confusion</span>
+          </label><label class="opt" id="opt-5-D" data-letter="D" onclick="selectOpt(5,'D')">
+            <input type="radio" name="q5" value="D">
+            <span class="opt-letter">D</span>
+            <span>For decoration</span>
+          </label></div>
+        </div><div class="question" id="q6">
+          <div class="q-text">Marcus arrived early, arranged his notes, and checked his watch repeatedly. What can we infer?</div>
+          <div class="options"><label class="opt" id="opt-6-A" data-letter="A" onclick="selectOpt(6,'A')">
+            <input type="radio" name="q6" value="A">
+            <span class="opt-letter">A</span>
+            <span>Marcus is bored</span>
+          </label><label class="opt" id="opt-6-B" data-letter="B" onclick="selectOpt(6,'B')">
+            <input type="radio" name="q6" value="B">
+            <span class="opt-letter">B</span>
+            <span>Marcus is nervous about something important</span>
+          </label><label class="opt" id="opt-6-C" data-letter="C" onclick="selectOpt(6,'C')">
+            <input type="radio" name="q6" value="C">
+            <span class="opt-letter">C</span>
+            <span>Marcus is lazy</span>
+          </label><label class="opt" id="opt-6-D" data-letter="D" onclick="selectOpt(6,'D')">
+            <input type="radio" name="q6" value="D">
+            <span class="opt-letter">D</span>
+            <span>Marcus is hungry</span>
+          </label></div>
+        </div><div class="question" id="q7">
+          <div class="q-text">'The team won the trophy.' Which is the correct passive version?</div>
+          <div class="options"><label class="opt" id="opt-7-A" data-letter="A" onclick="selectOpt(7,'A')">
+            <input type="radio" name="q7" value="A">
+            <span class="opt-letter">A</span>
+            <span>The trophy was winning</span>
+          </label><label class="opt" id="opt-7-B" data-letter="B" onclick="selectOpt(7,'B')">
+            <input type="radio" name="q7" value="B">
+            <span class="opt-letter">B</span>
+            <span>The trophy won the team</span>
+          </label><label class="opt" id="opt-7-C" data-letter="C" onclick="selectOpt(7,'C')">
+            <input type="radio" name="q7" value="C">
+            <span class="opt-letter">C</span>
+            <span>The trophy was won by the team</span>
+          </label><label class="opt" id="opt-7-D" data-letter="D" onclick="selectOpt(7,'D')">
+            <input type="radio" name="q7" value="D">
+            <span class="opt-letter">D</span>
+            <span>Won the trophy the team</span>
+          </label></div>
+        </div>
+</div>
 
-  <div class="q" id="q6">
-    <div class="qlabel">6. Which sentence is a <strong>question</strong>?</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q6" value="a"> The dog is barking loudly.</label>
-      <label class="opt"><input type="radio" name="q6" value="b"> Please sit down quietly.</label>
-      <label class="opt"><input type="radio" name="q6" value="c"> Where did you put your bag?</label>
-      <label class="opt"><input type="radio" name="q6" value="d"> She ran all the way home.</label>
-    </div>
-  </div>
+<div class="section">
+  <div class="section-header sh-maths">🔢 Section C — Maths</div>
+  <div class="question" id="q8">
+          <div class="q-text">A TV costs £400. The price decreases by 20%. What is the new price?<span class="q-star">⭐</span></div>
+          <div class="options"><label class="opt" id="opt-8-A" data-letter="A" onclick="selectOpt(8,'A')">
+            <input type="radio" name="q8" value="A">
+            <span class="opt-letter">A</span>
+            <span>£300</span>
+          </label><label class="opt" id="opt-8-B" data-letter="B" onclick="selectOpt(8,'B')">
+            <input type="radio" name="q8" value="B">
+            <span class="opt-letter">B</span>
+            <span>£320</span>
+          </label><label class="opt" id="opt-8-C" data-letter="C" onclick="selectOpt(8,'C')">
+            <input type="radio" name="q8" value="C">
+            <span class="opt-letter">C</span>
+            <span>£360</span>
+          </label><label class="opt" id="opt-8-D" data-letter="D" onclick="selectOpt(8,'D')">
+            <input type="radio" name="q8" value="D">
+            <span class="opt-letter">D</span>
+            <span>£380</span>
+          </label></div>
+        </div><div class="question" id="q9">
+          <div class="q-text">After a 25% discount, trousers cost £45. What was the original price?</div>
+          <div class="options"><label class="opt" id="opt-9-A" data-letter="A" onclick="selectOpt(9,'A')">
+            <input type="radio" name="q9" value="A">
+            <span class="opt-letter">A</span>
+            <span>£55</span>
+          </label><label class="opt" id="opt-9-B" data-letter="B" onclick="selectOpt(9,'B')">
+            <input type="radio" name="q9" value="B">
+            <span class="opt-letter">B</span>
+            <span>£56.25</span>
+          </label><label class="opt" id="opt-9-C" data-letter="C" onclick="selectOpt(9,'C')">
+            <input type="radio" name="q9" value="C">
+            <span class="opt-letter">C</span>
+            <span>£60</span>
+          </label><label class="opt" id="opt-9-D" data-letter="D" onclick="selectOpt(9,'D')">
+            <input type="radio" name="q9" value="D">
+            <span class="opt-letter">D</span>
+            <span>£58</span>
+          </label></div>
+        </div><div class="question" id="q10">
+          <div class="q-text">Is 7/8 greater than, less than, or equal to 0.875?</div>
+          <div class="options"><label class="opt" id="opt-10-A" data-letter="A" onclick="selectOpt(10,'A')">
+            <input type="radio" name="q10" value="A">
+            <span class="opt-letter">A</span>
+            <span>Greater than</span>
+          </label><label class="opt" id="opt-10-B" data-letter="B" onclick="selectOpt(10,'B')">
+            <input type="radio" name="q10" value="B">
+            <span class="opt-letter">B</span>
+            <span>Less than</span>
+          </label><label class="opt" id="opt-10-C" data-letter="C" onclick="selectOpt(10,'C')">
+            <input type="radio" name="q10" value="C">
+            <span class="opt-letter">C</span>
+            <span>Equal to</span>
+          </label><label class="opt" id="opt-10-D" data-letter="D" onclick="selectOpt(10,'D')">
+            <input type="radio" name="q10" value="D">
+            <span class="opt-letter">D</span>
+            <span>Cannot tell</span>
+          </label></div>
+        </div><div class="question" id="q11">
+          <div class="q-text">Which of these is a cube number?</div>
+          <div class="options"><label class="opt" id="opt-11-A" data-letter="A" onclick="selectOpt(11,'A')">
+            <input type="radio" name="q11" value="A">
+            <span class="opt-letter">A</span>
+            <span>16</span>
+          </label><label class="opt" id="opt-11-B" data-letter="B" onclick="selectOpt(11,'B')">
+            <input type="radio" name="q11" value="B">
+            <span class="opt-letter">B</span>
+            <span>25</span>
+          </label><label class="opt" id="opt-11-C" data-letter="C" onclick="selectOpt(11,'C')">
+            <input type="radio" name="q11" value="C">
+            <span class="opt-letter">C</span>
+            <span>27</span>
+          </label><label class="opt" id="opt-11-D" data-letter="D" onclick="selectOpt(11,'D')">
+            <input type="radio" name="q11" value="D">
+            <span class="opt-letter">D</span>
+            <span>36</span>
+          </label></div>
+        </div><div class="question" id="q12">
+          <div class="q-text">A monthly salary of £2,400 increases by 5%. What is the new monthly salary?</div>
+          <div class="options"><label class="opt" id="opt-12-A" data-letter="A" onclick="selectOpt(12,'A')">
+            <input type="radio" name="q12" value="A">
+            <span class="opt-letter">A</span>
+            <span>£2,420</span>
+          </label><label class="opt" id="opt-12-B" data-letter="B" onclick="selectOpt(12,'B')">
+            <input type="radio" name="q12" value="B">
+            <span class="opt-letter">B</span>
+            <span>£2,520</span>
+          </label><label class="opt" id="opt-12-C" data-letter="C" onclick="selectOpt(12,'C')">
+            <input type="radio" name="q12" value="C">
+            <span class="opt-letter">C</span>
+            <span>£2,450</span>
+          </label><label class="opt" id="opt-12-D" data-letter="D" onclick="selectOpt(12,'D')">
+            <input type="radio" name="q12" value="D">
+            <span class="opt-letter">D</span>
+            <span>£2,500</span>
+          </label></div>
+        </div>
+</div>
 
-  <div class="q" id="q7">
-    <div class="qlabel">7. Which word contains the <strong>'oa' vowel pattern</strong>?</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q7" value="flat"> flat</label>
-      <label class="opt"><input type="radio" name="q7" value="flit"> flit</label>
-      <label class="opt"><input type="radio" name="q7" value="float"> float</label>
-      <label class="opt"><input type="radio" name="q7" value="flet"> flet</label>
-    </div>
-  </div>
-
-  <div class="q" id="q8">
-    <div class="qlabel">8. In the sentence "She sings beautifully", what type of word is <em>beautifully</em>?</div>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q8" value="noun"> noun</label>
-      <label class="opt"><input type="radio" name="q8" value="verb"> verb</label>
-      <label class="opt"><input type="radio" name="q8" value="adverb"> adverb</label>
-      <label class="opt"><input type="radio" name="q8" value="adjective"> adjective</label>
-    </div>
+<div class="section">
+  <div class="section-header sh-dict">📖 Section D — Dictionary Builder</div>
+  <div class="dict-card">
+    <div class="dict-word">resilient</div>
+    <div class="dict-def">Adjective — able to recover quickly after difficulties or hardship.</div>
+    <div class="dict-eg"><em>"The resilient team kept working despite all the setbacks."</em></div>
+    <input class="dict-input" type="text" placeholder="Write your own sentence using this word..." autocomplete="off">
   </div>
 </div>
 
-<!-- ═══ SECTION 3: MATHS ═══ -->
-<div class="card">
-  <div class="badge">Section 3</div>
-  <div class="sec-title">🔢 Maths</div>
-
-  <div class="q" id="q9">
-    <div class="qlabel">9. Find 30% of 80.</div>
-    <input type="text" id="q9t" placeholder="Your answer..." inputmode="numeric">
-  </div>
-
-  <div class="q" id="q10">
-    <div class="qlabel">10. Work out: −5 + 9</div>
-    <input type="text" id="q10t" placeholder="Your answer..." inputmode="numeric">
-  </div>
-
-  <div class="q" id="q11">
-    <div class="qlabel">11. Write <sup>3</sup>/<sub>10</sub> as a decimal.</div>
-    <input type="text" id="q11t" placeholder="Your answer..." inputmode="decimal">
-  </div>
-
-  <div class="q" id="q12">
-    <div class="qlabel">12. Beads are in a ratio of 2 : 3 (red : blue). If there are 6 red beads, how many blue beads are there?</div>
-    <input type="text" id="q12t" placeholder="Your answer..." inputmode="numeric">
-  </div>
-
-  <div class="q star" id="q13">
-    <div class="qlabel">13. A jacket costs £60. It is reduced by 20%. What is the new price? (Show your working below)</div>
-    <input type="text" id="q13t" placeholder="£..." inputmode="decimal">
-  </div>
+<div class="submit-wrap">
+  <button class="btn-submit" id="btn-submit" onclick="submitExercise()" disabled>
+    ✅ Submit — Done!
+  </button>
+</div>
 </div>
 
-<!-- ═══ SECTION 4: DICTIONARY ═══ -->
-<div class="card">
-  <div class="badge">Section 4</div>
-  <div class="sec-title">📚 Dictionary Builder</div>
-  <div class="dict-word">relentless</div>
-  <div class="dict-hint">Today's word — word #2 in your list</div>
-  <span class="flabel">Look up "relentless" in your dictionary. Write down what it means:</span>
-  <textarea id="dict-def" placeholder="Definition..."></textarea>
-  <span class="flabel">Now write your own sentence using "relentless":</span>
-  <textarea id="dict-sent" placeholder="My sentence..."></textarea>
+<div class="result" id="result">
+  <div class="result-title" id="res-emoji">⭐</div>
+  <div class="result-score" id="res-score">0/13</div>
+  <div style="font-size:1rem;color:#888;margin-bottom:0.5rem" id="res-pct">0%</div>
+  <div class="result-breakdown" id="res-breakdown"></div>
+  <div class="pts-award" id="res-pts">+0 pts</div>
+  <div class="pts-total" id="res-prev"></div>
+  <div style="font-size:1.1rem;font-weight:800;margin-top:0.5rem" id="res-milestone"></div>
+  <div class="pts-next" id="res-next"></div>
 </div>
 
-</main>
-
-<div class="sub-area">
-  <button class="sub-btn" onclick="submitAll()">🚀 Submit Mission Report</button>
-</div>
-
-<div id="result">
-  <div class="big-score" id="rscore"></div>
-  <div class="score-label" id="rmax"></div>
-  <div class="breakdown" id="rbreakdown"></div>
-  <div class="pts-box">
-    <div class="pts-num" id="rpts"></div>
-    <div class="pts-lbl">points earned today</div>
-  </div>
-  <div class="sending" id="rstatus">Sending results...</div>
-</div>
 
 <script>
-const WEBHOOK = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-const ANSWERS = {
-  q1:  { correct:'floated',   tax:'E1.1', topic:'Spelling — vowel patterns', section:'Vocab', hashtags:'#spelling #vowelpatterns' },
-  q2:  { correct:'display',   tax:'E1.1', topic:'Spelling — vowel patterns', section:'Vocab', hashtags:'#spelling #vowelpatterns' },
-  q3:  { correct:'athlete',   tax:'E1.7', topic:'High-frequency tricky words', section:'Vocab', hashtags:'#spelling #vocabulary' },
-  q4:  { correct:'are',       tax:'E2.4', topic:'Neither/nor subject-verb agreement', section:'English', hashtags:'#grammar #subjectverb #agreement' },
-  q5:  { correct:'smooth',    tax:'E2.7', topic:'Adjectives and adverbs', section:'English', hashtags:'#grammar #adjectives' },
-  q6:  { correct:'c',         tax:'E2.9', topic:'Sentence types', section:'English', hashtags:'#grammar #sentencestructure' },
-  q7:  { correct:'float',     tax:'E1.1', topic:'Vowel digraphs — oa', section:'English', hashtags:'#spelling #vowelpatterns' },
-  q8:  { correct:'adverb',    tax:'E2.8', topic:'Parts of speech', section:'English', hashtags:'#grammar' },
-  q9:  { correct:['24'],      tax:'M2.7', topic:'Find a percentage of a quantity', section:'Maths', hashtags:'#percentages #arithmetic', star:false },
-  q10: { correct:['4'],       tax:'M1.8', topic:'Negative number operations', section:'Maths', hashtags:'#negatives #arithmetic', star:false },
-  q11: { correct:['0.3'],     tax:'M2.5', topic:'Fraction to decimal conversion', section:'Maths', hashtags:'#fractions #decimals', star:false },
-  q12: { correct:['9'],       tax:'M3.3', topic:'Ratio word problems', section:'Maths', hashtags:'#ratio #wordedproblems', star:false },
-  q13: { correct:['48','£48','48.00','£48.00'], tax:'M2.8', topic:'Percentage decrease', section:'Maths', hashtags:'#percentages #wordedproblems', star:true }
-};
 
-function getRadio(name) {
-  const sel = document.querySelector(`input[name="${name}"]:checked`);
-  return sel ? sel.value : '';
-}
-function getText(id) {
-  const el = document.getElementById(id);
-  return el ? el.value.trim().toLowerCase().replace(/^£/,'') : '';
-}
-function checkQ(key) {
-  const meta = ANSWERS[key];
-  if (Array.isArray(meta.correct)) {
-    const val = getText(key + 't');
-    return meta.correct.map(c=>c.toLowerCase().replace(/^£/,'')).includes(val);
+const MILESTONES = [[40, "Bronze \ud83e\udd49"], [190, "Silver \ud83e\udd48"], [340, "Gold \ud83e\udd47"], [830, "Platinum \ud83c\udfc6"], [1800, "Diamond \ud83d\udc8e"], [2800, "Champion \ud83c\udfc5"], [4000, "Grand Master \ud83d\udc51"]];
+function getMilestone(pts) {
+  let cur = 'Pre-Bronze', nxt = 'Bronze 🥉', gap = 40 - pts;
+  for (const [t,n] of MILESTONES) {
+    if (pts < t) { nxt = n; gap = t - pts; break; }
+    cur = n; nxt = ''; gap = 0;
   }
-  return getRadio(key) === meta.correct;
+  return {cur, nxt, gap};
+}
+const CHILD='CL', DAY='Tuesday', WEEK=19, WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const PTS_KEY='pts_CL', BASE_PTS=510;
+const SECTIONS=["Vocab", "Vocab", "Vocab", "English", "English", "English", "English", "English", "Maths", "Maths", "Maths", "Maths", "Maths"];
+const CODES=["E4.4", "E4.6", "E4.4", "E5.5", "E5.4", "E5.4", "E5.2", "E2.8", "M2.8", "M2.9", "M2.4", "M4.5", "M2.8"];
+const ANSWERS=["B", "C", "B", "B", "B", "B", "B", "C", "B", "C", "C", "C", "B"];
+const IS_STAR=[false, false, true, false, false, true, false, false, true, false, false, false, false];
+const TOTAL_QS=13;
+const HAS_DICT=true;
+
+let basePts = parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
+if(basePts < BASE_PTS) basePts = BASE_PTS;
+let chosen = new Array(TOTAL_QS).fill(null);
+let submitted = false;
+
+function updateBanner() {
+  const m = getMilestone(basePts);
+  document.getElementById('pts-num').textContent = basePts + ' pts';
+  document.getElementById('mil-cur').textContent = m.cur;
+  if(m.nxt) {
+    document.getElementById('mil-next').textContent = m.gap + ' to ' + m.nxt;
+    const pctPrev = MILESTONES.findIndex(([t])=>basePts<t);
+    const prevT = pctPrev>0?MILESTONES[pctPrev-1][0]:0;
+    const nextT = MILESTONES[pctPrev]?MILESTONES[pctPrev][0]:4000;
+    const pct = Math.round((basePts-prevT)/(nextT-prevT)*100);
+    document.getElementById('mil-fill').style.width = Math.min(100,pct)+'%';
+  } else {
+    document.getElementById('mil-next').textContent = '🏆 MAX!';
+    document.getElementById('mil-fill').style.width = '100%';
+  }
 }
 
-function updateProgress() {
-  const answered = Object.keys(ANSWERS).filter(k => {
-    const m = ANSWERS[k];
-    return Array.isArray(m.correct) ? getText(k+'t') !== '' : getRadio(k) !== '';
-  }).length;
-  document.getElementById('pbar').style.width = (answered/13*100)+'%';
+function selectOpt(qIdx, optLetter) {
+  if(submitted) return;
+  chosen[qIdx] = optLetter;
+  const qEl = document.querySelector('#q'+qIdx);
+  qEl.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+  qEl.querySelector('[data-letter="'+optLetter+'"]').classList.add('selected');
+  checkAllAnswered();
 }
 
-// Poll progress
-setInterval(updateProgress, 800);
+function checkAllAnswered() {
+  const done = chosen.slice(0,TOTAL_QS).every(c=>c!==null);
+  document.getElementById('btn-submit').disabled = !done;
+}
 
-function submitAll() {
-  const results = {};
-  let vocabC=0, engC=0, mathC=0, totalC=0;
-  const qArr = [];
+function submitExercise() {
+  if(submitted) return;
+  submitted = true;
+  document.getElementById('btn-submit').disabled = true;
 
-  Object.keys(ANSWERS).forEach((key, i) => {
-    const meta = ANSWERS[key];
-    const correct = checkQ(key);
-    results[key] = correct;
-    if (correct) totalC++;
-    if (meta.section==='Vocab')   vocabC += correct?1:0;
-    if (meta.section==='English') engC   += correct?1:0;
-    if (meta.section==='Maths')   mathC  += correct?1:0;
-    qArr.push({
-      q_number: i+1,
-      question_id: key,
-      section: meta.section,
-      topic: meta.topic,
-      taxonomy_code: meta.tax,
-      hashtags: meta.hashtags,
-      correct: correct
-    });
+  const results = [];
+  let correct=0, vocabC=0, vocabT=0, engC=0, engT=0, mathC=0, mathT=0;
+  const secTrack = {};
+
+  chosen.forEach((ans,i) => {
+    const isRight = ans === ANSWERS[i];
+    if(isRight) correct++;
+    results.push({q_number:i+1, code:CODES[i], section:SECTIONS[i], correct:isRight});
+    const s = SECTIONS[i];
+    if(!secTrack[s]) secTrack[s]={c:0,t:0};
+    secTrack[s].t++;
+    if(isRight) secTrack[s].c++;
+    // Section counts for scoring
+    if(s==='Vocab'){ vocabT++; if(isRight) vocabC++; }
+    if(s==='English'){ engT++; if(isRight) engC++; }
+    if(s==='Maths'){ mathT++; if(isRight) mathC++; }
   });
 
-  // Points: 5 base + 3 star + 2 dict
-  const starCorrect = results.q13;
-  const dictFilled = document.getElementById('dict-sent').value.trim().length > 3;
-  let pts = 5 + (starCorrect ? 3 : 0) + (dictFilled ? 2 : 0);
+  // Show correct/wrong on each question
+  chosen.forEach((ans,i) => {
+    const isRight = ans === ANSWERS[i];
+    const el = document.querySelector('#q'+i+' [data-letter="'+ans+'"]');
+    if(el) el.classList.add(isRight?'correct':'wrong');
+    if(!isRight) {
+      const corEl = document.querySelector('#q'+i+' [data-letter="'+ANSWERS[i]+'"]');
+      if(corEl) corEl.classList.add('correct');
+    }
+  });
 
+  // Points calculation
+  let pts = 0;
+  if(CHILD==='CL') {
+    pts = 3; // base completion
+    const starQ = IS_STAR.findIndex(s=>s);
+    if(starQ>=0 && chosen[starQ]===ANSWERS[starQ]) pts += 2;
+    const fullSections = ['Vocab','English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts += fullSections.length * 2;
+    pts = Math.min(7, pts);
+  } else {
+    pts = 5;
+    const fullSections = ['English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts += fullSections.length * 3;
+    pts = Math.min(8, pts);
+  }
+
+  const newTotal = basePts + pts;
+  localStorage.setItem(PTS_KEY, newTotal);
+
+  // Score summary
+  let summary = '';
+  if(CHILD==='CL') summary = 'Vocab:'+vocabC+'/'+vocabT+' English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
+  else summary = 'English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
+
+  // Fire webhook
   const payload = {
-    type: 'exercise_result',
-    child: 'CL',
-    date: '2026-05-04',
-    week: 1,
-    day: 'Tuesday',
-    exercise_type: 'Weekday 15-min',
-    subject_focus: 'Mixed',
-    total_correct: totalC,
-    total_questions: 13,
-    points_earned: pts,
-    score_summary: `Vocab:${vocabC}/3 · English:${engC}/5 · Maths:${mathC}/5`,
-    weaknesses_addressed: '#spelling #grammar #percentages #negatives #fractions #ratio',
-    dict_word: 'relentless',
-    dict_saved: dictFilled,
-    questions: qArr
+    type:'exercise_result', child:CHILD, date:new Date().toISOString().split('T')[0],
+    week:WEEK, day:DAY, total_correct:correct, total_questions:TOTAL_QS,
+    points_earned:pts, score_summary:summary, subject_focus:'Mixed',
+    questions:results
   };
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .catch(()=>{});
 
   // Show result screen
-  document.getElementById('exercise').style.display = 'none';
-  document.querySelector('.sub-area').style.display = 'none';
-  document.getElementById('result').style.display = 'block';
-  document.getElementById('rscore').textContent = totalC + '/13';
-  document.getElementById('rmax').textContent = 'Questions correct';
-
-  const pct = Math.round(totalC/13*100);
-  const msg = pct>=80 ? '🔥 Outstanding mission, agent!' : pct>=60 ? '💪 Solid effort today!' : '📚 Keep training — you\'ll nail it!';
-
-  let bhtml = `<div class="brow"><span>Vocab Warm-Up</span><span>${vocabC}/3</span></div>
-    <div class="brow"><span>English</span><span>${engC}/5</span></div>
-    <div class="brow"><span>Maths</span><span>${mathC}/5</span></div>
-    <div class="brow"><span>⭐ Star Question</span><span>${starCorrect?'✅ Correct!':'❌ Keep trying'}</span></div>
-    <div class="brow" style="font-style:italic;color:#94a3b8"><span colspan="2">${msg}</span></div>`;
-
-  // Show per-question feedback
-  bhtml += '<div style="margin-top:12px;font-size:13px;color:#94a3b8">Per question:</div>';
-  qArr.forEach(q => {
-    const icon = q.correct ? '✅' : '❌';
-    bhtml += `<div class="brow" style="font-size:13px"><span>${icon} Q${q.q_number}: ${q.topic}</span></div>`;
-  });
-
-  document.getElementById('rbreakdown').innerHTML = bhtml;
-  document.getElementById('rpts').textContent = '+' + pts + ' pts';
-
-  // Send exercise result
-  fetch(WEBHOOK, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
-    .then(() => {
-      if (dictFilled) {
-        return fetch(WEBHOOK, {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({
-            type:'dictionary_entry', child:'CL', date:'2026-05-04', week:1,
-            word:'relentless', word_position:2,
-            definition: document.getElementById('dict-def').value.trim(),
-            sentence: document.getElementById('dict-sent').value.trim()
-          })
-        });
-      }
-    })
-    .then(() => { document.getElementById('rstatus').textContent = '✅ Results sent!'; })
-    .catch(() => { document.getElementById('rstatus').textContent = '⚠️ Could not send — ask a parent to check connection.'; });
+  showResult(correct, pts, newTotal, summary, secTrack);
 }
+
+function showResult(correct, pts, newTotal, summary, secTrack) {
+  document.getElementById('exercise').style.display='none';
+  const res = document.getElementById('result');
+  res.style.display='block';
+  const pct = Math.round(correct/TOTAL_QS*100);
+  const emoji = pct>=90?'🌟':pct>=75?'⭐':pct>=60?'👍':'💪';
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-score').textContent = correct+'/'+TOTAL_QS;
+  document.getElementById('res-pct').textContent = pct+'%';
+  document.getElementById('res-pts').textContent = '+'+pts+' pts';
+  document.getElementById('res-prev').textContent = (newTotal-pts)+' → '+newTotal+' pts';
+  const m = getMilestone(newTotal);
+  document.getElementById('res-milestone').textContent = m.cur;
+  if(m.nxt) document.getElementById('res-next').textContent = m.gap+' to '+m.nxt;
+
+  // Breakdown
+  let breakdown = '';
+  for(const [s,d] of Object.entries(secTrack)) {
+    breakdown += '<div class="result-row"><span>'+s+'</span><span>'+d.c+'/'+d.t+'</span></div>';
+  }
+  breakdown += '<div class="result-row"><span>Total</span><span>'+correct+'/'+TOTAL_QS+' ('+pct+'%)</span></div>';
+  document.getElementById('res-breakdown').innerHTML = breakdown;
+}
+
+window.onload = updateBanner;
 </script>
 </body>
 </html>
