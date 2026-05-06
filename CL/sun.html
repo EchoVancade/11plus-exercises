@@ -2,283 +2,355 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CL — Sunday Creative Writing</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>CL — Sunday Week 19 (Creative Writing)</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
-
-  .hero{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border-bottom:3px solid #f59e0b;padding:28px 20px 22px;text-align:center}
-  .day-badge{display:inline-block;background:#f59e0b;color:#0f172a;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:10px}
-  .hero h1{font-size:26px;font-weight:800;color:#fff;line-height:1.2}
-  .hero h1 span{color:#f59e0b}
-  .meta-row{display:flex;justify-content:center;gap:18px;margin-top:12px;flex-wrap:wrap}
-  .meta-pill{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:5px 14px;font-size:13px;color:#94a3b8}
-  .meta-pill strong{color:#f59e0b}
-  .pts-pill{background:#f59e0b22;border:1px solid #f59e0b55;border-radius:20px;padding:5px 14px;font-size:13px;color:#fbbf24;font-weight:700}
-
-  /* TIMELINE */
-  .timeline{margin:20px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-  .tl-step{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:12px 10px;text-align:center}
-  .tl-step .mins{font-size:22px;font-weight:800;color:#f59e0b}
-  .tl-step .mins span{font-size:12px;font-weight:400;color:#64748b}
-  .tl-step .label{font-size:11px;color:#94a3b8;margin-top:4px;text-transform:uppercase;letter-spacing:1px}
-  .tl-step .emoji{font-size:20px;margin-bottom:4px}
-
-  /* PROMPT CARD */
-  .section-hdr{margin:24px 16px 10px;display:flex;align-items:center;gap:10px}
-  .section-hdr .icon{font-size:20px}
-  .section-hdr h2{font-size:17px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px}
-
-  .prompt-card{margin:0 16px;background:linear-gradient(135deg,#1e1a2e,#1e293b);border:2px solid #f59e0b;border-radius:16px;padding:24px 20px;text-align:center}
-  .prompt-label{font-size:11px;font-weight:700;color:#f59e0b;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-  .prompt-text{font-size:21px;font-weight:700;color:#fff;line-height:1.4;font-style:italic;margin-bottom:16px}
-  .prompt-note{font-size:13px;color:#94a3b8;line-height:1.5}
-
-  /* STEPS */
-  .step-card{margin:12px 16px;background:#1e293b;border:1px solid #334155;border-radius:14px;overflow:hidden}
-  .step-header{background:#334155;padding:12px 16px;display:flex;align-items:center;gap:10px}
-  .step-num{background:#f59e0b;color:#0f172a;font-weight:800;font-size:13px;min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .step-header h3{font-size:15px;font-weight:700;color:#e2e8f0}
-  .step-header .time{margin-left:auto;font-size:12px;color:#f59e0b;font-weight:700;background:#f59e0b22;padding:3px 10px;border-radius:10px}
-  .step-body{padding:16px}
-  .step-body p{font-size:14px;color:#94a3b8;line-height:1.6;margin-bottom:10px}
-  .step-body p:last-child{margin-bottom:0}
-
-  /* PLAN TABLE */
-  .plan-table{width:100%;border-collapse:collapse;margin-top:8px}
-  .plan-table td{border:1px solid #334155;padding:10px 12px;font-size:14px;color:#94a3b8;vertical-align:top}
-  .plan-table td:first-child{color:#f59e0b;font-weight:700;white-space:nowrap;width:40%}
-  .plan-table .space{color:#475569;font-style:italic;font-size:13px}
-
-  /* WORD TARGETS */
-  .targets{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-  .target{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px 12px;font-size:13px;color:#94a3b8}
-  .target strong{color:#e2e8f0}
-
-  /* WOW WORDS */
-  .wow-words{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
-  .wow{background:#f59e0b22;border:1px solid #f59e0b44;border-radius:8px;padding:5px 10px;font-size:13px;color:#fbbf24;font-style:italic}
-
-  /* CHECKLIST */
-  .checklist{margin:0;padding:0;list-style:none}
-  .checklist li{padding:9px 0;border-bottom:1px solid #334155;font-size:14px;color:#94a3b8;display:flex;align-items:flex-start;gap:12px;line-height:1.4}
-  .checklist li:last-child{border-bottom:none}
-  .checklist li .box{min-width:22px;height:22px;border:2px solid #334155;border-radius:6px;flex-shrink:0;margin-top:1px}
-  .checklist li strong{color:#e2e8f0}
-
-  /* SCORING */
-  .scoring{margin:12px 16px;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:16px}
-  .scoring h3{font-size:13px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
-  .score-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #334155;font-size:13px;color:#94a3b8}
-  .score-row:last-child{border-bottom:none}
-  .score-row .pts{color:#f59e0b;font-weight:700}
-
-  /* RUBRIC */
-  .rubric-toggle{display:block;margin:20px 16px 0;background:#0f172a;border:1px solid #334155;border-radius:10px;padding:12px 16px;font-size:13px;color:#64748b;cursor:pointer;text-align:left;width:calc(100% - 32px)}
-  .rubric-panel{display:none;margin:0 16px;background:#0f172a;border:1px solid #334155;border-radius:0 0 10px 10px;padding:16px;font-size:13px;line-height:1.6;color:#94a3b8}
-  .rubric-panel.open{display:block}
-  .rubric-panel h4{color:#f59e0b;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin:10px 0 4px}
-  .rubric-panel h4:first-child{margin-top:0}
-  .rubric-panel table{width:100%;border-collapse:collapse;margin-top:6px}
-  .rubric-panel td{border:1px solid #334155;padding:7px 10px;font-size:12px;vertical-align:top}
-  .rubric-panel td:first-child{color:#f59e0b;font-weight:700;white-space:nowrap}
-
-  /* SUBMIT */
-  .submit-area{margin:28px 16px 0;text-align:center}
-  .submit-btn{background:#f59e0b;color:#0f172a;font-size:18px;font-weight:800;border:none;border-radius:16px;padding:18px 40px;cursor:pointer;width:100%;max-width:400px;-webkit-tap-highlight-color:transparent}
-  .submit-btn:active{background:#d97706}
-  .submit-btn.sent{background:#22c55e;color:#fff}
-  .result-card{display:none;margin:20px 16px;background:#1e293b;border:2px solid #22c55e;border-radius:16px;padding:24px;text-align:center}
-  .result-card.show{display:block}
-  .result-card .big-icon{font-size:52px;margin-bottom:10px}
-  .result-card h2{font-size:22px;font-weight:800;color:#22c55e;margin-bottom:8px}
-  .result-card p{font-size:15px;color:#94a3b8;line-height:1.6;margin-bottom:6px}
-  .pts-earned{font-size:32px;font-weight:800;color:#f59e0b;margin:10px 0}
-  .scan-tip{background:#0f172a;border-radius:10px;padding:14px;margin-top:14px;font-size:14px;color:#64748b;line-height:1.5}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height:100vh;padding-bottom:2rem}
+.header{background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;padding:1rem 1.25rem 0.875rem;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header h1{font-size:1.1rem;font-weight:800;margin-bottom:0.25rem}
+.pts-bar{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.pts-num{font-size:1.5rem;font-weight:800}
+.pts-sub{font-size:0.8rem;opacity:.9}
+.milestone-track{height:6px;background:rgba(255,255,255,.3);border-radius:3px;flex:1;min-width:80px;margin:0 0.25rem}
+.milestone-fill{height:100%;background:#fff;border-radius:3px;transition:width .5s}
+.rules{margin:1rem;background:#fff;border-left:4px solid #FF6B35;border-radius:0 10px 10px 0;padding:0.875rem 1rem;display:flex;flex-direction:column;gap:0.5rem}
+.rule-item{font-size:0.85rem;color:#444;line-height:1.5}
+.rule-item strong{color:#E85D04}
+.section{margin:1rem;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.section-header{padding:0.75rem 1rem;font-weight:800;font-size:0.9rem;letter-spacing:0.03em;color:#fff}
+.sh-vocab{background:#7B2D8B}
+.sh-english{background:#0077B6}
+.sh-maths{background:#2D9E2D}
+.sh-dict{background:#C77800}
+.sh-comp{background:#0077B6}
+.sh-cw{background:#7B2D8B}
+.question{padding:0.875rem 1rem;border-bottom:1px solid #F5F0EB}
+.question:last-child{border-bottom:none}
+.q-text{font-size:0.95rem;font-weight:700;line-height:1.5;margin-bottom:0.625rem}
+.q-star{color:#FF6B35;font-size:0.85rem;margin-left:4px}
+.options{display:flex;flex-direction:column;gap:0.375rem}
+.opt{display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.75rem;border-radius:10px;border:2px solid #E8E0D8;background:#FAFAF8;cursor:pointer;font-size:0.9rem;font-weight:600;min-height:44px;transition:all .15s}
+.opt:active{background:#F0EBE3}
+.opt input{position:absolute;opacity:0;width:0}
+.opt-letter{width:22px;height:22px;border-radius:50%;border:2px solid #C0B8B0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;flex-shrink:0;color:#888;transition:all .15s}
+.opt.selected{border-color:#FF6B35;background:#FFF3EE}
+.opt.selected .opt-letter{background:#FF6B35;border-color:#FF6B35;color:#fff}
+.opt.correct{border-color:#2D9E2D;background:#F0FAF0}
+.opt.correct .opt-letter{background:#2D9E2D;border-color:#2D9E2D;color:#fff}
+.opt.wrong{border-color:#D62828;background:#FFF0F0}
+.opt.wrong .opt-letter{background:#D62828;border-color:#D62828;color:#fff}
+.dict-card{padding:1rem}
+.dict-word{font-size:1.2rem;font-weight:800;color:#C77800;margin-bottom:0.25rem}
+.dict-def{font-size:0.9rem;color:#555;margin-bottom:0.5rem;line-height:1.5}
+.dict-eg{font-size:0.85rem;font-style:italic;color:#777;margin-bottom:0.75rem}
+.dict-input{width:100%;border:2px solid #E8E0D8;border-radius:10px;padding:0.625rem 0.75rem;font-size:0.9rem;font-family:'Nunito',sans-serif;min-height:44px;color:#2D2D2D}
+.dict-input:focus{outline:none;border-color:#C77800}
+.submit-wrap{margin:1.25rem}
+.btn-submit{width:100%;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:14px;padding:1rem;font-size:1.1rem;font-weight:800;font-family:'Nunito',sans-serif;min-height:54px;cursor:pointer;letter-spacing:0.02em;box-shadow:0 4px 12px rgba(255,107,53,.4);transition:transform .1s}
+.btn-submit:active{transform:scale(.98)}
+.btn-submit:disabled{background:#ccc;box-shadow:none;cursor:default}
+.result{display:none;padding:1.25rem;text-align:center}
+.result-title{font-size:1.6rem;font-weight:800;margin-bottom:0.5rem}
+.result-score{font-size:3rem;font-weight:800;color:#FF6B35;margin:0.5rem 0}
+.result-breakdown{background:#fff;border-radius:14px;padding:1rem;margin:0.75rem 0;text-align:left}
+.result-row{display:flex;justify-content:space-between;padding:0.375rem 0;border-bottom:1px solid #F5F0EB;font-size:0.9rem}
+.result-row:last-child{border:none;font-weight:800;font-size:1rem}
+.pts-award{font-size:1.2rem;font-weight:800;color:#2D9E2D;margin:0.5rem 0}
+.pts-total{font-size:2rem;font-weight:800;color:#7B2D8B}
+.pts-next{font-size:0.85rem;color:#888;margin-top:0.25rem}
+.passage{background:#F5F5F5;border-radius:10px;padding:1rem;margin:0.875rem 1rem 0;font-size:0.88rem;line-height:1.7;color:#333}
+.passage h3{font-size:1rem;font-weight:800;margin-bottom:0.5rem;color:#0077B6}
+.writing-prompt{margin:0.875rem 1rem;background:#FFF8F0;border:2px dashed #FF6B35;border-radius:10px;padding:1rem}
+.writing-prompt p{font-size:0.9rem;color:#555;line-height:1.5;margin-bottom:0.625rem}
+.writing-input{width:100%;border:2px solid #E8E0D8;border-radius:10px;padding:0.625rem 0.75rem;font-size:0.9rem;font-family:'Nunito',sans-serif;min-height:100px;resize:vertical;color:#2D2D2D}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
-<div class="hero">
-  <div class="day-badge">✍️ Sunday · Week 1</div>
-  <h1>Creative <span>Writing</span></h1>
-  <div class="meta-row">
-    <div class="meta-pill" id="date-pill">Loading…</div>
-    <div class="meta-pill">⏱ <strong>30 mins</strong></div>
-    <div class="pts-pill">+8 pts + bonus for top writing</div>
-  </div>
-</div>
-
-<!-- TIMELINE -->
-<div class="timeline">
-  <div class="tl-step">
-    <div class="emoji">🗺</div>
-    <div class="mins">5 <span>min</span></div>
-    <div class="label">Plan</div>
-  </div>
-  <div class="tl-step">
-    <div class="emoji">✍️</div>
-    <div class="mins">20 <span>min</span></div>
-    <div class="label">Write</div>
-  </div>
-  <div class="tl-step">
-    <div class="emoji">🔍</div>
-    <div class="mins">5 <span>min</span></div>
-    <div class="label">Check</div>
-  </div>
-</div>
-
-<!-- PROMPT -->
-<div class="section-hdr"><div class="icon">💡</div><h2>Your Prompt</h2></div>
-<div class="prompt-card">
-  <div class="prompt-label">Week 1 — Story Starter</div>
-  <div class="prompt-text">"You open a door that wasn't there yesterday. Write the story of what happens next."</div>
-  <div class="prompt-note">You can write a full short story, or just an exciting opening chapter. Your choice!</div>
-</div>
-
-<!-- STEP 1: PLAN -->
-<div class="step-card">
-  <div class="step-header">
-    <div class="step-num">1</div>
-    <h3>Plan Your Story</h3>
-    <div class="time">5 min</div>
-  </div>
-  <div class="step-body">
-    <p>Fill in this plan on your paper <strong>before</strong> you start writing. Good writers plan first!</p>
-    <table class="plan-table">
-      <tr><td>Who is the main character?</td><td class="space">Write their name + one thing about them</td></tr>
-      <tr><td>Where does the door appear?</td><td class="space">Bedroom? Garden? School?</td></tr>
-      <tr><td>What is behind the door?</td><td class="space">Another world? A secret room? The past?</td></tr>
-      <tr><td>What is the problem?</td><td class="space">Something goes wrong or is surprising</td></tr>
-      <tr><td>Beginning</td><td class="space">First thing that happens</td></tr>
-      <tr><td>Middle</td><td class="space">The exciting part</td></tr>
-      <tr><td>End</td><td class="space">How it finishes (happy, mysterious, cliffhanger?)</td></tr>
-    </table>
-  </div>
-</div>
-
-<!-- STEP 2: WRITE -->
-<div class="step-card">
-  <div class="step-header">
-    <div class="step-num">2</div>
-    <h3>Write Your Story</h3>
-    <div class="time">20 min</div>
-  </div>
-  <div class="step-body">
-    <p>Write on your lined paper. Aim for:</p>
-    <div class="targets">
-      <div class="target"><strong>150–200 words</strong> minimum</div>
-      <div class="target"><strong>Paragraphs</strong> — new idea, new paragraph</div>
-      <div class="target"><strong>2+ "wow words"</strong> from the list below</div>
+<div class="header" style="background:linear-gradient(135deg,#7B2D8B,#4A0080)">
+  <h1>CL — Sunday Week 19 · Creative Writing</h1>
+  <div class="pts-bar">
+    <span class="pts-num" id="pts-num">510 pts</span>
+    <div class="milestone-track"><div class="milestone-fill" id="mil-fill" style="width:50%"></div></div>
+    <div>
+      <div class="pts-sub" id="mil-cur">Gold 🥇</div>
+      <div class="pts-sub" id="mil-next">320 to Platinum 🏆</div>
     </div>
-    <p style="margin-top:14px">Try to use some of these <strong style="color:#f59e0b">wow words</strong> in your story:</p>
-    <div class="wow-words">
-      <div class="wow">cascaded</div>
-      <div class="wow">trembling</div>
-      <div class="wow">peculiar</div>
-      <div class="wow">shimmered</div>
-      <div class="wow">hesitantly</div>
-      <div class="wow">ancient</div>
-      <div class="wow">sprawling</div>
-      <div class="wow">glimmered</div>
-    </div>
-    <p style="margin-top:14px;font-size:13px;color:#64748b">Don't worry about making it perfect — write first, fix later. Keep going!</p>
   </div>
 </div>
-
-<!-- STEP 3: CHECK -->
-<div class="step-card">
-  <div class="step-header">
-    <div class="step-num">3</div>
-    <h3>Self-Edit Checklist</h3>
-    <div class="time">5 min</div>
-  </div>
-  <div class="step-body">
-    <p>Read your story back to yourself quietly. Tick each box when you're happy with it:</p>
-    <ul class="checklist">
-      <li><div class="box"></div><div><strong>Capital letters</strong> — every sentence starts with one. Names too.</div></li>
-      <li><div class="box"></div><div><strong>Full stops</strong> — every sentence ends with one (or ! or ?).</div></li>
-      <li><div class="box"></div><div><strong>Speech marks</strong> — if anyone speaks, it's in "quotes".</div></li>
-      <li><div class="box"></div><div><strong>Paragraphs</strong> — did you start a new paragraph for each new idea?</div></li>
-      <li><div class="box"></div><div><strong>Varied sentences</strong> — are all your sentences the same length? Mix short and long.</div></li>
-      <li><div class="box"></div><div><strong>Wow words</strong> — have you used at least 2 interesting or unusual words?</div></li>
-      <li><div class="box"></div><div><strong>Show, don't tell</strong> — instead of "she was scared," can you show it? ("Her hands trembled.")</div></li>
-      <li><div class="box"></div><div><strong>Does it make sense?</strong> — read it as if you've never seen it before.</div></li>
-    </ul>
-  </div>
+<div id="exercise">
+<div class="section">
+  <div class="section-header sh-cw">✍️ Creative Writing — The Mysterious Door</div>
+  <div class="question" id="q0">
+          <div class="q-text">Which is the most effective story opening?</div>
+          <div class="options"><label class="opt" id="opt-0-A" data-letter="A" onclick="selectOpt(0,'A')">
+            <input type="radio" name="q0" value="A">
+            <span class="opt-letter">A</span>
+            <span>It was a dark night.</span>
+          </label><label class="opt" id="opt-0-B" data-letter="B" onclick="selectOpt(0,'B')">
+            <input type="radio" name="q0" value="B">
+            <span class="opt-letter">B</span>
+            <span>Something was wrong — I could feel it before I even opened my eyes.</span>
+          </label><label class="opt" id="opt-0-C" data-letter="C" onclick="selectOpt(0,'C')">
+            <input type="radio" name="q0" value="C">
+            <span class="opt-letter">C</span>
+            <span>There was a door.</span>
+          </label><label class="opt" id="opt-0-D" data-letter="D" onclick="selectOpt(0,'D')">
+            <input type="radio" name="q0" value="D">
+            <span class="opt-letter">D</span>
+            <span>The day started normally.</span>
+          </label></div>
+        </div><div class="question" id="q1">
+          <div class="q-text">Which sentence uses the most vivid descriptive language?<span class="q-star">⭐</span></div>
+          <div class="options"><label class="opt" id="opt-1-A" data-letter="A" onclick="selectOpt(1,'A')">
+            <input type="radio" name="q1" value="A">
+            <span class="opt-letter">A</span>
+            <span>The flowers were nice.</span>
+          </label><label class="opt" id="opt-1-B" data-letter="B" onclick="selectOpt(1,'B')">
+            <input type="radio" name="q1" value="B">
+            <span class="opt-letter">B</span>
+            <span>The room was big.</span>
+          </label><label class="opt" id="opt-1-C" data-letter="C" onclick="selectOpt(1,'C')">
+            <input type="radio" name="q1" value="C">
+            <span class="opt-letter">C</span>
+            <span>The ancient door groaned like a wounded animal, its hinges weeping rust.</span>
+          </label><label class="opt" id="opt-1-D" data-letter="D" onclick="selectOpt(1,'D')">
+            <input type="radio" name="q1" value="D">
+            <span class="opt-letter">D</span>
+            <span>It was an old door with rust.</span>
+          </label></div>
+        </div><div class="question" id="q2">
+          <div class="q-text">'Mia straightened her shoulders, took a deep breath, and pushed the door open despite her racing heart.' What does this tell us about Mia?</div>
+          <div class="options"><label class="opt" id="opt-2-A" data-letter="A" onclick="selectOpt(2,'A')">
+            <input type="radio" name="q2" value="A">
+            <span class="opt-letter">A</span>
+            <span>She is frightened and gives up</span>
+          </label><label class="opt" id="opt-2-B" data-letter="B" onclick="selectOpt(2,'B')">
+            <input type="radio" name="q2" value="B">
+            <span class="opt-letter">B</span>
+            <span>She is scared but shows courage</span>
+          </label><label class="opt" id="opt-2-C" data-letter="C" onclick="selectOpt(2,'C')">
+            <input type="radio" name="q2" value="C">
+            <span class="opt-letter">C</span>
+            <span>She doesn't care at all</span>
+          </label><label class="opt" id="opt-2-D" data-letter="D" onclick="selectOpt(2,'D')">
+            <input type="radio" name="q2" value="D">
+            <span class="opt-letter">D</span>
+            <span>She is confused</span>
+          </label></div>
+        </div><div class="question" id="q3">
+          <div class="q-text">'The corridor stretched ahead in silence, broken only by the distant drip of water.' What atmosphere does this create?</div>
+          <div class="options"><label class="opt" id="opt-3-A" data-letter="A" onclick="selectOpt(3,'A')">
+            <input type="radio" name="q3" value="A">
+            <span class="opt-letter">A</span>
+            <span>Cheerful and welcoming</span>
+          </label><label class="opt" id="opt-3-B" data-letter="B" onclick="selectOpt(3,'B')">
+            <input type="radio" name="q3" value="B">
+            <span class="opt-letter">B</span>
+            <span>Tense, lonely, and slightly ominous</span>
+          </label><label class="opt" id="opt-3-C" data-letter="C" onclick="selectOpt(3,'C')">
+            <input type="radio" name="q3" value="C">
+            <span class="opt-letter">C</span>
+            <span>Busy and exciting</span>
+          </label><label class="opt" id="opt-3-D" data-letter="D" onclick="selectOpt(3,'D')">
+            <input type="radio" name="q3" value="D">
+            <span class="opt-letter">D</span>
+            <span>Peaceful and relaxing</span>
+          </label></div>
+        </div><div class="question" id="q4">
+          <div class="q-text">Which passage shows the best variety of sentence lengths?</div>
+          <div class="options"><label class="opt" id="opt-4-A" data-letter="A" onclick="selectOpt(4,'A')">
+            <input type="radio" name="q4" value="A">
+            <span class="opt-letter">A</span>
+            <span>The boy ran. He ran fast. He ran quickly. He ran away.</span>
+          </label><label class="opt" id="opt-4-B" data-letter="B" onclick="selectOpt(4,'B')">
+            <input type="radio" name="q4" value="B">
+            <span class="opt-letter">B</span>
+            <span>She stopped. Heart hammering, she pressed her back against the wall and listened — silence, then footsteps.</span>
+          </label><label class="opt" id="opt-4-C" data-letter="C" onclick="selectOpt(4,'C')">
+            <input type="radio" name="q4" value="C">
+            <span class="opt-letter">C</span>
+            <span>The place was very old and it was also very dark and it was also very quiet and scary.</span>
+          </label><label class="opt" id="opt-4-D" data-letter="D" onclick="selectOpt(4,'D')">
+            <input type="radio" name="q4" value="D">
+            <span class="opt-letter">D</span>
+            <span>He looked.</span>
+          </label></div>
+        </div>
 </div>
-
-<!-- BONUS POINTS GUIDE -->
-<div class="scoring">
-  <h3>📊 How your writing is marked</h3>
-  <div class="score-row"><span>Complete the exercise</span><span class="pts">+8 pts</span></div>
-  <div class="score-row"><span>Strong vocabulary (wow words used well)</span><span class="pts">+3 pts</span></div>
-  <div class="score-row"><span>Excellent structure (beginning, middle, end)</span><span class="pts">+3 pts</span></div>
-  <div class="score-row"><span>Top band overall (Claude's assessment)</span><span class="pts">+9 pts bonus</span></div>
+<div class="writing-prompt">
+  <p><strong>✍️ Your Turn:</strong> Write 3 sentences describing what you see, hear, and feel as you step through the mysterious door. Try to use at least one interesting word for each sense!</p>
+  <textarea class="writing-input" placeholder="I see... I hear... I feel..."></textarea>
 </div>
-
-<!-- RUBRIC (parent / Claude) -->
-<button class="rubric-toggle" onclick="toggleRubric()">🔍 Parent / Claude marking guide — tap to show</button>
-<div class="rubric-panel" id="rubric">
-  <h4>Marking Bands</h4>
-  <table>
-    <tr><td>Top (15 pts bonus)</td><td>Imaginative, structured, varied sentences, 2+ wow words used correctly, clear voice. Suton SET Stage 2 ready.</td></tr>
-    <tr><td>Good (9 pts bonus)</td><td>Clear story with beginning/middle/end. At least one interesting word. Some varied punctuation.</td></tr>
-    <tr><td>Developing (3 pts bonus)</td><td>Story present but underdeveloped. Mainly simple sentences. Spellings mostly correct.</td></tr>
-    <tr><td>Needs support (0 bonus)</td><td>Incomplete or very short. Focus feedback on encouragement + one specific thing to try next time.</td></tr>
-  </table>
-  <h4>Key things to look for (Sutton SET Stage 2 criteria)</h4>
-  <ul>
-    <li>Varied sentence openers (not all starting with "I" or "The")</li>
-    <li>Show don't tell — does she describe feelings through action?</li>
-    <li>Paragraphing — new idea = new paragraph</li>
-    <li>Ambitious vocabulary — wow words used in correct context</li>
-    <li>Ending — is it satisfying? Surprising? Deliberate?</li>
-  </ul>
-  <h4>Feedback approach</h4>
-  <ul>
-    <li>Lead with a specific genuine positive ("I love the way you wrote…")</li>
-    <li>One clear improvement target only ("Next time, try…")</li>
-    <li>Link to Sutton SET — "This is exactly the kind of writing Wilson's is looking for"</li>
-  </ul>
+<div class="submit-wrap">
+  <button class="btn-submit" id="btn-submit" onclick="submitExercise()" disabled>✅ Submit — Done!</button>
 </div>
-
-<!-- SUBMIT -->
-<div class="submit-area">
-  <button class="submit-btn" id="submit-btn" onclick="submitDone()">All Done! 📸 Take a Photo</button>
 </div>
-
-<div class="result-card" id="result-card">
-  <div class="big-icon">🌟</div>
-  <h2>Story Complete!</h2>
-  <p>That took real effort — brilliant work, CL.</p>
-  <div class="pts-earned">+8 pts earned!</div>
-  <div class="scan-tip">📸 <strong>Photo time!</strong><br>Ask a parent to photograph both your <strong>plan</strong> and your <strong>story</strong>, then upload to Claude for marking. Bonus points await!</div>
+<div class="result" id="result">
+  <div class="result-title" id="res-emoji">✍️</div>
+  <div class="result-score" id="res-score">0/5</div>
+  <div style="font-size:1rem;color:#888;margin-bottom:0.5rem" id="res-pct">0%</div>
+  <div class="result-breakdown" id="res-breakdown"></div>
+  <div class="pts-award" id="res-pts">+0 pts</div>
+  <div class="pts-total" id="res-prev"></div>
+  <div style="font-size:1.1rem;font-weight:800;margin-top:0.5rem" id="res-milestone"></div>
+  <div class="pts-next" id="res-next"></div>
 </div>
 
 <script>
-const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const now=new Date();
-document.getElementById('date-pill').textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
 
-function toggleRubric(){document.getElementById('rubric').classList.toggle('open');}
-
-function submitDone(){
-  const btn=document.getElementById('submit-btn');
-  btn.disabled=true;btn.textContent='Sending…';
-  const dateStr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-  fetch('https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({type:'weekend_session',child:'CL',date:dateStr,week:1,day:'Sunday',session_type:'creative_writing',prompt:'You open a door that wasn\'t there yesterday',points_earned:8})
-  }).catch(()=>{});
-  setTimeout(()=>{
-    btn.textContent='Logged ✓';btn.classList.add('sent');
-    const rc=document.getElementById('result-card');rc.classList.add('show');rc.scrollIntoView({behavior:'smooth'});
-  },1200);
+const MILESTONES = [[40, "Bronze \ud83e\udd49"], [190, "Silver \ud83e\udd48"], [340, "Gold \ud83e\udd47"], [830, "Platinum \ud83c\udfc6"], [1800, "Diamond \ud83d\udc8e"], [2800, "Champion \ud83c\udfc5"], [4000, "Grand Master \ud83d\udc51"]];
+function getMilestone(pts) {
+  let cur = 'Pre-Bronze', nxt = 'Bronze 🥉', gap = 40 - pts;
+  for (const [t,n] of MILESTONES) {
+    if (pts < t) { nxt = n; gap = t - pts; break; }
+    cur = n; nxt = ''; gap = 0;
+  }
+  return {cur, nxt, gap};
 }
+const CHILD='CL', DAY='Sunday', WEEK=19, WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const PTS_KEY='pts_CL', BASE_PTS=510;
+const SECTIONS=["Creative Writing", "Creative Writing", "Creative Writing", "Creative Writing", "Creative Writing"];
+const CODES=["E6.1", "E6.2", "E6.3", "E6.4", "E6.5"];
+const ANSWERS=["B", "C", "B", "B", "B"];
+const IS_STAR=[false, true, false, false, false];
+const TOTAL_QS=5;
+const HAS_DICT=true;
+
+let basePts = parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
+if(basePts < BASE_PTS) basePts = BASE_PTS;
+let chosen = new Array(TOTAL_QS).fill(null);
+let submitted = false;
+
+function updateBanner() {
+  const m = getMilestone(basePts);
+  document.getElementById('pts-num').textContent = basePts + ' pts';
+  document.getElementById('mil-cur').textContent = m.cur;
+  if(m.nxt) {
+    document.getElementById('mil-next').textContent = m.gap + ' to ' + m.nxt;
+    const pctPrev = MILESTONES.findIndex(([t])=>basePts<t);
+    const prevT = pctPrev>0?MILESTONES[pctPrev-1][0]:0;
+    const nextT = MILESTONES[pctPrev]?MILESTONES[pctPrev][0]:4000;
+    const pct = Math.round((basePts-prevT)/(nextT-prevT)*100);
+    document.getElementById('mil-fill').style.width = Math.min(100,pct)+'%';
+  } else {
+    document.getElementById('mil-next').textContent = '🏆 MAX!';
+    document.getElementById('mil-fill').style.width = '100%';
+  }
+}
+
+function selectOpt(qIdx, optLetter) {
+  if(submitted) return;
+  chosen[qIdx] = optLetter;
+  const qEl = document.querySelector('#q'+qIdx);
+  qEl.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
+  qEl.querySelector('[data-letter="'+optLetter+'"]').classList.add('selected');
+  checkAllAnswered();
+}
+
+function checkAllAnswered() {
+  const done = chosen.slice(0,TOTAL_QS).every(c=>c!==null);
+  document.getElementById('btn-submit').disabled = !done;
+}
+
+function submitExercise() {
+  if(submitted) return;
+  submitted = true;
+  document.getElementById('btn-submit').disabled = true;
+
+  const results = [];
+  let correct=0, vocabC=0, vocabT=0, engC=0, engT=0, mathC=0, mathT=0;
+  const secTrack = {};
+
+  chosen.forEach((ans,i) => {
+    const isRight = ans === ANSWERS[i];
+    if(isRight) correct++;
+    results.push({q_number:i+1, code:CODES[i], section:SECTIONS[i], correct:isRight});
+    const s = SECTIONS[i];
+    if(!secTrack[s]) secTrack[s]={c:0,t:0};
+    secTrack[s].t++;
+    if(isRight) secTrack[s].c++;
+    // Section counts for scoring
+    if(s==='Vocab'){ vocabT++; if(isRight) vocabC++; }
+    if(s==='English'){ engT++; if(isRight) engC++; }
+    if(s==='Maths'){ mathT++; if(isRight) mathC++; }
+  });
+
+  // Show correct/wrong on each question
+  chosen.forEach((ans,i) => {
+    const isRight = ans === ANSWERS[i];
+    const el = document.querySelector('#q'+i+' [data-letter="'+ans+'"]');
+    if(el) el.classList.add(isRight?'correct':'wrong');
+    if(!isRight) {
+      const corEl = document.querySelector('#q'+i+' [data-letter="'+ANSWERS[i]+'"]');
+      if(corEl) corEl.classList.add('correct');
+    }
+  });
+
+  // Points calculation
+  let pts = 0;
+  if(CHILD==='CL') {
+    pts = 3; // base completion
+    const starQ = IS_STAR.findIndex(s=>s);
+    if(starQ>=0 && chosen[starQ]===ANSWERS[starQ]) pts += 2;
+    const fullSections = ['Vocab','English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts += fullSections.length * 2;
+    pts = Math.min(7, pts);
+  } else {
+    pts = 5;
+    const fullSections = ['English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts += fullSections.length * 3;
+    pts = Math.min(8, pts);
+  }
+
+  const newTotal = basePts + pts;
+  localStorage.setItem(PTS_KEY, newTotal);
+
+  // Score summary
+  let summary = '';
+  if(CHILD==='CL') summary = 'Vocab:'+vocabC+'/'+vocabT+' English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
+  else summary = 'English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
+
+  // Fire webhook
+  const payload = {
+    type:'exercise_result', child:CHILD, date:new Date().toISOString().split('T')[0],
+    week:WEEK, day:DAY, total_correct:correct, total_questions:TOTAL_QS,
+    points_earned:pts, score_summary:summary, subject_focus:'Mixed',
+    questions:results
+  };
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .catch(()=>{});
+
+  // Show result screen
+  showResult(correct, pts, newTotal, summary, secTrack);
+}
+
+function showResult(correct, pts, newTotal, summary, secTrack) {
+  document.getElementById('exercise').style.display='none';
+  const res = document.getElementById('result');
+  res.style.display='block';
+  const pct = Math.round(correct/TOTAL_QS*100);
+  const emoji = pct>=90?'🌟':pct>=75?'⭐':pct>=60?'👍':'💪';
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-score').textContent = correct+'/'+TOTAL_QS;
+  document.getElementById('res-pct').textContent = pct+'%';
+  document.getElementById('res-pts').textContent = '+'+pts+' pts';
+  document.getElementById('res-prev').textContent = (newTotal-pts)+' → '+newTotal+' pts';
+  const m = getMilestone(newTotal);
+  document.getElementById('res-milestone').textContent = m.cur;
+  if(m.nxt) document.getElementById('res-next').textContent = m.gap+' to '+m.nxt;
+
+  // Breakdown
+  let breakdown = '';
+  for(const [s,d] of Object.entries(secTrack)) {
+    breakdown += '<div class="result-row"><span>'+s+'</span><span>'+d.c+'/'+d.t+'</span></div>';
+  }
+  breakdown += '<div class="result-row"><span>Total</span><span>'+correct+'/'+TOTAL_QS+' ('+pct+'%)</span></div>';
+  document.getElementById('res-breakdown').innerHTML = breakdown;
+}
+
+window.onload = updateBanner;
 </script>
 </body>
 </html>
