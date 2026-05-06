@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CL Mission HQ</title>
-  <style>
-    body { background: #0f172a; color: #f59e0b; font-family: -apple-system, sans-serif;
-           display: flex; align-items: center; justify-content: center;
-           height: 100vh; margin: 0; text-align: center; }
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    p  { color: #94a3b8; font-size: 15px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CL Exercises</title>
+<script>
+const d=new Date().getDay();
+const pages=['sun.html','mon.html','tue.html','wed.html','thu.html','fri.html','sat.html'];
+window.location.replace(pages[d]);
+</script>
 </head>
-<body>
-  <div>
-    <h1>🎯 Launching Mission...</h1>
-    <p>Loading today's exercise</p>
-  </div>
-  <script>
-    const day = new Date().getDay();
-    const files = { 0:'sun.html', 1:'mon.html', 2:'tue.html', 3:'wed.html', 4:'thu.html', 5:'fri.html', 6:'sat.html' };
-    window.location.replace(files[day] || 'mon.html');
-  </script>
+<body style="font-family:sans-serif;text-align:center;padding:2rem">
+<p>Loading today's exercise...</p>
 </body>
 </html>
