@@ -1,26 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IL Star Academy</title>
-  <style>
-    body { background: #fdf6ff; color: #7c3aed; font-family: -apple-system, sans-serif;
-           display: flex; align-items: center; justify-content: center;
-           height: 100vh; margin: 0; text-align: center; }
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    p  { color: #9333ea; font-size: 15px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IL Exercises</title>
+<script>
+const d=new Date().getDay();
+// IL has no weekend files — redirect to Monday on weekends
+const pages={1:'mon.html',2:'tue.html',3:'wed.html',4:'thu.html',5:'fri.html'};
+const page=pages[d]||'mon.html';
+window.location.replace(page);
+</script>
 </head>
-<body>
-  <div>
-    <h1>⭐ Loading Star Academy...</h1>
-    <p>Getting your exercise ready!</p>
-  </div>
-  <script>
-    const day = new Date().getDay();
-    const files = { 0:'sun.html', 1:'mon.html', 2:'tue.html', 3:'wed.html', 4:'thu.html', 5:'fri.html', 6:'sat.html' };
-    window.location.replace(files[day] || 'mon.html');
-  </script>
+<body style="font-family:sans-serif;text-align:center;padding:2rem">
+<p>Loading today's exercise...</p>
 </body>
 </html>
