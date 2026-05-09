@@ -3,14 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CL Exercises</title>
-<script>
-const d=new Date().getDay();
-const pages=['sun.html','mon.html','tue.html','wed.html','thu.html','fri.html','sat.html'];
-window.location.replace(pages[d]);
-</script>
+<title>CL Daily Exercise</title>
+<style>
+body{font-family:-apple-system,sans-serif;display:flex;align-items:center;
+     justify-content:center;min-height:100vh;margin:0;
+     background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;text-align:center}
+p{font-size:1.1rem;opacity:.85;margin-top:0.5rem}
+</style>
 </head>
-<body style="font-family:sans-serif;text-align:center;padding:2rem">
-<p>Loading today's exercise...</p>
+<body>
+<div>
+  <div style="font-size:3rem;margin-bottom:1rem">📚</div>
+  <p>Loading today's exercise…</p>
+</div>
+<script>
+var days=['sun','mon','tue','wed','thu','fri','sat'];
+window.location.replace(days[new Date().getDay()]+'.html');
+</script>
 </body>
 </html>
