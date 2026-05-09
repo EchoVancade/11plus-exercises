@@ -645,6 +645,7 @@ if(basePts<BASE_PTS)basePts=BASE_PTS;
 // BANNER
 // ═══════════════════════════════════════
 function markRulesRead(){
+  _iosWarm(); // warm on this gesture so first question's AI can speak
   document.getElementById('rules-body').style.display='none';
   document.getElementById('rules-done').style.display='flex';
   // Unlock questions
@@ -674,6 +675,7 @@ function updateBanner(){
 // ═══════════════════════════════════════
 function answer(qIdx,chosen){
   if(answers[qIdx]!==undefined)return;
+  _iosWarm(); // warm on every answer tap — tutor may open and AI will speak
   const q=QUESTIONS[qIdx];
   const ok=chosen===q.correct;
   answers[qIdx]=chosen;
@@ -884,86 +886,91 @@ function renderDots(){
   for(let i=0;i<TUTOR_SOFT_CAP;i++){const d=document.createElement('div');d.className='dot'+(i<turnCount?' used':'')+(i===turnCount?' now':'');el.appendChild(d);}
 }
 function buildSystemPrompt(qIdx){
-  // Dictionary mode — completely different teaching flow
+  const childAge = CHILD==='CL' ? 9 : 7;
+  const turnNote = turnCount>=TUTOR_SOFT_CAP-2
+    ? '\nYou are near the turn limit. Wrap up warmly now.'
+    : `\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;
+
+  // ── STRICT OPENING — placed FIRST so model reads it before anything else ──
+  const strictOpening = `ABSOLUTE RULE — YOUR VERY FIRST REPLY ONLY:
+Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it.
+Example jokes to inspire you (make your own):
+  Word "stroll": "Why did the snail win the race? He decided to stroll — no rush!"
+  Percentages:   "Why did 50 feel sad? Because it was only half of 100!"
+  Similes:       "Why did the poet bring a ladder? The similes were through the roof!"
+  Headings:      "Why did the paragraph fail the exam? Its heading only covered one sentence!"
+BANNED from first reply: your name, any greeting, restating the question, the word definition as opening line, "Today our word is", "Let me explain".
+After the joke: straight to teaching. No linking phrase needed.
+Plain spoken English only. No asterisks, bold, markdown, bullet points. Max 90 words. Say "percent" not the symbol.
+NEVER say: wrong, incorrect, failed, mistake, silly, dumb.${turnNote}`;
+
+  // ── DICTIONARY MODE ────────────────────────────────────────────────────────
   if(isDictMode){
-    const childAge=CHILD==='CL'?9:7;
-    const turnNote=turnCount>=TUTOR_SOFT_CAP-2?'\nYou are near the turn limit. Warmly wrap up now.':`\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;
-    return `${CHAR.personality}
+    return `${strictOpening}
 
-CRITICAL: Plain spoken English only. No asterisks, no bold, no markdown. Max 90 words per response. Write as if speaking out loud to a ${childAge}-year-old.
+${CHAR.personality}
 
-TODAY YOU ARE A WORD BUILDER TUTOR. The word is: "${DICT_WORD}".
-Definition: ${DICT_DEF}
-Published example: ${DICT_EG}
+WORD TO TEACH: "${DICT_WORD}" — ${DICT_DEF}
 
-FOLLOW THIS EXACT SEQUENCE:
+SEQUENCE:
+FIRST REPLY: joke (rule above) → 2 vivid example sentences using "${DICT_WORD}" in real life (sport, food, school, nature). End: "Can you make your own sentence using ${DICT_WORD}?"
 
-STEP 1 — FIRST MESSAGE ONLY:
-NEVER introduce yourself by name. NEVER say "I am Ssssam" or "I am Finn" or "Hello I am..."
-Start with ONE very short, funny joke connected to the word "${DICT_WORD}" or its meaning (1 sentence max). Then say "Today's word is ${DICT_WORD}!" and give EXACTLY 2 vivid example sentences in different real-life contexts (sport, school, nature, food). End with: "Now it is your turn — can you make your own sentence using the word ${DICT_WORD}?"
+WHEN CHILD GIVES A SENTENCE:
+- Word correct + grammar correct: celebrate, go to expansion.
+- Grammar wrong: "Great idea! You could say: [corrected version]." Ask retry.
+- Word wrong: give example, invite retry. Never confirm wrong grammar.
 
-STEP 2 — WHEN CHILD SHARES A SENTENCE:
-Evaluate TWO things: (a) Is the word used correctly? (b) Is the grammar correct?
-If BOTH correct: celebrate warmly. Say "Brilliant sentence!" then go to STEP 3.
-If grammar needs fixing: say "Great idea! The sentence could be: [show corrected version keeping their idea]." Ask them to try again.
-If word is used wrongly: give another example showing correct usage and invite them to try again.
-NEVER simply confirm wrong grammar. Always model the correct version.
+EXPANSION (after grammar correct): "Brilliant! Now add WHERE or WHEN or HOW, or a describing word." Show an expanded version of their sentence. Ask them to try. This builds 11+ creative writing skill.
 
-STEP 3 — EXPAND FOR CREATIVE WRITING (only after grammar is correct):
-Say something like: "That is a great sentence! Now let us make it even more powerful for creative writing. Can you add a describing word, or tell us WHERE or WHEN or HOW it happened?"
-Show them an expanded version of THEIR sentence as an example.
-Then ask them to try their own expanded version.
-This builds the sophisticated sentence structures needed for the 11+ creative writing exam.
-
-STEP 4 — CELEBRATE AND WRAP UP:
-Celebrate their expanded sentence enthusiastically. Tell them they are becoming a brilliant writer.
-
-OFF-TOPIC: If child says anything unrelated, respond in character with ONE short sentence then redirect immediately.
-${turnNote}`;
+WRAP UP: celebrate their expanded sentence.
+OFF-TOPIC: one character sentence then immediately redirect.`;
   }
-  // Standard MCQ wrong-answer mode below
-  const q=QUESTIONS[qIdx];
-  const wrongText=q.opts[answers[qIdx]];
-  const correctText=q.opts[q.correct];
-  const optsStr=Object.entries(q.opts).map(([k,v])=>`${k}: ${v}`).join(', ');
-  const isVocab=q.section==='Vocab';
-  const isMaths=q.section==='Maths';
-  const turnNote=turnCount>=TUTOR_SOFT_CAP-2?'\nYou are near the turn limit. Warmly wrap up now.':`\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;
-  const vocabApproach=isVocab?`
-TEACHING — VOCABULARY. Correct word: "${correctText}" (option ${q.correct}).
-FIRST MESSAGE: warm greeting, "Let me show you this word in action..." then EXACTLY 2 example sentences using "${correctText}" in everyday life. Do NOT reveal the answer yet. End with: "Now you have a go — can you make your own sentence using the word ${correctText}?"
-WHEN CHILD MAKES A SENTENCE: celebrate what they got right. If correct, give one more bonus example. If needs improvement, say "You could also say..." kindly. Only then confirm: "So the answer is ${q.correct}!"
-MINIMUM 2 rounds before confirming the answer.`:'';
-  const mathsApproach=isMaths?`
-TEACHING — MATHS. Concept: ${q.mathConcept}. Correct answer: ${q.correct} — ${correctText}.
-FIRST MESSAGE: warm greeting. Do NOT solve the original yet. Say "Before we go back to that, let me show you something first..." then teach the concept using a DIFFERENT SIMPLER example. Walk through step by step. End: "Does that make sense?"
-AFTER THEY RESPOND: add a memory tip. Then: "Right, back to your question. ${q.text} Options: ${optsStr}. What would you choose this time?"
-WHEN THEY ANSWER: massive celebration if correct + explain using the method you taught. If still unsure, try a different angle.
-Child MUST attempt the original question again.`:'';
-  const englishApproach=(!isVocab&&!isMaths)?`
-TEACHING — ENGLISH. Correct answer: ${q.correct} — ${correctText}.
-FIRST MESSAGE: warm greeting. Do NOT reveal the answer. Ask ONE Socratic question guiding them to reason it out. Give a real-life example.
-AFTER RESPONSE: guide toward answer or give a concrete example. Only confirm the answer after at least 2 exchanges.`:'';
-  return`${CHAR.personality}
 
-CRITICAL: Plain spoken English only. No asterisks, no bold, no markdown, no bullet points. Write as if speaking out loud. Say "percent" not the symbol. Max 90 words per response.
+  // ── MCQ WRONG-ANSWER MODE ──────────────────────────────────────────────────
+  const q           = QUESTIONS[qIdx];
+  const wrongText   = q.opts[answers[qIdx]];
+  const correctText = q.opts[q.correct];
+  const optsStr     = Object.entries(q.opts).map(([k,v])=>`${k}: ${v}`).join(', ');
+  const isVocab     = q.section==='Vocab';
+  const isMaths     = q.section==='Maths';
 
-Tutoring a ${CHILD==='CL'?9:7}-year-old who got this question wrong:
+  const vocabApproach = isVocab ? `
+VOCAB SEQUENCE:
+FIRST REPLY: joke → 2 vivid sentences showing "${correctText}" being used (not just defined). End: "Can you make your own sentence using ${correctText}?"
+CHILD MAKES A SENTENCE: celebrate what is right, correct grammar kindly ("You could say..."), give 1 bonus example. Confirm answer only AFTER their sentence attempt.
+Minimum 2 exchanges before confirming.` : '';
+
+  const mathsApproach = isMaths ? `
+MATHS SEQUENCE:
+FIRST REPLY: joke → teach concept "${q.mathConcept}" using a DIFFERENT SIMPLER example (not the original question). Step by step. End: "Does that make sense?"
+AFTER RESPONSE: quick memory trick. Then re-ask original: "${q.text} — options: ${optsStr}. What would you pick now?"
+CHILD ANSWERS AGAIN: big celebration if correct + explain WHY. If still unsure, try a different angle.
+Child MUST attempt the original question again.` : '';
+
+  const englishApproach = (!isVocab && !isMaths) ? `
+ENGLISH SEQUENCE:
+FIRST REPLY: joke → ONE Socratic question leading child to reason out the answer themselves. Real-life analogy. Do NOT reveal the correct answer yet.
+AFTER RESPONSE: guide closer or give concrete example, then ask again. Confirm only after 2+ exchanges.` : '';
+
+  return `${strictOpening}
+
+${CHAR.personality}
+
+CONTEXT (never repeat this to the child):
 Question: ${q.text}
-They chose: ${answers[qIdx]} — ${wrongText}
+Child chose: ${answers[qIdx]} — ${wrongText}
 Correct answer: ${q.correct} — ${correctText}
 Code: ${q.code}
-
 ${vocabApproach}${mathsApproach}${englishApproach}
 
-OFF-TOPIC: If child goes off-topic, respond in character with ONE short sentence then immediately redirect to the lesson. Never let two messages pass without returning.
-NEVER say: wrong, incorrect, failed, mistake, silly, dumb.
-${turnNote}`;
+OFF-TOPIC: One character sentence, then immediately redirect to lesson.`
 }
 async function callAI(userText){
   stopMic();
   if(userText){addBubble(userText,'child-say');convHistory.push({role:'user',content:userText});}
   else{convHistory.push({role:'user',content:'Please start the session.'});}
+  // iOS: warm audio session BEFORE the await so speak() works after fetch completes
+  _iosWarm();
   showTyping();turnCount++;
   tutorTurns[currentQ]=(tutorTurns[currentQ]||0)+1;
   if(tutorTurns[currentQ]>=STRUGGLE_THRESHOLD)strugglingQs.add(QUESTIONS[currentQ].code);
@@ -984,22 +991,24 @@ function addBubble(text,cls){const el=document.createElement('div');el.className
 function showTyping(){const el=document.createElement('div');el.className='bubble char-say';el.id='typing-ind';el.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});}
 function removeTyping(){const el=document.getElementById('typing-ind');if(el)el.remove();}
 // ── TTS — iOS-reliable voice setup ──────────────────────────────
-// iOS requires speechSynthesis to be triggered from a user gesture FIRST.
-// After that, async calls (from AI responses) work fine.
-let _ttsUnlocked=false;
+// iOS problem: speak() is silently ignored from async callbacks (after await/fetch).
+// Solution A: before every await in callAI, synchronously start a near-silent
+//   utterance to "warm" the iOS audio session.
+// Solution B: after every real utterance, chain a silent keepalive so iOS
+//   audio engine never fully idles (once idle, async speak() stops working).
+// Together these ensure TTS works every time, even after page refresh.
 let _cachedVoice=null;
 
-function _unlockTTS(){
-  if(_ttsUnlocked)return;
-  _ttsUnlocked=true;
-  // Speak a silent utterance synchronously in the gesture context to unlock iOS audio
-  const silent=new SpeechSynthesisUtterance('');
-  silent.volume=0;
-  window.speechSynthesis.speak(silent);
+function _iosWarm(){
+  // Call this synchronously BEFORE any async operation to warm audio session.
+  // Must be called in a user-gesture execution context.
+  try{
+    if(window.speechSynthesis.speaking)return; // already warm
+    const w=new SpeechSynthesisUtterance(' '); // non-breaking space
+    w.volume=0.01;w.rate=16;
+    window.speechSynthesis.speak(w);
+  }catch(e){}
 }
-// Unlock on first tap anywhere on the page
-document.addEventListener('touchstart',_unlockTTS,{once:true,passive:true});
-document.addEventListener('click',_unlockTTS,{once:true,passive:true});
 
 const _PREFERRED_VOICES=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha','Martha'];
 
@@ -1046,6 +1055,8 @@ function speak(text){
 }
 function toggleMic(){
   if(isListening){stopMic();return;}
+  // iOS: warm audio session on this gesture so AI response can speak after async
+  _iosWarm();
   window.speechSynthesis.cancel();
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){addBubble('Voice is not available — tap Got it when you are ready!','char-say');return;}
@@ -1082,9 +1093,9 @@ window.onload=function(){
   document.getElementById('rules-title').textContent=rs.title;
   document.getElementById('rules-subtitle').textContent=rs.sub;
 };
-// Load voices immediately and on change (iOS fires onvoiceschanged asynchronously)
+// Load voices on change (iOS fires onvoiceschanged async; Chrome loads sync)
 window.speechSynthesis.onvoiceschanged=_loadVoice;
-_loadVoice(); // also try now in case already loaded (Chrome/desktop)
+_loadVoice();
 </script>
 </body>
 </html>
