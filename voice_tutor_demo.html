@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Daily Exercise</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --accent:#5B4CF5;--correct:#16A34A;--wrong:#DC2626;
+  --bg:#F0EFFC;--card:#fff;--text:#111827;--muted:#6B7280;--border:#E5E7EB;
+  --ch:#1B5E20;--ch-mid:#2E7D32;--ch-border:#A5D6A7;
+}
+body.shark{--ch:#0D47A1;--ch-mid:#1565C0;--ch-border:#90CAF9}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.hdr{background:var(--accent);color:#fff;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(91,76,245,.3)}
+.hdr-day{font-size:15px;font-weight:600;opacity:.9}
+.pts-pill{background:rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:14px;font-weight:700}
+.prog-wrap{background:var(--accent);padding:0 18px 10px;position:sticky;top:49px;z-index:9}
+.prog-track{background:rgba(255,255,255,.25);border-radius:4px;height:5px}
+.prog-fill{background:#fff;border-radius:4px;height:5px;width:0%;transition:width .4s}
+.main{padding:14px 16px 60px;max-width:680px;margin:0 auto}
+.sec-lbl{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:22px 0 10px}
+.q-card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:12px;border:2px solid var(--border);transition:border-color .25s,background .25s}
+.q-card.ok{border-color:#86EFAC;background:#F0FDF4}
+.q-card.no{border-color:#FCA5A5;background:#FEF2F2}
+.q-meta{font-size:11px;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.code-tag{background:#EEF2FF;color:var(--accent);border-radius:4px;padding:1px 6px;font-weight:700;font-size:10px}
+.q-text{font-size:17px;font-weight:500;line-height:1.45;margin-bottom:14px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-size:16px;text-align:left;cursor:pointer;width:100%;min-height:50px;transition:all .15s}
+.opt:active:not(:disabled){transform:scale(.97);background:#F3F4F6}
+.opt:disabled{cursor:default}
+.opt-lbl{width:30px;height:30px;border-radius:50%;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;transition:background .2s,color .2s}
+.opt.is-right{border-color:var(--correct);background:#F0FDF4}
+.opt.is-right .opt-lbl{background:var(--correct);color:#fff}
+.opt.is-bad{border-color:var(--wrong);background:#FEF2F2}
+.opt.is-bad .opt-lbl{background:var(--wrong);color:#fff}
+.opt-icon{margin-left:auto;font-size:20px;min-width:24px;text-align:right}
+.submit-btn{display:none;width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-size:18px;font-weight:700;cursor:pointer;margin:28px 0 40px;min-height:58px;box-shadow:0 4px 14px rgba(91,76,245,.35);animation:pulse-btn 2s ease-in-out infinite}
+.submit-btn.show{display:block}
+@keyframes pulse-btn{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+
+/* TUTOR OVERLAY */
+.tutor-overlay{display:none;position:fixed;inset:0;z-index:100;flex-direction:column;background:var(--ch)}
+.tutor-overlay.show{display:flex}
+.q-strip{background:rgba(0,0,0,.25);padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.15);flex-shrink:0}
+.q-strip-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.55);margin-bottom:4px}
+.q-strip-text{font-size:15px;font-weight:600;color:#fff;line-height:1.35;margin-bottom:6px}
+.q-strip-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.q-strip-chose{background:rgba(220,38,38,.35);color:#FCA5A5;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600}
+.q-strip-opts{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.strip-opt{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);border-radius:8px;padding:3px 10px;font-size:12px;border:1px solid rgba(255,255,255,.2)}
+.strip-opt.my-wrong{background:rgba(220,38,38,.3);color:#FCA5A5;border-color:rgba(220,38,38,.4)}
+.tutor-top{padding:10px 16px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
+.char-zone{display:flex;align-items:center;gap:10px}
+.char-avatar{font-size:52px;line-height:1;display:block;flex-shrink:0}
+body.snake .char-avatar{animation:slither 3s ease-in-out infinite}
+body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
+@keyframes slither{0%,100%{transform:translateX(0) rotate(0deg)}30%{transform:translateX(-7px) rotate(-6deg)}70%{transform:translateX(7px) rotate(6deg)}}
+@keyframes swim{0%,100%{transform:translateX(0) rotate(-3deg)}50%{transform:translateX(7px) rotate(3deg)}}
+.char-info{display:flex;flex-direction:column;gap:4px}
+.char-name{color:#fff;font-size:15px;font-weight:700}
+.mode-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.9);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+.turn-dots{display:flex;gap:4px;flex-wrap:wrap;max-width:140px}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0;transition:background .3s}
+.dot.used{background:rgba(255,255,255,.55)}
+.dot.now{background:#fff;box-shadow:0 0 4px rgba(255,255,255,.7)}
+.parent-skip{background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;min-height:44px;flex-shrink:0}
+.parent-skip:active{background:rgba(255,255,255,.28)}
+.chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 16px;display:flex;flex-direction:column;gap:10px;min-height:0}
+.bubble{max-width:88%;padding:12px 16px;border-radius:18px;font-size:16px;line-height:1.55;word-break:break-word}
+.bubble.char-say{background:rgba(255,255,255,.16);color:#fff;border-bottom-left-radius:4px;align-self:flex-start}
+.bubble.child-say{background:rgba(255,255,255,.92);color:var(--text);border-bottom-right-radius:4px;align-self:flex-end;font-style:italic}
+.typing-dots{display:flex;gap:5px;align-items:center;padding:8px 0}
+.typing-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55);animation:blink 1.2s ease-in-out infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+.tutor-bottom{padding:10px 16px 22px;display:flex;flex-direction:column;gap:10px;background:var(--ch);flex-shrink:0}
+.got-it-btn{width:100%;padding:13px;background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.32);color:#fff;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;min-height:48px}
+.got-it-btn:active{background:rgba(255,255,255,.26)}
+.mic-row{display:flex;align-items:center;justify-content:center;gap:16px}
+.mic-hint{color:rgba(255,255,255,.6);font-size:13px;text-align:center;max-width:120px;line-height:1.4}
+.mic-btn{width:88px;height:88px;border-radius:50%;border:none;background:#fff;font-size:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;flex-shrink:0}
+.mic-btn:active{transform:scale(.92)}
+.mic-btn.listening{animation:mic-pulse 1s ease-in-out infinite;background:var(--ch-border)}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}50%{box-shadow:0 0 0 18px rgba(255,255,255,0)}}
+
+/* RETRY SCREEN */
+.retry-screen{display:none;position:fixed;inset:0;z-index:150;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;background:#F59E0B}
+.retry-screen.show{display:flex}
+.retry-char{font-size:80px;margin-bottom:16px;animation:wobble 1s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.retry-heading{font-size:28px;font-weight:800;color:#fff;margin-bottom:8px}
+.retry-score-display{font-size:64px;font-weight:800;color:#fff;line-height:1;margin:12px 0 4px}
+.retry-score-label{font-size:16px;color:rgba(255,255,255,.85);margin-bottom:20px}
+.retry-msg{background:rgba(255,255,255,.25);border-radius:16px;padding:16px 20px;font-size:17px;color:#fff;font-weight:600;line-height:1.5;margin-bottom:28px;max-width:380px}
+.retry-needed{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:24px}
+.retry-btn{padding:18px 40px;background:#fff;color:#B45309;border:none;border-radius:16px;font-size:20px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.15);min-height:60px}
+.retry-btn:active{transform:scale(.96)}
+
+/* END SCREEN */
+.end-screen{display:none;position:fixed;inset:0;z-index:200;overflow-y:auto;background:var(--bg);padding-bottom:40px}
+.end-screen.show{display:block}
+.end-hdr{background:var(--accent);color:#fff;padding:30px 20px 24px;text-align:center}
+.end-hdr h2{font-size:26px;font-weight:700;margin-bottom:4px}
+.end-hdr p{font-size:15px;opacity:.85}
+.score-ring{width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.18);border:3px solid rgba(255,255,255,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:18px auto 0}
+.score-big{font-size:36px;font-weight:800;line-height:1}
+.score-sm{font-size:12px;opacity:.75;margin-top:2px}
+.end-body{padding:16px;max-width:680px;margin:0 auto}
+.attempt-note{background:#FFF7ED;border-radius:12px;padding:12px 16px;font-size:13px;color:#92400E;border-left:3px solid #F59E0B;margin-bottom:16px;display:none}
+.attempt-note.show{display:block}
+.video-section{margin:20px 0}
+.vid-hdr{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px}
+.vid-intro{background:#FFF7ED;border-radius:12px;padding:14px;margin-bottom:12px;font-size:14px;color:#92400E;border-left:3px solid #F59E0B;line-height:1.5}
+.vid-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;border:1.5px solid var(--border);display:flex;align-items:center;gap:14px}
+.vid-thumb{width:56px;height:56px;border-radius:10px;background:#CC0000;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.vid-info{flex:1}
+.vid-code{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+.vid-title{font-size:15px;font-weight:600;margin:3px 0;color:var(--text)}
+.vid-sub{font-size:12px;color:var(--muted)}
+.vid-link{display:inline-block;margin-top:8px;color:#CC0000;font-size:13px;font-weight:700;text-decoration:none;padding:5px 14px;border:1.5px solid #CC0000;border-radius:20px}
+.res-lbl{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:20px 0 10px}
+.correct-row{background:#fff;border-radius:12px;padding:14px;margin-bottom:8px;border:1.5px solid #BBF7D0;display:flex;align-items:center;gap:10px;font-size:14px;color:#166534}
+.wrong-row{background:#fff;border-radius:12px;padding:14px;margin-bottom:8px;border:1.5px solid #FECACA;font-size:14px}
+.wrong-row .wq{font-weight:600;margin-bottom:6px;color:var(--text);line-height:1.4}
+.wrong-row .wa{display:flex;gap:8px;flex-wrap:wrap;font-size:12px}
+.ans-you{background:#FEE2E2;color:#991B1B;padding:3px 10px;border-radius:20px}
+.ans-ok{background:#DCFCE7;color:#166534;padding:3px 10px;border-radius:20px}
+.claim-btn{width:100%;padding:18px;background:#15803D;color:#fff;border:none;border-radius:16px;font-size:18px;font-weight:700;cursor:pointer;margin-top:20px;min-height:58px;box-shadow:0 4px 14px rgba(21,128,61,.35)}
+.claim-btn:disabled{opacity:.5}
+.success-screen{display:none;position:fixed;inset:0;z-index:300;background:#15803D;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:40px}
+.success-screen.show{display:flex}
+.succ-emoji{font-size:72px;margin-bottom:12px}
+.succ-pts{font-size:96px;font-weight:800;line-height:1;margin:8px 0 0}
+.succ-lbl{font-size:18px;opacity:.85;margin-bottom:20px}
+.succ-total{background:rgba(255,255,255,.2);border-radius:20px;padding:12px 28px;font-size:16px}
+
+/* SETUP SCREEN */
+.setup-screen{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:24px}
+.setup-screen.show{display:flex}
+.setup-box{background:#fff;border-radius:24px;padding:32px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.setup-emoji{font-size:48px;margin-bottom:12px}
+.setup-title{font-size:22px;font-weight:700;color:#111827;margin-bottom:8px}
+.setup-msg{font-size:15px;color:#6B7280;line-height:1.5;margin-bottom:20px}
+.setup-input{width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:12px;font-size:15px;font-family:monospace;margin-bottom:14px;outline:none}
+.setup-input:focus{border-color:#5B4CF5}
+.setup-btn{width:100%;padding:16px;background:#5B4CF5;color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;margin-bottom:14px;min-height:52px}
+.setup-btn:active{background:#4338CA}
+.setup-hint{font-size:12px;color:#9CA3AF}
+
+</style>
+
+</head>
+<body>
+
+
+<!-- FIRST-RUN SETUP SCREEN (parent enters API key once) -->
+<div class="setup-screen" id="setup-screen">
+  <div class="setup-box">
+    <div class="setup-emoji">🔑</div>
+    <h2 class="setup-title">Parent Setup</h2>
+    <p class="setup-msg">Enter the Anthropic API key once. It saves on this device — you never need to enter it again.</p>
+    <input class="setup-input" type="password" id="setup-key-input"
+           placeholder="paste your API key here" autocomplete="off" autocorrect="off" spellcheck="false"/>
+    <button class="setup-btn" onclick="saveKey()">Save and start →</button>
+    <p class="setup-hint">Find your key at console.anthropic.com → API Keys</p>
+  </div>
+</div>
+
+<div class="hdr">
+  <span class="hdr-day" id="hdr-day">Thursday · Week 16</span>
+  <span class="pts-pill" id="pts-display">⭐ 600 pts</span>
+</div>
+<div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div></div>
+
+<div class="main" id="exercise-main">
+  <div class="sec-lbl">📚 Vocabulary</div>
+  <div class="q-card" id="qc-1">
+    <div class="q-meta"><span>Q1</span><span class="code-tag">E4.1</span></div>
+    <div class="q-text">Which word means to walk in a slow, relaxed way?</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(1,'A')"><span class="opt-lbl">A</span>march<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(1,'B')"><span class="opt-lbl">B</span>stroll<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(1,'C')"><span class="opt-lbl">C</span>sprint<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(1,'D')"><span class="opt-lbl">D</span>trudge<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <div class="q-card" id="qc-2">
+    <div class="q-meta"><span>Q2</span><span class="code-tag">E4.1</span></div>
+    <div class="q-text">What does persevere mean?</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(2,'A')"><span class="opt-lbl">A</span>to keep trying despite difficulty<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(2,'B')"><span class="opt-lbl">B</span>to give up quickly<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(2,'C')"><span class="opt-lbl">C</span>to feel very excited<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(2,'D')"><span class="opt-lbl">D</span>to move very slowly<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <div class="q-card" id="qc-3">
+    <div class="q-meta"><span>Q3</span><span class="code-tag">E4.1</span></div>
+    <div class="q-text">Which word means extremely large?</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(3,'A')"><span class="opt-lbl">A</span>minute<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(3,'B')"><span class="opt-lbl">B</span>moderate<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(3,'C')"><span class="opt-lbl">C</span>enormous<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(3,'D')"><span class="opt-lbl">D</span>slender<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <div class="sec-lbl">✍️ English</div>
+  <div class="q-card" id="qc-4">
+    <div class="q-meta"><span>Q4</span><span class="code-tag">E5.4</span></div>
+    <div class="q-text">Why might an author use rhetorical questions in a persuasive text?</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(4,'A')"><span class="opt-lbl">A</span>To make the text look longer<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(4,'B')"><span class="opt-lbl">B</span>Because they do not know the answer<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(4,'C')"><span class="opt-lbl">C</span>To engage readers and make them think<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(4,'D')"><span class="opt-lbl">D</span>To add facts and evidence<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <div class="q-card" id="qc-5">
+    <div class="q-meta"><span>Q5</span><span class="code-tag">E5.2</span></div>
+    <div class="q-text">Which sentence contains a simile?</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(5,'A')"><span class="opt-lbl">A</span>The thunder roared across the sky.<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(5,'B')"><span class="opt-lbl">B</span>Her laugh was like music filling the room.<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(5,'C')"><span class="opt-lbl">C</span>He was a lion on the football pitch.<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(5,'D')"><span class="opt-lbl">D</span>The wind whispered through the trees.<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <div class="sec-lbl">🔢 Maths</div>
+  <div class="q-card" id="qc-6">
+    <div class="q-meta"><span>Q6</span><span class="code-tag">M1.4</span></div>
+    <div class="q-text">What is 15 percent of 60?</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(6,'A')"><span class="opt-lbl">A</span>9<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(6,'B')"><span class="opt-lbl">B</span>6<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(6,'C')"><span class="opt-lbl">C</span>12<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(6,'D')"><span class="opt-lbl">D</span>15<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <div class="q-card" id="qc-7">
+    <div class="q-meta"><span>Q7</span><span class="code-tag">M2.6</span></div>
+    <div class="q-text">What is three quarters written as a decimal?</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(7,'A')"><span class="opt-lbl">A</span>0.34<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(7,'B')"><span class="opt-lbl">B</span>3.4<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(7,'C')"><span class="opt-lbl">C</span>0.75<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(7,'D')"><span class="opt-lbl">D</span>0.25<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <div class="q-card" id="qc-8">
+    <div class="q-meta"><span>Q8</span><span class="code-tag">M2.5</span></div>
+    <div class="q-text">Convert 0.35 into a percentage.</div>
+    <div class="opts">
+      <button class="opt" onclick="answer(8,'A')"><span class="opt-lbl">A</span>3.5 percent<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(8,'B')"><span class="opt-lbl">B</span>35 percent<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(8,'C')"><span class="opt-lbl">C</span>0.35 percent<span class="opt-icon"></span></button>
+      <button class="opt" onclick="answer(8,'D')"><span class="opt-lbl">D</span>350 percent<span class="opt-icon"></span></button>
+    </div>
+  </div>
+  <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Submit my answers →</button>
+</div>
+
+<!-- TUTOR OVERLAY -->
+<div class="tutor-overlay" id="tutor-overlay">
+  <div class="q-strip" id="q-strip">
+    <div class="q-strip-label">The question you got</div>
+    <div class="q-strip-text" id="q-strip-text"></div>
+    <div class="q-strip-row"><span class="q-strip-chose" id="q-strip-chose"></span></div>
+    <div class="q-strip-opts" id="q-strip-opts" style="display:none"></div>
+  </div>
+  <div class="tutor-top">
+    <div class="char-zone">
+      <span class="char-avatar" id="char-avatar"></span>
+      <div class="char-info">
+        <span class="char-name" id="char-name"></span>
+        <span class="mode-badge" id="mode-badge"></span>
+        <div class="turn-dots" id="turn-dots"></div>
+      </div>
+    </div>
+    <button class="parent-skip" onclick="parentSkip()">✓ Parent skip</button>
+  </div>
+  <div class="chat-area" id="chat-area"></div>
+  <div class="tutor-bottom">
+    <button class="got-it-btn" onclick="gotIt()">Got it! ✓ — next question</button>
+    <div class="mic-row">
+      <div class="mic-hint" id="mic-hint-l">Tap to speak</div>
+      <button class="mic-btn" id="mic-btn" onclick="toggleMic()" aria-label="Tap to speak">🎤</button>
+      <div class="mic-hint" id="mic-status">or just listen</div>
+    </div>
+  </div>
+</div>
+
+<!-- RETRY SCREEN -->
+<div class="retry-screen" id="retry-screen">
+  <div class="retry-char" id="retry-char"></div>
+  <div class="retry-heading" id="retry-heading">Almost there!</div>
+  <div class="retry-score-display" id="retry-score-num"></div>
+  <div class="retry-score-label" id="retry-score-label"></div>
+  <div class="retry-msg" id="retry-msg"></div>
+  <div class="retry-needed" id="retry-needed"></div>
+  <button class="retry-btn" onclick="retryExercise()">Try again! →</button>
+</div>
+
+<!-- END SCREEN -->
+<div class="end-screen" id="end-screen">
+  <div class="end-hdr">
+    <h2 id="end-title">Well done!</h2>
+    <p id="end-sub">Here is how you did today</p>
+    <div class="score-ring">
+      <span class="score-big" id="end-score">—</span>
+      <span class="score-sm" id="end-denom">out of 8</span>
+    </div>
+  </div>
+  <div class="end-body">
+    <div class="attempt-note" id="attempt-note"></div>
+    <div id="video-section" class="video-section" style="display:none">
+      <div class="vid-hdr">📹 Extra help — short videos for tricky topics</div>
+      <div class="vid-intro" id="vid-intro"></div>
+      <div id="vid-cards"></div>
+    </div>
+    <div id="results-list"></div>
+    <button class="claim-btn" id="claim-btn" onclick="claimPoints()">Claim my 5 points! 🎉</button>
+  </div>
+</div>
+
+<div class="success-screen" id="success-screen">
+  <div class="succ-emoji" id="succ-char"></div>
+  <div style="font-size:26px;font-weight:700">Amazing work!</div>
+  <div class="succ-pts" id="succ-pts">+5</div>
+  <div class="succ-lbl">points earned</div>
+  <div class="succ-total" id="succ-total">Total: 605 pts</div>
+</div>
+
+<script>
+
+// ═══════════════════════════════════════
+// API KEY — stored in localStorage, never in code
+// ═══════════════════════════════════════
+function getStoredKey(){
+  return localStorage.getItem('anthropic_key_v1') || '';
+}
+function saveKey(){
+  const val = document.getElementById('setup-key-input').value.trim();
+  if(!val.startsWith('sk-')){
+    alert('That does not look right — the key should start with sk-');
+    return;
+  }
+  localStorage.setItem('anthropic_key_v1', val);
+  document.getElementById('setup-screen').classList.remove('show');
+  ANTHROPIC_KEY = val;
+}
+let ANTHROPIC_KEY = getStoredKey();
+// Show setup screen if no key saved yet
+if(!ANTHROPIC_KEY){
+  document.getElementById('setup-screen').classList.add('show');
+}
+
+// ═══════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════
+
+const CHILD          = "CL";
+const CHILD_AGE      = 9;
+const DAY            = "Thursday";
+const WEEK_NUM       = 16;
+const WEEK_BASE_PTS  = 600;
+const POINTS_EARNED  = 5;
+const WEBHOOK_URL    = "https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx";
+const TUTOR_SOFT_CAP = 14;
+const STRUGGLE_THRESHOLD = 6;
+const PASS_THRESHOLD = 0.80; // 80% required to pass
+
+// ═══════════════════════════════════════
+// QUESTIONS — plain text only (TTS-safe)
+// ═══════════════════════════════════════
+const QUESTIONS = {
+  1:{section:"Vocab",  code:"E4.1",correct:"B",
+     text:"Which word means to walk in a slow, relaxed way?",
+     opts:{A:"march",B:"stroll",C:"sprint",D:"trudge"},
+     vocabWord:"stroll"},
+  2:{section:"Vocab",  code:"E4.1",correct:"A",
+     text:"What does persevere mean?",
+     opts:{A:"to keep trying despite difficulty",B:"to give up quickly",C:"to feel very excited",D:"to move very slowly"},
+     vocabWord:"persevere"},
+  3:{section:"Vocab",  code:"E4.1",correct:"C",
+     text:"Which word means extremely large?",
+     opts:{A:"minute",B:"moderate",C:"enormous",D:"slender"},
+     vocabWord:"enormous"},
+  4:{section:"English",code:"E5.4",correct:"C",
+     text:"Why might an author use rhetorical questions in a persuasive text?",
+     opts:{A:"To make the text look longer",B:"Because they do not know the answer",C:"To engage readers and make them think",D:"To add facts and evidence"}},
+  5:{section:"English",code:"E5.2",correct:"B",
+     text:"Which sentence contains a simile?",
+     opts:{A:"The thunder roared across the sky.",B:"Her laugh was like music filling the room.",C:"He was a lion on the football pitch.",D:"The wind whispered through the trees."}},
+  6:{section:"Maths",  code:"M1.4",correct:"A",
+     text:"What is 15 percent of 60?",
+     opts:{A:"9",B:"6",C:"12",D:"15"},
+     mathConcept:"finding a percentage of a number"},
+  7:{section:"Maths",  code:"M2.6",correct:"C",
+     text:"What is three quarters written as a decimal?",
+     opts:{A:"0.34",B:"3.4",C:"0.75",D:"0.25"},
+     mathConcept:"converting fractions to decimals"},
+  8:{section:"Maths",  code:"M2.5",correct:"B",
+     text:"Convert 0.35 into a percentage.",
+     opts:{A:"3.5 percent",B:"35 percent",C:"0.35 percent",D:"350 percent"},
+     mathConcept:"converting decimals to percentages"},
+};
+const TOTAL_QS    = Object.keys(QUESTIONS).length;
+const PASS_SCORE  = Math.ceil(TOTAL_QS * PASS_THRESHOLD); // min correct to pass
+
+// ═══════════════════════════════════════
+// YOUTUBE LOOKUP
+// ═══════════════════════════════════════
+const VIDEOS = {
+  "E4.1":{title:"Vocabulary building for 11+",sub:"Word power tips for KS2",url:"https://www.youtube.com/results?search_query=11+plus+vocabulary+KS2+word+building+kids"},
+  "E5.2":{title:"Similes and metaphors explained",sub:"With fun examples for kids",url:"https://www.youtube.com/results?search_query=similes+metaphors+KS2+primary+English+explained+kids"},
+  "E5.4":{title:"Author's purpose and viewpoint",sub:"Comprehension skills for 11+",url:"https://www.youtube.com/results?search_query=author+purpose+viewpoint+KS2+comprehension+11+plus"},
+  "M1.4":{title:"Percentages made easy",sub:"Step-by-step KS2 method",url:"https://www.youtube.com/results?search_query=percentages+KS2+primary+maths+easy+step+by+step"},
+  "M2.5":{title:"Fractions, decimals and percentages",sub:"Converting between all three",url:"https://www.youtube.com/results?search_query=fractions+decimals+percentages+converting+KS2+primary+maths"},
+  "M2.6":{title:"Fractions as decimals",sub:"The division method explained",url:"https://www.youtube.com/results?search_query=fractions+to+decimals+KS2+primary+maths+divide"},
+};
+function videoForCode(code){
+  if(VIDEOS[code]) return VIDEOS[code];
+  const sub=code.startsWith('E')?'English':'Maths';
+  return{title:`${sub} revision — ${code}`,sub:"KS2 11+ help",url:`https://www.youtube.com/results?search_query=11+plus+${sub}+KS2+revision+primary`};
+}
+
+// ═══════════════════════════════════════
+// CHARACTERS — locked to calendar day
+// ═══════════════════════════════════════
+const CHARS={
+  snake:{key:"snake",emoji:"🐍",name:"Ssssam",
+    personality:`Your name is Ssssam the Snake. You occasionally slip "ssss" sounds into your speech naturally, for example "Ssss, great try!" or "That is ssso interesting!" or "Let me ssshow you something." You are clever and warm and love surprising kids with knowledge. You sometimes say "Ssss, did you know..." before a fun fact.`,
+    greetings:["Ssss, good try!","Nearly there, ssss!","Ssss, interesting choice!"],
+    gotIt:"Ssss, you have got it! Brillsssliant!",
+    wrapUp:"Ssss, you have worked ssso hard on this! Let us move on and ssshow everyone what you know!",
+    retryMsg:"Ssss, so close! You just need a few more right to unlock your points. Let'sss try again — I believe in you!",
+  },
+  shark:{key:"shark",emoji:"🦈",name:"Finn",
+    personality:`Your name is Finn the Shark. You are enthusiastic and use ocean phrases naturally: "Splashing great effort!", "Making waves!", "Dive right in!", "You are swimming in the right direction!", "Fin-tastic!". You celebrate every small win with energy. You are warm, fun, and love helping kids learn.`,
+    greetings:["Splashing great try!","Making waves — nearly there!","Fin-tastic effort!"],
+    gotIt:"Fin-tastic! You have got it! Splash!",
+    wrapUp:"You have been making waves on this one! Let us swim on to the next question. I believe in you!",
+    retryMsg:"Making waves! You are so close! Just a few more correct answers to unlock those points. Dive back in!",
+  }
+};
+const today=new Date().toISOString().slice(0,10);
+let charKey=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
+if(!charKey||!CHARS[charKey]){
+  charKey=Math.random()>0.5?'snake':'shark';
+  localStorage.setItem('char_key',charKey);
+  localStorage.setItem('char_date',today);
+}
+const CHAR=CHARS[charKey];
+document.body.classList.add(CHAR.key);
+document.getElementById('char-avatar').textContent=CHAR.emoji;
+document.getElementById('char-name').textContent=CHAR.name;
+document.getElementById('retry-char').textContent=CHAR.emoji;
+
+// ═══════════════════════════════════════
+// STRIP MARKDOWN
+// ═══════════════════════════════════════
+function stripMd(t){
+  return t
+    .replace(/\*\*(.*?)\*\*/g,'$1')
+    .replace(/\*(.*?)\*/g,'$1')
+    .replace(/`(.*?)`/g,'$1')
+    .replace(/#{1,6}\s+/g,'')
+    .replace(/\[(.*?)\]\(.*?\)/g,'$1')
+    .replace(/^\s*[-*+]\s+/gm,'')
+    .replace(/\n{3,}/g,'\n\n')
+    .trim();
+}
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const answers       = {};
+const tutorTurns    = {};
+const strugglingQs  = new Set();
+let firstAttempt    = null;  // captured once after attempt 1 completes — NEVER overwritten
+let attemptNumber   = 1;
+let currentQ        = null;
+let convHistory     = [];
+let turnCount       = 0;
+let isListening     = false;
+let recognition     = null;
+
+const storedPts=parseInt(localStorage.getItem("pts_"+CHILD))||WEEK_BASE_PTS;
+document.getElementById('pts-display').textContent="⭐ "+storedPts+" pts";
+document.getElementById('hdr-day').textContent=DAY+" · Week "+WEEK_NUM;
+
+// ═══════════════════════════════════════
+// PROGRESS — captures first attempt
+// ═══════════════════════════════════════
+function updateProgress(){
+  const done=Object.keys(answers).length;
+  document.getElementById('prog-fill').style.width=(done/TOTAL_QS*100)+"%";
+  if(done===TOTAL_QS){
+    // Capture first attempt data exactly once — never overwritten on retry
+    if(!firstAttempt){
+      firstAttempt={
+        answers:    {...answers},
+        tutorTurns: {...tutorTurns},
+        struggling: new Set(strugglingQs),
+      };
+    }
+    document.getElementById('submit-btn').classList.add('show');
+    document.getElementById('submit-btn').scrollIntoView({behavior:'smooth',block:'end'});
+  }
+}
+
+// ═══════════════════════════════════════
+// ANSWER
+// ═══════════════════════════════════════
+function answer(qNum,chosen){
+  if(answers[qNum]) return;
+  const q=QUESTIONS[qNum];
+  const ok=chosen===q.correct;
+  answers[qNum]=chosen;
+  const card=document.getElementById('qc-'+qNum);
+  card.classList.add(ok?'ok':'no');
+  card.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    const l=b.querySelector('.opt-lbl').textContent.trim();
+    if(l===q.correct){b.classList.add('is-right');b.querySelector('.opt-icon').textContent='✅';}
+    if(l===chosen&&!ok){b.classList.add('is-bad');b.querySelector('.opt-icon').textContent='❌';}
+  });
+  updateProgress();
+  if(!ok) openTutor(qNum);
+}
+
+// ═══════════════════════════════════════
+// HANDLE SUBMIT — check 80% gate
+// ═══════════════════════════════════════
+function handleSubmit(){
+  const correct=Object.keys(answers).filter(n=>answers[n]===QUESTIONS[n].correct).length;
+  const pct=correct/TOTAL_QS;
+
+  if(pct<PASS_THRESHOLD){
+    showRetryScreen(correct);
+  } else {
+    openEndScreen();
+  }
+}
+
+// ═══════════════════════════════════════
+// RETRY SCREEN
+// ═══════════════════════════════════════
+function showRetryScreen(score){
+  document.getElementById('retry-score-num').textContent=score+"/"+TOTAL_QS;
+  document.getElementById('retry-score-label').textContent="correct on attempt "+attemptNumber;
+  document.getElementById('retry-needed').textContent="You need at least "+PASS_SCORE+" correct (80%) to unlock your points.";
+  document.getElementById('retry-msg').textContent=CHAR.retryMsg;
+  document.getElementById('retry-heading').textContent=
+    score>=PASS_SCORE-2?"So close!":score>=Math.floor(TOTAL_QS*0.5)?"Almost there!":"Keep going!";
+  document.getElementById('retry-screen').classList.add('show');
+  speak(CHAR.retryMsg);
+}
+
+function retryExercise(){
+  window.speechSynthesis.cancel();
+  attemptNumber++;
+  document.getElementById('retry-screen').classList.remove('show');
+
+  // Reset all answers (keep firstAttempt captured above)
+  Object.keys(QUESTIONS).forEach(n=>{
+    delete answers[n];
+    const card=document.getElementById('qc-'+n);
+    card.classList.remove('ok','no');
+    card.querySelectorAll('.opt').forEach(b=>{
+      b.disabled=false;
+      b.classList.remove('is-right','is-bad');
+      b.querySelector('.opt-icon').textContent='';
+    });
+  });
+
+  // Reset UI
+  document.getElementById('submit-btn').classList.remove('show');
+  document.getElementById('prog-fill').style.width='0%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════
+// QUESTION STRIP
+// ═══════════════════════════════════════
+function buildQStrip(qNum){
+  const q=QUESTIONS[qNum];
+  document.getElementById('q-strip-text').textContent=q.text;
+  document.getElementById('q-strip-chose').textContent="You chose: "+answers[qNum]+" — "+q.opts[answers[qNum]];
+  const optsEl=document.getElementById('q-strip-opts');
+  if(q.section==='Maths'){
+    optsEl.innerHTML=Object.entries(q.opts).map(([k,v])=>
+      `<span class="strip-opt${answers[qNum]===k?' my-wrong':''}">${k}: ${v}</span>`).join('');
+    optsEl.style.display='flex';
+  } else {
+    optsEl.style.display='none';
+  }
+}
+
+// ═══════════════════════════════════════
+// MODE BADGE
+// ═══════════════════════════════════════
+function setModeBadge(qNum){
+  const q=QUESTIONS[qNum];
+  const badge=document.getElementById('mode-badge');
+  const hintL=document.getElementById('mic-hint-l');
+  if(q.section==='Vocab'){badge.textContent='📖 Make a sentence!';hintL.textContent='Speak your sentence';}
+  else if(q.section==='Maths'){badge.textContent='🔢 Concept first, then retry';hintL.textContent='Tell me your thinking';}
+  else{badge.textContent='✍️ What do you think?';hintL.textContent='Speak your answer';}
+}
+
+// ═══════════════════════════════════════
+// TURN DOTS
+// ═══════════════════════════════════════
+function renderDots(){
+  const el=document.getElementById('turn-dots');
+  el.innerHTML='';
+  for(let i=0;i<TUTOR_SOFT_CAP;i++){
+    const d=document.createElement('div');
+    d.className='dot'+(i<turnCount?' used':'')+(i===turnCount?' now':'');
+    el.appendChild(d);
+  }
+}
+
+// ═══════════════════════════════════════
+// OPEN TUTOR
+// ═══════════════════════════════════════
+function openTutor(qNum){
+  currentQ=qNum;
+  convHistory=[];
+  turnCount=0;
+  tutorTurns[qNum]=tutorTurns[qNum]||0;
+  document.getElementById('chat-area').innerHTML='';
+  buildQStrip(qNum);
+  setModeBadge(qNum);
+  renderDots();
+  document.getElementById('tutor-overlay').classList.add('show');
+  callAI(null);
+}
+
+// ═══════════════════════════════════════
+// BUILD SYSTEM PROMPT — by section
+// ═══════════════════════════════════════
+function buildSystemPrompt(qNum){
+  const q=QUESTIONS[qNum];
+  const wrongText  =q.opts[answers[qNum]];
+  const correctText=q.opts[q.correct];
+  const optsStr    =Object.entries(q.opts).map(([k,v])=>`${k}: ${v}`).join(', ');
+  const isVocab    =q.section==='Vocab';
+  const isMaths    =q.section==='Maths';
+  const turnNote   =turnCount>=TUTOR_SOFT_CAP-2
+    ?"\nYou are near the turn limit. Warmly wrap up now."
+    :`\nThis is turn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;
+
+  const vocabApproach=isVocab?`
+TEACHING APPROACH — VOCABULARY:
+Correct word: "${correctText}" (option ${q.correct})
+
+FIRST MESSAGE: Give a warm greeting, say "Let me show you this word in action..." then give EXACTLY 2 example sentences using "${correctText}" in everyday situations a child knows (school, sport, food, animals). Do NOT say which option is correct yet. End with: "Now you have a go — can you make your own sentence using the word ${correctText}?"
+
+WHEN CHILD MAKES A SENTENCE: Celebrate what they got right. If used correctly, give one bonus example. If it needs a small tweak, say "You could also say..." kindly. Only then confirm: "So the answer is ${q.correct}!"
+
+MINIMUM 2 rounds before confirming the answer.
+`:'';
+
+  const mathsApproach=isMaths?`
+TEACHING APPROACH — MATHS:
+Concept: ${q.mathConcept||q.code} | Correct answer: ${q.correct} — ${correctText}
+
+FIRST MESSAGE: Warm greeting. Do NOT solve the original question yet. Say "Before we go back to that, let me show you something first..." then teach the CONCEPT using a DIFFERENT, SIMPLER example. Walk through it step by step in plain spoken words. End with: "Does that method make sense to you?"
+
+AFTER THEY RESPOND: Add a quick tip or memory trick. Then say: "Right, back to your question. ${q.text} The options are: ${optsStr}. What would you choose this time?"
+
+WHEN THEY ANSWER: If correct: massive celebration + explain why using the method you taught. If still unsure: try a completely different angle.
+
+RULE: Child MUST attempt the original question again. Do not skip this step.
+`:'';
+
+  const englishApproach=(!isVocab&&!isMaths)?`
+TEACHING APPROACH — ENGLISH:
+Correct answer: ${q.correct} — ${correctText}
+
+FIRST MESSAGE: Warm greeting. Do NOT reveal the correct answer. Ask ONE Socratic question that guides the child to reason it out. Give a real-life analogy or example.
+
+AFTER THEIR RESPONSE: If on track: "Yes! So which option fits that idea?" If off track: give a concrete example then ask again. Only confirm the answer after at least 2 exchanges.
+`:'';
+
+  return `${CHAR.personality}
+
+CRITICAL FORMATTING RULES — FOLLOW EXACTLY:
+Write in plain spoken English only. No asterisks, no bold, no bullet points, no markdown of any kind. Write as if speaking to a child out loud. Write all fractions as words: say "three quarters" not 3/4. Say "percent" not the percent symbol. Keep every response under 90 words.
+
+YOU ARE TUTORING a ${CHILD_AGE}-year-old who got this question wrong:
+Question: ${q.text}
+They chose: ${answers[qNum]} — ${wrongText}
+Correct answer: ${q.correct} — ${correctText}
+Topic: ${q.code} (${q.section})
+
+${vocabApproach}${mathsApproach}${englishApproach}
+
+OFF-TOPIC RULE: If child says anything unrelated, respond in character with ONE short sentence then immediately redirect to the topic. Never let two messages pass without returning to the lesson.
+
+NEVER say: wrong, incorrect, failed, mistake, silly, dumb. Always be warm and encouraging.
+${turnNote}`;
+}
+
+// ═══════════════════════════════════════
+// CALL AI
+// ═══════════════════════════════════════
+async function callAI(userText){
+  stopMic();
+  if(userText){
+    addBubble(userText,'child-say');
+    convHistory.push({role:"user",content:userText});
+  } else {
+    convHistory.push({role:"user",content:"Please start the session."});
+  }
+  showTyping();
+  turnCount++;
+  tutorTurns[currentQ]=(tutorTurns[currentQ]||0)+1;
+  if(tutorTurns[currentQ]>=STRUGGLE_THRESHOLD) strugglingQs.add(QUESTIONS[currentQ].code);
+  renderDots();
+  const headers={"Content-Type":"application/json"};
+  if(ANTHROPIC_KEY&&ANTHROPIC_KEY!=="YOUR_ANTHROPIC_API_KEY_HERE"){
+    headers["x-api-key"]=ANTHROPIC_KEY;
+    headers["anthropic-version"]="2023-06-01";
+    headers["anthropic-dangerous-direct-browser-access"]="true";
+  }
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers,
+      body:JSON.stringify({
+        model:"claude-sonnet-4-6",
+        max_tokens:220,
+        system:buildSystemPrompt(currentQ),
+        messages:convHistory
+      })
+    });
+    const data=await res.json();
+    const reply=stripMd(data.content?.find(b=>b.type==="text")?.text||"Let me try explaining this a different way!");
+    removeTyping();
+    convHistory.push({role:"assistant",content:reply});
+    addBubble(reply,'char-say');
+    speak(reply);
+    if(turnCount>=TUTOR_SOFT_CAP){
+      setTimeout(()=>{const w=stripMd(CHAR.wrapUp);addBubble(w,'char-say');speak(w);setTimeout(closeTutor,3800);},1200);
+    }
+  }catch(e){
+    removeTyping();
+    const fb="Let me try explaining this a different way!";
+    addBubble(fb,'char-say');speak(fb);
+  }
+}
+
+// ═══════════════════════════════════════
+// CHAT UI
+// ═══════════════════════════════════════
+function addBubble(text,cls){
+  const el=document.createElement('div');
+  el.className='bubble '+cls;el.textContent=text;
+  document.getElementById('chat-area').appendChild(el);
+  el.scrollIntoView({behavior:'smooth',block:'end'});
+}
+function showTyping(){
+  const el=document.createElement('div');
+  el.className='bubble char-say';el.id='typing-ind';
+  el.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
+  document.getElementById('chat-area').appendChild(el);
+  el.scrollIntoView({behavior:'smooth',block:'end'});
+}
+function removeTyping(){const el=document.getElementById('typing-ind');if(el)el.remove();}
+
+// ═══════════════════════════════════════
+// TTS
+// ═══════════════════════════════════════
+function speak(text){
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(text);
+  const voices=window.speechSynthesis.getVoices();
+  const v=voices.find(v=>v.lang==='en-GB'&&v.name.toLowerCase().includes('female'))
+         ||voices.find(v=>v.lang==='en-GB')
+         ||voices.find(v=>v.lang.startsWith('en'));
+  if(v)utt.voice=v;
+  utt.rate=CHAR.key==='snake'?0.88:1.06;
+  utt.pitch=CHAR.key==='snake'?0.83:1.16;
+  window.speechSynthesis.speak(utt);
+}
+
+// ═══════════════════════════════════════
+// STT
+// ═══════════════════════════════════════
+function toggleMic(){
+  if(isListening){stopMic();return;}
+  window.speechSynthesis.cancel();
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){addBubble("Voice is not available — tap Got it when you are ready!","char-say");return;}
+  recognition=new SR();
+  recognition.lang='en-GB';recognition.interimResults=true;recognition.maxAlternatives=1;
+  let final='';
+  recognition.onstart=()=>{
+    isListening=true;
+    document.getElementById('mic-btn').classList.add('listening');
+    document.getElementById('mic-btn').textContent='🔴';
+    document.getElementById('mic-status').textContent='listening...';
+  };
+  recognition.onresult=e=>{
+    let interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    document.getElementById('mic-status').textContent=interim||final||'listening...';
+  };
+  recognition.onend=()=>{
+    stopMic();
+    if(final.trim())callAI(final.trim());
+    else document.getElementById('mic-status').textContent='or just listen';
+  };
+  recognition.onerror=()=>stopMic();
+  recognition.start();
+}
+function stopMic(){
+  if(recognition)try{recognition.stop();}catch(e){}
+  isListening=false;
+  document.getElementById('mic-btn').classList.remove('listening');
+  document.getElementById('mic-btn').textContent='🎤';
+}
+
+// ═══════════════════════════════════════
+// CLOSE TUTOR ACTIONS
+// ═══════════════════════════════════════
+function gotIt(){
+  window.speechSynthesis.cancel();
+  const msg=stripMd(CHAR.gotIt);addBubble(msg,'char-say');speak(msg);
+  setTimeout(closeTutor,1800);
+}
+function parentSkip(){window.speechSynthesis.cancel();stopMic();closeTutor();}
+function closeTutor(){
+  window.speechSynthesis.cancel();stopMic();
+  document.getElementById('tutor-overlay').classList.remove('show');
+  currentQ=null;
+}
+
+// ═══════════════════════════════════════
+// END SCREEN — uses firstAttempt data for display
+// ═══════════════════════════════════════
+function openEndScreen(){
+  // Always display first attempt data on the results screen
+  const fa=firstAttempt;
+  const correct=Object.keys(fa.answers).filter(n=>fa.answers[n]===QUESTIONS[n].correct);
+  const wrong  =Object.keys(fa.answers).filter(n=>fa.answers[n]!==QUESTIONS[n].correct);
+  const score  =correct.length;
+  const pct    =Math.round(score/TOTAL_QS*100);
+
+  document.getElementById('end-score').textContent=score;
+  document.getElementById('end-denom').textContent="out of "+TOTAL_QS;
+  document.getElementById('end-title').textContent=pct===100?"Perfect score! "+CHAR.emoji:pct>=75?"Great work! "+CHAR.emoji:"Well done! "+CHAR.emoji;
+  document.getElementById('end-sub').textContent  =pct===100?"Every single question right — incredible!":pct>=75?"Really strong session today!":"Lots learned — that is what counts!";
+
+  // Show attempt note if it took more than one try
+  if(attemptNumber>1){
+    const note=document.getElementById('attempt-note');
+    note.textContent="It took "+attemptNumber+" attempts to reach 80% — these results show your first attempt, which is what helps us track your real progress.";
+    note.classList.add('show');
+  }
+
+  // YouTube suggestions — from first attempt struggling data
+  if(fa.struggling.size>0){
+    document.getElementById('video-section').style.display='block';
+    document.getElementById('vid-intro').textContent=CHAR.key==='snake'
+      ?"Ssss, you worked ssso hard on some tricky topics! These short videos might help everything click."
+      :"You made waves today! For the trickier topics, these videos can really help things sink in.";
+    const cards=document.getElementById('vid-cards');
+    cards.innerHTML='';
+    [...fa.struggling].forEach(code=>{
+      const v=videoForCode(code);
+      cards.innerHTML+=`<div class="vid-card"><div class="vid-thumb">▶️</div><div class="vid-info"><div class="vid-code">${code}</div><div class="vid-title">${v.title}</div><div class="vid-sub">${v.sub}</div><a class="vid-link" href="${v.url}" target="_blank" rel="noopener">Watch on YouTube →</a></div></div>`;
+    });
+  }
+
+  const list=document.getElementById('results-list');
+  list.innerHTML=
+    (wrong.length?'<div class="res-lbl">First attempt — ones to review</div>':'')+
+    wrong.map(n=>{const q=QUESTIONS[n];return`<div class="wrong-row"><div class="wq">${q.text}</div><div class="wa"><span class="ans-you">You chose: ${fa.answers[n]} — ${q.opts[fa.answers[n]]}</span><span class="ans-ok">Answer: ${q.correct} — ${q.opts[q.correct]}</span></div></div>`;}).join('')+
+    (correct.length&&wrong.length?'<div class="res-lbl" style="margin-top:20px">These you got right</div>':'')+
+    correct.map(n=>{const q=QUESTIONS[n];return`<div class="correct-row">✅ ${q.text}</div>`;}).join('');
+
+  document.getElementById('end-screen').classList.add('show');
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+// CLAIM POINTS — webhook always uses firstAttempt data
+// ═══════════════════════════════════════
+function claimPoints(){
+  document.getElementById('claim-btn').disabled=true;
+  const newTotal=storedPts+POINTS_EARNED;
+  localStorage.setItem("pts_"+CHILD,newTotal);
+
+  const fa=firstAttempt;
+  const firstCorrect=Object.keys(fa.answers).filter(n=>fa.answers[n]===QUESTIONS[n].correct).length;
+  const secs={Vocab:{a:0,c:0},English:{a:0,c:0},Maths:{a:0,c:0}};
+  Object.keys(QUESTIONS).forEach(n=>{
+    const s=QUESTIONS[n].section;secs[s].a++;
+    if(fa.answers[n]===QUESTIONS[n].correct)secs[s].c++;
+  });
+
+  // Build questions payload from FIRST ATTEMPT data only
+  const questionsPayload=Object.keys(QUESTIONS).map((n,i)=>({
+    q_number:    i+1,
+    code:        QUESTIONS[n].code,
+    section:     QUESTIONS[n].section,
+    correct:     fa.answers[n]===QUESTIONS[n].correct,
+    answer_chosen:      fa.answers[n],
+    correct_answer:     QUESTIONS[n].correct,
+    wrong_answer_chosen:fa.answers[n]!==QUESTIONS[n].correct?fa.answers[n]:null,
+    tutor_used:  !!(fa.tutorTurns[n]&&fa.tutorTurns[n]>0),
+    tutor_turns: fa.tutorTurns[n]||0,
+  }));
+
+  fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      type:"exercise_result",child:CHILD,
+      date:new Date().toISOString().slice(0,10),
+      week:WEEK_NUM,day:DAY,
+      total_correct:firstCorrect,           // first attempt score
+      total_questions:TOTAL_QS,
+      points_earned:POINTS_EARNED,
+      score_summary:`Vocab:${secs.Vocab.c}/${secs.Vocab.a} English:${secs.English.c}/${secs.English.a} Maths:${secs.Maths.c}/${secs.Maths.a}`,
+      subject_focus:"Mixed",
+      attempt_number:attemptNumber,         // how many tries to reach 80%
+      first_attempt_pct:Math.round(firstCorrect/TOTAL_QS*100),
+      struggling_codes:[...fa.struggling],
+      questions:questionsPayload,
+    })
+  }).catch(()=>{});
+
+  document.getElementById('succ-char').textContent=CHAR.emoji;
+  document.getElementById('succ-pts').textContent="+"+POINTS_EARNED;
+  document.getElementById('succ-total').textContent="Total: "+newTotal+" pts";
+  document.getElementById('success-screen').classList.add('show');
+  speak(CHAR.key==='snake'?"Ssss! Amazing work today! You have earned your points!":"Fin-tastic work today! You have earned those points!");
+}
+
+window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+</script>
+</body>
+</html>
