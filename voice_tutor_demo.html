@@ -151,6 +151,10 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
 .setup-btn:active{background:#4338CA}
 .setup-hint{font-size:12px;color:#9CA3AF}
 
+
+.key-reset-btn{background:none;border:none;color:rgba(255,255,255,.35);font-size:16px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:color .2s}
+.key-reset-btn:active{color:rgba(255,255,255,.9)}
+
 </style>
 
 </head>
@@ -166,13 +170,17 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
     <input class="setup-input" type="password" id="setup-key-input"
            placeholder="paste your API key here" autocomplete="off" autocorrect="off" spellcheck="false"/>
     <button class="setup-btn" onclick="saveKey()">Save and start →</button>
-    <p class="setup-hint">Find your key at console.anthropic.com → API Keys</p>
+    <p id="setup-error" style="display:none;color:#DC2626;font-size:13px;font-weight:600;margin-bottom:10px;background:#FEF2F2;padding:10px;border-radius:8px">
+  Key was rejected by Anthropic. Please check it and try again.
+</p>
+<p class="setup-hint">Find your key at console.anthropic.com → API Keys</p>
   </div>
 </div>
 
 <div class="hdr">
   <span class="hdr-day" id="hdr-day">Thursday · Week 16</span>
   <span class="pts-pill" id="pts-display">⭐ 600 pts</span>
+  <button class="key-reset-btn" onclick="resetKey()" title="Reset API key">⚙</button>
 </div>
 <div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div></div>
 
@@ -350,7 +358,23 @@ function saveKey(){
   }
   localStorage.setItem('anthropic_key_v1', val);
   document.getElementById('setup-screen').classList.remove('show');
+  document.getElementById('setup-error').style.display='none';
+  document.getElementById('setup-key-input').value='';
   ANTHROPIC_KEY = val;
+}
+function resetKey(){
+  localStorage.removeItem('anthropic_key_v1');
+  ANTHROPIC_KEY = '';
+  document.getElementById('setup-error').style.display='none';
+  document.getElementById('setup-key-input').value='';
+  document.getElementById('setup-screen').classList.add('show');
+}
+function showKeyError(){
+  document.getElementById('setup-error').style.display='block';
+  document.getElementById('setup-key-input').value='';
+  ANTHROPIC_KEY='';
+  localStorage.removeItem('anthropic_key_v1');
+  document.getElementById('setup-screen').classList.add('show');
 }
 let ANTHROPIC_KEY = getStoredKey();
 // Show setup screen if no key saved yet
@@ -740,6 +764,7 @@ async function callAI(userText){
         messages:convHistory
       })
     });
+    if(res.status===401){removeTyping();closeTutor();showKeyError();return;}
     const data=await res.json();
     const reply=stripMd(data.content?.find(b=>b.type==="text")?.text||"Let me try explaining this a different way!");
     removeTyping();
