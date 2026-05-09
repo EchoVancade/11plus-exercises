@@ -330,6 +330,19 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
   </div>
 </div>
 
+<div style="margin:1rem;background:#fff;border-radius:14px;overflow:hidden;border:2px solid #c4b5fd;box-shadow:0 2px 8px rgba(124,58,237,.06)">
+  <div style="background:linear-gradient(135deg,#C77800,#A06000);padding:0.65rem 1.1rem">
+    <span style="color:#fff;font-weight:800;font-size:0.85rem;font-family:'Nunito',sans-serif">📖 Word of the Day</span>
+  </div>
+  <div style="padding:1rem">
+    <div style="font-size:1.15rem;font-weight:800;color:#C77800;margin-bottom:0.2rem">luminous</div>
+    <div style="font-size:0.88rem;color:#555;margin-bottom:0.5rem;line-height:1.5">Adjective — producing or reflecting a lot of light; glowing brightly.</div>
+    <div style="font-size:0.82rem;font-style:italic;color:#777;margin-bottom:0.75rem">"The luminous stars lit up the night sky like scattered diamonds."</div>
+    <div style="font-size:0.78rem;color:#888;margin-bottom:0.6rem">Read the word and example above, then tap your AI tutor to practise!</div>
+    <button style="width:100%;padding:0.75rem;background:linear-gradient(135deg,#C77800,#A06000);color:#fff;border:none;border-radius:10px;font-size:0.9rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;min-height:44px" id="dict-ready-btn" onclick="openDictTutor()">I am ready! 📖</button>
+  </div>
+</div>
+
 <div class="submit-wrap">
   <button class="btn-submit" id="btn-submit" onclick="handleSubmit()" disabled>Submit answers →</button>
 </div>
@@ -394,6 +407,10 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
 </div>
 
 <script>
+const DICT_WORD='luminous';
+const DICT_DEF='Adjective — producing or reflecting a lot of light; glowing brightly.';
+const DICT_EG='The luminous stars lit up the night sky like scattered diamonds.'
+;
 const CHILD='IL',DAY='Sunday',WEEK=19,WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
 const PTS_KEY='pts_IL',BASE_PTS=0,PASS_THRESHOLD=0.80,RULE_STYLE='memory';
 const QUESTIONS={
@@ -464,7 +481,13 @@ const optsEl=document.getElementById("q-strip-opts");optsEl.innerHTML=Object.ent
 document.getElementById("mode-badge").textContent="✍️ What do you think?";document.getElementById("mic-hint-l").textContent="Speak your answer";
 renderDots();document.getElementById("tutor-overlay").classList.add("show");callAI(null);}
 function renderDots(){const el=document.getElementById("turn-dots");el.innerHTML="";for(let i=0;i<TUTOR_SOFT_CAP;i++){const d=document.createElement("div");d.className="dot"+(i<turnCount?" used":"")+(i===turnCount?" now":"");el.appendChild(d);}}
-function buildSystemPrompt(qIdx){const childAge=7;const turnNote=turnCount>=TUTOR_SOFT_CAP-2?"\nYou are near the turn limit. Wrap up warmly now.":`\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;const strictOpening=`ABSOLUTE RULE — YOUR VERY FIRST REPLY ONLY:\nYour FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it.\nExample: For a comprehension question: "Why did the lion go to the library? To find a good mane-uscript!"\nBANNED from first reply: your name, any greeting, restating the question, "Let me explain".\nAfter the joke: straight to teaching. Plain spoken English only. No asterisks or markdown. Max 80 words.\nNEVER say: wrong, incorrect, failed, mistake.${turnNote}`;
+function buildSystemPrompt(qIdx){
+  if(isDictMode){const turnNote=turnCount>=TUTOR_SOFT_CAP-2?"\nWrap up warmly.":`\nTurn ${turnCount+1} of ${TUTOR_SOFT_CAP}.`;return `ABSOLUTE RULE: Start with ONE short funny joke about "luminous". Then 2 vivid examples. Ask child to make own sentence. Evaluate grammar. If correct, expand with WHERE/WHEN/HOW. Plain English only. Max 80 words. Never say wrong or incorrect.${turnNote}
+
+${CHAR.personality}
+
+WORD: "luminous" — glowing brightly.
+SEQUENCE: joke → 2 examples → sentence practice → grammar feedback → expansion for creative writing.`;}const childAge=7;const turnNote=turnCount>=TUTOR_SOFT_CAP-2?"\nYou are near the turn limit. Wrap up warmly now.":`\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;const strictOpening=`ABSOLUTE RULE — YOUR VERY FIRST REPLY ONLY:\nYour FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it.\nExample: For a comprehension question: "Why did the lion go to the library? To find a good mane-uscript!"\nBANNED from first reply: your name, any greeting, restating the question, "Let me explain".\nAfter the joke: straight to teaching. Plain spoken English only. No asterisks or markdown. Max 80 words.\nNEVER say: wrong, incorrect, failed, mistake.${turnNote}`;
 const q=QUESTIONS[qIdx];const wrongText=q.opts[answers[qIdx]];const correctText=q.opts[q.correct];const optsStr=Object.entries(q.opts).map(([k,v])=>`${k}: ${v}`).join(", ");
 return`${strictOpening}\n\n${CHAR.personality}\n\nYou are tutoring a ${childAge}-year-old (age 7) who got this question wrong:\nQuestion: ${q.text}\nThey chose: ${answers[qIdx]} — ${wrongText}\nCorrect answer: ${q.correct} — ${correctText}\n\nENGLISH SEQUENCE:\nFIRST REPLY: joke → ONE simple question guiding the child to think about the answer. Use very simple language for age 7.\nAFTER RESPONSE: guide gently, give a simple example from the story. Confirm only after 1-2 exchanges.\nOFF-TOPIC: one character sentence then redirect immediately.`;}
 let _cachedVoice=null;
