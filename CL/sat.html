@@ -3,40 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>CL — Saturday Week 19 (Comprehension)</title>
+<title>CL — Saturday · Week 19</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ── ORIGINAL BASE DESIGN ─────────────────────────────────────────── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height:100vh;padding-bottom:2rem}
-.header{background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;padding:1rem 1.25rem 0.875rem;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header{background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;padding:1rem 1.25rem 0.875rem;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.header-left{flex:1}
 .header h1{font-size:1.1rem;font-weight:800;margin-bottom:0.25rem}
 .pts-bar{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
 .pts-num{font-size:1.5rem;font-weight:800}
 .pts-sub{font-size:0.8rem;opacity:.9}
 .milestone-track{height:6px;background:rgba(255,255,255,.3);border-radius:3px;flex:1;min-width:80px;margin:0 0.25rem}
 .milestone-fill{height:100%;background:#fff;border-radius:3px;transition:width .5s}
-.rules{margin:1rem;background:#fff;border-left:4px solid #FF6B35;border-radius:0 10px 10px 0;padding:0.875rem 1rem;display:flex;flex-direction:column;gap:0.5rem}
-.rule-item{font-size:0.85rem;color:#444;line-height:1.5}
-.rule-item strong{color:#E85D04}
+.key-reset-btn{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif;flex-shrink:0;margin-top:2px}
+.key-reset-btn:active{background:rgba(255,255,255,.35)}
+/* ── RULES CARD — big briefing panel ─────────── */
+.rules-card{margin:1rem;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(255,107,53,.18)}
+.rules-header{background:linear-gradient(135deg,#FF6B35,#E85D04);padding:1rem 1.25rem 0.875rem}
+.rules-title{font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:.02em;margin-bottom:0.25rem}
+.rules-subtitle{font-size:0.82rem;color:rgba(255,255,255,.88);line-height:1.4}
+.rules-body{background:#fff;padding:1rem 1.25rem}
+.rule-item{font-size:0.95rem;color:#333;line-height:1.6;padding:0.625rem 0;border-bottom:1px solid #F5F0EB;display:flex;gap:0.5rem;align-items:flex-start}
+.rule-item:last-of-type{border-bottom:none}
+.rule-item strong{color:#E85D04;font-weight:800}
+.rules-read-btn{display:block;width:100%;margin-top:0.875rem;padding:0.875rem;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;min-height:50px;box-shadow:0 3px 10px rgba(255,107,53,.35);letter-spacing:.02em}
+.rules-read-btn:active{opacity:.88;transform:scale(.98)}
+.rules-done{display:none;align-items:center;justify-content:space-between;padding:0.625rem 1.25rem;background:#F0FAF0}
+.rules-done span{font-size:0.9rem;font-weight:800;color:#2D9E2D;font-family:'Nunito',sans-serif}
+/* Questions locked until rules are read */
+.questions-locked .section{opacity:.45;pointer-events:none;user-select:none;transition:opacity .4s}
+.questions-locked .btn-submit{opacity:.35;pointer-events:none}
+.questions-locked::after{content:"👆 Read today's tips first!";display:block;text-align:center;font-size:0.85rem;font-weight:700;color:#E85D04;font-family:'Nunito',sans-serif;padding:0.5rem;margin-bottom:0.5rem}
 .section{margin:1rem;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .section-header{padding:0.75rem 1rem;font-weight:800;font-size:0.9rem;letter-spacing:0.03em;color:#fff}
 .sh-vocab{background:#7B2D8B}
 .sh-english{background:#0077B6}
 .sh-maths{background:#2D9E2D}
 .sh-dict{background:#C77800}
-.sh-comp{background:#0077B6}
-.sh-cw{background:#7B2D8B}
 .question{padding:0.875rem 1rem;border-bottom:1px solid #F5F0EB}
 .question:last-child{border-bottom:none}
 .q-text{font-size:0.95rem;font-weight:700;line-height:1.5;margin-bottom:0.625rem}
 .q-star{color:#FF6B35;font-size:0.85rem;margin-left:4px}
 .options{display:flex;flex-direction:column;gap:0.375rem}
-.opt{display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.75rem;border-radius:10px;border:2px solid #E8E0D8;background:#FAFAF8;cursor:pointer;font-size:0.9rem;font-weight:600;min-height:44px;transition:all .15s}
-.opt:active{background:#F0EBE3}
+.opt{display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.75rem;border-radius:10px;border:2px solid #E8E0D8;background:#FAFAF8;cursor:pointer;font-size:0.9rem;font-weight:600;min-height:44px;transition:all .15s;width:100%}
+.opt:active:not(.answered){background:#F0EBE3}
+.opt.answered{cursor:default}
 .opt input{position:absolute;opacity:0;width:0}
 .opt-letter{width:22px;height:22px;border-radius:50%;border:2px solid #C0B8B0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;flex-shrink:0;color:#888;transition:all .15s}
-.opt.selected{border-color:#FF6B35;background:#FFF3EE}
-.opt.selected .opt-letter{background:#FF6B35;border-color:#FF6B35;color:#fff}
 .opt.correct{border-color:#2D9E2D;background:#F0FAF0}
 .opt.correct .opt-letter{background:#2D9E2D;border-color:#2D9E2D;color:#fff}
 .opt.wrong{border-color:#D62828;background:#FFF0F0}
@@ -51,6 +66,7 @@ body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height
 .btn-submit{width:100%;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:14px;padding:1rem;font-size:1.1rem;font-weight:800;font-family:'Nunito',sans-serif;min-height:54px;cursor:pointer;letter-spacing:0.02em;box-shadow:0 4px 12px rgba(255,107,53,.4);transition:transform .1s}
 .btn-submit:active{transform:scale(.98)}
 .btn-submit:disabled{background:#ccc;box-shadow:none;cursor:default}
+/* Result screen — original */
 .result{display:none;padding:1.25rem;text-align:center}
 .result-title{font-size:1.6rem;font-weight:800;margin-bottom:0.5rem}
 .result-score{font-size:3rem;font-weight:800;color:#FF6B35;margin:0.5rem 0}
@@ -60,340 +76,978 @@ body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height
 .pts-award{font-size:1.2rem;font-weight:800;color:#2D9E2D;margin:0.5rem 0}
 .pts-total{font-size:2rem;font-weight:800;color:#7B2D8B}
 .pts-next{font-size:0.85rem;color:#888;margin-top:0.25rem}
-.passage{background:#F5F5F5;border-radius:10px;padding:1rem;margin:0.875rem 1rem 0;font-size:0.88rem;line-height:1.7;color:#333}
-.passage h3{font-size:1rem;font-weight:800;margin-bottom:0.5rem;color:#0077B6}
-.writing-prompt{margin:0.875rem 1rem;background:#FFF8F0;border:2px dashed #FF6B35;border-radius:10px;padding:1rem}
-.writing-prompt p{font-size:0.9rem;color:#555;line-height:1.5;margin-bottom:0.625rem}
-.writing-input{width:100%;border:2px solid #E8E0D8;border-radius:10px;padding:0.625rem 0.75rem;font-size:0.9rem;font-family:'Nunito',sans-serif;min-height:100px;resize:vertical;color:#2D2D2D}
+/* Attempt note + YouTube in result */
+.attempt-note{background:#FFF7ED;border-radius:10px;padding:0.75rem 1rem;font-size:0.82rem;color:#92400E;border-left:3px solid #F59E0B;margin:0.75rem 0;text-align:left;display:none}
+.attempt-note.show{display:block}
+.video-section{margin:0.75rem 0;text-align:left}
+.vid-hdr{font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:0.5rem}
+.vid-intro{font-size:0.82rem;color:#92400E;background:#FFF7ED;border-radius:8px;padding:0.625rem 0.75rem;border-left:3px solid #F59E0B;margin-bottom:0.5rem;line-height:1.5}
+.vid-card{background:#fff;border-radius:10px;padding:0.75rem;margin-bottom:0.5rem;border:1.5px solid #E8E0D8;display:flex;align-items:center;gap:0.75rem;text-align:left}
+.vid-thumb{width:42px;height:42px;border-radius:8px;background:#CC0000;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.vid-info{flex:1}
+.vid-code{font-size:10px;font-weight:800;color:#7B2D8B;text-transform:uppercase;letter-spacing:.05em}
+.vid-title{font-size:0.85rem;font-weight:700;color:#2D2D2D;margin:2px 0}
+.vid-link{color:#CC0000;font-size:0.8rem;font-weight:700;text-decoration:none}
+
+/* ── TUTOR OVERLAY ─────────────────────────────────────────────────── */
+/* Snake palette */
+body.snake{--t-bg:#17432E;--t-hi:#27AE60;--t-lite:rgba(39,174,96,.22);--t-border:rgba(39,174,96,.45);--t-glow:rgba(39,174,96,.6)}
+/* Shark palette */
+body.shark{--t-bg:#0B2E52;--t-hi:#2980B9;--t-lite:rgba(41,128,185,.22);--t-border:rgba(41,128,185,.45);--t-glow:rgba(41,128,185,.6)}
+
+.tutor-overlay{display:none;position:fixed;inset:0;z-index:100;flex-direction:column;background:var(--t-bg)}
+.tutor-overlay.show{display:flex}
+
+/* Question strip */
+.q-strip{background:rgba(0,0,0,.32);padding:12px 16px;border-bottom:1.5px solid rgba(255,255,255,.12);flex-shrink:0}
+.q-strip-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--t-hi);margin-bottom:4px;font-family:'Nunito',sans-serif}
+.q-strip-text{font-size:16px;font-weight:800;color:#fff;line-height:1.35;margin-bottom:6px;font-family:'Nunito',sans-serif}
+.q-strip-chose{background:rgba(214,40,40,.3);color:#FCA5A5;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;display:inline-block;margin-bottom:4px}
+.q-strip-opts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.strip-opt{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;border:1.5px solid rgba(255,255,255,.18);font-family:'Nunito',sans-serif}
+.strip-opt.my-wrong{background:rgba(214,40,40,.28);color:#FCA5A5;border-color:rgba(220,80,80,.55);font-weight:800}
+
+/* Character header row */
+.tutor-top{padding:12px 16px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
+.char-zone{display:flex;align-items:center;gap:12px}
+.char-avatar{font-size:56px;line-height:1;display:block;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+body.snake .char-avatar{animation:slither 3s ease-in-out infinite}
+body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
+@keyframes slither{0%,100%{transform:translateX(0) rotate(0deg)}30%{transform:translateX(-7px) rotate(-6deg)}70%{transform:translateX(7px) rotate(6deg)}}
+@keyframes swim{0%,100%{transform:translateX(0) rotate(-3deg)}50%{transform:translateX(8px) rotate(3deg)}}
+.char-info{display:flex;flex-direction:column;gap:5px}
+.char-name{color:#fff;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;letter-spacing:.01em}
+.mode-badge{background:var(--t-lite);border:1.5px solid var(--t-border);color:#fff;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif}
+.turn-dots{display:flex;gap:4px;flex-wrap:wrap;max-width:150px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18);flex-shrink:0;transition:background .3s}
+.dot.used{background:rgba(255,255,255,.5)}
+.dot.now{background:var(--t-hi);box-shadow:0 0 5px var(--t-glow)}
+.parent-skip{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);border-radius:22px;padding:8px 16px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;min-height:42px;font-family:'Nunito',sans-serif;letter-spacing:.02em}
+.parent-skip:active{background:rgba(255,255,255,.22)}
+
+/* Chat area */
+.chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 16px;display:flex;flex-direction:column;gap:10px;min-height:0}
+.bubble{max-width:90%;padding:13px 16px;border-radius:18px;font-size:17px;line-height:1.6;word-break:break-word;font-family:'Nunito',sans-serif}
+.bubble.char-say{background:var(--t-lite);border:1.5px solid var(--t-border);color:#fff;border-bottom-left-radius:5px;align-self:flex-start}
+.bubble.child-say{background:rgba(255,255,255,.94);color:#1A1A1A;border-bottom-right-radius:5px;align-self:flex-end;font-weight:600;font-style:italic}
+.typing-dots{display:flex;gap:6px;align-items:center;padding:6px 0}
+.typing-dots span{width:8px;height:8px;border-radius:50%;background:var(--t-hi);opacity:.6;animation:blink 1.2s ease-in-out infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+/* Bottom controls */
+.tutor-bottom{padding:12px 16px 24px;display:flex;flex-direction:column;gap:10px;flex-shrink:0;background:rgba(0,0,0,.18);border-top:1.5px solid rgba(255,255,255,.08)}
+.got-it-btn{width:100%;padding:15px;background:var(--t-hi);border:none;color:#fff;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;min-height:52px;font-family:'Nunito',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.25);letter-spacing:.01em}
+.got-it-btn:active{opacity:.88;transform:scale(.98)}
+.mic-row{display:flex;align-items:center;justify-content:center;gap:16px}
+.mic-hint{color:rgba(255,255,255,.65);font-size:13px;text-align:center;max-width:100px;line-height:1.4;font-family:'Nunito',sans-serif;font-weight:600}
+.mic-btn{width:88px;height:88px;border-radius:50%;border:3px solid var(--t-border);background:#fff;font-size:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;flex-shrink:0;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.mic-btn:active{transform:scale(.91)}
+.mic-btn.listening{border-color:var(--t-hi);box-shadow:0 0 0 0 var(--t-glow);animation:mic-pulse 1s ease-in-out infinite}
+@keyframes mic-pulse{0%{box-shadow:0 0 0 0 var(--t-glow)}70%{box-shadow:0 0 0 18px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+/* ── RETRY SCREEN ──────────────────────────────────────────────────── */
+.retry-screen{display:none;position:fixed;inset:0;z-index:150;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;background:#F59E0B}
+.retry-screen.show{display:flex}
+.retry-char{font-size:72px;margin-bottom:12px;animation:wobble 1s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.retry-heading{font-size:26px;font-weight:800;color:#fff;margin-bottom:6px;font-family:'Nunito',sans-serif}
+.retry-score-big{font-size:60px;font-weight:800;color:#fff;line-height:1;margin:10px 0 2px;font-family:'Nunito',sans-serif}
+.retry-score-label{font-size:15px;color:rgba(255,255,255,.85);margin-bottom:16px;font-family:'Nunito',sans-serif}
+.retry-msg{background:rgba(255,255,255,.25);border-radius:14px;padding:14px 18px;font-size:16px;color:#fff;font-weight:700;line-height:1.5;margin-bottom:8px;max-width:360px;font-family:'Nunito',sans-serif}
+.retry-needed{font-size:13px;color:rgba(255,255,255,.8);margin-bottom:22px;font-family:'Nunito',sans-serif}
+.retry-btn{padding:16px 36px;background:#fff;color:#B45309;border:none;border-radius:14px;font-size:18px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;min-height:56px}
+.retry-btn:active{transform:scale(.96)}
+
+/* ── SETUP SCREEN ──────────────────────────────────────────────────── */
+.setup-screen{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:20px}
+.setup-screen.show{display:flex}
+.setup-box{background:#fff;border-radius:20px;padding:28px 24px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.setup-emoji{font-size:44px;margin-bottom:10px}
+.setup-title{font-size:20px;font-weight:800;color:#2D2D2D;margin-bottom:6px;font-family:'Nunito',sans-serif}
+.setup-msg{font-size:14px;color:#6B7280;line-height:1.5;margin-bottom:16px;font-family:'Nunito',sans-serif}
+.setup-error{display:none;color:#D62828;font-size:13px;font-weight:700;background:#FFF0F0;padding:8px 12px;border-radius:8px;margin-bottom:12px;font-family:'Nunito',sans-serif}
+.setup-input{width:100%;padding:12px 14px;border:2px solid #E8E0D8;border-radius:10px;font-size:14px;font-family:monospace;margin-bottom:12px;outline:none;color:#2D2D2D}
+.setup-input:focus{border-color:#FF6B35}
+.setup-btn{width:100%;padding:14px;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:10px;min-height:50px;font-family:'Nunito',sans-serif}
+.setup-btn:active{opacity:.9}
+.setup-hint{font-size:11px;color:#9CA3AF;font-family:'Nunito',sans-serif}
+
+.dict-ready-btn{width:100%;margin-top:0.875rem;padding:0.875rem;background:linear-gradient(135deg,#C77800,#A06000);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;min-height:50px;box-shadow:0 3px 10px rgba(199,120,0,.35)}
+.dict-ready-btn:active{opacity:.9}
+.dict-ready-btn.done{background:#ccc;cursor:default;box-shadow:none}
+.type-row{display:none;gap:8px;margin-top:6px}
+.type-row.show{display:flex}
+.type-input{flex:1;padding:10px 12px;border:2px solid rgba(255,255,255,.3);border-radius:10px;font-size:14px;font-family:'Nunito',sans-serif;background:rgba(255,255,255,.15);color:#fff;outline:none}
+.type-input::placeholder{color:rgba(255,255,255,.5)}
+.type-input:focus{border-color:rgba(255,255,255,.6)}
+.type-send{padding:10px 16px;background:#fff;color:#C77800;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap}
+.type-send:active{opacity:.85}
 </style>
 </head>
 <body>
+
+<!-- SETUP SCREEN -->
+<div class="setup-screen" id="setup-screen">
+  <div class="setup-box">
+    <div class="setup-emoji">🔑</div>
+    <h2 class="setup-title">Parent Setup</h2>
+    <p class="setup-msg">Enter the Anthropic API key once. It saves on this device — you never need to enter it again.</p>
+    <div class="setup-error" id="setup-error">Key was rejected. Please check it and try again.</div>
+    <input class="setup-input" type="password" id="setup-key-input"
+           placeholder="paste your API key here" autocomplete="off" autocorrect="off" spellcheck="false"/>
+    <button class="setup-btn" onclick="saveKey()">Save and start →</button>
+    <p class="setup-hint">Find your key at console.anthropic.com → API Keys</p>
+  </div>
+</div>
+
+<!-- HEADER -->
 <div class="header">
-  <h1>CL — Saturday Week 19 · Comprehension</h1>
-  <div class="pts-bar">
-    <span class="pts-num" id="pts-num">510 pts</span>
-    <div class="milestone-track"><div class="milestone-fill" id="mil-fill" style="width:50%"></div></div>
-    <div>
-      <div class="pts-sub" id="mil-cur">Gold 🥇</div>
-      <div class="pts-sub" id="mil-next">320 to Platinum 🏆</div>
+  <div class="header-left">
+    <h1>CL — Saturday · Week 19</h1>
+    <div class="pts-bar">
+      <span class="pts-num" id="pts-num">510 pts</span>
+      <div class="milestone-track"><div class="milestone-fill" id="mil-fill" style="width:50%"></div></div>
+      <div>
+        <div class="pts-sub" id="mil-cur">Gold 🥇</div>
+        <div class="pts-sub" id="mil-next">320 to Platinum 🏆</div>
+      </div>
+    </div>
+  </div>
+  <button class="key-reset-btn" onclick="resetKey()">⚙ Key</button>
+</div>
+
+<!-- EXERCISE -->
+<div id="exercise" class="questions-locked">
+<div class="rules-card" id="rules-card">
+  <div class="rules-header">
+    <div class="rules-title" id="rules-title">⚡ TODAY'S WEAPONS</div>
+    <div class="rules-subtitle" id="rules-subtitle">Master these and today's questions will feel easier.</div>
+  </div>
+  <div class="rules-body" id="rules-body">
+    <div class="rule-item">👁 <strong>E5.2 Similes:</strong> A simile compares two things using <strong>"like" or "as"</strong>. Look for those words — they're your signal!</div>
+    <div class="rule-item">📌 <strong>E5.6 Inference:</strong> The answer is <strong>not always written</strong> — look for clues in the character's actions and feelings.</div>
+    <button class="rules-read-btn" onclick="markRulesRead()">I've read this — let's go! 🚀</button>
+  </div>
+  <div class="rules-done" id="rules-done">
+    <span>📖 Tips noted</span><span>✓ Ready to go!</span>
+  </div>
+</div>
+
+
+<div style="margin:1rem;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);border:2px solid #E8E0D8">
+  <div style="background:linear-gradient(135deg,#FF6B35,#E85D04);padding:0.75rem 1.25rem;display:flex;align-items:center;gap:0.75rem">
+    <span style="font-size:1.1rem">📖</span>
+    <span style="color:#fff;font-weight:800;font-size:0.9rem;letter-spacing:0.03em">TODAY'S PASSAGE — READ THIS FIRST</span>
+  </div>
+  <div style="padding:1.25rem 1.25rem 0.5rem;font-size:1rem;line-height:1.9;color:#2D2D2D">
+    <p style="margin-bottom:0.875rem">Maya had always been curious about the sky. Every night, she pressed her nose against her bedroom window and watched the stars, keeping careful notes in a battered old notebook.</p>
+    <p style="margin-bottom:0.875rem">One Tuesday in October, she noticed something unusual — a slow, blinking light that moved in a long arc across the darkness. It was not a plane. Planes were noisy and moved quickly. This thing drifted silently, <em>like a glowing leaf carried on the wind</em>.</p>
+    <p style="margin-bottom:0.875rem">Her heart hammered as she reached for her notebook. Every scientist knew that observation was the key. You had to record things before memory played its tricks.</p>
+    <p style="margin-bottom:0.875rem">For three weeks, Maya tracked the light. She measured its position against the stars, noted the times it appeared, and sketched precise diagrams. Then she sent her findings to the local astronomy club.</p>
+    <p style="margin-bottom:0.875rem">A letter arrived two weeks later. It was a lost weather balloon, they explained — but her methodology was impressive. <em>"You think like a scientist,"</em> the head astronomer had written.</p>
+    <p style="margin-bottom:0.5rem">Maya smiled. Not bad, she thought, for someone who still had not finished primary school.</p>
+  </div>
+  <div style="padding:0.5rem 1.25rem 0.75rem;font-size:0.8rem;color:#aaa;border-top:1px solid #F5F0EB">~175 words · Original passage</div>
+</div>
+
+<div class="section">
+  <div class="section-header sh-english">📖 Section A — Comprehension</div>
+  <div class="question" id="q0">
+    <div class="q-text">What does Maya notice on Tuesday in October?</div>
+    <div class="options">
+      <label class="opt" id="opt-0-A" data-letter="A" onclick="answer(0,'A')"><input type="radio" name="q0"><span class="opt-lbl">A</span><span>A loud plane flying overhead</span></label>
+      <label class="opt" id="opt-0-B" data-letter="B" onclick="answer(0,'B')"><input type="radio" name="q0"><span class="opt-lbl">B</span><span>A slow, blinking light moving in an arc</span></label>
+      <label class="opt" id="opt-0-C" data-letter="C" onclick="answer(0,'C')"><input type="radio" name="q0"><span class="opt-lbl">C</span><span>A falling star streaking across the sky</span></label>
+      <label class="opt" id="opt-0-D" data-letter="D" onclick="answer(0,'D')"><input type="radio" name="q0"><span class="opt-lbl">D</span><span>A storm approaching</span></label>
+    </div>
+  </div>
+  <div class="question" id="q1">
+    <div class="q-text">What is the author's main purpose in writing this passage?<span class="q-star">⭐</span></div>
+    <div class="options">
+      <label class="opt" id="opt-1-A" data-letter="A" onclick="answer(1,'A')"><input type="radio" name="q1"><span class="opt-lbl">A</span><span>To explain how astronomy clubs work</span></label>
+      <label class="opt" id="opt-1-B" data-letter="B" onclick="answer(1,'B')"><input type="radio" name="q1"><span class="opt-lbl">B</span><span>To warn about weather balloons</span></label>
+      <label class="opt" id="opt-1-C" data-letter="C" onclick="answer(1,'C')"><input type="radio" name="q1"><span class="opt-lbl">C</span><span>To show that curiosity and careful work lead to great things</span></label>
+      <label class="opt" id="opt-1-D" data-letter="D" onclick="answer(1,'D')"><input type="radio" name="q1"><span class="opt-lbl">D</span><span>To advertise the local astronomy club</span></label>
+    </div>
+  </div>
+  <div class="question" id="q2">
+    <div class="q-text">"like a glowing leaf carried on the wind" — what type of language is this?</div>
+    <div class="options">
+      <label class="opt" id="opt-2-A" data-letter="A" onclick="answer(2,'A')"><input type="radio" name="q2"><span class="opt-lbl">A</span><span>Metaphor</span></label>
+      <label class="opt" id="opt-2-B" data-letter="B" onclick="answer(2,'B')"><input type="radio" name="q2"><span class="opt-lbl">B</span><span>Personification</span></label>
+      <label class="opt" id="opt-2-C" data-letter="C" onclick="answer(2,'C')"><input type="radio" name="q2"><span class="opt-lbl">C</span><span>Alliteration</span></label>
+      <label class="opt" id="opt-2-D" data-letter="D" onclick="answer(2,'D')"><input type="radio" name="q2"><span class="opt-lbl">D</span><span>Simile</span></label>
+    </div>
+  </div>
+  <div class="question" id="q3">
+    <div class="q-text">Which heading best fits the third paragraph?</div>
+    <div class="options">
+      <label class="opt" id="opt-3-A" data-letter="A" onclick="answer(3,'A')"><input type="radio" name="q3"><span class="opt-lbl">A</span><span>Maya Buys a Telescope</span></label>
+      <label class="opt" id="opt-3-B" data-letter="B" onclick="answer(3,'B')"><input type="radio" name="q3"><span class="opt-lbl">B</span><span>Writing Things Down</span></label>
+      <label class="opt" id="opt-3-C" data-letter="C" onclick="answer(3,'C')"><input type="radio" name="q3"><span class="opt-lbl">C</span><span>Scientists Are Boring</span></label>
+      <label class="opt" id="opt-3-D" data-letter="D" onclick="answer(3,'D')"><input type="radio" name="q3"><span class="opt-lbl">D</span><span>Maya Gets Lost</span></label>
+    </div>
+  </div>
+  <div class="question" id="q4">
+    <div class="q-text">Why did Maya's heart "hammer" when she saw the unusual light?</div>
+    <div class="options">
+      <label class="opt" id="opt-4-A" data-letter="A" onclick="answer(4,'A')"><input type="radio" name="q4"><span class="opt-lbl">A</span><span>She was very cold</span></label>
+      <label class="opt" id="opt-4-B" data-letter="B" onclick="answer(4,'B')"><input type="radio" name="q4"><span class="opt-lbl">B</span><span>She was excited and a little nervous</span></label>
+      <label class="opt" id="opt-4-C" data-letter="C" onclick="answer(4,'C')"><input type="radio" name="q4"><span class="opt-lbl">C</span><span>She had been running</span></label>
+      <label class="opt" id="opt-4-D" data-letter="D" onclick="answer(4,'D')"><input type="radio" name="q4"><span class="opt-lbl">D</span><span>She was frightened of the dark</span></label>
+    </div>
+  </div>
+  <div class="question" id="q5">
+    <div class="q-text">How is the passage mainly organised?</div>
+    <div class="options">
+      <label class="opt" id="opt-5-A" data-letter="A" onclick="answer(5,'A')"><input type="radio" name="q5"><span class="opt-lbl">A</span><span>By describing different types of stars</span></label>
+      <label class="opt" id="opt-5-B" data-letter="B" onclick="answer(5,'B')"><input type="radio" name="q5"><span class="opt-lbl">B</span><span>By explaining what a weather balloon is</span></label>
+      <label class="opt" id="opt-5-C" data-letter="C" onclick="answer(5,'C')"><input type="radio" name="q5"><span class="opt-lbl">C</span><span>In the order events happened over time</span></label>
+      <label class="opt" id="opt-5-D" data-letter="D" onclick="answer(5,'D')"><input type="radio" name="q5"><span class="opt-lbl">D</span><span>By comparing Maya to a professional astronomer</span></label>
+    </div>
+  </div>
+  <div class="question" id="q6">
+    <div class="q-text">In the passage, "methodology" most likely means:</div>
+    <div class="options">
+      <label class="opt" id="opt-6-A" data-letter="A" onclick="answer(6,'A')"><input type="radio" name="q6"><span class="opt-lbl">A</span><span>Her drawings and diagrams</span></label>
+      <label class="opt" id="opt-6-B" data-letter="B" onclick="answer(6,'B')"><input type="radio" name="q6"><span class="opt-lbl">B</span><span>Her telescope equipment</span></label>
+      <label class="opt" id="opt-6-C" data-letter="C" onclick="answer(6,'C')"><input type="radio" name="q6"><span class="opt-lbl">C</span><span>Her systematic way of working</span></label>
+      <label class="opt" id="opt-6-D" data-letter="D" onclick="answer(6,'D')"><input type="radio" name="q6"><span class="opt-lbl">D</span><span>Her writing style</span></label>
+    </div>
+  </div>
+  <div class="question" id="q7">
+    <div class="q-text">How does the author make Maya seem impressive?</div>
+    <div class="options">
+      <label class="opt" id="opt-7-A" data-letter="A" onclick="answer(7,'A')"><input type="radio" name="q7"><span class="opt-lbl">A</span><span>By saying she is the cleverest girl in her school</span></label>
+      <label class="opt" id="opt-7-B" data-letter="B" onclick="answer(7,'B')"><input type="radio" name="q7"><span class="opt-lbl">B</span><span>By describing her detailed, scientific approach to tracking the light</span></label>
+      <label class="opt" id="opt-7-C" data-letter="C" onclick="answer(7,'C')"><input type="radio" name="q7"><span class="opt-lbl">C</span><span>By comparing her directly to a famous astronomer</span></label>
+      <label class="opt" id="opt-7-D" data-letter="D" onclick="answer(7,'D')"><input type="radio" name="q7"><span class="opt-lbl">D</span><span>By explaining how rare weather balloons are</span></label>
+    </div>
+  </div>
+  <div class="question" id="q8">
+    <div class="q-text">What does the final line suggest about Maya?<span class="q-star">⭐</span></div>
+    <div class="options">
+      <label class="opt" id="opt-8-A" data-letter="A" onclick="answer(8,'A')"><input type="radio" name="q8"><span class="opt-lbl">A</span><span>She is disappointed with the result</span></label>
+      <label class="opt" id="opt-8-B" data-letter="B" onclick="answer(8,'B')"><input type="radio" name="q8"><span class="opt-lbl">B</span><span>She wants to leave primary school early</span></label>
+      <label class="opt" id="opt-8-C" data-letter="C" onclick="answer(8,'C')"><input type="radio" name="q8"><span class="opt-lbl">C</span><span>She is modest but quietly proud of what she achieved</span></label>
+      <label class="opt" id="opt-8-D" data-letter="D" onclick="answer(8,'D')"><input type="radio" name="q8"><span class="opt-lbl">D</span><span>She plans to become a professional astronomer</span></label>
+    </div>
+  </div>
+  <div class="question" id="q9">
+    <div class="q-text">What is the main theme of this passage?</div>
+    <div class="options">
+      <label class="opt" id="opt-9-A" data-letter="A" onclick="answer(9,'A')"><input type="radio" name="q9"><span class="opt-lbl">A</span><span>The importance of buying expensive equipment</span></label>
+      <label class="opt" id="opt-9-B" data-letter="B" onclick="answer(9,'B')"><input type="radio" name="q9"><span class="opt-lbl">B</span><span>How boring primary school can be</span></label>
+      <label class="opt" id="opt-9-C" data-letter="C" onclick="answer(9,'C')"><input type="radio" name="q9"><span class="opt-lbl">C</span><span>Curiosity and careful work can lead to recognition</span></label>
+      <label class="opt" id="opt-9-D" data-letter="D" onclick="answer(9,'D')"><input type="radio" name="q9"><span class="opt-lbl">D</span><span>The dangers of weather balloons</span></label>
     </div>
   </div>
 </div>
 
-<div id="exercise">
-<div class="passage"><h3>The Deep Ocean: A World of Wonders</h3>
-<p>Far below the surface of the ocean, where sunlight cannot reach, lies one of Earth's most mysterious environments. The deep sea covers more than half the planet, yet scientists believe we have explored less than 20% of it.</p>
-<p>Life in the deep sea has adapted to extreme conditions. Without light, many creatures have evolved to make their own — a process called <em>bioluminescence</em>. The anglerfish, for example, dangles a glowing lure above its mouth to attract prey in the darkness. Some species have developed enormous eyes to capture the faintest traces of light, while others have become completely blind, relying instead on exceptional senses of touch and smell.</p>
-<p>The pressure at great depths would crush a human instantly. To survive, deep-sea creatures have bodies filled with water rather than air, which cannot be compressed. Despite these harsh conditions, life thrives — scientists recently discovered over 200 new species in a single expedition to the Pacific Ocean.</p>
-<p>The deep sea reminds us that Earth still holds countless secrets waiting to be uncovered.</p></div>
-
-<div class="section">
-  <div class="section-header sh-comp">📖 Comprehension Questions</div>
-  <div class="question" id="q0">
-          <div class="q-text">According to the passage, what percentage of the deep sea have scientists explored?</div>
-          <div class="options"><label class="opt" id="opt-0-A" data-letter="A" onclick="selectOpt(0,'A')">
-            <input type="radio" name="q0" value="A">
-            <span class="opt-letter">A</span>
-            <span>Less than 20%</span>
-          </label><label class="opt" id="opt-0-B" data-letter="B" onclick="selectOpt(0,'B')">
-            <input type="radio" name="q0" value="B">
-            <span class="opt-letter">B</span>
-            <span>More than 50%</span>
-          </label><label class="opt" id="opt-0-C" data-letter="C" onclick="selectOpt(0,'C')">
-            <input type="radio" name="q0" value="C">
-            <span class="opt-letter">C</span>
-            <span>All of it</span>
-          </label><label class="opt" id="opt-0-D" data-letter="D" onclick="selectOpt(0,'D')">
-            <input type="radio" name="q0" value="D">
-            <span class="opt-letter">D</span>
-            <span>About 30%</span>
-          </label></div>
-        </div><div class="question" id="q1">
-          <div class="q-text">What is bioluminescence?</div>
-          <div class="options"><label class="opt" id="opt-1-A" data-letter="A" onclick="selectOpt(1,'A')">
-            <input type="radio" name="q1" value="A">
-            <span class="opt-letter">A</span>
-            <span>A type of deep-sea fish</span>
-          </label><label class="opt" id="opt-1-B" data-letter="B" onclick="selectOpt(1,'B')">
-            <input type="radio" name="q1" value="B">
-            <span class="opt-letter">B</span>
-            <span>The process of creating one's own light</span>
-          </label><label class="opt" id="opt-1-C" data-letter="C" onclick="selectOpt(1,'C')">
-            <input type="radio" name="q1" value="C">
-            <span class="opt-letter">C</span>
-            <span>A method of surviving at the surface</span>
-          </label><label class="opt" id="opt-1-D" data-letter="D" onclick="selectOpt(1,'D')">
-            <input type="radio" name="q1" value="D">
-            <span class="opt-letter">D</span>
-            <span>A way of finding food on land</span>
-          </label></div>
-        </div><div class="question" id="q2">
-          <div class="q-text">'The anglerfish dangles a glowing lure above its mouth.' What does this suggest about the anglerfish?<span class="q-star">⭐</span></div>
-          <div class="options"><label class="opt" id="opt-2-A" data-letter="A" onclick="selectOpt(2,'A')">
-            <input type="radio" name="q2" value="A">
-            <span class="opt-letter">A</span>
-            <span>It is friendly</span>
-          </label><label class="opt" id="opt-2-B" data-letter="B" onclick="selectOpt(2,'B')">
-            <input type="radio" name="q2" value="B">
-            <span class="opt-letter">B</span>
-            <span>It uses its light to attract and catch food</span>
-          </label><label class="opt" id="opt-2-C" data-letter="C" onclick="selectOpt(2,'C')">
-            <input type="radio" name="q2" value="C">
-            <span class="opt-letter">C</span>
-            <span>It cannot see</span>
-          </label><label class="opt" id="opt-2-D" data-letter="D" onclick="selectOpt(2,'D')">
-            <input type="radio" name="q2" value="D">
-            <span class="opt-letter">D</span>
-            <span>It lives near the surface</span>
-          </label></div>
-        </div><div class="question" id="q3">
-          <div class="q-text">In the passage, what does the word 'thrive' suggest about life in the deep sea?</div>
-          <div class="options"><label class="opt" id="opt-3-A" data-letter="A" onclick="selectOpt(3,'A')">
-            <input type="radio" name="q3" value="A">
-            <span class="opt-letter">A</span>
-            <span>It disappears</span>
-          </label><label class="opt" id="opt-3-B" data-letter="B" onclick="selectOpt(3,'B')">
-            <input type="radio" name="q3" value="B">
-            <span class="opt-letter">B</span>
-            <span>It struggles</span>
-          </label><label class="opt" id="opt-3-C" data-letter="C" onclick="selectOpt(3,'C')">
-            <input type="radio" name="q3" value="C">
-            <span class="opt-letter">C</span>
-            <span>It flourishes and does well</span>
-          </label><label class="opt" id="opt-3-D" data-letter="D" onclick="selectOpt(3,'D')">
-            <input type="radio" name="q3" value="D">
-            <span class="opt-letter">D</span>
-            <span>It moves elsewhere</span>
-          </label></div>
-        </div><div class="question" id="q4">
-          <div class="q-text">Why does the author end with 'Earth still holds countless secrets waiting to be uncovered'?</div>
-          <div class="options"><label class="opt" id="opt-4-A" data-letter="A" onclick="selectOpt(4,'A')">
-            <input type="radio" name="q4" value="A">
-            <span class="opt-letter">A</span>
-            <span>To confuse the reader</span>
-          </label><label class="opt" id="opt-4-B" data-letter="B" onclick="selectOpt(4,'B')">
-            <input type="radio" name="q4" value="B">
-            <span class="opt-letter">B</span>
-            <span>To end the passage abruptly</span>
-          </label><label class="opt" id="opt-4-C" data-letter="C" onclick="selectOpt(4,'C')">
-            <input type="radio" name="q4" value="C">
-            <span class="opt-letter">C</span>
-            <span>To suggest exploration should stop</span>
-          </label><label class="opt" id="opt-4-D" data-letter="D" onclick="selectOpt(4,'D')">
-            <input type="radio" name="q4" value="D">
-            <span class="opt-letter">D</span>
-            <span>To inspire curiosity and a sense of wonder</span>
-          </label></div>
-        </div><div class="question" id="q5">
-          <div class="q-text">Which would be the best alternative heading for the whole passage?</div>
-          <div class="options"><label class="opt" id="opt-5-A" data-letter="A" onclick="selectOpt(5,'A')">
-            <input type="radio" name="q5" value="A">
-            <span class="opt-letter">A</span>
-            <span>Fish Are Strange</span>
-          </label><label class="opt" id="opt-5-B" data-letter="B" onclick="selectOpt(5,'B')">
-            <input type="radio" name="q5" value="B">
-            <span class="opt-letter">B</span>
-            <span>Pressure Kills Humans</span>
-          </label><label class="opt" id="opt-5-C" data-letter="C" onclick="selectOpt(5,'C')">
-            <input type="radio" name="q5" value="C">
-            <span class="opt-letter">C</span>
-            <span>Exploring the Final Frontier: Our Unknown Ocean</span>
-          </label><label class="opt" id="opt-5-D" data-letter="D" onclick="selectOpt(5,'D')">
-            <input type="radio" name="q5" value="D">
-            <span class="opt-letter">D</span>
-            <span>Light in the Dark</span>
-          </label></div>
-        </div><div class="question" id="q6">
-          <div class="q-text">'Some species have become completely blind.' What can we infer about these creatures?</div>
-          <div class="options"><label class="opt" id="opt-6-A" data-letter="A" onclick="selectOpt(6,'A')">
-            <input type="radio" name="q6" value="A">
-            <span class="opt-letter">A</span>
-            <span>They cannot survive</span>
-          </label><label class="opt" id="opt-6-B" data-letter="B" onclick="selectOpt(6,'B')">
-            <input type="radio" name="q6" value="B">
-            <span class="opt-letter">B</span>
-            <span>They rely on senses other than sight</span>
-          </label><label class="opt" id="opt-6-C" data-letter="C" onclick="selectOpt(6,'C')">
-            <input type="radio" name="q6" value="C">
-            <span class="opt-letter">C</span>
-            <span>They live at the surface</span>
-          </label><label class="opt" id="opt-6-D" data-letter="D" onclick="selectOpt(6,'D')">
-            <input type="radio" name="q6" value="D">
-            <span class="opt-letter">D</span>
-            <span>They are very small</span>
-          </label></div>
-        </div>
-</div>
-
 <div class="submit-wrap">
-  <button class="btn-submit" id="btn-submit" onclick="submitExercise()" disabled>✅ Submit — Done!</button>
+  <button class="btn-submit" id="btn-submit" onclick="handleSubmit()" disabled>✅ Submit — Done!</button>
 </div>
-</div>
+</div><!-- /exercise -->
 
+<!-- RESULT -->
 <div class="result" id="result">
   <div class="result-title" id="res-emoji">⭐</div>
-  <div class="result-score" id="res-score">0/7</div>
+  <div class="result-score" id="res-score">0/13</div>
   <div style="font-size:1rem;color:#888;margin-bottom:0.5rem" id="res-pct">0%</div>
+  <div class="attempt-note" id="attempt-note"></div>
   <div class="result-breakdown" id="res-breakdown"></div>
   <div class="pts-award" id="res-pts">+0 pts</div>
   <div class="pts-total" id="res-prev"></div>
   <div style="font-size:1.1rem;font-weight:800;margin-top:0.5rem" id="res-milestone"></div>
   <div class="pts-next" id="res-next"></div>
+  <div class="video-section" id="video-section" style="display:none">
+    <div class="vid-hdr">📹 Extra help — videos for tricky topics</div>
+    <div class="vid-intro" id="vid-intro"></div>
+    <div id="vid-cards"></div>
+  </div>
+</div>
+
+<!-- TUTOR OVERLAY -->
+<div class="tutor-overlay" id="tutor-overlay">
+  <div class="q-strip" id="q-strip">
+    <div class="q-strip-label">The question you got</div>
+    <div class="q-strip-text" id="q-strip-text"></div>
+    <div><span class="q-strip-chose" id="q-strip-chose"></span></div>
+    <div class="q-strip-opts" id="q-strip-opts" style="display:none"></div>
+  </div>
+  <div class="tutor-top">
+    <div class="char-zone">
+      <span class="char-avatar" id="char-avatar"></span>
+      <div class="char-info">
+        <span class="char-name" id="char-name"></span>
+        <span class="mode-badge" id="mode-badge"></span>
+        <div class="turn-dots" id="turn-dots"></div>
+      </div>
+    </div>
+    <button class="parent-skip" onclick="parentSkip()">✓ Parent skip</button>
+  </div>
+  <div class="chat-area" id="chat-area"></div>
+  <div class="tutor-bottom">
+    <button class="got-it-btn" id="got-it-btn" onclick="gotIt()">Got it! ✓ — next question</button>
+    <div class="type-row" id="type-row">
+      <input type="text" class="type-input" id="type-input" placeholder="Or type your sentence here..." autocomplete="off">
+      <button class="type-send" onclick="sendTyped()">Send →</button>
+    </div>
+    <div class="mic-row">
+      <div class="mic-hint" id="mic-hint-l">Tap to speak</div>
+      <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎤</button>
+      <div class="mic-hint" id="mic-status">or just listen</div>
+    </div>
+  </div>
+</div>
+
+<!-- RETRY SCREEN -->
+<div class="retry-screen" id="retry-screen">
+  <div class="retry-char" id="retry-char"></div>
+  <div class="retry-heading" id="retry-heading">Almost there!</div>
+  <div class="retry-score-big" id="retry-score-num"></div>
+  <div class="retry-score-label" id="retry-score-label"></div>
+  <div class="retry-msg" id="retry-msg"></div>
+  <div class="retry-needed" id="retry-needed"></div>
+  <button class="retry-btn" onclick="retryExercise()">Try again! →</button>
 </div>
 
 <script>
+// ═══════════════════════════════════════
+// CONFIG — update each week
+// ═══════════════════════════════════════
+const CHILD   = 'CL';
+const DAY     = 'Saturday';
+const WEEK    = 19;
+const WEBHOOK = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const PTS_KEY = 'pts_CL';
+const BASE_PTS = 600;
+const PASS_THRESHOLD = 0.80;
+const RULE_STYLE = 'watchout';
+const RULE_STYLES = {
+  weapons: {title:"⚡ TODAY'S WEAPONS",         sub:"Master these and today's questions will feel easier."},
+  watchout:{title:"⚠️ WATCH OUT FOR THESE",      sub:"These caught you out before — don't let them today!"},
+  protips: {title:"🏆 PRO TIPS FOR TODAY",        sub:"Top students use these every time. Now you will too."},
+  memory:  {title:"🧠 QUICK MEMORY TRICKS",       sub:"Lock these in before you start — your future self will thank you."},
+};
 
-const MILESTONES = [[40, "Bronze \ud83e\udd49"], [190, "Silver \ud83e\udd48"], [340, "Gold \ud83e\udd47"], [830, "Platinum \ud83c\udfc6"], [1800, "Diamond \ud83d\udc8e"], [2800, "Champion \ud83c\udfc5"], [4000, "Grand Master \ud83d\udc51"]];
-function getMilestone(pts) {
-  let cur = 'Pre-Bronze', nxt = 'Bronze 🥉', gap = 40 - pts;
-  for (const [t,n] of MILESTONES) {
-    if (pts < t) { nxt = n; gap = t - pts; break; }
-    cur = n; nxt = ''; gap = 0;
-  }
-  return {cur, nxt, gap};
+// ═══════════════════════════════════════
+// QUESTIONS — one object per question
+// section: "Vocab" | "English" | "Maths"
+// vocabWord: (Vocab only) the target word
+// mathConcept: (Maths only) concept description for tutor
+// ═══════════════════════════════════════
+const QUESTIONS = {
+  0:{section:"English",code:"E5.1",correct:"B",star:false,
+     text:"What does Maya notice on Tuesday in October?",
+     opts:{A:"A loud plane flying overhead",B:"A slow, blinking light moving in an arc",C:"A falling star streaking across the sky",D:"A storm approaching"}},
+  1:{section:"English",code:"E5.4",correct:"C",star:true,
+     text:"What is the author's main purpose in writing this passage?",
+     opts:{A:"To explain how astronomy clubs work",B:"To warn about weather balloons",C:"To show that curiosity and careful work lead to great things",D:"To advertise the local astronomy club"}},
+  2:{section:"English",code:"E5.2",correct:"D",star:false,
+     text:"Like a glowing leaf carried on the wind — what type of language is this?",
+     opts:{A:"Metaphor",B:"Personification",C:"Alliteration",D:"Simile"}},
+  3:{section:"English",code:"E5.5",correct:"B",star:false,
+     text:"Which heading best fits the third paragraph?",
+     opts:{A:"Maya Buys a Telescope",B:"Writing Things Down",C:"Scientists Are Boring",D:"Maya Gets Lost"}},
+  4:{section:"English",code:"E5.6",correct:"B",star:false,
+     text:"Why did Maya's heart hammer when she saw the unusual light?",
+     opts:{A:"She was very cold",B:"She was excited and a little nervous",C:"She had been running",D:"She was frightened of the dark"}},
+  5:{section:"English",code:"E5.3",correct:"C",star:false,
+     text:"How is the passage mainly organised?",
+     opts:{A:"By describing different types of stars",B:"By explaining what a weather balloon is",C:"In the order events happened over time",D:"By comparing Maya to a professional astronomer"}},
+  6:{section:"English",code:"E4.4",correct:"C",star:false,
+     text:"In the passage, methodology most likely means:",
+     opts:{A:"Her drawings and diagrams",B:"Her telescope equipment",C:"Her systematic way of working",D:"Her writing style"}},
+  7:{section:"English",code:"E5.4",correct:"B",star:false,
+     text:"How does the author make Maya seem impressive?",
+     opts:{A:"By saying she is the cleverest girl in her school",B:"By describing her detailed, scientific approach to tracking the light",C:"By comparing her directly to a famous astronomer",D:"By explaining how rare weather balloons are"}},
+  8:{section:"English",code:"E5.6",correct:"C",star:true,
+     text:"What does the final line suggest about Maya?",
+     opts:{A:"She is disappointed with the result",B:"She wants to leave primary school early",C:"She is modest but quietly proud of what she achieved",D:"She plans to become a professional astronomer"}},
+  9:{section:"English",code:"E5.1",correct:"C",star:false,
+     text:"What is the main theme of this passage?",
+     opts:{A:"The importance of buying expensive equipment",B:"How boring primary school can be",C:"Curiosity and careful work can lead to recognition",D:"The dangers of weather balloons"}},
+};
+const TOTAL_QS  = Object.keys(QUESTIONS).length;
+const PASS_SCORE = Math.ceil(TOTAL_QS * PASS_THRESHOLD);
+// Dictionary word config — update each week
+const DICT_WORD = 'methodical';
+const DICT_DEF  = 'Adjective — done in a careful, logical, and systematic way.';
+const DICT_EG   = 'She was methodical in her approach, writing everything down before drawing conclusions.';
+
+// ═══════════════════════════════════════
+// MILESTONES
+// ═══════════════════════════════════════
+const MILESTONES=[[40,"Bronze 🥉"],[190,"Silver 🥈"],[340,"Gold 🥇"],[830,"Platinum 🏆"],[1800,"Diamond 💎"],[2800,"Champion 🏅"],[4000,"Grand Master 👑"]];
+function getMilestone(pts){
+  let cur='Pre-Bronze',nxt='Bronze 🥉',gap=40-pts;
+  for(const[t,n]of MILESTONES){if(pts<t){nxt=n;gap=t-pts;break;}cur=n;nxt='';gap=0;}
+  return{cur,nxt,gap};
 }
-const CHILD='CL', DAY='Saturday', WEEK=19, WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-const PTS_KEY='pts_CL', BASE_PTS=510;
-const SECTIONS=["Comprehension", "Comprehension", "Comprehension", "Comprehension", "Comprehension", "Comprehension", "Comprehension"];
-const CODES=["E5.1", "E5.1", "E5.2", "E5.3", "E5.4", "E5.5", "E5.2"];
-const ANSWERS=["A", "B", "B", "C", "D", "C", "B"];
-const IS_STAR=[false, false, true, false, false, false, false];
-const TOTAL_QS=7;
-const HAS_DICT=true;
 
-let basePts = parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
-if(basePts < BASE_PTS) basePts = BASE_PTS;
-let chosen = new Array(TOTAL_QS).fill(null);
-let submitted = false;
+// ═══════════════════════════════════════
+// YOUTUBE LOOKUP
+// ═══════════════════════════════════════
+const VIDEOS={
+  "E4.1":{title:"Vocabulary for 11+",url:"https://www.youtube.com/results?search_query=11+plus+vocabulary+KS2+word+building+kids"},
+  "E4.4":{title:"Word meaning and context",url:"https://www.youtube.com/results?search_query=word+meaning+context+KS2+vocabulary+11+plus"},
+  "E5.2":{title:"Similes and metaphors",url:"https://www.youtube.com/results?search_query=similes+metaphors+KS2+primary+English+explained"},
+  "E5.4":{title:"Author's purpose",url:"https://www.youtube.com/results?search_query=author+purpose+viewpoint+KS2+comprehension+11+plus"},
+  "E5.5":{title:"Choosing the best heading",url:"https://www.youtube.com/results?search_query=choosing+headings+KS2+comprehension+11+plus"},
+  "E1.5":{title:"Spelling strategies",url:"https://www.youtube.com/results?search_query=spelling+strategies+KS2+11+plus+primary"},
+  "M1.4":{title:"Percentages made easy",url:"https://www.youtube.com/results?search_query=percentages+KS2+primary+maths+easy"},
+  "M2.4":{title:"Fractions and decimals",url:"https://www.youtube.com/results?search_query=fractions+decimals+equivalent+KS2+primary+maths"},
+  "M2.5":{title:"Converting fractions decimals percentages",url:"https://www.youtube.com/results?search_query=fractions+decimals+percentages+converting+KS2+primary+maths"},
+  "M2.6":{title:"Fractions to decimals",url:"https://www.youtube.com/results?search_query=fractions+to+decimals+KS2+primary+maths"},
+  "M2.8":{title:"Percentage increase and decrease",url:"https://www.youtube.com/results?search_query=percentage+increase+decrease+KS2+primary+maths"},
+  "M2.9":{title:"Reverse percentages",url:"https://www.youtube.com/results?search_query=reverse+percentage+KS2+primary+maths"},
+  "M3.4":{title:"Speed distance time",url:"https://www.youtube.com/results?search_query=speed+distance+time+KS2+primary+maths"},
+};
+function videoForCode(code){
+  if(VIDEOS[code])return VIDEOS[code];
+  const sub=code.startsWith('E')?'English':'Maths';
+  return{title:`${sub} revision — ${code}`,url:`https://www.youtube.com/results?search_query=11+plus+${sub}+KS2+revision+primary`};
+}
 
-function updateBanner() {
-  const m = getMilestone(basePts);
-  document.getElementById('pts-num').textContent = basePts + ' pts';
-  document.getElementById('mil-cur').textContent = m.cur;
-  if(m.nxt) {
-    document.getElementById('mil-next').textContent = m.gap + ' to ' + m.nxt;
-    const pctPrev = MILESTONES.findIndex(([t])=>basePts<t);
-    const prevT = pctPrev>0?MILESTONES[pctPrev-1][0]:0;
-    const nextT = MILESTONES[pctPrev]?MILESTONES[pctPrev][0]:4000;
-    const pct = Math.round((basePts-prevT)/(nextT-prevT)*100);
-    document.getElementById('mil-fill').style.width = Math.min(100,pct)+'%';
+// ═══════════════════════════════════════
+// API KEY — localStorage
+// ═══════════════════════════════════════
+function saveKey(){
+  const val=document.getElementById('setup-key-input').value.trim();
+  if(!val.startsWith('sk-')){alert('That does not look right — the key should start with sk-');return;}
+  localStorage.setItem('anthropic_key_v1',val);
+  document.getElementById('setup-error').style.display='none';
+  document.getElementById('setup-key-input').value='';
+  document.getElementById('setup-screen').classList.remove('show');
+  ANTHROPIC_KEY=val;
+}
+function resetKey(){
+  localStorage.removeItem('anthropic_key_v1');
+  ANTHROPIC_KEY='';
+  document.getElementById('setup-error').style.display='none';
+  document.getElementById('setup-key-input').value='';
+  document.getElementById('setup-screen').classList.add('show');
+}
+function showKeyError(){
+  document.getElementById('setup-error').style.display='block';
+  document.getElementById('setup-key-input').value='';
+  ANTHROPIC_KEY='';localStorage.removeItem('anthropic_key_v1');
+  document.getElementById('setup-screen').classList.add('show');
+}
+let ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';
+if(!ANTHROPIC_KEY) document.getElementById('setup-screen').classList.add('show');
+
+// ═══════════════════════════════════════
+// CHARACTERS — locked to calendar day
+// ═══════════════════════════════════════
+const CHARS={
+  snake:{key:'snake',emoji:'🐍',name:'Ssssam',
+    personality:`Your name is Ssssam the Snake. You occasionally slip "ssss" sounds into speech naturally: "Ssss, great try!" or "Let me ssshow you something." You are clever, warm, and love surprising kids with knowledge.`,
+    greetings:["Ssss, good try!","Nearly there, ssss!","Ssss, interesting choice!"],
+    gotIt:"Ssss, you have got it! Brillsssliant!",
+    wrapUp:"Ssss, you have worked ssso hard! Let us move on and ssshow everyone what you know!",
+    retryMsg:"Ssss, so close! Just a few more right to unlock your points. Let us try again — I believe in you!",
+  },
+  shark:{key:'shark',emoji:'🦈',name:'Finn',
+    personality:`Your name is Finn the Shark. You use ocean phrases naturally: "Splashing great effort!", "Making waves!", "Dive right in!", "Fin-tastic!". You celebrate every small win with energy and warmth.`,
+    greetings:["Splashing great try!","Making waves — nearly there!","Fin-tastic effort!"],
+    gotIt:"Fin-tastic! You have got it! Splash!",
+    wrapUp:"You have been making waves on this one! Let us swim on to the next question!",
+    retryMsg:"Making waves! You are so close! Just a few more correct to unlock those points. Dive back in!",
+  }
+};
+const today=new Date().toISOString().slice(0,10);
+let charKey=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
+if(!charKey||!CHARS[charKey]){charKey=Math.random()>0.5?'snake':'shark';localStorage.setItem('char_key',charKey);localStorage.setItem('char_date',today);}
+const CHAR=CHARS[charKey];
+document.body.classList.add(CHAR.key);
+document.getElementById('char-avatar').textContent=CHAR.emoji;
+document.getElementById('char-name').textContent=CHAR.name;
+document.getElementById('retry-char').textContent=CHAR.emoji;
+// background now controlled by CSS variables via body class
+
+// ═══════════════════════════════════════
+// STRIP MARKDOWN
+// ═══════════════════════════════════════
+function stripMd(t){return t.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/`(.*?)`/g,'$1').replace(/#{1,6}\s+/g,'').replace(/^\s*[-*+]\s+/gm,'').trim();}
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const answers={};
+const tutorTurns={};
+const strugglingQs=new Set();
+let firstAttempt=null;
+let attemptNumber=1;
+let currentQ=null;
+let convHistory=[];
+let turnCount=0;
+let isListening=false;
+let recognition=null;
+const TUTOR_SOFT_CAP=14;
+const STRUGGLE_THRESHOLD=6;
+
+let basePts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
+if(basePts<BASE_PTS)basePts=BASE_PTS;
+
+// ═══════════════════════════════════════
+// BANNER
+// ═══════════════════════════════════════
+function markRulesRead(){
+  _iosWarm(); // warm on this gesture so first question's AI can speak
+  document.getElementById('rules-body').style.display='none';
+  document.getElementById('rules-done').style.display='flex';
+  // Unlock questions
+  document.getElementById('exercise').classList.remove('questions-locked');
+  // Scroll to first question
+  setTimeout(()=>document.getElementById('q0').scrollIntoView({behavior:'smooth',block:'start'}),300);
+}
+
+function updateBanner(){
+  const m=getMilestone(basePts);
+  document.getElementById('pts-num').textContent=basePts+' pts';
+  document.getElementById('mil-cur').textContent=m.cur;
+  if(m.nxt){
+    document.getElementById('mil-next').textContent=m.gap+' to '+m.nxt;
+    const idx=MILESTONES.findIndex(([t])=>basePts<t);
+    const prevT=idx>0?MILESTONES[idx-1][0]:0;
+    const nextT=MILESTONES[idx]?MILESTONES[idx][0]:4000;
+    document.getElementById('mil-fill').style.width=Math.min(100,Math.round((basePts-prevT)/(nextT-prevT)*100))+'%';
   } else {
-    document.getElementById('mil-next').textContent = '🏆 MAX!';
-    document.getElementById('mil-fill').style.width = '100%';
+    document.getElementById('mil-next').textContent='🏆 MAX!';
+    document.getElementById('mil-fill').style.width='100%';
   }
 }
 
-function selectOpt(qIdx, optLetter) {
-  if(submitted) return;
-  chosen[qIdx] = optLetter;
-  const qEl = document.querySelector('#q'+qIdx);
-  qEl.querySelectorAll('.opt').forEach(el => el.classList.remove('selected'));
-  qEl.querySelector('[data-letter="'+optLetter+'"]').classList.add('selected');
+// ═══════════════════════════════════════
+// ANSWER — immediate reveal + tutor
+// ═══════════════════════════════════════
+function answer(qIdx,chosen){
+  if(answers[qIdx]!==undefined)return;
+  _iosWarm(); // warm on every answer tap — tutor may open and AI will speak
+  const q=QUESTIONS[qIdx];
+  const ok=chosen===q.correct;
+  answers[qIdx]=chosen;
+  // Lock all options in this question
+  document.querySelectorAll('#q'+qIdx+' .opt').forEach(el=>{
+    el.classList.add('answered');
+    const l=el.dataset.letter;
+    if(l===q.correct)el.classList.add('correct');
+    if(l===chosen&&!ok)el.classList.add('wrong');
+  });
   checkAllAnswered();
+  if(!ok)openTutor(qIdx);
 }
 
-function checkAllAnswered() {
-  const done = chosen.slice(0,TOTAL_QS).every(c=>c!==null);
-  document.getElementById('btn-submit').disabled = !done;
+function checkAllAnswered(){
+  const done=Object.keys(answers).length===TOTAL_QS;
+  if(done&&!firstAttempt){
+    firstAttempt={answers:{...answers},tutorTurns:{...tutorTurns},struggling:new Set(strugglingQs)};
+  }
+  document.getElementById('btn-submit').disabled=!done;
 }
 
-function submitExercise() {
-  if(submitted) return;
-  submitted = true;
-  document.getElementById('btn-submit').disabled = true;
+// ═══════════════════════════════════════
+// SUBMIT — 80% gate
+// ═══════════════════════════════════════
+function handleSubmit(){
+  const correct=Object.keys(answers).filter(n=>answers[n]===QUESTIONS[n].correct).length;
+  if(correct/TOTAL_QS<PASS_THRESHOLD){showRetryScreen(correct);}
+  else{showResult();}
+}
 
-  const results = [];
-  let correct=0, vocabC=0, vocabT=0, engC=0, engT=0, mathC=0, mathT=0;
-  const secTrack = {};
+// ═══════════════════════════════════════
+// RETRY
+// ═══════════════════════════════════════
+function showRetryScreen(score){
+  document.getElementById('retry-score-num').textContent=score+'/'+TOTAL_QS;
+  document.getElementById('retry-score-label').textContent='correct on attempt '+attemptNumber;
+  document.getElementById('retry-needed').textContent='You need at least '+PASS_SCORE+' correct (80%) to unlock your points.';
+  document.getElementById('retry-msg').textContent=CHAR.retryMsg;
+  document.getElementById('retry-heading').textContent=score>=PASS_SCORE-2?'So close!':'Almost there!';
+  document.getElementById('retry-screen').classList.add('show');
+  speak(CHAR.retryMsg);
+}
+function retryExercise(){
+  window.speechSynthesis.cancel();
+  attemptNumber++;
+  document.getElementById('retry-screen').classList.remove('show');
+  // Reset all questions
+  Object.keys(QUESTIONS).forEach(n=>{
+    delete answers[n];
+    document.querySelectorAll('#q'+n+' .opt').forEach(el=>{
+      el.classList.remove('answered','correct','wrong');
+    });
+  });
+  document.getElementById('btn-submit').disabled=true;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-  chosen.forEach((ans,i) => {
-    const isRight = ans === ANSWERS[i];
-    if(isRight) correct++;
-    results.push({q_number:i+1, code:CODES[i], section:SECTIONS[i], correct:isRight});
-    const s = SECTIONS[i];
-    if(!secTrack[s]) secTrack[s]={c:0,t:0};
-    secTrack[s].t++;
-    if(isRight) secTrack[s].c++;
-    // Section counts for scoring
-    if(s==='Vocab'){ vocabT++; if(isRight) vocabC++; }
-    if(s==='English'){ engT++; if(isRight) engC++; }
-    if(s==='Maths'){ mathT++; if(isRight) mathC++; }
+// ═══════════════════════════════════════
+// RESULT SCREEN
+// ═══════════════════════════════════════
+function showResult(){
+  const fa=firstAttempt;
+  const secTrack={};
+  let correct=0;
+  Object.keys(fa.answers).forEach(n=>{
+    const q=QUESTIONS[n];
+    const ok=fa.answers[n]===q.correct;
+    if(ok)correct++;
+    if(!secTrack[q.section])secTrack[q.section]={c:0,t:0};
+    secTrack[q.section].t++;
+    if(ok)secTrack[q.section].c++;
   });
 
-  // Show correct/wrong on each question
-  chosen.forEach((ans,i) => {
-    const isRight = ans === ANSWERS[i];
-    const el = document.querySelector('#q'+i+' [data-letter="'+ans+'"]');
-    if(el) el.classList.add(isRight?'correct':'wrong');
-    if(!isRight) {
-      const corEl = document.querySelector('#q'+i+' [data-letter="'+ANSWERS[i]+'"]');
-      if(corEl) corEl.classList.add('correct');
-    }
-  });
-
-  // Points calculation
-  let pts = 0;
-  if(CHILD==='CL') {
-    pts = 3; // base completion
-    const starQ = IS_STAR.findIndex(s=>s);
-    if(starQ>=0 && chosen[starQ]===ANSWERS[starQ]) pts += 2;
-    const fullSections = ['Vocab','English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
-    pts += fullSections.length * 2;
-    pts = Math.min(7, pts);
+  // Points
+  let pts=0;
+  if(CHILD==='CL'){
+    pts=3;
+    const starIdx=Object.keys(QUESTIONS).find(n=>QUESTIONS[n].star);
+    if(starIdx!==undefined&&fa.answers[starIdx]===QUESTIONS[starIdx].correct)pts+=2;
+    const full=['Vocab','English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts+=full.length*2;pts=Math.min(7,pts);
   } else {
-    pts = 5;
-    const fullSections = ['English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
-    pts += fullSections.length * 3;
-    pts = Math.min(8, pts);
+    pts=5;
+    const full=['English','Maths'].filter(s=>secTrack[s]&&secTrack[s].c===secTrack[s].t);
+    pts+=full.length*3;pts=Math.min(8,pts);
   }
 
-  const newTotal = basePts + pts;
-  localStorage.setItem(PTS_KEY, newTotal);
+  const newTotal=basePts+pts;
+  localStorage.setItem(PTS_KEY,newTotal);
 
-  // Score summary
-  let summary = '';
-  if(CHILD==='CL') summary = 'Vocab:'+vocabC+'/'+vocabT+' English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
-  else summary = 'English:'+engC+'/'+engT+' Maths:'+mathC+'/'+mathT;
+  // Summary string for webhook
+  const secs=Object.entries(secTrack).map(([s,d])=>s+':'+d.c+'/'+d.t).join(' ');
 
-  // Fire webhook
-  const payload = {
-    type:'exercise_result', child:CHILD, date:new Date().toISOString().split('T')[0],
-    week:WEEK, day:DAY, total_correct:correct, total_questions:TOTAL_QS,
-    points_earned:pts, score_summary:summary, subject_focus:'Mixed',
-    questions:results
-  };
-  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-    .catch(()=>{});
+  // Fire webhook — first attempt data
+  const questionsPayload=Object.keys(QUESTIONS).map((n,i)=>({
+    q_number:i+1,code:QUESTIONS[n].code,section:QUESTIONS[n].section,
+    correct:fa.answers[n]===QUESTIONS[n].correct,
+    answer_chosen:fa.answers[n],correct_answer:QUESTIONS[n].correct,
+    wrong_answer_chosen:fa.answers[n]!==QUESTIONS[n].correct?fa.answers[n]:null,
+    tutor_used:!!(fa.tutorTurns[n]&&fa.tutorTurns[n]>0),
+    tutor_turns:fa.tutorTurns[n]||0,
+  }));
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      type:'exercise_result',child:CHILD,date:new Date().toISOString().split('T')[0],
+      week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,
+      points_earned:pts,score_summary:secs,subject_focus:'Mixed',
+      attempt_number:attemptNumber,first_attempt_pct:Math.round(correct/TOTAL_QS*100),
+      struggling_codes:[...fa.struggling],questions:questionsPayload,
+    })
+  }).catch(()=>{});
 
-  // Show result screen
-  showResult(correct, pts, newTotal, summary, secTrack);
-}
-
-function showResult(correct, pts, newTotal, summary, secTrack) {
+  // Render result
   document.getElementById('exercise').style.display='none';
-  const res = document.getElementById('result');
-  res.style.display='block';
-  const pct = Math.round(correct/TOTAL_QS*100);
-  const emoji = pct>=90?'🌟':pct>=75?'⭐':pct>=60?'👍':'💪';
-  document.getElementById('res-emoji').textContent = emoji;
-  document.getElementById('res-score').textContent = correct+'/'+TOTAL_QS;
-  document.getElementById('res-pct').textContent = pct+'%';
-  document.getElementById('res-pts').textContent = '+'+pts+' pts';
-  document.getElementById('res-prev').textContent = (newTotal-pts)+' → '+newTotal+' pts';
-  const m = getMilestone(newTotal);
-  document.getElementById('res-milestone').textContent = m.cur;
-  if(m.nxt) document.getElementById('res-next').textContent = m.gap+' to '+m.nxt;
+  document.getElementById('result').style.display='block';
+  const pct=Math.round(correct/TOTAL_QS*100);
+  document.getElementById('res-emoji').textContent=pct>=90?'🌟':pct>=75?'⭐':pct>=60?'👍':'💪';
+  document.getElementById('res-score').textContent=correct+'/'+TOTAL_QS;
+  document.getElementById('res-pct').textContent=pct+'%';
+  document.getElementById('res-pts').textContent='+'+pts+' pts';
+  document.getElementById('res-prev').textContent=(newTotal-pts)+' → '+newTotal+' pts';
+  const m=getMilestone(newTotal);
+  document.getElementById('res-milestone').textContent=m.cur;
+  if(m.nxt)document.getElementById('res-next').textContent=m.gap+' to '+m.nxt;
 
-  // Breakdown
-  let breakdown = '';
-  for(const [s,d] of Object.entries(secTrack)) {
-    breakdown += '<div class="result-row"><span>'+s+'</span><span>'+d.c+'/'+d.t+'</span></div>';
+  if(attemptNumber>1){
+    const note=document.getElementById('attempt-note');
+    note.textContent='Took '+attemptNumber+' attempts to reach 80%. Results below show your first attempt — that is what helps track real progress.';
+    note.classList.add('show');
   }
-  breakdown += '<div class="result-row"><span>Total</span><span>'+correct+'/'+TOTAL_QS+' ('+pct+'%)</span></div>';
-  document.getElementById('res-breakdown').innerHTML = breakdown;
+
+  let breakdown='';
+  for(const[s,d]of Object.entries(secTrack))breakdown+='<div class="result-row"><span>'+s+'</span><span>'+d.c+'/'+d.t+'</span></div>';
+  breakdown+='<div class="result-row"><span>Total</span><span>'+correct+'/'+TOTAL_QS+' ('+pct+'%)</span></div>';
+  document.getElementById('res-breakdown').innerHTML=breakdown;
+
+  // YouTube — first attempt struggling
+  if(fa.struggling.size>0){
+    document.getElementById('video-section').style.display='block';
+    document.getElementById('vid-intro').textContent=CHAR.key==='snake'
+      ?'Ssss, you worked ssso hard on some tricky topics! These short videos might help click things into place.'
+      :'You made waves today! These videos can help the trickier topics sink in.';
+    const cards=document.getElementById('vid-cards');
+    cards.innerHTML='';
+    [...fa.struggling].forEach(code=>{
+      const v=videoForCode(code);
+      cards.innerHTML+=`<div class="vid-card"><div class="vid-thumb">▶️</div><div class="vid-info"><div class="vid-code">${code}</div><div class="vid-title">${v.title}</div><a class="vid-link" href="${v.url}" target="_blank" rel="noopener">Watch on YouTube →</a></div></div>`;
+    });
+  }
 }
 
-window.onload = updateBanner;
+// ═══════════════════════════════════════
+// TUTOR
+// ═══════════════════════════════════════
+let isDictMode=false;
+
+function openDictTutor(){
+  // Disable the button so it can't be tapped twice
+  const btn=document.getElementById('dict-ready-btn');
+  btn.disabled=true;btn.classList.add('done');btn.textContent='Practising with tutor…';
+
+  isDictMode=true;
+  currentQ=null;convHistory=[];turnCount=0;
+  document.getElementById('chat-area').innerHTML='';
+
+  // Q-strip shows the word, not a question
+  document.getElementById('q-strip-text').textContent='"'+DICT_WORD+'" — '+DICT_DEF;
+  document.getElementById('q-strip-chose').textContent='';
+  document.getElementById('q-strip-opts').style.display='none';
+
+  document.getElementById('mode-badge').textContent='📖 Word Builder';
+  document.getElementById('mic-hint-l').textContent='Speak your sentence';
+  document.getElementById('got-it-btn').textContent='All done! ✓';
+
+  // Show typing row in dict mode
+  document.getElementById('type-row').classList.add('show');
+
+  renderDots();
+  document.getElementById('tutor-overlay').classList.add('show');
+  callAI(null);
+}
+
+function openTutor(qIdx){
+  currentQ=qIdx;convHistory=[];turnCount=0;
+  tutorTurns[qIdx]=tutorTurns[qIdx]||0;
+  document.getElementById('chat-area').innerHTML='';
+  // Q strip
+  const q=QUESTIONS[qIdx];
+  document.getElementById('q-strip-text').textContent=q.text;
+  document.getElementById('q-strip-chose').textContent='You chose: '+answers[qIdx]+' — '+q.opts[answers[qIdx]];
+  // Always show all options — highlight wrong choice in red
+  const optsEl=document.getElementById('q-strip-opts');
+  optsEl.innerHTML=Object.entries(q.opts).map(([k,v])=>`<span class="strip-opt${answers[qIdx]===k?' my-wrong':''}">${k}: ${v}</span>`).join('');
+  optsEl.style.display='flex';
+  // Mode badge
+  const badge=document.getElementById('mode-badge');
+  const hintL=document.getElementById('mic-hint-l');
+  if(q.section==='Vocab'){badge.textContent='📖 Make a sentence!';hintL.textContent='Speak your sentence';}
+  else if(q.section==='Maths'){badge.textContent='🔢 Concept first, then retry';hintL.textContent='Tell me your thinking';}
+  else{badge.textContent='✍️ What do you think?';hintL.textContent='Speak your answer';}
+  renderDots();
+  document.getElementById('tutor-overlay').classList.add('show');
+  callAI(null);
+}
+function renderDots(){
+  const el=document.getElementById('turn-dots');el.innerHTML='';
+  for(let i=0;i<TUTOR_SOFT_CAP;i++){const d=document.createElement('div');d.className='dot'+(i<turnCount?' used':'')+(i===turnCount?' now':'');el.appendChild(d);}
+}
+function buildSystemPrompt(qIdx){
+  const childAge = CHILD==='CL' ? 9 : 7;
+  const turnNote = turnCount>=TUTOR_SOFT_CAP-2
+    ? '\nYou are near the turn limit. Wrap up warmly now.'
+    : `\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;
+
+  // ── STRICT OPENING — placed FIRST so model reads it before anything else ──
+  const strictOpening = `ABSOLUTE RULE — YOUR VERY FIRST REPLY ONLY:
+Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it.
+Example jokes to inspire you (make your own):
+  Word "stroll": "Why did the snail win the race? He decided to stroll — no rush!"
+  Percentages:   "Why did 50 feel sad? Because it was only half of 100!"
+  Similes:       "Why did the poet bring a ladder? The similes were through the roof!"
+  Headings:      "Why did the paragraph fail the exam? Its heading only covered one sentence!"
+BANNED from first reply: your name, any greeting, restating the question, the word definition as opening line, "Today our word is", "Let me explain".
+After the joke: straight to teaching. No linking phrase needed.
+Plain spoken English only. No asterisks, bold, markdown, bullet points. Max 90 words. Say "percent" not the symbol.
+NEVER say: wrong, incorrect, failed, mistake, silly, dumb.${turnNote}`;
+
+  // ── DICTIONARY MODE ────────────────────────────────────────────────────────
+  if(isDictMode){
+    return `${strictOpening}
+
+${CHAR.personality}
+
+WORD TO TEACH: "${DICT_WORD}" — ${DICT_DEF}
+
+SEQUENCE:
+FIRST REPLY: joke (rule above) → 2 vivid example sentences using "${DICT_WORD}" in real life (sport, food, school, nature). End: "Can you make your own sentence using ${DICT_WORD}?"
+
+WHEN CHILD GIVES A SENTENCE:
+- Word correct + grammar correct: celebrate, go to expansion.
+- Grammar wrong: "Great idea! You could say: [corrected version]." Ask retry.
+- Word wrong: give example, invite retry. Never confirm wrong grammar.
+
+EXPANSION (after grammar correct): "Brilliant! Now add WHERE or WHEN or HOW, or a describing word." Show an expanded version of their sentence. Ask them to try. This builds 11+ creative writing skill.
+
+WRAP UP: celebrate their expanded sentence.
+OFF-TOPIC: one character sentence then immediately redirect.`;
+  }
+
+  // ── MCQ WRONG-ANSWER MODE ──────────────────────────────────────────────────
+  const q           = QUESTIONS[qIdx];
+  const wrongText   = q.opts[answers[qIdx]];
+  const correctText = q.opts[q.correct];
+  const optsStr     = Object.entries(q.opts).map(([k,v])=>`${k}: ${v}`).join(', ');
+  const isVocab     = q.section==='Vocab';
+  const isMaths     = q.section==='Maths';
+
+  const vocabApproach = isVocab ? `
+VOCAB SEQUENCE:
+FIRST REPLY: joke → 2 vivid sentences showing "${correctText}" being used (not just defined). End: "Can you make your own sentence using ${correctText}?"
+CHILD MAKES A SENTENCE: celebrate what is right, correct grammar kindly ("You could say..."), give 1 bonus example. Confirm answer only AFTER their sentence attempt.
+Minimum 2 exchanges before confirming.` : '';
+
+  const mathsApproach = isMaths ? `
+MATHS SEQUENCE:
+FIRST REPLY: joke → teach concept "${q.mathConcept}" using a DIFFERENT SIMPLER example (not the original question). Step by step. End: "Does that make sense?"
+AFTER RESPONSE: quick memory trick. Then re-ask original: "${q.text} — options: ${optsStr}. What would you pick now?"
+CHILD ANSWERS AGAIN: big celebration if correct + explain WHY. If still unsure, try a different angle.
+Child MUST attempt the original question again.` : '';
+
+  const englishApproach = (!isVocab && !isMaths) ? `
+ENGLISH SEQUENCE:
+FIRST REPLY: joke → ONE Socratic question leading child to reason out the answer themselves. Real-life analogy. Do NOT reveal the correct answer yet.
+AFTER RESPONSE: guide closer or give concrete example, then ask again. Confirm only after 2+ exchanges.` : '';
+
+  return `${strictOpening}
+
+${CHAR.personality}
+
+CONTEXT (never repeat this to the child):
+Question: ${q.text}
+Child chose: ${answers[qIdx]} — ${wrongText}
+Correct answer: ${q.correct} — ${correctText}
+Code: ${q.code}
+${vocabApproach}${mathsApproach}${englishApproach}
+
+OFF-TOPIC: One character sentence, then immediately redirect to lesson.`
+}
+async function callAI(userText){
+  stopMic();
+  if(userText){addBubble(userText,'child-say');convHistory.push({role:'user',content:userText});}
+  else{convHistory.push({role:'user',content:'Please start the session.'});}
+  // iOS: warm audio session BEFORE the await so speak() works after fetch completes
+  _iosWarm();
+  showTyping();turnCount++;
+  tutorTurns[currentQ]=(tutorTurns[currentQ]||0)+1;
+  if(tutorTurns[currentQ]>=STRUGGLE_THRESHOLD)strugglingQs.add(QUESTIONS[currentQ].code);
+  renderDots();
+  const headers={'Content-Type':'application/json'};
+  if(ANTHROPIC_KEY){headers['x-api-key']=ANTHROPIC_KEY;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers,
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:220,system:buildSystemPrompt(currentQ),messages:convHistory})});
+    if(res.status===401){removeTyping();closeTutor();showKeyError();return;}
+    const data=await res.json();
+    const reply=stripMd(data.content?.find(b=>b.type==='text')?.text||'Let me try explaining this a different way!');
+    removeTyping();convHistory.push({role:'assistant',content:reply});addBubble(reply,'char-say');speak(reply);
+    if(turnCount>=TUTOR_SOFT_CAP){setTimeout(()=>{const w=stripMd(CHAR.wrapUp);addBubble(w,'char-say');speak(w);setTimeout(closeTutor,3800);},1200);}
+  }catch(e){removeTyping();const fb='Let me try explaining this a different way!';addBubble(fb,'char-say');speak(fb);}
+}
+function addBubble(text,cls){const el=document.createElement('div');el.className='bubble '+cls;el.textContent=text;document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});}
+function showTyping(){const el=document.createElement('div');el.className='bubble char-say';el.id='typing-ind';el.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});}
+function removeTyping(){const el=document.getElementById('typing-ind');if(el)el.remove();}
+// ── TTS — iOS-reliable voice setup ──────────────────────────────
+// iOS problem: speak() is silently ignored from async callbacks (after await/fetch).
+// Solution A: before every await in callAI, synchronously start a near-silent
+//   utterance to "warm" the iOS audio session.
+// Solution B: after every real utterance, chain a silent keepalive so iOS
+//   audio engine never fully idles (once idle, async speak() stops working).
+// Together these ensure TTS works every time, even after page refresh.
+let _cachedVoice=null;
+
+function _iosWarm(){
+  // Call this synchronously BEFORE any async operation to warm audio session.
+  // Must be called in a user-gesture execution context.
+  try{
+    if(window.speechSynthesis.speaking)return; // already warm
+    const w=new SpeechSynthesisUtterance(' '); // non-breaking space
+    w.volume=0.01;w.rate=16;
+    window.speechSynthesis.speak(w);
+  }catch(e){}
+}
+
+const _PREFERRED_VOICES=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha','Martha'];
+
+function _loadVoice(){
+  const voices=window.speechSynthesis.getVoices();
+  if(!voices.length)return;
+  for(const name of _PREFERRED_VOICES){
+    const v=voices.find(v=>v.name===name||v.name.startsWith(name));
+    if(v){_cachedVoice=v;return;}
+  }
+  _cachedVoice=voices.find(v=>v.lang==='en-GB'&&v.localService)
+            ||voices.find(v=>v.lang==='en-GB')
+            ||voices.find(v=>v.lang==='en-AU')
+            ||voices.find(v=>v.lang.startsWith('en'))
+            ||null;
+}
+
+function speak(text){
+  if(!text)return;
+  // iOS: synthesis can be paused after screen lock or tab switch — always resume first
+  try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
+  window.speechSynthesis.cancel();
+  // Small delay: iOS needs a moment after cancel() before a new utterance is accepted
+  setTimeout(()=>{
+    const utt=new SpeechSynthesisUtterance(text);
+    if(_cachedVoice)utt.voice=_cachedVoice;
+    utt.rate =CHAR.key==='snake'?0.92:0.98;
+    utt.pitch=CHAR.key==='snake'?0.95:1.02;
+    utt.volume=1;
+    // iOS: retry once if silently fails (common when coming from async context)
+    let started=false;
+    utt.onstart=()=>{started=true;};
+    utt.onend=null;
+    utt.onerror=(e)=>{
+      if(!started){
+        setTimeout(()=>{
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+        },200);
+      }
+    };
+    window.speechSynthesis.speak(utt);
+  },120);
+}
+function toggleMic(){
+  if(isListening){stopMic();return;}
+  // iOS: warm audio session on this gesture so AI response can speak after async
+  _iosWarm();
+  window.speechSynthesis.cancel();
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){addBubble('Voice is not available — tap Got it when you are ready!','char-say');return;}
+  recognition=new SR();recognition.lang='en-GB';recognition.interimResults=true;recognition.maxAlternatives=1;
+  let final='';
+  recognition.onstart=()=>{isListening=true;document.getElementById('mic-btn').classList.add('listening');document.getElementById('mic-btn').textContent='🔴';document.getElementById('mic-status').textContent='listening...';};
+  recognition.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}document.getElementById('mic-status').textContent=interim||final||'listening...';};
+  recognition.onend=()=>{stopMic();if(final.trim())callAI(final.trim());else document.getElementById('mic-status').textContent='or just listen';};
+  recognition.onerror=()=>stopMic();
+  recognition.start();
+}
+function stopMic(){if(recognition)try{recognition.stop();}catch(e){}isListening=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-btn').textContent='🎤';}
+function gotIt(){window.speechSynthesis.cancel();const m=stripMd(isDictMode?'Well done! You have built a brilliant sentence today. Keep practising and your writing will shine!':CHAR.gotIt);addBubble(m,'char-say');speak(m);setTimeout(closeTutor,1800);}
+function sendTyped(){
+  const inp=document.getElementById('type-input');
+  const val=inp.value.trim();
+  if(!val)return;
+  inp.value='';
+  callAI(val);
+}
+function parentSkip(){window.speechSynthesis.cancel();stopMic();closeTutor();}
+function closeTutor(){
+  window.speechSynthesis.cancel();stopMic();
+  document.getElementById('tutor-overlay').classList.remove('show');
+  document.getElementById('type-row').classList.remove('show');
+  document.getElementById('got-it-btn').textContent='Got it! ✓ — next question';
+  if(isDictMode){isDictMode=false;}
+  currentQ=null;
+}
+
+window.onload=function(){
+  updateBanner();
+  const rs=RULE_STYLES[RULE_STYLE]||RULE_STYLES.weapons;
+  document.getElementById('rules-title').textContent=rs.title;
+  document.getElementById('rules-subtitle').textContent=rs.sub;
+};
+// Load voices on change (iOS fires onvoiceschanged async; Chrome loads sync)
+window.speechSynthesis.onvoiceschanged=_loadVoice;
+_loadVoice();
 </script>
 </body>
 </html>
