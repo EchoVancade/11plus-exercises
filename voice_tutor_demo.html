@@ -19,9 +19,23 @@ body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height
 .milestone-fill{height:100%;background:#fff;border-radius:3px;transition:width .5s}
 .key-reset-btn{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif;flex-shrink:0;margin-top:2px}
 .key-reset-btn:active{background:rgba(255,255,255,.35)}
-.rules{margin:1rem;background:#fff;border-left:4px solid #FF6B35;border-radius:0 10px 10px 0;padding:0.875rem 1rem;display:flex;flex-direction:column;gap:0.5rem}
-.rule-item{font-size:0.85rem;color:#444;line-height:1.5}
-.rule-item strong{color:#E85D04}
+/* ── RULES CARD — big briefing panel ─────────── */
+.rules-card{margin:1rem;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(255,107,53,.18)}
+.rules-header{background:linear-gradient(135deg,#FF6B35,#E85D04);padding:1rem 1.25rem 0.875rem}
+.rules-title{font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:.02em;margin-bottom:0.25rem}
+.rules-subtitle{font-size:0.82rem;color:rgba(255,255,255,.88);line-height:1.4}
+.rules-body{background:#fff;padding:1rem 1.25rem}
+.rule-item{font-size:0.95rem;color:#333;line-height:1.6;padding:0.625rem 0;border-bottom:1px solid #F5F0EB;display:flex;gap:0.5rem;align-items:flex-start}
+.rule-item:last-of-type{border-bottom:none}
+.rule-item strong{color:#E85D04;font-weight:800}
+.rules-read-btn{display:block;width:100%;margin-top:0.875rem;padding:0.875rem;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;min-height:50px;box-shadow:0 3px 10px rgba(255,107,53,.35);letter-spacing:.02em}
+.rules-read-btn:active{opacity:.88;transform:scale(.98)}
+.rules-done{display:none;align-items:center;justify-content:space-between;padding:0.625rem 1.25rem;background:#F0FAF0}
+.rules-done span{font-size:0.9rem;font-weight:800;color:#2D9E2D;font-family:'Nunito',sans-serif}
+/* Questions locked until rules are read */
+.questions-locked .section{opacity:.45;pointer-events:none;user-select:none;transition:opacity .4s}
+.questions-locked .btn-submit{opacity:.35;pointer-events:none}
+.questions-locked::after{content:"👆 Read today's tips first!";display:block;text-align:center;font-size:0.85rem;font-weight:700;color:#E85D04;font-family:'Nunito',sans-serif;padding:0.5rem;margin-bottom:0.5rem}
 .section{margin:1rem;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .section-header{padding:0.75rem 1rem;font-weight:800;font-size:0.9rem;letter-spacing:0.03em;color:#fff}
 .sh-vocab{background:#7B2D8B}
@@ -205,11 +219,20 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
 </div>
 
 <!-- EXERCISE -->
-<div id="exercise">
-<div class="rules">
-  <div style="font-size:0.8rem;font-weight:800;color:#E85D04;margin-bottom:0.25rem">💡 REMEMBER TODAY:</div>
-  <div class="rule-item">📝 <strong>E5.5 Headings:</strong> The correct heading must cover <strong>ALL</strong> sentences in the paragraph — not just one detail.</div>
-  <div class="rule-item">💰 <strong>M2.8 % Changes:</strong> Increase: new = old × (100+%)÷100. Decrease: new = old × (100−%)÷100.</div>
+<div id="exercise" class="questions-locked">
+<div class="rules-card" id="rules-card">
+  <div class="rules-header">
+    <div class="rules-title" id="rules-title">⚡ TODAY'S WEAPONS</div>
+    <div class="rules-subtitle" id="rules-subtitle">Master these and today's questions will feel easier.</div>
+  </div>
+  <div class="rules-body" id="rules-body">
+    <div class="rule-item">📝 <strong>E5.5 Headings:</strong> The correct heading must cover <strong>ALL</strong> sentences in the paragraph — not just one detail. Skim every sentence before choosing.</div>
+    <div class="rule-item">💰 <strong>M2.8 % Changes:</strong> Increase → new = old × (100+%)÷100. Decrease → new = old × (100−%)÷100. A 20% discount means you pay <strong>80%</strong>, not 120%.</div>
+    <button class="rules-read-btn" onclick="markRulesRead()">I've read this — let's go! 🚀</button>
+  </div>
+  <div class="rules-done" id="rules-done">
+    <span>📖 Tips noted</span><span>✓ Ready to go!</span>
+  </div>
 </div>
 
 <div class="section">
@@ -431,6 +454,15 @@ const WEBHOOK = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
 const PTS_KEY = 'pts_CL';
 const BASE_PTS = 510;
 const PASS_THRESHOLD = 0.80;
+// Rule style — change each week for variety
+// Options: 'weapons' | 'watchout' | 'protips' | 'memory'
+const RULE_STYLE = 'weapons';
+const RULE_STYLES = {
+  weapons: {title:"⚡ TODAY'S WEAPONS",         sub:"Master these and today's questions will feel easier."},
+  watchout:{title:"⚠️ WATCH OUT FOR THESE",      sub:"These caught you out before — don't let them today!"},
+  protips: {title:"🏆 PRO TIPS FOR TODAY",        sub:"Top students use these every time. Now you will too."},
+  memory:  {title:"🧠 QUICK MEMORY TRICKS",       sub:"Lock these in before you start — your future self will thank you."},
+};
 
 // ═══════════════════════════════════════
 // QUESTIONS — one object per question
@@ -612,6 +644,15 @@ if(basePts<BASE_PTS)basePts=BASE_PTS;
 // ═══════════════════════════════════════
 // BANNER
 // ═══════════════════════════════════════
+function markRulesRead(){
+  document.getElementById('rules-body').style.display='none';
+  document.getElementById('rules-done').style.display='flex';
+  // Unlock questions
+  document.getElementById('exercise').classList.remove('questions-locked');
+  // Scroll to first question
+  setTimeout(()=>document.getElementById('q0').scrollIntoView({behavior:'smooth',block:'start'}),300);
+}
+
 function updateBanner(){
   const m=getMilestone(basePts);
   document.getElementById('pts-num').textContent=basePts+' pts';
@@ -943,7 +984,23 @@ function addBubble(text,cls){const el=document.createElement('div');el.className
 function showTyping(){const el=document.createElement('div');el.className='bubble char-say';el.id='typing-ind';el.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});}
 function removeTyping(){const el=document.getElementById('typing-ind');if(el)el.remove();}
 // ── TTS — iOS-reliable voice setup ──────────────────────────────
+// iOS requires speechSynthesis to be triggered from a user gesture FIRST.
+// After that, async calls (from AI responses) work fine.
+let _ttsUnlocked=false;
 let _cachedVoice=null;
+
+function _unlockTTS(){
+  if(_ttsUnlocked)return;
+  _ttsUnlocked=true;
+  // Speak a silent utterance synchronously in the gesture context to unlock iOS audio
+  const silent=new SpeechSynthesisUtterance('');
+  silent.volume=0;
+  window.speechSynthesis.speak(silent);
+}
+// Unlock on first tap anywhere on the page
+document.addEventListener('touchstart',_unlockTTS,{once:true,passive:true});
+document.addEventListener('click',_unlockTTS,{once:true,passive:true});
+
 const _PREFERRED_VOICES=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha','Martha'];
 
 function _loadVoice(){
@@ -971,12 +1028,21 @@ function speak(text){
     if(_cachedVoice)utt.voice=_cachedVoice;
     utt.rate =CHAR.key==='snake'?0.92:0.98;
     utt.pitch=CHAR.key==='snake'?0.95:1.02;
-    // iOS workaround: if utterance silently fails, retry once
+    utt.volume=1;
+    // iOS: retry once if silently fails (common when coming from async context)
     let started=false;
     utt.onstart=()=>{started=true;};
-    utt.onerror=()=>{if(!started){window.speechSynthesis.cancel();window.speechSynthesis.speak(utt);}};
+    utt.onend=null;
+    utt.onerror=(e)=>{
+      if(!started){
+        setTimeout(()=>{
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+        },200);
+      }
+    };
     window.speechSynthesis.speak(utt);
-  },80);
+  },120);
 }
 function toggleMic(){
   if(isListening){stopMic();return;}
@@ -1010,7 +1076,12 @@ function closeTutor(){
   currentQ=null;
 }
 
-window.onload=updateBanner;
+window.onload=function(){
+  updateBanner();
+  const rs=RULE_STYLES[RULE_STYLE]||RULE_STYLES.weapons;
+  document.getElementById('rules-title').textContent=rs.title;
+  document.getElementById('rules-subtitle').textContent=rs.sub;
+};
 // Load voices immediately and on change (iOS fires onvoiceschanged asynchronously)
 window.speechSynthesis.onvoiceschanged=_loadVoice;
 _loadVoice(); // also try now in case already loaded (Chrome/desktop)
