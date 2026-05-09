@@ -172,6 +172,24 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
 .setup-input:focus{border-color:#7c3aed}
 .setup-btn{width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:8px;min-height:48px;font-family:'Nunito',sans-serif}
 .setup-hint{font-size:11px;color:#9CA3AF;font-family:'Nunito',sans-serif}
+
+/* ── TWO-COLUMN COMPREHENSION LAYOUT (IL purple) ─── */
+.split-layout{display:flex;gap:10px;margin:0 1rem 1rem;height:calc(100vh - 280px);min-height:400px;max-height:660px}
+.passage-col{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff;border:2px solid #c4b5fd;border-radius:14px;overscroll-behavior:contain}
+.passage-col-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:0.55rem 0.875rem;border-radius:12px 12px 0 0;position:sticky;top:0;z-index:2}
+.passage-col-hdr span{color:#fff;font-weight:800;font-size:0.75rem;font-family:"Nunito",sans-serif}
+.passage-body{padding:0.875rem;font-size:0.88rem;line-height:1.82;color:#1e1b4b}
+.passage-body p{margin-bottom:0.7rem}
+.passage-body p:last-child{margin-bottom:0}
+.passage-source{padding:0.35rem 0.875rem 0.6rem;font-size:0.68rem;color:#c4b5fd;border-top:1px solid #ede9fe;line-height:1.5}
+.questions-col{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;overscroll-behavior:contain}
+.q-col-hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:0.55rem 0.875rem;border-radius:14px 14px 0 0;position:sticky;top:0;z-index:2}
+.q-col-hdr span{color:#fff;font-weight:800;font-size:0.75rem;font-family:"Nunito",sans-serif}
+.q-col-body{flex:1;background:#fdf6ff;border:2px solid #c4b5fd;border-top:none;border-radius:0 0 14px 14px}
+@media(max-width:600px){
+  .split-layout{flex-direction:column;height:auto;max-height:none}
+  .passage-col,.questions-col{max-height:52vh}
+}
 </style>
 </head>
 <body>
@@ -220,26 +238,29 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
   <div class="rules-done" id="rules-done"><span>📖 Tips noted</span><span>✓ Ready!</span></div>
 </div>
 
-<!-- PASSAGE -->
-<div class="passage-box">
-  <div class="passage-title-row">
-    <div class="title-text">The Lion and the Mouse</div>
-    <div class="origin">Aesop's Fables · Adapted</div>
+<!-- TWO-COLUMN LAYOUT -->
+<div class="split-layout">
+  <!-- LEFT: Passage -->
+  <div class="passage-col">
+    <div class="passage-col-hdr"><span>📖 READ — scroll here independently</span></div>
+    <div class="passage-body">
+      <p>One afternoon, a tiny mouse was running across the grass when — whoops! — he ran right over a sleeping lion's nose.</p>
+      <p>The lion woke up with a roar. He slapped his giant paw down and caught the little mouse.</p>
+      <p>"Please let me go!" squeaked the mouse. "I'm so sorry! If you spare me, I promise I will help you one day."</p>
+      <p>The lion laughed. What could a tiny mouse ever do to help a mighty lion? But he felt kind, so he lifted his paw and let the mouse go free.</p>
+      <p>Some days later, the lion was walking through the forest when — SNAP! — he fell into a hunter's net. He roared and struggled, but he could not get free.</p>
+      <p>The little mouse heard the roaring. He ran to help. With his sharp little teeth, he nibbled and nibbled at the ropes until — at last — the net fell apart.</p>
+      <p>"You laughed when I said I would help you," said the mouse. "But even a small friend can do great things!"</p>
+      <p>The lion smiled warmly. "You are right, little friend. I will never laugh at a small kindness again."</p>
+    </div>
+    <div class="passage-source">
+      ~160 words · Adapted from Aesop's Fables (6th century BC, traditional folk tales, public domain) · Simplified for age 7 · Not from a published textbook
+    </div>
   </div>
-  <div class="passage-text">
-    <p>One afternoon, a tiny mouse was running across the grass when — whoops! — he ran right over a sleeping lion's nose.</p>
-    <p>The lion woke up with a roar. He slapped his giant paw down and caught the little mouse.</p>
-    <p>"Please let me go!" squeaked the mouse. "I'm so sorry! If you spare me, I promise I will help you one day."</p>
-    <p>The lion laughed. What could a tiny mouse ever do to help a mighty lion? But he felt kind, so he lifted his paw and let the mouse go free.</p>
-    <p>Some days later, the lion was walking through the forest when — SNAP! — he fell into a hunter's net. He roared and struggled, but he could not get free.</p>
-    <p>The little mouse heard the roaring. He ran to help. With his sharp little teeth, he nibbled and nibbled at the ropes until — at last — the net fell apart.</p>
-    <p>"You laughed when I said I would help you," said the mouse. "But even a small friend can do great things!"</p>
-    <p>The lion smiled warmly. "You are right, little friend. I will never laugh at a small kindness again."</p>
-  </div>
-</div>
-
-<!-- MCQ QUESTIONS -->
-<div class="sec-lbl">✏️ Comprehension Questions</div>
+  <!-- RIGHT: Questions -->
+  <div class="questions-col">
+    <div class="q-col-hdr"><span>✏️ Questions — scroll here to answer</span></div>
+    <div class="q-col-body" style="padding:8px">
 
 <div class="q-card" id="qc-0">
   <div class="q-meta"><span>Q1</span></div>
@@ -292,6 +313,10 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
   </div>
 </div>
 
+    </div><!-- /q-col-body -->
+  </div><!-- /questions-col -->
+</div><!-- /split-layout -->
+
 <!-- WRITING SECTION (shown after MCQ) -->
 <div class="sec-lbl" style="margin-top:24px">✏️ Writing on Paper — After the MCQ!</div>
 <div class="writing-section">
@@ -315,6 +340,19 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
       <div class="q-hint">💡 Imagine you could talk to them! What would you really want to know?</div>
       <div class="q-space">Write your question with a question mark (?)</div>
     </div>
+  </div>
+</div>
+
+<div style="margin:1rem;background:#fff;border-radius:14px;overflow:hidden;border:2px solid #c4b5fd;box-shadow:0 2px 8px rgba(124,58,237,.06)">
+  <div style="background:linear-gradient(135deg,#C77800,#A06000);padding:0.65rem 1.1rem">
+    <span style="color:#fff;font-weight:800;font-size:0.85rem;font-family:'Nunito',sans-serif">📖 Word of the Day</span>
+  </div>
+  <div style="padding:1rem">
+    <div style="font-size:1.15rem;font-weight:800;color:#C77800;margin-bottom:0.2rem" id="dict-word-display">persevere</div>
+    <div style="font-size:0.88rem;color:#555;margin-bottom:0.5rem;line-height:1.5">Verb — to keep trying to do something even when it is hard or difficult.</div>
+    <div style="font-size:0.82rem;font-style:italic;color:#777;margin-bottom:0.75rem">"She persevered with her maths homework until she finally got the answer right."</div>
+    <div style="font-size:0.78rem;color:#888;margin-bottom:0.6rem">Read the word and example above, then tap your AI tutor to practise using it!</div>
+    <button style="width:100%;padding:0.75rem;background:linear-gradient(135deg,#C77800,#A06000);color:#fff;border:none;border-radius:10px;font-size:0.9rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;min-height:44px" id="dict-ready-btn" onclick="openDictTutor()">I am ready! 📖</button>
   </div>
 </div>
 
@@ -382,6 +420,9 @@ body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
 </div>
 
 <script>
+const DICT_WORD='persevere';
+const DICT_DEF='Verb — to keep trying to do something even when it is hard or difficult.';
+const DICT_EG='She persevered with her maths homework until she finally got the answer right.';
 const CHILD='IL',DAY='Saturday',WEEK=19,WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
 const PTS_KEY='pts_IL',BASE_PTS=0,PASS_THRESHOLD=0.80,RULE_STYLE='watchout';
 const QUESTIONS={
@@ -446,13 +487,42 @@ const m=getMilestone(newTotal);document.getElementById("res-milestone").textCont
 if(m.nxt)document.getElementById("res-next").textContent=m.gap+" to "+m.nxt;
 if(attemptNumber>1){const note=document.getElementById("attempt-note");note.textContent="Took "+attemptNumber+" attempts to reach 80%. Results show your first attempt.";note.classList.add("show");}
 let bd="";const secMap={};Object.keys(fa.answers).forEach(n=>{const q=QUESTIONS[n];if(!secMap[q.section])secMap[q.section]={c:0,t:0};secMap[q.section].t++;if(fa.answers[n]===q.correct)secMap[q.section].c++;});for(const[s,d]of Object.entries(secMap))bd+=`<div class="result-row"><span>${s}</span><span>${d.c}/${d.t}</span></div>`;bd+=`<div class="result-row"><span>Total</span><span>${correct}/${TOTAL_QS} (${pct}%)</span></div>`;document.getElementById("res-breakdown").innerHTML=bd;}
+function openDictTutor(){
+  const btn=document.getElementById('dict-ready-btn');
+  btn.disabled=true;btn.textContent='Practising with tutor…';
+  isDictMode=true;currentQ=null;convHistory=[];turnCount=0;
+  document.getElementById('chat-area').innerHTML='';
+  document.getElementById('q-strip-text').textContent='"'+DICT_WORD+'" — '+DICT_DEF;
+  document.getElementById('q-strip-chose').textContent='';
+  document.getElementById('q-strip-opts').style.display='none';
+  document.getElementById('mode-badge').textContent='📖 Word Builder';
+  document.getElementById('mic-hint-l').textContent='Speak your sentence';
+  document.getElementById('got-it-btn').textContent='All done! ✓';
+  document.getElementById('type-row').classList.add('show');
+  renderDots();document.getElementById('tutor-overlay').classList.add('show');callAI(null);}
+
 function openTutor(qIdx){currentQ=qIdx;convHistory=[];turnCount=0;tutorTurns[qIdx]=tutorTurns[qIdx]||0;document.getElementById("chat-area").innerHTML="";
 const q=QUESTIONS[qIdx];document.getElementById("q-strip-text").textContent=q.text;document.getElementById("q-strip-chose").textContent="You chose: "+answers[qIdx]+" — "+q.opts[answers[qIdx]];
 const optsEl=document.getElementById("q-strip-opts");optsEl.innerHTML=Object.entries(q.opts).map(([k,v])=>`<span class="strip-opt${answers[qIdx]===k?" my-wrong":""}">${k}: ${v}</span>`).join("");optsEl.style.display="flex";
 document.getElementById("mode-badge").textContent="✍️ What do you think?";document.getElementById("mic-hint-l").textContent="Speak your answer";
 renderDots();document.getElementById("tutor-overlay").classList.add("show");callAI(null);}
 function renderDots(){const el=document.getElementById("turn-dots");el.innerHTML="";for(let i=0;i<TUTOR_SOFT_CAP;i++){const d=document.createElement("div");d.className="dot"+(i<turnCount?" used":"")+(i===turnCount?" now":"");el.appendChild(d);}}
-function buildSystemPrompt(qIdx){const childAge=7;const turnNote=turnCount>=TUTOR_SOFT_CAP-2?"\nYou are near the turn limit. Wrap up warmly now.":`\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;const strictOpening=`ABSOLUTE RULE — YOUR VERY FIRST REPLY ONLY:\nYour FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it.\nExample: For a comprehension question: "Why did the lion go to the library? To find a good mane-uscript!"\nBANNED from first reply: your name, any greeting, restating the question, "Let me explain".\nAfter the joke: straight to teaching. Plain spoken English only. No asterisks or markdown. Max 80 words.\nNEVER say: wrong, incorrect, failed, mistake.${turnNote}`;
+function buildSystemPrompt(qIdx){
+  if(isDictMode){
+    const turnNote=turnCount>=TUTOR_SOFT_CAP-2?'\nWrap up warmly now.':`\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;
+    return `ABSOLUTE RULE — YOUR VERY FIRST REPLY ONLY:
+Start with ONE short funny joke about the word "${DICT_WORD}" or its meaning. Then immediately give 2 vivid example sentences. End with: "Can you make your own sentence using ${DICT_WORD}?"
+BANNED: your name, any greeting, restating the word definition as your opening.
+Plain spoken English only. No asterisks or markdown. Max 80 words. NEVER say: wrong, incorrect, failed.${turnNote}
+
+${CHAR.personality}
+
+WORD: "${DICT_WORD}" — ${DICT_DEF}
+EXAMPLE: "${DICT_EG}"
+
+SEQUENCE: joke → 2 examples → ask child to make a sentence → evaluate grammar → if correct, ask to expand with WHERE/WHEN/HOW. Build 11+ writing skill.
+OFF-TOPIC: one sentence then redirect immediately.`;
+  }const childAge=7;const turnNote=turnCount>=TUTOR_SOFT_CAP-2?"\nYou are near the turn limit. Wrap up warmly now.":`\nTurn ${turnCount+1} of up to ${TUTOR_SOFT_CAP}.`;const strictOpening=`ABSOLUTE RULE — YOUR VERY FIRST REPLY ONLY:\nYour FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it.\nExample: For a comprehension question: "Why did the lion go to the library? To find a good mane-uscript!"\nBANNED from first reply: your name, any greeting, restating the question, "Let me explain".\nAfter the joke: straight to teaching. Plain spoken English only. No asterisks or markdown. Max 80 words.\nNEVER say: wrong, incorrect, failed, mistake.${turnNote}`;
 const q=QUESTIONS[qIdx];const wrongText=q.opts[answers[qIdx]];const correctText=q.opts[q.correct];const optsStr=Object.entries(q.opts).map(([k,v])=>`${k}: ${v}`).join(", ");
 return`${strictOpening}\n\n${CHAR.personality}\n\nYou are tutoring a ${childAge}-year-old (age 7) who got this question wrong:\nQuestion: ${q.text}\nThey chose: ${answers[qIdx]} — ${wrongText}\nCorrect answer: ${q.correct} — ${correctText}\n\nENGLISH SEQUENCE:\nFIRST REPLY: joke → ONE simple question guiding the child to think about the answer. Use very simple language for age 7.\nAFTER RESPONSE: guide gently, give a simple example from the story. Confirm only after 1-2 exchanges.\nOFF-TOPIC: one character sentence then redirect immediately.`;}
 let _cachedVoice=null;
