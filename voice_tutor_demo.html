@@ -76,51 +76,62 @@ body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height
 .vid-link{color:#CC0000;font-size:0.8rem;font-weight:700;text-decoration:none}
 
 /* ── TUTOR OVERLAY ─────────────────────────────────────────────────── */
-.tutor-overlay{display:none;position:fixed;inset:0;z-index:100;flex-direction:column}
+/* Snake palette */
+body.snake{--t-bg:#17432E;--t-hi:#27AE60;--t-lite:rgba(39,174,96,.22);--t-border:rgba(39,174,96,.45);--t-glow:rgba(39,174,96,.6)}
+/* Shark palette */
+body.shark{--t-bg:#0B2E52;--t-hi:#2980B9;--t-lite:rgba(41,128,185,.22);--t-border:rgba(41,128,185,.45);--t-glow:rgba(41,128,185,.6)}
+
+.tutor-overlay{display:none;position:fixed;inset:0;z-index:100;flex-direction:column;background:var(--t-bg)}
 .tutor-overlay.show{display:flex}
-/* character colour injected via JS */
-.tutor-overlay{background:var(--ch,#1B5E20)}
-.q-strip{background:rgba(0,0,0,.28);padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.15);flex-shrink:0}
-.q-strip-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.55);margin-bottom:3px;font-family:'Nunito',sans-serif}
-.q-strip-text{font-size:14px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:5px;font-family:'Nunito',sans-serif}
-.q-strip-chose{background:rgba(214,40,40,.35);color:#FCA5A5;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;font-family:'Nunito',sans-serif}
-.q-strip-opts{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
-.strip-opt{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);border-radius:7px;padding:2px 9px;font-size:11px;border:1px solid rgba(255,255,255,.2);font-family:'Nunito',sans-serif}
-.strip-opt.my-wrong{background:rgba(214,40,40,.3);color:#FCA5A5;border-color:rgba(214,40,40,.4)}
-.tutor-top{padding:10px 14px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
-.char-zone{display:flex;align-items:center;gap:10px}
-.char-avatar{font-size:50px;line-height:1;display:block;flex-shrink:0}
+
+/* Question strip */
+.q-strip{background:rgba(0,0,0,.32);padding:12px 16px;border-bottom:1.5px solid rgba(255,255,255,.12);flex-shrink:0}
+.q-strip-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--t-hi);margin-bottom:4px;font-family:'Nunito',sans-serif}
+.q-strip-text{font-size:16px;font-weight:800;color:#fff;line-height:1.35;margin-bottom:6px;font-family:'Nunito',sans-serif}
+.q-strip-chose{background:rgba(214,40,40,.3);color:#FCA5A5;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;display:inline-block;margin-bottom:4px}
+.q-strip-opts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.strip-opt{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;border:1.5px solid rgba(255,255,255,.18);font-family:'Nunito',sans-serif}
+.strip-opt.my-wrong{background:rgba(214,40,40,.28);color:#FCA5A5;border-color:rgba(220,80,80,.55);font-weight:800}
+
+/* Character header row */
+.tutor-top{padding:12px 16px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
+.char-zone{display:flex;align-items:center;gap:12px}
+.char-avatar{font-size:56px;line-height:1;display:block;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
 body.snake .char-avatar{animation:slither 3s ease-in-out infinite}
 body.shark .char-avatar{animation:swim 2.5s ease-in-out infinite}
-@keyframes slither{0%,100%{transform:translateX(0) rotate(0deg)}30%{transform:translateX(-6px) rotate(-5deg)}70%{transform:translateX(6px) rotate(5deg)}}
-@keyframes swim{0%,100%{transform:translateX(0) rotate(-3deg)}50%{transform:translateX(6px) rotate(3deg)}}
-.char-info{display:flex;flex-direction:column;gap:3px}
-.char-name{color:#fff;font-size:15px;font-weight:800;font-family:'Nunito',sans-serif}
-.mode-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.9);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;font-family:'Nunito',sans-serif}
-.turn-dots{display:flex;gap:4px;flex-wrap:wrap;max-width:130px}
-.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0;transition:background .3s}
-.dot.used{background:rgba(255,255,255,.55)}
-.dot.now{background:#fff;box-shadow:0 0 4px rgba(255,255,255,.7)}
-.parent-skip{background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;min-height:40px;font-family:'Nunito',sans-serif}
-.parent-skip:active{background:rgba(255,255,255,.28)}
-.chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
-.bubble{max-width:88%;padding:10px 14px;border-radius:16px;font-size:15px;line-height:1.55;word-break:break-word;font-family:'Nunito',sans-serif}
-.bubble.char-say{background:rgba(255,255,255,.16);color:#fff;border-bottom-left-radius:4px;align-self:flex-start}
-.bubble.child-say{background:rgba(255,255,255,.92);color:#2D2D2D;border-bottom-right-radius:4px;align-self:flex-end;font-style:italic}
-.typing-dots{display:flex;gap:5px;align-items:center;padding:6px 0}
-.typing-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55);animation:blink 1.2s ease-in-out infinite}
+@keyframes slither{0%,100%{transform:translateX(0) rotate(0deg)}30%{transform:translateX(-7px) rotate(-6deg)}70%{transform:translateX(7px) rotate(6deg)}}
+@keyframes swim{0%,100%{transform:translateX(0) rotate(-3deg)}50%{transform:translateX(8px) rotate(3deg)}}
+.char-info{display:flex;flex-direction:column;gap:5px}
+.char-name{color:#fff;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;letter-spacing:.01em}
+.mode-badge{background:var(--t-lite);border:1.5px solid var(--t-border);color:#fff;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif}
+.turn-dots{display:flex;gap:4px;flex-wrap:wrap;max-width:150px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18);flex-shrink:0;transition:background .3s}
+.dot.used{background:rgba(255,255,255,.5)}
+.dot.now{background:var(--t-hi);box-shadow:0 0 5px var(--t-glow)}
+.parent-skip{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);border-radius:22px;padding:8px 16px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;min-height:42px;font-family:'Nunito',sans-serif;letter-spacing:.02em}
+.parent-skip:active{background:rgba(255,255,255,.22)}
+
+/* Chat area */
+.chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 16px;display:flex;flex-direction:column;gap:10px;min-height:0}
+.bubble{max-width:90%;padding:13px 16px;border-radius:18px;font-size:17px;line-height:1.6;word-break:break-word;font-family:'Nunito',sans-serif}
+.bubble.char-say{background:var(--t-lite);border:1.5px solid var(--t-border);color:#fff;border-bottom-left-radius:5px;align-self:flex-start}
+.bubble.child-say{background:rgba(255,255,255,.94);color:#1A1A1A;border-bottom-right-radius:5px;align-self:flex-end;font-weight:600;font-style:italic}
+.typing-dots{display:flex;gap:6px;align-items:center;padding:6px 0}
+.typing-dots span{width:8px;height:8px;border-radius:50%;background:var(--t-hi);opacity:.6;animation:blink 1.2s ease-in-out infinite}
 .typing-dots span:nth-child(2){animation-delay:.2s}
 .typing-dots span:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-.tutor-bottom{padding:10px 14px 20px;display:flex;flex-direction:column;gap:8px;flex-shrink:0}
-.got-it-btn{width:100%;padding:12px;background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.32);color:#fff;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;min-height:46px;font-family:'Nunito',sans-serif}
-.got-it-btn:active{background:rgba(255,255,255,.26)}
-.mic-row{display:flex;align-items:center;justify-content:center;gap:14px}
-.mic-hint{color:rgba(255,255,255,.6);font-size:12px;text-align:center;max-width:110px;line-height:1.4;font-family:'Nunito',sans-serif}
-.mic-btn{width:84px;height:84px;border-radius:50%;border:none;background:#fff;font-size:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;flex-shrink:0}
-.mic-btn:active{transform:scale(.92)}
-.mic-btn.listening{animation:mic-pulse 1s ease-in-out infinite}
-@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}50%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
+
+/* Bottom controls */
+.tutor-bottom{padding:12px 16px 24px;display:flex;flex-direction:column;gap:10px;flex-shrink:0;background:rgba(0,0,0,.18);border-top:1.5px solid rgba(255,255,255,.08)}
+.got-it-btn{width:100%;padding:15px;background:var(--t-hi);border:none;color:#fff;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;min-height:52px;font-family:'Nunito',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.25);letter-spacing:.01em}
+.got-it-btn:active{opacity:.88;transform:scale(.98)}
+.mic-row{display:flex;align-items:center;justify-content:center;gap:16px}
+.mic-hint{color:rgba(255,255,255,.65);font-size:13px;text-align:center;max-width:100px;line-height:1.4;font-family:'Nunito',sans-serif;font-weight:600}
+.mic-btn{width:88px;height:88px;border-radius:50%;border:3px solid var(--t-border);background:#fff;font-size:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;flex-shrink:0;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.mic-btn:active{transform:scale(.91)}
+.mic-btn.listening{border-color:var(--t-hi);box-shadow:0 0 0 0 var(--t-glow);animation:mic-pulse 1s ease-in-out infinite}
+@keyframes mic-pulse{0%{box-shadow:0 0 0 0 var(--t-glow)}70%{box-shadow:0 0 0 18px transparent}100%{box-shadow:0 0 0 0 transparent}}
 
 /* ── RETRY SCREEN ──────────────────────────────────────────────────── */
 .retry-screen{display:none;position:fixed;inset:0;z-index:150;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;background:#F59E0B}
@@ -549,14 +560,14 @@ if(!ANTHROPIC_KEY) document.getElementById('setup-screen').classList.add('show')
 // CHARACTERS — locked to calendar day
 // ═══════════════════════════════════════
 const CHARS={
-  snake:{key:'snake',emoji:'🐍',name:'Ssssam',bg:'#1B5E20',
+  snake:{key:'snake',emoji:'🐍',name:'Ssssam',
     personality:`Your name is Ssssam the Snake. You occasionally slip "ssss" sounds into speech naturally: "Ssss, great try!" or "Let me ssshow you something." You are clever, warm, and love surprising kids with knowledge.`,
     greetings:["Ssss, good try!","Nearly there, ssss!","Ssss, interesting choice!"],
     gotIt:"Ssss, you have got it! Brillsssliant!",
     wrapUp:"Ssss, you have worked ssso hard! Let us move on and ssshow everyone what you know!",
     retryMsg:"Ssss, so close! Just a few more right to unlock your points. Let us try again — I believe in you!",
   },
-  shark:{key:'shark',emoji:'🦈',name:'Finn',bg:'#0D47A1',
+  shark:{key:'shark',emoji:'🦈',name:'Finn',
     personality:`Your name is Finn the Shark. You use ocean phrases naturally: "Splashing great effort!", "Making waves!", "Dive right in!", "Fin-tastic!". You celebrate every small win with energy and warmth.`,
     greetings:["Splashing great try!","Making waves — nearly there!","Fin-tastic effort!"],
     gotIt:"Fin-tastic! You have got it! Splash!",
@@ -572,7 +583,7 @@ document.body.classList.add(CHAR.key);
 document.getElementById('char-avatar').textContent=CHAR.emoji;
 document.getElementById('char-name').textContent=CHAR.name;
 document.getElementById('retry-char').textContent=CHAR.emoji;
-document.getElementById('tutor-overlay').style.background=CHAR.bg;
+// background now controlled by CSS variables via body class
 
 // ═══════════════════════════════════════
 // STRIP MARKDOWN
@@ -847,7 +858,8 @@ Published example: ${DICT_EG}
 FOLLOW THIS EXACT SEQUENCE:
 
 STEP 1 — FIRST MESSAGE ONLY:
-Warm greeting! Say "Today's magic word is ${DICT_WORD}!" Give EXACTLY 2 more vivid example sentences showing the word in different real-life situations (sport, school, nature, food — things a ${childAge}-year-old loves). End with: "Now it is your turn — can you make your own sentence using the word ${DICT_WORD}?"
+NEVER introduce yourself by name. NEVER say "I am Ssssam" or "I am Finn" or "Hello I am..."
+Start with ONE very short, funny joke connected to the word "${DICT_WORD}" or its meaning (1 sentence max). Then say "Today's word is ${DICT_WORD}!" and give EXACTLY 2 vivid example sentences in different real-life contexts (sport, school, nature, food). End with: "Now it is your turn — can you make your own sentence using the word ${DICT_WORD}?"
 
 STEP 2 — WHEN CHILD SHARES A SENTENCE:
 Evaluate TWO things: (a) Is the word used correctly? (b) Is the grammar correct?
@@ -930,28 +942,41 @@ async function callAI(userText){
 function addBubble(text,cls){const el=document.createElement('div');el.className='bubble '+cls;el.textContent=text;document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});}
 function showTyping(){const el=document.createElement('div');el.className='bubble char-say';el.id='typing-ind';el.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});}
 function removeTyping(){const el=document.getElementById('typing-ind');if(el)el.remove();}
-function pickVoice(){
+// ── TTS — iOS-reliable voice setup ──────────────────────────────
+let _cachedVoice=null;
+const _PREFERRED_VOICES=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha','Martha'];
+
+function _loadVoice(){
   const voices=window.speechSynthesis.getVoices();
-  // Prefer specific natural-sounding voices by name (best on iOS/Mac)
-  const preferred=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha','Martha','Aaron'];
-  for(const name of preferred){
+  if(!voices.length)return;
+  for(const name of _PREFERRED_VOICES){
     const v=voices.find(v=>v.name===name||v.name.startsWith(name));
-    if(v)return v;
+    if(v){_cachedVoice=v;return;}
   }
-  // Fall back: local en-GB (downloaded, sounds better than network), then any en-GB, then any English
-  return voices.find(v=>v.lang==='en-GB'&&v.localService)
-      || voices.find(v=>v.lang==='en-GB')
-      || voices.find(v=>v.lang==='en-AU')
-      || voices.find(v=>v.lang.startsWith('en'));
+  _cachedVoice=voices.find(v=>v.lang==='en-GB'&&v.localService)
+            ||voices.find(v=>v.lang==='en-GB')
+            ||voices.find(v=>v.lang==='en-AU')
+            ||voices.find(v=>v.lang.startsWith('en'))
+            ||null;
 }
+
 function speak(text){
+  if(!text)return;
+  // iOS: synthesis can be paused after screen lock or tab switch — always resume first
+  try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
   window.speechSynthesis.cancel();
-  const utt=new SpeechSynthesisUtterance(text);
-  const v=pickVoice();if(v)utt.voice=v;
-  // Keep rate and pitch close to natural — extreme values sound robotic
-  utt.rate =CHAR.key==='snake'?0.92:0.98;
-  utt.pitch=CHAR.key==='snake'?0.95:1.02;
-  window.speechSynthesis.speak(utt);
+  // Small delay: iOS needs a moment after cancel() before a new utterance is accepted
+  setTimeout(()=>{
+    const utt=new SpeechSynthesisUtterance(text);
+    if(_cachedVoice)utt.voice=_cachedVoice;
+    utt.rate =CHAR.key==='snake'?0.92:0.98;
+    utt.pitch=CHAR.key==='snake'?0.95:1.02;
+    // iOS workaround: if utterance silently fails, retry once
+    let started=false;
+    utt.onstart=()=>{started=true;};
+    utt.onerror=()=>{if(!started){window.speechSynthesis.cancel();window.speechSynthesis.speak(utt);}};
+    window.speechSynthesis.speak(utt);
+  },80);
 }
 function toggleMic(){
   if(isListening){stopMic();return;}
@@ -986,7 +1011,9 @@ function closeTutor(){
 }
 
 window.onload=updateBanner;
-window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+// Load voices immediately and on change (iOS fires onvoiceschanged asynchronously)
+window.speechSynthesis.onvoiceschanged=_loadVoice;
+_loadVoice(); // also try now in case already loaded (Chrome/desktop)
 </script>
 </body>
 </html>
