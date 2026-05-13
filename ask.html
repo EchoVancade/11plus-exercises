@@ -37,7 +37,7 @@ body.shark{--hi:#2980B9;--bg:#0B2E52;--lite:rgba(41,128,185,.18);--border:rgba(4
 .char-strip .phase{font-size:12px;background:#ede9fe;color:#7c3aed;border-radius:20px;padding:2px 10px;font-weight:700}
 
 /* CHAT */
-.chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;display:flex;flex-direction:column;gap:10px;background:#F0F4FF}
+.chat-area{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px;display:flex;flex-direction:column;gap:10px;background:#F0F4FF;min-height:40px}
 .bubble{max-width:88%;padding:12px 16px;border-radius:18px;font-size:16px;line-height:1.6;word-break:break-word;font-family:'Nunito',sans-serif}
 .bubble.ai{background:#fff;border:1.5px solid #c4b5fd;color:#1e1b4b;border-bottom-left-radius:4px;align-self:flex-start;box-shadow:0 2px 8px rgba(124,58,237,.08)}
 .bubble.user{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;font-style:italic}
@@ -47,7 +47,7 @@ body.shark{--hi:#2980B9;--bg:#0B2E52;--lite:rgba(41,128,185,.18);--border:rgba(4
 .typing-dots span:nth-child(2){animation-delay:.2s}
 .typing-dots span:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-.empty-state{text-align:center;color:#a78bfa;padding:40px 20px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.empty-state{text-align:center;color:#a78bfa;padding:50px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;flex:1}
 .empty-emoji{font-size:64px}
 .empty-text{font-size:16px;font-weight:700;color:#7c3aed}
 .empty-sub{font-size:14px;color:#a78bfa;max-width:280px;line-height:1.5}
@@ -117,13 +117,12 @@ body.shark{--hi:#2980B9;--bg:#0B2E52;--lite:rgba(41,128,185,.18);--border:rgba(4
   <span class="phase" id="phase-label">Concept</span>
 </div>
 
-<div class="chat-area" id="chat-area">
-  <div class="empty-state" id="empty-state">
-    <div class="empty-emoji">🤔</div>
-    <div class="empty-text">What do you want to learn?</div>
-    <div class="empty-sub">Type a topic above or tap one of the quick topics to get started!</div>
-  </div>
+<div class="empty-state" id="empty-state">
+  <div class="empty-emoji">🤔</div>
+  <div class="empty-text">What do you want to learn?</div>
+  <div class="empty-sub">Type a topic above or tap one of the quick topics to get started!</div>
 </div>
+<div class="chat-area" id="chat-area"></div>
 
 <div class="input-bar">
   <input class="msg-input" id="msg-input" type="text" placeholder="Ask a follow-up question..." autocomplete="off">
@@ -188,7 +187,7 @@ OFF-TOPIC MAGIC: If they ask something unrelated, briefly answer it in one sente
 function stripMd(t){return t.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/`(.*?)`/g,'$1').replace(/#{1,6}\s+/g,'').replace(/^\s*[-*+]\s+/gm,'').trim();}
 
 function addBubble(text,cls){
-  document.getElementById('empty-state').style.display='none';
+  const _es=document.getElementById('empty-state');if(_es)_es.style.display='none';
   const el=document.createElement('div');el.className='bubble '+cls;el.textContent=text;
   document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});
 }
@@ -209,7 +208,7 @@ function startTopic(){
   teachingPhase='concept';
   convHistory=[];
   document.getElementById('chat-area').innerHTML='';
-  document.getElementById('empty-state').style.display='none';
+  const es=document.getElementById('empty-state');if(es)es.style.display='none';
   document.getElementById('char-strip').classList.add('show');
   updatePhaseLabel();
   const systemMsg={type:'system',text:'Topic: '+topic};
@@ -244,7 +243,9 @@ async function callAI(){
 
 async function sendMsg(){
   const inp=document.getElementById('msg-input');
-  const text=inp.value.trim();if(!text)return;inp.value='';
+  const text=inp.value.trim();if(!text)return;
+  if(!currentTopic){startTopic();return;}  // if no topic yet, treat as topic
+  inp.value='';
   addBubble(text,'user');
   convHistory.push({role:'user',content:text});
   await callAI();
