@@ -2,53 +2,172 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>11+ Daily Exercise</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8fafc;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.wrap{max-width:400px;width:100%;text-align:center}
-.title{font-size:22px;font-weight:800;color:#1e293b;margin-bottom:6px}
-.sub{font-size:14px;color:#64748b;margin-bottom:40px}
-.cards{display:flex;flex-direction:column;gap:16px}
-.card{display:block;padding:28px 24px;border-radius:20px;text-decoration:none;transition:transform .15s,box-shadow .15s}
-.card:hover{transform:translateY(-2px)}
-.card.cl{background:linear-gradient(135deg,#0f172a,#1e3a5f);border:2px solid #f59e0b;box-shadow:0 8px 32px rgba(245,158,11,0.2)}
-.card.il{background:linear-gradient(135deg,#4c1d95,#7c3aed);box-shadow:0 8px 32px rgba(124,58,237,0.25)}
-.card-emoji{font-size:40px;margin-bottom:10px}
-.card-name{font-size:22px;font-weight:800;color:#fff;margin-bottom:4px}
-.card-sub{font-size:13px;color:rgba(255,255,255,0.65)}
-.day-badge{display:inline-block;margin-top:10px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.cl .day-badge{background:#f59e0b;color:#0f172a}
-.il .day-badge{background:#fbbf24;color:#1e1b4b}
-.footer{margin-top:32px;font-size:12px;color:#94a3b8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:#F0F0FF;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:0 0 40px}
+
+/* HEADER */
+.header{width:100%;background:linear-gradient(135deg,#1a1a2e,#16213e);padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,107,53,.15),transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(124,58,237,.15),transparent 60%)}
+.header-emoji{font-size:44px;margin-bottom:8px;display:block}
+.header h1{font-size:26px;font-weight:900;color:#fff;letter-spacing:.02em;position:relative}
+.header h1 span{color:#fbbf24}
+.header-sub{font-size:14px;color:rgba(255,255,255,.6);margin-top:6px;position:relative}
+
+/* DATE PILL */
+.date-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:13px;color:rgba(255,255,255,.85);font-weight:600;margin-top:10px;position:relative}
+
+/* MISSION LABEL */
+.mission{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6366f1;margin:28px 0 16px;text-align:center;width:100%}
+
+/* CARDS */
+.cards{width:100%;max-width:480px;padding:0 16px;display:flex;flex-direction:column;gap:14px}
+
+.card{border-radius:20px;overflow:hidden;text-decoration:none;display:block;box-shadow:0 4px 20px rgba(0,0,0,.12);transition:transform .15s,box-shadow .15s;position:relative}
+.card:active{transform:scale(.97);box-shadow:0 2px 10px rgba(0,0,0,.1)}
+
+/* CL card — orange */
+.card-cl{background:linear-gradient(135deg,#FF6B35,#E85D04)}
+/* IL card — purple */
+.card-il{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+/* Ask card — indigo */
+.card-ask{background:linear-gradient(135deg,#4F46E5,#6D28D9)}
+
+.card-inner{padding:22px 20px}
+.card-row{display:flex;align-items:center;gap:16px}
+.card-emoji{font-size:52px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
+.card-info{flex:1}
+.card-name{font-size:22px;font-weight:900;color:#fff;letter-spacing:.01em}
+.card-subjects{font-size:13px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:600;line-height:1.4}
+
+/* Today label */
+.card-today{display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:rgba(255,255,255,.18);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:800;color:#fff}
+.card-today .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* Arrow */
+.card-arrow{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:24px;color:rgba(255,255,255,.5)}
+
+/* Points pills for CL and IL */
+.pts-pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700;color:#fff;display:inline-block;margin-top:6px}
+
+/* Footer note */
+.footer{font-size:12px;color:#9ca3af;text-align:center;margin-top:24px;line-height:1.6}
+.footer a{color:#6366f1;text-decoration:none;font-weight:700}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="title">📚 11+ Daily Exercise</div>
-  <div class="sub">Choose your name to start today's mission</div>
-  <div class="cards">
-    <a class="card cl" href="CL/index.html">
-      <div class="card-emoji">🎯</div>
-      <div class="card-name">CL</div>
-      <div class="card-sub">Vocabulary · Spelling · Maths · Dictionary</div>
-      <div class="day-badge" id="cl-day">Loading...</div>
-    </a>
-    <a class="card il" href="IL/index.html">
-      <div class="card-emoji">⭐</div>
-      <div class="card-name">IL</div>
-      <div class="card-sub">Maths · English · Dictionary</div>
-      <div class="day-badge" id="il-day">Loading...</div>
-    </a>
+
+<div class="header">
+  <span class="header-emoji">📚</span>
+  <h1>11+ Daily <span>Exercise</span></h1>
+  <p class="header-sub">Choose your activity to start</p>
+  <div class="date-pill">
+    <span>📅</span>
+    <span id="date-label">Loading…</span>
   </div>
-  <div class="footer">Results save automatically to Notion</div>
 </div>
+
+<div class="mission">Choose your activity</div>
+
+<div class="cards">
+
+  <!-- CL -->
+  <a class="card card-cl" href="CL/index.html">
+    <div class="card-inner">
+      <div class="card-row">
+        <div class="card-emoji">🎯</div>
+        <div class="card-info">
+          <div class="card-name">CL</div>
+          <div class="card-subjects">Vocab · Spelling · Maths · Dictionary</div>
+          <div class="card-today"><span class="dot"></span><span id="cl-today">Loading…</span></div>
+          <div class="pts-pill" id="cl-pts">⭐ Loading pts…</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-arrow">›</div>
+  </a>
+
+  <!-- IL -->
+  <a class="card card-il" href="IL/index.html">
+    <div class="card-inner">
+      <div class="card-row">
+        <div class="card-emoji">⭐</div>
+        <div class="card-info">
+          <div class="card-name">IL</div>
+          <div class="card-subjects">Maths · English · Word of the Day</div>
+          <div class="card-today"><span class="dot"></span><span id="il-today">Loading…</span></div>
+          <div class="pts-pill" id="il-pts">⭐ Loading pts…</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-arrow">›</div>
+  </a>
+
+  <!-- ASK ME ANYTHING -->
+  <a class="card card-ask" href="ask.html">
+    <div class="card-inner">
+      <div class="card-row">
+        <div class="card-emoji">🤔</div>
+        <div class="card-info">
+          <div class="card-name">Ask Me Anything</div>
+          <div class="card-subjects">Type any topic · AI teaches step by step · Voice support</div>
+          <div class="card-today" style="background:rgba(255,255,255,.18)">
+            <span>💡</span><span>Concept → Examples → Practice</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-arrow">›</div>
+  </a>
+
+</div>
+
+<div class="footer">
+  Results save automatically to Notion<br>
+  <a href="ask.html">ask.html</a> · <a href="CL/index.html">CL</a> · <a href="IL/index.html">IL</a>
+</div>
+
 <script>
-const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const day = days[new Date().getDay()];
-document.getElementById('cl-day').textContent = day + "'s Mission";
-document.getElementById('il-day').textContent = day + "'s Stars";
+// Date and day label
+const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const now = new Date();
+const dayName = days[now.getDay()];
+const dateStr = dayName + ' ' + now.getDate() + ' ' + months[now.getMonth()];
+document.getElementById('date-label').textContent = dateStr;
+
+// Today's exercise label
+const dayFile = ['sun','mon','tue','wed','thu','fri','sat'][now.getDay()];
+const dayLabels = {
+  sun:'Sunday — Comprehension',
+  mon:'Monday — Mixed',
+  tue:'Tuesday — Mixed',
+  wed:'Wednesday — Mixed',
+  thu:'Thursday — Mixed',
+  fri:'Friday — Mixed',
+  sat:'Saturday — Reading'
+};
+const label = dayLabels[dayFile] || dayName + ' exercise';
+document.getElementById('cl-today').textContent = label;
+document.getElementById('il-today').textContent = label;
+
+// Points from localStorage
+const milestones=[[40,'Bronze 🥉'],[190,'Silver 🥈'],[340,'Gold 🥇'],[830,'Platinum 🏆'],[1800,'Diamond 💎'],[2800,'Champion 🏅'],[4000,'Grand Master 👑']];
+function getMilestoneName(pts){
+  for(const[t,n]of milestones){if(pts<t)return n;}
+  return 'Grand Master 👑';
+}
+function showPts(key, elId){
+  const pts = parseInt(localStorage.getItem(key)||'0');
+  const ms = getMilestoneName(pts);
+  document.getElementById(elId).textContent = '⭐ ' + pts + ' pts — ' + ms;
+}
+showPts('pts_CL','cl-pts');
+showPts('pts_IL','il-pts');
 </script>
 </body>
 </html>
