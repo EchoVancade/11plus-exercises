@@ -454,7 +454,7 @@ function showTutor(qIdx,chosenWrong){currentTutorQ=qIdx;if(!tutorTurns[qIdx])tut
 
 function renderDots(n){const td=document.getElementById('turn-dots');td.innerHTML='';for(let i=0;i<14;i++){const d=document.createElement('div');d.className='turn-dot'+(i<n?' active':'');td.appendChild(d);}}
 
-async function callAI(qIdx){_iosWarm();const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;const prompt=`${CHAR.personality}\nABSOLUTE RULE — FIRST REPLY ONLY: Start with ONE short funny joke about the topic. Then help. Plain simple English. Max 70 words. NEVER say: wrong, incorrect, mistake. NEVER use emoji. NEVER use * or **. No markdown. Write as you speak aloud. ★ Each turn use a DIFFERENT angle.\nThis is a STORY question about Ember the dragon. Question: "${q.text}" Options: ${optsStr}. Right answer: ${q.correct} = "${q.opts[q.correct]}". [Turn ${turn}] Story summary: Ember is a dragon who bakes ginger biscuits. A cold traveller finds her cave and is surprised when she gives him tea and a biscuit instead of being scary. First: joke then ONE simple question to help the child find the answer in the story. Do not reveal the answer yet.`;
+async function callAI(qIdx){_iosWarm();const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;const prompt=`${CHAR.personality}\nABSOLUTE RULE — FIRST REPLY ONLY: Start with ONE short funny joke about the topic. Then help. Plain simple English. Max 70 words. NEVER say: wrong, incorrect, mistake. NEVER use emoji. NEVER use * or **. No markdown. Write as you speak aloud. Vary your joke format — use puns, What do you call, What did X say to Y, or Why did. NEVER use Why did every single time. ★ Each turn use a DIFFERENT angle.\nThis is a STORY question about Ember the dragon. Question: "${q.text}" Options: ${optsStr}. Right answer: ${q.correct} = "${q.opts[q.correct]}". [Turn ${turn}] Story summary: Ember is a dragon who bakes ginger biscuits. A cold traveller finds her cave and is surprised when she gives him tea and a biscuit instead of being scary. First: joke then ONE simple question to help the child find the answer in the story. Do not reveal the answer yet.`;
 const chatArea=document.getElementById('chat-area');const typing=document.createElement('div');typing.className='typing';typing.innerHTML='<span></span><span></span><span></span>';chatArea.appendChild(typing);chatArea.scrollTop=chatArea.scrollHeight;
 try{const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:prompt,messages:[{role:'user',content:'Hello!'}]})});if(resp.status===401){showKeyError();return;}const data=await resp.json();const text=data.content&&data.content[0]?data.content[0].text:"Let's look at the story together!";typing.remove();addBubble(text,'char');speak(text);tutorTurns[qIdx]=(tutorTurns[qIdx]||0)+1;renderDots(tutorTurns[qIdx]);}catch(e){typing.remove();addBubble("Let's try together!",'char');}}
 
@@ -543,35 +543,17 @@ fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-T
 
 function toggleMic(){
   _iosWarm();
-  if(micActive){if(recognition)recognition.stop();micActive=false;
-    document.getElementById('mic-btn').classList.remove('listening');
-    document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
-    document.getElementById('speech-text').placeholder='Microphone not supported — type here!';
-    return;}
-  micActive=true;
-  document.getElementById('mic-btn').classList.add('listening');
+  if(micActive){if(recognition)recognition.stop();micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
+  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
+  recognition.onresult=(e)=>{const t=e.results[0][0].transcript;micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';const ta=document.getElementById('speech-text');ta.value=t;ta.focus();};
+  recognition.onerror=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Could not hear — type below or try again';};
+  recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mic-btn').classList.remove('listening');}};
+  micActive=true;document.getElementById('mic-btn').classList.add('listening');
   document.getElementById('mic-status').textContent='⏳ Get ready… 2 seconds…';
-  setTimeout(()=>{
-    if(!micActive)return;
-    document.getElementById('mic-status').textContent='● Listening… speak now!';
-    recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-    recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
-    recognition.onresult=(e)=>{
-      const t=e.results[0][0].transcript;
-      micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');
-      document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';
-      const ta=document.getElementById('speech-text');
-      ta.value=t;ta.focus();
-    };
-    recognition.onerror=()=>{micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');
-      document.getElementById('mic-status').textContent='Could not hear — type below!';};
-    recognition.onend=()=>{if(micActive){micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');}}
-    recognition.start();
-  },2000);
+  recognition.start();
+  setTimeout(()=>{if(micActive)document.getElementById('mic-status').textContent='● Listening… speak now!';},2000);
 }
 function submitSpeech(){
   const ta=document.getElementById('speech-text');
