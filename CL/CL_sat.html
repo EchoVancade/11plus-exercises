@@ -120,6 +120,12 @@ body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height
 .mic-status{font-size:12px;color:rgba(255,255,255,.7)}
 body.snake{--ch:#17432E;--t-hi:#27AE60;--t-lite:rgba(39,174,96,.22);--t-border:rgba(39,174,96,.45);--t-glow:rgba(39,174,96,.3)}
 body.shark{--ch:#0B2E52;--t-hi:#2980B9;--t-lite:rgba(41,128,185,.22);--t-border:rgba(41,128,185,.45);--t-glow:rgba(41,128,185,.3)}
+
+.speech-area{display:flex;align-items:flex-end;gap:8px;padding:0 12px 10px;}
+.speech-textarea{flex:1;border-radius:12px;border:2px solid var(--t-border,rgba(255,255,255,.4));background:rgba(255,255,255,.12);color:#fff;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:15px;resize:none;min-height:48px;outline:none;}
+.speech-textarea::placeholder{color:rgba(255,255,255,.45);}
+.speech-textarea:focus{border-color:var(--t-hi,#fff);}
+.speech-send-btn{background:var(--t-hi,#27AE60);color:#fff;border:none;border-radius:12px;padding:0 18px;font-size:15px;font-weight:700;cursor:pointer;min-height:48px;min-width:80px;white-space:nowrap;font-family:'Nunito',sans-serif;}
 </style>
 </head>
 <body>
@@ -353,8 +359,12 @@ body.shark{--ch:#0B2E52;--t-hi:#2980B9;--t-lite:rgba(41,128,185,.22);--t-border:
   <div class="chat-area" id="chat-area"></div>
   <div class="tutor-bottom">
     <button class="got-it-btn" onclick="gotIt()">Got it! ✓</button>
+    <div class="speech-area">
+      <textarea class="speech-textarea" id="speech-text" placeholder="Speak or type your answer here…" rows="2"></textarea>
+      <button class="speech-send-btn" onclick="submitSpeech()">Send ➤</button>
+    </div>
     <div class="mic-row">
-      <div class="mic-status" id="mic-status">Tap mic to speak</div>
+      <div class="mic-status" id="mic-status">Tap 🎤 Speak, wait 2 secs…</div>
       <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎤</button>
     </div>
   </div>
@@ -410,8 +420,8 @@ const _today=new Date().toISOString().slice(0,10);
 let _ck=localStorage.getItem('char_date')===_today?localStorage.getItem('char_key'):null;
 if(!_ck){_ck=Math.random()>0.5?'snake':'shark';localStorage.setItem('char_key',_ck);localStorage.setItem('char_date',_today);}
 const CHARS={
-  snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper! Let's go!",personality:'You are Ssssam the Snake. You are clever, warm, and occasionally slip in soft sss sounds. You love surprising kids with how fun learning can be.'},
-  shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic! Onwards!",personality:'You are Finn the Shark. You are energetic and celebratory. You say things like Splashing great and Fin-tastic and Making waves. You love celebrating every step of learning.'}
+  snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper! Let's go!",personality:'You are Ssssam the Snake. Clever, warm, playful. You occasionally slip in soft sss sounds. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only.'},
+  shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic! Onwards!",personality:'You are Finn the Shark. Energetic and celebratory. You say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only.'}
 };
 const CHAR=CHARS[_ck];
 document.body.classList.add(_ck);
@@ -442,17 +452,53 @@ async function sendTutorReply(text){_iosWarm();const qIdx=currentTutorQ;addBubbl
 
 function addBubble(text,type){const chatArea=document.getElementById('chat-area');const b=document.createElement('div');b.className='bubble '+type;b.textContent=text;chatArea.appendChild(b);chatArea.scrollTop=chatArea.scrollHeight;}
 
-function buildSystemPrompt(qIdx){const isDict=(qIdx==='dict');const cp=CHAR.personality;const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it. BANNED from first reply: your name, any greeting, restating the question, opening with a word definition. After the joke: straight to teaching. Plain spoken English only. No asterisks, bold, markdown, or bullet points. Max 90 words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. ★ ADVANCE each turn — never repeat an explanation you already gave. ★ Respond to what the child ACTUALLY said. ★ Each new turn must use a COMPLETELY DIFFERENT angle from all previous turns.`;if(isDict){return `${cp}\n${strictOpening}\nYou are helping a 9-year-old learn the word "${DICT_WORD}". Definition: "${DICT_DEF}" Example: "${DICT_EG}". SEQUENCE: 1. First reply: joke then 2 vivid example sentences using the word in real-life contexts. End: "Can you make your own sentence using ${DICT_WORD}?" 2. Evaluate grammar AND vocabulary. If correct, celebrate. If grammar needs fixing, say "You could say..." Minimum 2 exchanges before wrapping up. 3. Ask them to add WHERE or WHEN to their sentence.`;}const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;const passage=`The passage is about Maria, a 12-year-old who finds a butterfly believed to be extinct in Willowmere Wood on her birthday, photographs it, and shows it to Professor Haines who is astonished.`;return `${cp}\n${strictOpening}\nThis is a COMPREHENSION exercise. ${passage}\nQuestion: "${q.text}" Options: ${optsStr}. Correct answer: ${q.correct} — "${q.opts[q.correct]}". [Turn ${turn} of up to 14.] ENGLISH SEQUENCE: 1. First reply: joke then ONE Socratic question guiding the child to find the answer in the passage. Tell them WHICH PART to look at. Do NOT reveal the correct answer yet. 2. After response: guide closer, ask again. 3. Confirm correct answer only after 2 or more exchanges.`;}
+function buildSystemPrompt(qIdx){const isDict=(qIdx==='dict');const cp=CHAR.personality;const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it. BANNED from first reply: your name, any greeting, restating the question, opening with a word definition. After the joke: straight to teaching. Plain spoken English only. No asterisks, bold, markdown, or bullet points. NEVER use emoji of any kind. Write as you speak aloud — no formatting characters. Max 90 words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. ★ ADVANCE each turn — never repeat an explanation you already gave. ★ Respond to what the child ACTUALLY said. ★ Each new turn must use a COMPLETELY DIFFERENT angle from all previous turns.`;if(isDict){return `${cp}\n${strictOpening}\nYou are helping a 9-year-old learn the word "${DICT_WORD}". Definition: "${DICT_DEF}" Example: "${DICT_EG}". SEQUENCE: 1. First reply: joke then 2 vivid example sentences using the word in real-life contexts. End: "Can you make your own sentence using ${DICT_WORD}?" 2. Evaluate grammar AND vocabulary. If correct, celebrate. If grammar needs fixing, say "You could say..." Minimum 2 exchanges before wrapping up. 3. Ask them to add WHERE or WHEN to their sentence.`;}const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;const passage=`The passage is about Maria, a 12-year-old who finds a butterfly believed to be extinct in Willowmere Wood on her birthday, photographs it, and shows it to Professor Haines who is astonished.`;return `${cp}\n${strictOpening}\nThis is a COMPREHENSION exercise. ${passage}\nQuestion: "${q.text}" Options: ${optsStr}. Correct answer: ${q.correct} — "${q.opts[q.correct]}". [Turn ${turn} of up to 14.] ENGLISH SEQUENCE: 1. First reply: joke then ONE Socratic question guiding the child to find the answer in the passage. Tell them WHICH PART to look at. Do NOT reveal the correct answer yet. 2. After response: guide closer, ask again. 3. Confirm correct answer only after 2 or more exchanges.`;}
 
 function showKeyError(){localStorage.removeItem('anthropic_key_v1');ANTHROPIC_KEY='';document.getElementById('tutor-overlay').classList.remove('show');document.getElementById('setup-screen').classList.add('show');document.getElementById('key-err').style.display='block';document.getElementById('key-err').textContent='API key rejected (401). Please re-enter.';}
-function closeTutor(){window.speechSynthesis.cancel();if(recognition)recognition.stop();document.getElementById('tutor-overlay').classList.remove('show');micActive=false;document.getElementById('mic-btn').classList.remove('listening');}
+function closeTutor(){window.speechSynthesis.cancel();if(recognition)recognition.stop();document.getElementById('tutor-overlay').classList.remove('show');micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';const _st=document.getElementById('speech-text');if(_st)_st.value='';}
 function gotIt(){speak(CHAR.gotIt);setTimeout(closeTutor,1800);}
 
 function dictReady(){_iosWarm();currentTutorQ='dict';document.getElementById('strip-text').textContent=DICT_WORD+' — '+DICT_DEF;document.getElementById('strip-label').textContent='DICTIONARY';document.getElementById('strip-opts').innerHTML='';document.getElementById('char-mode').textContent='📖 Word Builder';renderDots(0);document.getElementById('chat-area').innerHTML='';document.getElementById('tutor-overlay').classList.add('show');callAI('dict');}
 
-function toggleMic(){_iosWarm();if(micActive){if(recognition)recognition.stop();micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap mic to speak';return;}if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){addBubble('Microphone not supported — type your answer!','char');return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{const t=e.results[0][0].transcript;micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap mic to speak';sendTutorReply(t);};recognition.onerror=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Could not hear — try again';};recognition.onend=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');};recognition.start();micActive=true;document.getElementById('mic-btn').classList.add('listening');document.getElementById('mic-status').textContent='Listening…';}
+function toggleMic(){
+  _iosWarm();
+  if(micActive){if(recognition)recognition.stop();micActive=false;
+    document.getElementById('mic-btn').classList.remove('listening');
+    document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
+  micActive=true;
+  document.getElementById('mic-btn').classList.add('listening');
+  document.getElementById('mic-status').textContent='⏳ Get ready… 2 seconds…';
+  setTimeout(()=>{
+    if(!micActive)return;
+    document.getElementById('mic-status').textContent='● Listening… speak now!';
+    recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+    recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
+    recognition.onresult=(e)=>{
+      const t=e.results[0][0].transcript;micActive=false;
+      document.getElementById('mic-btn').classList.remove('listening');
+      document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';
+      const ta=document.getElementById('speech-text');ta.value=t;ta.focus();
+    };
+    recognition.onerror=()=>{micActive=false;
+      document.getElementById('mic-btn').classList.remove('listening');
+      document.getElementById('mic-status').textContent='Could not hear — type below!';};
+    recognition.onend=()=>{if(micActive){micActive=false;
+      document.getElementById('mic-btn').classList.remove('listening');}}
+    recognition.start();
+  },2000);
+}
+function submitSpeech(){
+  const ta=document.getElementById('speech-text');
+  const text=ta.value.trim();
+  if(!text)return;
+  ta.value='';
+  document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';
+  sendTutorReply(text);
+}
 
-function handleSubmit(){attemptNumber++;if(!firstAttempt)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};let correct=0,starPts=0;for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=firstAttempt.answers[i];const isC=(a===q.correct);if(isC){correct++;if(q.star)starPts+=2;}}const firstPct=Math.round(correct/TOTAL_QS*100);if(correct<PASS_SCORE){document.getElementById('exercise').style.display='none';document.getElementById('retry-char').textContent=CHAR.emoji;document.getElementById('retry-score').textContent=correct+' out of '+TOTAL_QS+' ('+firstPct+'%)';document.getElementById('retry-screen').style.display='block';return;}let pts=3+starPts;if(correct===TOTAL_QS)pts+=2;pts=Math.min(pts,7);const newPts=currentPts+pts;localStorage.setItem(PTS_KEY,newPts);currentPts=newPts;sendWebhookSat(correct,pts,firstPct,attemptNumber);showResult(correct,pts,newPts);}
+function handleSubmit(){attemptNumber++;if(!firstAttempt)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};let correct=0,starPts=0;for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=answers[i];const isC=(a===q.correct);if(isC){correct++;if(q.star)starPts+=2;}}let _fa=0;for(let _j=0;_j<TOTAL_QS;_j++){if(firstAttempt.answers[_j]===QUESTIONS[_j].correct)_fa++;}const firstPct=Math.round(_fa/TOTAL_QS*100);if(correct<PASS_SCORE){document.getElementById('exercise').style.display='none';document.getElementById('retry-char').textContent=CHAR.emoji;document.getElementById('retry-score').textContent=correct+' out of '+TOTAL_QS+' ('+firstPct+'%)';document.getElementById('retry-screen').style.display='block';return;}let pts=3+starPts;if(correct===TOTAL_QS)pts+=2;pts=Math.min(pts,7);const newPts=currentPts+pts;localStorage.setItem(PTS_KEY,newPts);currentPts=newPts;sendWebhookSat(correct,pts,firstPct,attemptNumber);showResult(correct,pts,newPts);}
 
 function retryExercise(){answers={};document.getElementById('retry-screen').style.display='none';document.getElementById('exercise').style.display='block';for(let i=0;i<TOTAL_QS;i++){const optsEl=document.getElementById('opts-'+i);if(!optsEl)continue;Array.from(optsEl.children).forEach(el=>el.classList.remove('correct','wrong','disabled'));}document.getElementById('btn-submit').classList.remove('ready');window.scrollTo(0,0);}
 
@@ -461,7 +507,7 @@ function nextMilestone(pts){for(const[t,n]of[[40,'Bronze 🥉'],[190,'Silver �
 
 function showResult(correct,pts,newPts){document.getElementById('exercise').style.display='none';const struggling=[...firstAttempt.struggling];let videoHtml='';if(struggling.length>0){const ci=CHAR.key==='snake'?'Ssss, you worked ssso hard on some tricky topics! These short videos might help things click.':'You made waves today! These videos can really help the trickier topics sink in.';const links=struggling.filter(c=>VIDEOS[c]).map(c=>`<a class="video-link" href="${VIDEOS[c].url}" target="_blank">▶ ${VIDEOS[c].title}</a>`).join('');if(links)videoHtml=`<div class="videos-wrap"><div class="videos-title">${CHAR.emoji} ${ci}</div>${links}</div>`;}document.getElementById('result-screen').style.display='block';document.getElementById('result-screen').innerHTML=`<div class="result-char">${CHAR.emoji}</div><div class="result-title">Brilliant work, CL! 🎉</div><div class="result-pts">+${pts} points</div><div class="result-milestone">${currentPts} pts total — ${milestoneLabel(currentPts)} · ${nextMilestone(currentPts)}</div><div class="result-breakdown"><div class="bd-row"><span>Comprehension</span><span class="bd-score">${correct}/${TOTAL_QS}</span></div></div>${videoHtml}<p style="font-size:13px;color:#aaa;margin-top:12px">Results sent to Notion ✓</p>`;updatePtsBar();speak('Brilliant work! You earned '+pts+' points. Total is now '+currentPts+' points. '+milestoneLabel(currentPts)+'!');}
 
-function sendWebhookSat(correct,pts,firstPct,attemptNum){const qArr=[];for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=firstAttempt.answers[i]||'';qArr.push({q_number:i+1,code:q.code,section:q.section,correct:(a===q.correct),answer_chosen:a,correct_answer:q.correct,wrong_answer_chosen:a!==q.correct?a:null,tutor_used:(tutorTurns[i]||0)>0,tutor_turns:tutorTurns[i]||0});}const payload={type:'weekend_session',child:CHILD,date:new Date().toISOString().slice(0,10),week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,points_earned:pts,score_summary:`Comprehension:${correct}/${TOTAL_QS}`,subject_focus:'English',attempt_number:attemptNum,first_attempt_pct:firstPct,struggling_codes:[...firstAttempt.struggling],questions:qArr};fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});}
+function sendWebhookSat(correct,pts,firstPct,attemptNum){const qArr=[];for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=answers[i]||'';qArr.push({q_number:i+1,code:q.code,section:q.section,correct:(a===q.correct),answer_chosen:a,correct_answer:q.correct,wrong_answer_chosen:a!==q.correct?a:null,tutor_used:(tutorTurns[i]||0)>0,tutor_turns:tutorTurns[i]||0});}const payload={type:'weekend_session',child:CHILD,date:new Date().toISOString().slice(0,10),week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,points_earned:pts,score_summary:`Comprehension:${correct}/${TOTAL_QS}`,subject_focus:'English',attempt_number:attemptNum,first_attempt_pct:firstPct,struggling_codes:[...firstAttempt.struggling],questions:qArr};fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});}
 </script>
 </body>
 </html>
