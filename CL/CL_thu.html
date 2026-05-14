@@ -444,9 +444,9 @@ let _ck=localStorage.getItem('char_date')===_today?localStorage.getItem('char_ke
 if(!_ck){_ck=Math.random()>0.5?'snake':'shark';localStorage.setItem('char_key',_ck);localStorage.setItem('char_date',_today);}
 const CHARS={
   snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper! Let's go!",
-    personality:'You are Ssssam the Snake. You are clever, warm, and occasionally slip in soft sss sounds. You love surprising kids with how fun learning can be.'},
+    personality:'You are Ssssam the Snake. Clever, warm, playful. You occasionally slip in soft sss sounds. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only.'},
   shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic! Onwards!",
-    personality:'You are Finn the Shark. You are energetic and celebratory. You say things like Splashing great and Fin-tastic and Making waves. You love celebrating every step of learning.'}
+    personality:'You are Finn the Shark. Energetic and celebratory. You say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only.'}
 };
 const CHAR=CHARS[_ck];
 document.body.classList.add(_ck);
@@ -600,7 +600,7 @@ function addBubble(text,type){
 function buildSystemPrompt(qIdx){
   const isDict=(qIdx==='dict');
   const cp=CHAR.personality;
-  const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it. BANNED from first reply: your name, any greeting, restating the question, opening with a word definition, "Today our word is", "Let me explain". After the joke: straight to teaching. No transition phrase. Plain spoken English only. No asterisks, bold, markdown, or bullet points. Max 90 words. Say "percent" not the percent symbol. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. ★ ADVANCE each turn — never repeat an explanation you already gave. ★ Respond to what the child ACTUALLY said — not a generic script. ★ Each new turn must use a COMPLETELY DIFFERENT angle from all previous turns.`;
+  const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it. BANNED from first reply: your name, any greeting, restating the question, opening with a word definition, "Today our word is", "Let me explain". After the joke: straight to teaching. No transition phrase. Plain spoken English only. No asterisks, bold, markdown, or bullet points. NEVER use emoji of any kind. Write as you speak aloud — no formatting characters. Vary your joke format — use puns, What do you call, What did X say, or Why did. NEVER use Why did every time. Max 90 words. Say "percent" not the percent symbol. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. ★ ADVANCE each turn — never repeat an explanation you already gave. ★ Respond to what the child ACTUALLY said — not a generic script. ★ Each new turn must use a COMPLETELY DIFFERENT angle from all previous turns.`;
   if(isDict){
     return `${cp}\n${strictOpening}\nYou are helping a 9-year-old learn the word "${DICT_WORD}". Definition: "${DICT_DEF}" Example: "${DICT_EG}". SEQUENCE: 1. First reply: joke then 2 vivid example sentences using the word in real-life contexts (sport, food, school, nature). Do NOT give the definition as opening — show it being used. End: "Can you make your own sentence using ${DICT_WORD}?" 2. Evaluate grammar AND vocabulary. If correct, celebrate + 1 bonus example. If grammar needs fixing, say "You could say..." keeping their idea. Minimum 2 exchanges before wrapping up. 3. Expansion: ask them to add WHERE, WHEN, or HOW to their sentence.`;
   }
@@ -647,32 +647,17 @@ function dictReady(){
 
 function toggleMic(){
   _iosWarm();
-  if(micActive){if(recognition)recognition.stop();micActive=false;
-    document.getElementById('mic-btn').classList.remove('listening');
-    document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
-    document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
-  micActive=true;
-  document.getElementById('mic-btn').classList.add('listening');
+  if(micActive){if(recognition)recognition.stop();micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
+  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
+  recognition.onresult=(e)=>{const t=e.results[0][0].transcript;micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';const ta=document.getElementById('speech-text');ta.value=t;ta.focus();};
+  recognition.onerror=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Could not hear — type below or try again';};
+  recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mic-btn').classList.remove('listening');}};
+  micActive=true;document.getElementById('mic-btn').classList.add('listening');
   document.getElementById('mic-status').textContent='⏳ Get ready… 2 seconds…';
-  setTimeout(()=>{
-    if(!micActive)return;
-    document.getElementById('mic-status').textContent='● Listening… speak now!';
-    recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-    recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
-    recognition.onresult=(e)=>{
-      const t=e.results[0][0].transcript;micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');
-      document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';
-      const ta=document.getElementById('speech-text');ta.value=t;ta.focus();
-    };
-    recognition.onerror=()=>{micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');
-      document.getElementById('mic-status').textContent='Could not hear — type below!';};
-    recognition.onend=()=>{if(micActive){micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');}}
-    recognition.start();
-  },2000);
+  recognition.start();
+  setTimeout(()=>{if(micActive)document.getElementById('mic-status').textContent='● Listening… speak now!';},2000);
 }
 function submitSpeech(){
   const ta=document.getElementById('speech-text');
