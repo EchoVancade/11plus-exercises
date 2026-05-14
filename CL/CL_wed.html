@@ -111,6 +111,12 @@ body{font-family:'Nunito',sans-serif;background:#FFF8F0;color:#2D2D2D;min-height
 .mic-status{font-size:12px;color:rgba(255,255,255,.7)}
 body.snake{--ch:#17432E;--t-hi:#27AE60;--t-lite:rgba(39,174,96,.22);--t-border:rgba(39,174,96,.45);--t-glow:rgba(39,174,96,.3)}
 body.shark{--ch:#0B2E52;--t-hi:#2980B9;--t-lite:rgba(41,128,185,.22);--t-border:rgba(41,128,185,.45);--t-glow:rgba(41,128,185,.3)}
+
+.speech-area{display:flex;align-items:flex-end;gap:8px;padding:0 12px 10px;}
+.speech-textarea{flex:1;border-radius:12px;border:2px solid var(--t-border,rgba(255,255,255,.4));background:rgba(255,255,255,.12);color:#fff;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:15px;resize:none;min-height:48px;outline:none;}
+.speech-textarea::placeholder{color:rgba(255,255,255,.45);}
+.speech-textarea:focus{border-color:var(--t-hi,#fff);}
+.speech-send-btn{background:var(--t-hi,#27AE60);color:#fff;border:none;border-radius:12px;padding:0 18px;font-size:15px;font-weight:700;cursor:pointer;min-height:48px;min-width:80px;white-space:nowrap;font-family:'Nunito',sans-serif;}
 </style>
 </head>
 <body>
@@ -366,8 +372,12 @@ body.shark{--ch:#0B2E52;--t-hi:#2980B9;--t-lite:rgba(41,128,185,.22);--t-border:
   <div class="chat-area" id="chat-area"></div>
   <div class="tutor-bottom">
     <button class="got-it-btn" onclick="gotIt()">Got it! ✓</button>
+    <div class="speech-area">
+      <textarea class="speech-textarea" id="speech-text" placeholder="Speak or type your answer here…" rows="2"></textarea>
+      <button class="speech-send-btn" onclick="submitSpeech()">Send ➤</button>
+    </div>
     <div class="mic-row">
-      <div class="mic-status" id="mic-status">Tap mic to speak</div>
+      <div class="mic-status" id="mic-status">Tap 🎤 Speak, wait 2 secs…</div>
       <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎤</button>
     </div>
   </div>
@@ -637,21 +647,40 @@ function dictReady(){
 
 function toggleMic(){
   _iosWarm();
-  if(micActive){if(recognition)recognition.stop();micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap mic to speak';return;}
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){addBubble('Microphone not supported — type your answer!','char');return;}
-  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
-  recognition.onresult=(e)=>{
-    const t=e.results[0][0].transcript;micActive=false;
+  if(micActive){if(recognition)recognition.stop();micActive=false;
     document.getElementById('mic-btn').classList.remove('listening');
-    document.getElementById('mic-status').textContent='Tap mic to speak';
-    sendTutorReply(t);
-  };
-  recognition.onerror=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Could not hear — try again';};
-  recognition.onend=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');};
-  recognition.start();micActive=true;
+    document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
+  micActive=true;
   document.getElementById('mic-btn').classList.add('listening');
-  document.getElementById('mic-status').textContent='Listening…';
+  document.getElementById('mic-status').textContent='⏳ Get ready… 2 seconds…';
+  setTimeout(()=>{
+    if(!micActive)return;
+    document.getElementById('mic-status').textContent='● Listening… speak now!';
+    recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+    recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
+    recognition.onresult=(e)=>{
+      const t=e.results[0][0].transcript;micActive=false;
+      document.getElementById('mic-btn').classList.remove('listening');
+      document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';
+      const ta=document.getElementById('speech-text');ta.value=t;ta.focus();
+    };
+    recognition.onerror=()=>{micActive=false;
+      document.getElementById('mic-btn').classList.remove('listening');
+      document.getElementById('mic-status').textContent='Could not hear — type below!';};
+    recognition.onend=()=>{if(micActive){micActive=false;
+      document.getElementById('mic-btn').classList.remove('listening');}}
+    recognition.start();
+  },2000);
+}
+function submitSpeech(){
+  const ta=document.getElementById('speech-text');
+  const text=ta.value.trim();
+  if(!text)return;
+  ta.value='';
+  document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';
+  sendTutorReply(text);
 }
 
 function handleSubmit(){
@@ -659,13 +688,13 @@ function handleSubmit(){
   if(!firstAttempt)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};
   let correct=0,vocabC=0,vocabT=0,engC=0,engT=0,mathC=0,mathT=0,starPts=0;
   for(let i=0;i<TOTAL_QS;i++){
-    const q=QUESTIONS[i];const a=firstAttempt.answers[i];const isC=(a===q.correct);
+    const q=QUESTIONS[i];const a=answers[i];const isC=(a===q.correct);
     if(q.section==='Vocab'){vocabT++;if(isC)vocabC++;}
     else if(q.section==='English'){engT++;if(isC)engC++;}
     else{mathT++;if(isC)mathC++;}
     if(isC)correct++;if(isC&&q.star)starPts+=2;
   }
-  const firstPct=Math.round(correct/TOTAL_QS*100);
+  let _fa=0;for(let _j=0;_j<TOTAL_QS;_j++){if(firstAttempt.answers[_j]===QUESTIONS[_j].correct)_fa++;}const firstPct=Math.round(_fa/TOTAL_QS*100);
   if(correct<PASS_SCORE){
     document.getElementById('exercise').style.display='none';
     document.getElementById('retry-char').textContent=CHAR.emoji;
