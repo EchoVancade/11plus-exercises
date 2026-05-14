@@ -377,8 +377,8 @@ const _today=new Date().toISOString().slice(0,10);
 let _ck=localStorage.getItem('char_date')===_today?localStorage.getItem('char_key'):null;
 if(!_ck){_ck=Math.random()>0.5?'snake':'shark';localStorage.setItem('char_key',_ck);localStorage.setItem('char_date',_today);}
 const CHARS={
-  snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper work!",personality:'You are Ssssam the Snake talking to a 7-year-old. Use very simple words. Be very warm and encouraging. You occasionally slip in a soft sss sound. Max 70 words per reply.'},
-  shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic!",personality:'You are Finn the Shark talking to a 7-year-old. Use very simple words. Be very energetic and celebratory. You say things like Splashing great and Fin-tastic. Max 70 words per reply.'}
+  snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper work!",personality:'You are Ssssam the Snake. Warm, encouraging, playful. Simple words only. You occasionally slip in a soft sss sound. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only. Max 70 words.'},
+  shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic!",personality:'You are Finn the Shark. Energetic and celebratory. You say things like Splashing great and Fin-tastic. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only. Max 70 words.'}
 };
 const CHAR=CHARS[_ck];
 document.body.classList.add(_ck);
@@ -409,7 +409,7 @@ async function sendTutorReply(text){_iosWarm();const qIdx=currentTutorQ;addBubbl
 
 function addBubble(text,type){const chatArea=document.getElementById('chat-area');const b=document.createElement('div');b.className='bubble '+type;b.textContent=text;chatArea.appendChild(b);chatArea.scrollTop=chatArea.scrollHeight;}
 
-function buildSystemPrompt(qIdx){const isDict=(qIdx==='dict');const cp=CHAR.personality;const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Start with ONE short funny joke about the topic. Then teach. Plain simple English only. Max 70 words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. ★ Each turn: use a DIFFERENT angle. ★ Respond to what the child SAID.`;if(isDict){return `${cp}
+function buildSystemPrompt(qIdx){const isDict=(qIdx==='dict');const cp=CHAR.personality;const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Start with ONE short funny joke about the topic. Then teach. Plain simple English only. Max 70 words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. NEVER use emoji. NEVER use * or ** or any markdown. No greetings. Write as you speak aloud. ★ Each turn: use a DIFFERENT angle. ★ Respond to what the child SAID.`;if(isDict){return `${cp}
 ${strictOpening}
 Word: "${DICT_WORD}". It means: "${DICT_DEF}". Example: "${DICT_EG}". First: joke then 2 easy examples in everyday life. End: "Can you make a sentence with ${DICT_WORD}?" Then: say well done and help fix any mistakes gently. Keep it fun and short.`;}const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;if(q.section==='Maths'){const concept=q.mathConcept||'maths';return `${cp}
 ${strictOpening}
