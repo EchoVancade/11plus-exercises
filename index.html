@@ -2,172 +2,251 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>11+ Daily Exercise</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11+ Prep — Home</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Nunito',sans-serif;background:#F0F0FF;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:0 0 40px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#090d1a;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column}
 
 /* HEADER */
-.header{width:100%;background:linear-gradient(135deg,#1a1a2e,#16213e);padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,107,53,.15),transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(124,58,237,.15),transparent 60%)}
-.header-emoji{font-size:44px;margin-bottom:8px;display:block}
-.header h1{font-size:26px;font-weight:900;color:#fff;letter-spacing:.02em;position:relative}
-.header h1 span{color:#fbbf24}
-.header-sub{font-size:14px;color:rgba(255,255,255,.6);margin-top:6px;position:relative}
+.header{
+  background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 60%,#0f172a 100%);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding:20px 20px 18px;
+  text-align:center;
+  position:relative;
+}
+.header-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#475569;margin-bottom:6px}
+.header-title{font-size:26px;font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:4px}
+.header-title span{background:linear-gradient(90deg,#f97316,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-date{font-size:13px;color:#475569;margin-bottom:12px}
+.header-meta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.meta-chip{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.1);color:#64748b}
+.meta-chip.active{background:rgba(139,92,246,.15);border-color:rgba(139,92,246,.3);color:#a78bfa}
 
-/* DATE PILL */
-.date-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:13px;color:rgba(255,255,255,.85);font-weight:600;margin-top:10px;position:relative}
+/* STATUS STRIP */
+.strip{background:rgba(249,115,22,.06);border-bottom:1px solid rgba(249,115,22,.15);padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;font-size:12px}
+.strip-item{display:flex;align-items:center;gap:6px;color:#94a3b8}
+.strip-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* MISSION LABEL */
-.mission{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6366f1;margin:28px 0 16px;text-align:center;width:100%}
+/* CARDS CONTAINER */
+.cards{flex:1;padding:20px 16px;display:flex;flex-direction:column;gap:14px;max-width:520px;margin:0 auto;width:100%}
 
-/* CARDS */
-.cards{width:100%;max-width:480px;padding:0 16px;display:flex;flex-direction:column;gap:14px}
+/* BASE CARD */
+.card{
+  border-radius:18px;text-decoration:none;color:#fff;display:flex;align-items:stretch;
+  overflow:hidden;transition:transform .15s,box-shadow .15s;
+  box-shadow:0 4px 24px rgba(0,0,0,.4);
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
+}
+.card:active{transform:scale(.975)}
+.card-accent{width:5px;flex-shrink:0}
+.card-body{flex:1;padding:18px 16px}
+.card-arrow{display:flex;align-items:center;padding:0 16px;flex-shrink:0;font-size:22px;opacity:.5}
 
-.card{border-radius:20px;overflow:hidden;text-decoration:none;display:block;box-shadow:0 4px 20px rgba(0,0,0,.12);transition:transform .15s,box-shadow .15s;position:relative}
-.card:active{transform:scale(.97);box-shadow:0 2px 10px rgba(0,0,0,.1)}
+/* CARD HEADER ROW */
+.card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.card-icon{font-size:28px;line-height:1;flex-shrink:0}
+.card-name{font-size:20px;font-weight:900;letter-spacing:-.01em;line-height:1}
+.card-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.05em}
 
-/* CL card — orange */
-.card-cl{background:linear-gradient(135deg,#FF6B35,#E85D04)}
-/* IL card — purple */
-.card-il{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
-/* Ask card — indigo */
-.card-ask{background:linear-gradient(135deg,#4F46E5,#6D28D9)}
+/* CARD DESCRIPTION */
+.card-desc{font-size:12px;opacity:.7;line-height:1.5;margin-bottom:10px}
 
-.card-inner{padding:22px 20px}
-.card-row{display:flex;align-items:center;gap:16px}
-.card-emoji{font-size:52px;line-height:1;flex-shrink:0;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
-.card-info{flex:1}
-.card-name{font-size:22px;font-weight:900;color:#fff;letter-spacing:.01em}
-.card-subjects{font-size:13px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:600;line-height:1.4}
+/* POINTS BAR */
+.card-pts-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.card-pts-label{font-size:12px;font-weight:700;opacity:.9;flex-shrink:0}
+.card-pts-track{flex:1;height:5px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden}
+.card-pts-fill{height:100%;border-radius:3px;background:rgba(255,255,255,.7)}
+.card-pts-info{font-size:11px;opacity:.6;white-space:nowrap;flex-shrink:0}
 
-/* Today label */
-.card-today{display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:rgba(255,255,255,.18);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:800;color:#fff}
-.card-today .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+/* TODAY BADGE */
+.card-today{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;background:rgba(0,0,0,.25);border-radius:20px;padding:3px 10px}
+.today-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:pulse 2s ease-in-out infinite}
 
-/* Arrow */
-.card-arrow{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:24px;color:rgba(255,255,255,.5)}
+/* CL — Orange */
+.card-cl{background:linear-gradient(135deg,#7c2d12 0%,#9a3412 40%,#c2410c 100%)}
+.card-cl .card-accent{background:linear-gradient(180deg,#fb923c,#ea580c)}
+.card-cl .card-tag{background:rgba(251,146,60,.25);color:#fed7aa}
 
-/* Points pills for CL and IL */
-.pts-pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700;color:#fff;display:inline-block;margin-top:6px}
+/* IL — Violet */
+.card-il{background:linear-gradient(135deg,#2e1065 0%,#4c1d95 40%,#5b21b6 100%)}
+.card-il .card-accent{background:linear-gradient(180deg,#c4b5fd,#7c3aed)}
+.card-il .card-tag{background:rgba(196,181,253,.2);color:#ddd6fe}
 
-/* Footer note */
-.footer{font-size:12px;color:#9ca3af;text-align:center;margin-top:24px;line-height:1.6}
-.footer a{color:#6366f1;text-decoration:none;font-weight:700}
+/* ASK — Indigo/Slate */
+.card-ask{background:linear-gradient(135deg,#0f172a 0%,#1e293b 40%,#0f284a 100%);border:1px solid rgba(99,102,241,.3)}
+.card-ask .card-accent{background:linear-gradient(180deg,#818cf8,#4338ca)}
+.card-ask .card-tag{background:rgba(129,140,248,.15);color:#c7d2fe}
+
+/* DASHBOARD — Teal */
+.card-dash{background:linear-gradient(135deg,#042f2e 0%,#0d4a49 40%,#0f5c5a 100%);border:1px solid rgba(20,184,166,.25)}
+.card-dash .card-accent{background:linear-gradient(180deg,#5eead4,#0d9488)}
+.card-dash .card-tag{background:rgba(94,234,212,.12);color:#99f6e4}
+
+/* FOOTER */
+.footer{text-align:center;font-size:11px;color:#1e293b;padding:12px 0 20px}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
-  <span class="header-emoji">📚</span>
-  <h1>11+ Daily <span>Exercise</span></h1>
-  <p class="header-sub">Choose your activity to start</p>
-  <div class="date-pill">
-    <span>📅</span>
-    <span id="date-label">Loading…</span>
+  <div class="header-eyebrow">Sutton SET 2027</div>
+  <div class="header-title">11+ <span>Prep</span></div>
+  <div class="header-date" id="hdr-date"></div>
+  <div class="header-meta">
+    <span class="meta-chip active" id="week-chip">Week 21</span>
+    <span class="meta-chip">CL age 9</span>
+    <span class="meta-chip">IL age 7</span>
+    <span class="meta-chip" id="exam-chip">SET 2027</span>
   </div>
 </div>
 
-<div class="mission">Choose your activity</div>
+<!-- STATUS STRIP -->
+<div class="strip">
+  <div class="strip-item"><span class="strip-dot" style="background:#f97316"></span><span id="strip-cl"></span></div>
+  <div class="strip-item"><span class="strip-dot" style="background:#8b5cf6"></span><span id="strip-il"></span></div>
+  <div class="strip-item"><span class="strip-dot" style="background:#22c55e"></span><span id="strip-today"></span></div>
+</div>
 
+<!-- CARDS -->
 <div class="cards">
 
   <!-- CL -->
   <a class="card card-cl" href="CL/index.html">
-    <div class="card-inner">
-      <div class="card-row">
-        <div class="card-emoji">🎯</div>
-        <div class="card-info">
-          <div class="card-name">CL</div>
-          <div class="card-subjects">Vocab · Spelling · Maths · Dictionary</div>
-          <div class="card-today"><span class="dot"></span><span id="cl-today">Loading…</span></div>
-          <div class="pts-pill" id="cl-pts">⭐ Loading pts…</div>
-        </div>
+    <div class="card-accent"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <span class="card-icon">🎯</span>
+        <span class="card-name">CL</span>
+        <span class="card-tag">Age 9</span>
       </div>
+      <div class="card-desc">English · Maths · Vocabulary · Comprehension</div>
+      <div class="card-pts-row">
+        <span class="card-pts-label" id="cl-pts">630 pts</span>
+        <div class="card-pts-track"><div class="card-pts-fill" id="cl-bar" style="width:73%"></div></div>
+        <span class="card-pts-info" id="cl-ms">Gold 🥇 · 200 to Platinum</span>
+      </div>
+      <div class="card-today" id="cl-today" style="color:#fb923c"><span class="today-dot"></span><span></span></div>
     </div>
     <div class="card-arrow">›</div>
   </a>
 
   <!-- IL -->
   <a class="card card-il" href="IL/index.html">
-    <div class="card-inner">
-      <div class="card-row">
-        <div class="card-emoji">⭐</div>
-        <div class="card-info">
-          <div class="card-name">IL</div>
-          <div class="card-subjects">Maths · English · Word of the Day</div>
-          <div class="card-today"><span class="dot"></span><span id="il-today">Loading…</span></div>
-          <div class="pts-pill" id="il-pts">⭐ Loading pts…</div>
-        </div>
+    <div class="card-accent"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <span class="card-icon">⭐</span>
+        <span class="card-name">IL</span>
+        <span class="card-tag">Age 7</span>
       </div>
+      <div class="card-desc">English · Maths · Word of the Day · Foundation</div>
+      <div class="card-pts-row">
+        <span class="card-pts-label" id="il-pts">240 pts</span>
+        <div class="card-pts-track"><div class="card-pts-fill" id="il-bar" style="width:71%"></div></div>
+        <span class="card-pts-info" id="il-ms">Silver 🥈 · 100 to Gold</span>
+      </div>
+      <div class="card-today" id="il-today" style="color:#c4b5fd"><span class="today-dot"></span><span></span></div>
     </div>
     <div class="card-arrow">›</div>
   </a>
 
-  <!-- ASK ME ANYTHING -->
+  <!-- ASK -->
   <a class="card card-ask" href="ask.html">
-    <div class="card-inner">
-      <div class="card-row">
-        <div class="card-emoji">🤔</div>
-        <div class="card-info">
-          <div class="card-name">Ask Me Anything</div>
-          <div class="card-subjects">Type any topic · AI teaches step by step · Voice support</div>
-          <div class="card-today" style="background:rgba(255,255,255,.18)">
-            <span>💡</span><span>Concept → Examples → Practice</span>
-          </div>
-        </div>
+    <div class="card-accent"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <span class="card-icon">🤔</span>
+        <span class="card-name">Ask Me Anything</span>
+        <span class="card-tag">AI Tutor</span>
       </div>
+      <div class="card-desc">Stuck on a topic? Ask and get step-by-step explanations with examples and practice — powered by AI.</div>
+    </div>
+    <div class="card-arrow">›</div>
+  </a>
+
+  <!-- DASHBOARD -->
+  <a class="card card-dash" href="dashboard.html">
+    <div class="card-accent"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <span class="card-icon">📊</span>
+        <span class="card-name">Dashboard</span>
+        <span class="card-tag">Progress</span>
+      </div>
+      <div class="card-desc">Priority codes · Confidence index · Category coverage · Weekly scores · Points milestones</div>
+      <div class="card-today" style="color:#5eead4;margin-top:6px"><span class="today-dot"></span><span id="dash-label">Week 21 snapshot</span></div>
     </div>
     <div class="card-arrow">›</div>
   </a>
 
 </div>
 
-<div class="footer">
-  Results save automatically to Notion<br>
-  <a href="ask.html">ask.html</a> · <a href="CL/index.html">CL</a> · <a href="IL/index.html">IL</a>
-</div>
+<div class="footer">11+ Prep System v3.8 · Sutton SET 2027</div>
 
 <script>
-// Date and day label
-const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const now = new Date();
-const dayName = days[now.getDay()];
-const dateStr = dayName + ' ' + now.getDate() + ' ' + months[now.getMonth()];
-document.getElementById('date-label').textContent = dateStr;
+// ── DATE + DAY ────────────────────────────────────────────────────────────
+const d = new Date();
+const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const dow    = d.getDay();
+const dayType = {
+  0:'Sunday — Creative Writing',
+  1:'Monday — Mixed (Vocab · English · Maths)',
+  2:'Tuesday — Mixed',
+  3:'Wednesday — Mixed',
+  4:'Thursday — Mixed',
+  5:'Friday — Mixed',
+  6:'Saturday — Comprehension'
+}[dow] || 'Today\'s exercise';
 
-// Today's exercise label
-const dayFile = ['sun','mon','tue','wed','thu','fri','sat'][now.getDay()];
-const dayLabels = {
-  sun:'Sunday — Comprehension',
-  mon:'Monday — Mixed',
-  tue:'Tuesday — Mixed',
-  wed:'Wednesday — Mixed',
-  thu:'Thursday — Mixed',
-  fri:'Friday — Mixed',
-  sat:'Saturday — Reading'
-};
-const label = dayLabels[dayFile] || dayName + ' exercise';
-document.getElementById('cl-today').textContent = label;
-document.getElementById('il-today').textContent = label;
+document.getElementById('hdr-date').textContent =
+  days[dow] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+document.getElementById('strip-today').textContent = 'Today: ' + dayType.split('—')[0].trim();
 
-// Points from localStorage
-const milestones=[[40,'Bronze 🥉'],[190,'Silver 🥈'],[340,'Gold 🥇'],[830,'Platinum 🏆'],[1800,'Diamond 💎'],[2800,'Champion 🏅'],[4000,'Grand Master 👑']];
-function getMilestoneName(pts){
-  for(const[t,n]of milestones){if(pts<t)return n;}
-  return 'Grand Master 👑';
+// ── POINTS FROM LOCALSTORAGE ──────────────────────────────────────────────
+const BASE_CL = 630;
+const BASE_IL = 240;
+
+function milestone(pts){
+  if(pts>=4000)return'Grand Master 👑';if(pts>=2800)return'Champion 🏅';
+  if(pts>=1800)return'Diamond 💎';if(pts>=830)return'Platinum 🏆';
+  if(pts>=340)return'Gold 🥇';if(pts>=190)return'Silver 🥈';
+  if(pts>=40)return'Bronze 🥉';return pts+' pts';
 }
-function showPts(key, elId){
-  const pts = parseInt(localStorage.getItem(key)||'0');
-  const ms = getMilestoneName(pts);
-  document.getElementById(elId).textContent = '⭐ ' + pts + ' pts — ' + ms;
+function nextMs(pts){
+  for(const[t,n]of[[40,'Bronze'],[190,'Silver'],[340,'Gold'],[830,'Platinum'],[1800,'Diamond'],[2800,'Champion'],[4000,'Grand Master']]){
+    if(pts<t)return(t-pts)+' to '+n;
+  }return'MAX!';
 }
-showPts('pts_CL','cl-pts');
-showPts('pts_IL','il-pts');
+function msPct(pts){
+  const tiers=[[40,0],[190,40],[340,190],[830,340],[1800,830],[2800,1800],[4000,2800]];
+  for(const[hi,lo]of tiers){if(pts<hi)return Math.round((pts-lo)/(hi-lo)*100);}return 100;
+}
+
+const clPts=parseInt(localStorage.getItem('pts_CL')||BASE_CL);
+const ilPts=parseInt(localStorage.getItem('pts_IL')||BASE_IL);
+
+document.getElementById('cl-pts').textContent = clPts+' pts';
+document.getElementById('cl-bar').style.width  = msPct(clPts)+'%';
+document.getElementById('cl-ms').textContent   = milestone(clPts)+' · '+nextMs(clPts);
+document.getElementById('il-pts').textContent  = ilPts+' pts';
+document.getElementById('il-bar').style.width  = msPct(ilPts)+'%';
+document.getElementById('il-ms').textContent   = milestone(ilPts)+' · '+nextMs(ilPts);
+
+// ── STATUS STRIP ──────────────────────────────────────────────────────────
+document.getElementById('strip-cl').textContent = 'CL ' + clPts + ' pts · ' + milestone(clPts);
+document.getElementById('strip-il').textContent = 'IL ' + ilPts + ' pts · ' + milestone(ilPts);
+
+// ── CARD DAY LABELS ───────────────────────────────────────────────────────
+document.getElementById('cl-today').querySelector('span:last-child').textContent = dayType;
+document.getElementById('il-today').querySelector('span:last-child').textContent = dayType;
+document.getElementById('dash-label').textContent = 'Week 21 · ' + d.getDate() + ' ' + months[d.getMonth()];
 </script>
 </body>
 </html>
