@@ -74,6 +74,7 @@ body.shark{--hi:#2980B9;--bg:#0B2E52;--lite:rgba(41,128,185,.18);--border:rgba(4
 .setup-input:focus{border-color:#7c3aed}
 .setup-btn{width:100%;padding:13px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:8px;min-height:48px;font-family:'Nunito',sans-serif}
 .setup-hint{font-size:11px;color:#9CA3AF;font-family:'Nunito',sans-serif}
+.mic-status-bar{transition:opacity .3s;}
 </style>
 </head>
 <body>
@@ -125,10 +126,11 @@ body.shark{--hi:#2980B9;--bg:#0B2E52;--lite:rgba(41,128,185,.18);--border:rgba(4
 <div class="chat-area" id="chat-area"></div>
 
 <div class="input-bar">
-  <input class="msg-input" id="msg-input" type="text" placeholder="Ask a follow-up question..." autocomplete="off">
+  <input class="msg-input" id="msg-input" type="text" placeholder="Ask a follow-up or type your answer…" autocomplete="off">
   <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎤</button>
   <button class="send-btn" onclick="sendMsg()">➤</button>
 </div>
+<div class="mic-status-bar" id="mic-status-bar" style="display:none;padding:4px 16px 8px;font-size:13px;color:#6d28d9;font-family:'Nunito',sans-serif;"></div>
 
 <script>
 const WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
@@ -143,8 +145,8 @@ const today=new Date().toISOString().slice(0,10);
 let charKey=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
 if(!charKey){charKey=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',charKey);localStorage.setItem('char_date',today);}
 const CHAR_DATA={
-  snake:{emoji:'🐍',name:'Ssssam',personality:'Your name is Ssssam the Snake. Slip "ssss" sounds in naturally. Clever, warm, loves surprising kids with knowledge.'},
-  shark:{emoji:'🦈',name:'Finn',personality:'Your name is Finn the Shark. Use ocean phrases: "Splashing great!", "Fin-tastic!", "Making waves!". Energetic and encouraging.'},
+  snake:{emoji:'🐍',name:'Ssssam',personality:'Your name is Ssssam the Snake. Slip ssss sounds in naturally. Clever, warm, loves surprising kids with knowledge. NEVER use emoji. NEVER use * or ** in your reply. No markdown. Plain spoken words only.'},
+  shark:{emoji:'🦈',name:'Finn',personality:'Your name is Finn the Shark. Use ocean phrases: Splashing great, Fin-tastic, Making waves. Energetic and encouraging. NEVER use emoji. NEVER use * or ** in your reply. No markdown. Plain spoken words only.'},
 };
 const CHAR=CHAR_DATA[charKey];
 document.body.classList.add(charKey);
@@ -166,7 +168,9 @@ Current topic: "${currentTopic}"
 Teaching phase: ${teachingPhase}
 
 ABSOLUTE RULES:
-- Plain spoken English only. No asterisks, bold, or markdown.
+- Plain spoken English only. No asterisks, bold, or markdown. NEVER use emoji of any kind.
+- Write as you speak aloud — no formatting characters.
+- Vary your joke format — use puns, What do you call, What did X say to Y, or Why did. NEVER use Why did every single time.
 - Max 90 words per response. NEVER exceed this.
 - NEVER say: wrong, incorrect, failed, mistake.
 - Each reply must advance the teaching — never repeat what you already explained.
@@ -260,8 +264,47 @@ function speak(text){if(!text)return;try{if(window.speechSynthesis.paused)window
 
 // Mic
 let isListening=false,recognition=null;
-function toggleMic(){if(isListening){stopMic();return;}_iosWarm();window.speechSynthesis.cancel();const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){document.getElementById('msg-input').placeholder='Voice not available — please type';return;}recognition=new SR();recognition.lang='en-GB';recognition.interimResults=true;let final='';recognition.onstart=()=>{isListening=true;document.getElementById('mic-btn').classList.add('listening');document.getElementById('mic-btn').textContent='🔴';};recognition.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}document.getElementById('msg-input').value=final||interim;};recognition.onend=()=>{stopMic();if(final.trim())sendMsg();};recognition.onerror=()=>stopMic();recognition.start();}
-function stopMic(){if(recognition)try{recognition.stop();}catch(e){}isListening=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-btn').textContent='🎤';}
+function toggleMic(){
+  if(isListening){stopMic();return;}
+  _iosWarm();window.speechSynthesis.cancel();
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){document.getElementById('msg-input').placeholder='Voice not available — please type';return;}
+  // Create and start recognition immediately — iOS requires gesture context
+  recognition=new SR();
+  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
+  recognition.onresult=e=>{
+    const t=e.results[0][0].transcript;
+    document.getElementById('msg-input').value=t;
+    setMicStatus('✏️ Edit if needed, then tap Send!');
+    // DO NOT auto-send — child reviews and presses Send themselves
+  };
+  recognition.onend=()=>{stopMic();};
+  recognition.onerror=()=>{stopMic();setMicStatus('Could not hear — type below or try again');};
+  isListening=true;
+  document.getElementById('mic-btn').classList.add('listening');
+  document.getElementById('mic-btn').textContent='⏳';
+  setMicStatus('⏳ Get ready… 2 seconds…');
+  recognition.start();  // immediately — still in gesture context
+  setTimeout(()=>{
+    if(isListening){
+      document.getElementById('mic-btn').textContent='●';
+      setMicStatus('● Listening… speak now!');
+    }
+  },2000);
+}
+function stopMic(){
+  if(recognition)try{recognition.stop();}catch(e){}
+  isListening=false;
+  document.getElementById('mic-btn').classList.remove('listening');
+  document.getElementById('mic-btn').textContent='🎤';
+  setTimeout(()=>setMicStatus(''),1500);
+}
+function setMicStatus(msg){
+  const el=document.getElementById('mic-status-bar');
+  if(!el)return;
+  el.textContent=msg;
+  el.style.display=msg?'block':'none';
+}
 
 document.getElementById('msg-input').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
 document.getElementById('topic-input').addEventListener('keydown',e=>{if(e.key==='Enter')startTopic();});
