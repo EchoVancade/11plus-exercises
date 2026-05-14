@@ -376,7 +376,7 @@ updatePtsBar();
 const _today=new Date().toISOString().slice(0,10);
 let _ck=localStorage.getItem('char_date')===_today?localStorage.getItem('char_key'):null;
 if(!_ck){_ck=Math.random()>0.5?'snake':'shark';localStorage.setItem('char_key',_ck);localStorage.setItem('char_date',_today);}
-const CHARS={snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper! Let's go!",personality:'You are Ssssam the Snake. You are clever, warm, and occasionally slip in soft sss sounds. You love surprising kids with how fun learning can be.'},shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic! Onwards!",personality:'You are Finn the Shark. You are energetic and celebratory. You say things like Splashing great and Fin-tastic and Making waves. You love celebrating every step of learning.'}};
+const CHARS={snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper! Let's go!",personality:'You are Ssssam the Snake. Clever, warm, playful. You occasionally slip in soft sss sounds. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only.'},shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic! Onwards!",personality:'You are Finn the Shark. Energetic and celebratory. You say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only.'}};
 const CHAR=CHARS[_ck];
 document.body.classList.add(_ck);
 document.getElementById('char-emoji').textContent=CHAR.emoji;
@@ -406,7 +406,7 @@ async function sendTutorReply(text){_iosWarm();const qIdx=currentTutorQ;if(qIdx=
 
 function addBubble(text,type){const chatArea=document.getElementById('chat-area');const b=document.createElement('div');b.className='bubble '+type;b.textContent=text;chatArea.appendChild(b);chatArea.scrollTop=chatArea.scrollHeight;}
 
-function buildSystemPrompt(qIdx){const isDict=(qIdx==='dict');const cp=CHAR.personality;const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it. BANNED: your name, any greeting, restating the question. After the joke: straight to teaching. Plain English only. No asterisks, bold, markdown. Max 90 words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. ★ ADVANCE each turn. ★ Respond to what the child ACTUALLY said. ★ Each new turn: COMPLETELY DIFFERENT angle.`;if(isDict){return `${cp}\n${strictOpening}\nYou are helping a 9-year-old learn the word "${DICT_WORD}". Definition: "${DICT_DEF}" Example: "${DICT_EG}". First reply: joke then 2 vivid examples in real contexts. End: "Can you make your own sentence?" Then evaluate grammar AND word use. Ask them to expand their sentence with WHERE or WHEN.`;}const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;return `${cp}\n${strictOpening}\nThis is a CREATIVE WRITING TECHNIQUES exercise for a 9-year-old preparing for grammar school entrance. Question: "${q.text}" Options: ${optsStr}. Correct answer: ${q.correct} — "${q.opts[q.correct]}". [Turn ${turn} of up to 14.] SEQUENCE: 1. First reply: joke then ONE Socratic question helping the child notice what makes the correct answer better. Use a real-life analogy (films, books they might know). Do NOT reveal the answer yet. 2. Guide closer with a concrete example. Ask again. 3. Confirm after 2 or more exchanges.`;}
+function buildSystemPrompt(qIdx){const isDict=(qIdx==='dict');const cp=CHAR.personality;const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Your FIRST sentence must be ONE short funny joke directly about the topic. Nothing else before it. BANNED: your name, any greeting, restating the question. After the joke: straight to teaching. Plain English only. No asterisks, bold, markdown. NEVER use emoji. Vary your joke format — use puns, What do you call, What did X say to Y, or Why did. NEVER use Why did every single time. Max 90 words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. ★ ADVANCE each turn. ★ Respond to what the child ACTUALLY said. ★ Each new turn: COMPLETELY DIFFERENT angle.`;if(isDict){return `${cp}\n${strictOpening}\nYou are helping a 9-year-old learn the word "${DICT_WORD}". Definition: "${DICT_DEF}" Example: "${DICT_EG}". First reply: joke then 2 vivid examples in real contexts. End: "Can you make your own sentence?" Then evaluate grammar AND word use. Ask them to expand their sentence with WHERE or WHEN.`;}const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;return `${cp}\n${strictOpening}\nThis is a CREATIVE WRITING TECHNIQUES exercise for a 9-year-old preparing for grammar school entrance. Question: "${q.text}" Options: ${optsStr}. Correct answer: ${q.correct} — "${q.opts[q.correct]}". [Turn ${turn} of up to 14.] SEQUENCE: 1. First reply: joke then ONE Socratic question helping the child notice what makes the correct answer better. Use a real-life analogy (films, books they might know). Do NOT reveal the answer yet. 2. Guide closer with a concrete example. Ask again. 3. Confirm after 2 or more exchanges.`;}
 
 function showKeyError(){localStorage.removeItem('anthropic_key_v1');ANTHROPIC_KEY='';document.getElementById('tutor-overlay').classList.remove('show');document.getElementById('setup-screen').classList.add('show');document.getElementById('key-err').style.display='block';document.getElementById('key-err').textContent='API key rejected (401). Please re-enter.';}
 function closeTutor(){window.speechSynthesis.cancel();if(recognition)recognition.stop();document.getElementById('tutor-overlay').classList.remove('show');micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';const _st=document.getElementById('speech-text');if(_st)_st.value='';}
@@ -416,32 +416,17 @@ function dictReady(){_iosWarm();currentTutorQ='dict';document.getElementById('st
 
 function toggleMic(){
   _iosWarm();
-  if(micActive){if(recognition)recognition.stop();micActive=false;
-    document.getElementById('mic-btn').classList.remove('listening');
-    document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
-    document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
-  micActive=true;
-  document.getElementById('mic-btn').classList.add('listening');
+  if(micActive){if(recognition)recognition.stop();micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
+  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
+  recognition.onresult=(e)=>{const t=e.results[0][0].transcript;micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';const ta=document.getElementById('speech-text');ta.value=t;ta.focus();};
+  recognition.onerror=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Could not hear — type below or try again';};
+  recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mic-btn').classList.remove('listening');}};
+  micActive=true;document.getElementById('mic-btn').classList.add('listening');
   document.getElementById('mic-status').textContent='⏳ Get ready… 2 seconds…';
-  setTimeout(()=>{
-    if(!micActive)return;
-    document.getElementById('mic-status').textContent='● Listening… speak now!';
-    recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-    recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
-    recognition.onresult=(e)=>{
-      const t=e.results[0][0].transcript;micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');
-      document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';
-      const ta=document.getElementById('speech-text');ta.value=t;ta.focus();
-    };
-    recognition.onerror=()=>{micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');
-      document.getElementById('mic-status').textContent='Could not hear — type below!';};
-    recognition.onend=()=>{if(micActive){micActive=false;
-      document.getElementById('mic-btn').classList.remove('listening');}}
-    recognition.start();
-  },2000);
+  recognition.start();
+  setTimeout(()=>{if(micActive)document.getElementById('mic-status').textContent='● Listening… speak now!';},2000);
 }
 function submitSpeech(){
   const ta=document.getElementById('speech-text');
