@@ -2,460 +2,274 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IL — Week 21 Monday</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>IL Monday — Week 21</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:#fdf6ff;color:#1e1b4b;min-height:100vh}
-.header{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between}
-.sub{font-size:12px;opacity:.85}
-.pts-bar{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
-.pts-track{width:90px;height:8px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden}
-.pts-fill{height:100%;background:#fbbf24;border-radius:4px;transition:width .4s}
-.key-btn{background:rgba(255,255,255,.25);border:none;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer}
-.main{max-width:640px;margin:0 auto;padding:16px}
-.rules-card{background:#fff;border:2px solid #7c3aed;border-radius:14px;padding:16px;margin-bottom:16px}
-.rules-header{font-size:16px;font-weight:800;color:#7c3aed;margin-bottom:4px}
-.rules-sub{font-size:12px;color:#888;margin-bottom:12px}
-.rule-item{margin-bottom:8px;font-size:14px;line-height:1.5}
-.rules-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;margin-top:12px}
-.rules-done{background:#ede9fe;border-radius:10px;padding:8px 14px;font-size:13px;color:#7c3aed;margin-bottom:12px;display:none}
-.section{background:#fff;border:2px solid #c4b5fd;border-radius:14px;margin-bottom:16px;overflow:hidden}
-.sec-head{padding:12px 16px;color:#fff;font-size:15px;font-weight:800}
-.sec-head.english{background:#7c3aed}
-.sec-head.maths{background:#5b21b6}
-.sec-head.word{background:#b45309}
-.q-block{padding:14px 16px;border-bottom:1px solid #ede9fe}
-.q-block:last-child{border-bottom:none}
-.q-num{font-size:11px;color:#8b5cf6;font-weight:600;margin-bottom:4px}
-.q-text{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:10px;color:#1e1b4b}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.opt{display:flex;align-items:center;gap:10px;padding:11px 13px;border:2px solid #c4b5fd;border-radius:10px;background:#fdf6ff;cursor:pointer;font-size:14px;font-weight:600;min-height:44px;transition:all .15s;-webkit-tap-highlight-color:transparent}
-.opt .ltr{width:26px;height:26px;border-radius:50%;border:2px solid #c4b5fd;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;color:#7c3aed}
-.opt.correct{border-color:#16A34A;background:#F0FDF4}
-.opt.correct .ltr{background:#16A34A;color:#fff;border-color:#16A34A}
-.opt.wrong{border-color:#DC2626;background:#FEF2F2}
-.opt.wrong .ltr{background:#DC2626;color:#fff;border-color:#DC2626}
-.opt.disabled{pointer-events:none}
-.word-card{padding:16px}
-.word-title{font-size:22px;font-weight:800;color:#b45309;margin-bottom:6px}
-.word-def{font-size:14px;color:#555;margin-bottom:6px;line-height:1.5}
-.word-eg{font-size:13px;color:#888;font-style:italic;margin-bottom:14px;line-height:1.5}
-.word-btn{width:100%;padding:14px;background:linear-gradient(135deg,#C77800,#A06000);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.submit-wrap{margin-top:8px;padding-bottom:32px}
-.btn-submit{width:100%;padding:16px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:14px;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;opacity:.4;pointer-events:none;transition:opacity .2s}
-.btn-submit.ready{opacity:1;pointer-events:auto}
-.questions-locked .section{opacity:.45;pointer-events:none;user-select:none}
-.questions-locked .submit-wrap{opacity:.35;pointer-events:none}
-#retry-screen{display:none;background:#fdf6ff;padding:32px 20px;text-align:center}
-.retry-char{font-size:64px;animation:wobble 0.5s ease infinite alternate}
-@keyframes wobble{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
-.retry-score{font-size:28px;font-weight:800;color:#7c3aed;margin:16px 0 8px}
-.retry-msg{font-size:16px;color:#555;margin-bottom:24px}
-.retry-btn{padding:14px 32px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:14px;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-#result-screen{display:none;padding:24px 16px;text-align:center;max-width:640px;margin:0 auto}
-.result-char{font-size:72px;margin-bottom:8px}
-.result-title{font-size:24px;font-weight:800;color:#7c3aed;margin-bottom:4px}
-.result-pts{font-size:40px;font-weight:800;color:#1e1b4b;margin:12px 0}
-.result-milestone{font-size:16px;color:#555;margin-bottom:20px}
-.result-breakdown{background:#fff;border:2px solid #c4b5fd;border-radius:14px;padding:16px;margin-bottom:20px;text-align:left}
-.bd-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #ede9fe;font-size:14px}
-.bd-row:last-child{border-bottom:none}
-.bd-score{font-weight:800;color:#7c3aed}
-#setup-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center}
-#setup-screen.show{display:flex}
-.setup-box{background:#fff;border-radius:20px;padding:28px 24px;max-width:360px;width:90%;text-align:center}
-.setup-box h2{font-size:20px;font-weight:800;margin-bottom:8px;color:#7c3aed}
-.setup-box p{font-size:14px;color:#666;margin-bottom:16px;line-height:1.5}
-.setup-input{width:100%;padding:12px;border:2px solid #c4b5fd;border-radius:10px;font-size:14px;font-family:'Nunito',sans-serif;margin-bottom:12px}
-.setup-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.setup-err{color:#DC2626;font-size:13px;margin-top:8px;display:none}
-#tutor-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:50;flex-direction:column}
-#tutor-overlay.show{display:flex}
-.q-strip{background:rgba(0,0,0,.32);padding:14px 16px;flex-shrink:0}
-.q-strip-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;color:var(--t-hi)}
-.q-strip-text{color:#fff;font-size:15px;font-weight:700;line-height:1.4;margin-bottom:8px}
-.q-strip-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.q-strip-opt{padding:7px 10px;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:rgba(255,255,255,.1)}
-.q-strip-opt.chosen-wrong{background:rgba(220,38,38,.6)}
-.char-row{padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.1)}
-.char-emoji{font-size:48px}
-.char-info{flex:1}
-.char-name{color:#fff;font-size:17px;font-weight:800}
-.char-mode{font-size:12px;margin-top:2px;color:var(--t-hi)}
-.turn-dots{display:flex;gap:3px;margin-top:4px}
-.turn-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)}
-.turn-dot.active{background:var(--t-hi)}
-.parent-skip{font-size:12px;color:rgba(255,255,255,.6);background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;padding:4px 8px}
-.chat-area{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
-.bubble{max-width:85%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.5}
-.bubble.char{align-self:flex-start;border:1.5px solid var(--t-border);background:var(--t-lite);color:#fff}
-.bubble.child{align-self:flex-end;background:rgba(255,255,255,.94);color:#1a1a1a;font-style:italic;font-weight:600}
-.typing{align-self:flex-start;padding:10px 14px}
-.typing span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--t-hi);animation:bounce 0.8s infinite}
-.typing span:nth-child(2){animation-delay:.15s}
-.typing span:nth-child(3){animation-delay:.3s}
-@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
-.tutor-bottom{flex-shrink:0;padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:10px}
-.got-it-btn{width:100%;padding:14px;background:var(--t-hi);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.mic-row{display:flex;align-items:center;justify-content:center;gap:12px}
-.mic-btn{width:72px;height:72px;border-radius:50%;background:#fff;border:3px solid var(--t-border);cursor:pointer;font-size:30px;display:flex;align-items:center;justify-content:center;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.mic-btn.listening{background:var(--t-hi);border-color:var(--t-hi);box-shadow:0 0 0 8px var(--t-glow)}
-.mic-status{font-size:12px;color:rgba(255,255,255,.7)}
-body.snake{--t-hi:#27AE60;--t-lite:rgba(39,174,96,.22);--t-border:rgba(39,174,96,.45);--t-glow:rgba(39,174,96,.3)}
-body.shark{--t-hi:#2980B9;--t-lite:rgba(41,128,185,.22);--t-border:rgba(41,128,185,.45);--t-glow:rgba(41,128,185,.3)}
-
-.speech-area{display:flex;align-items:flex-end;gap:8px;padding:0 12px 10px;}
-.speech-textarea{flex:1;border-radius:12px;border:2px solid var(--t-border,rgba(255,255,255,.4));background:rgba(255,255,255,.12);color:#fff;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:15px;resize:none;min-height:48px;outline:none;}
-.speech-textarea::placeholder{color:rgba(255,255,255,.45);}
-.speech-textarea:focus{border-color:var(--t-hi,#fff);}
-.speech-send-btn{background:var(--t-hi,#27AE60);color:#fff;border:none;border-radius:12px;padding:0 18px;font-size:15px;font-weight:700;cursor:pointer;min-height:48px;min-width:80px;white-space:nowrap;font-family:'Nunito',sans-serif;}
+body{font-family:'Nunito',sans-serif;background:#fdf6ff;min-height:100vh;padding-bottom:80px}
+body.snake{--hi:#27AE60;--lite:rgba(39,174,96,.18);--bd:rgba(39,174,96,.4)}
+body.shark{--hi:#2980B9;--lite:rgba(41,128,185,.18);--bd:rgba(41,128,185,.4)}
+.hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.hdr h1{font-size:1rem;font-weight:900}.hdr p{font-size:.75rem;opacity:.85}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.pts{background:rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:800}
+.char-av{font-size:1.8rem}.key-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:4px 9px;font-size:.72rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.rw{padding:12px 14px 0}
+.rc{background:#fff;border-radius:14px;border:2px solid #c4b5fd;overflow:hidden;margin-bottom:12px}
+.rh{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.rh h2{font-size:.88rem;font-weight:800}.rh span{font-size:.8rem;opacity:.8}
+.rb{padding:12px 14px;display:none}
+.rtip{font-size:.82rem;line-height:1.5;margin-bottom:8px;padding-left:10px;border-left:3px solid #7c3aed}
+.rgo{width:100%;margin-top:10px;padding:11px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.sec-card{border-radius:14px;overflow:hidden;margin:0 14px 12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.sec-hdr{padding:10px 14px;display:flex;align-items:center;gap:8px}
+.sec-hdr h3{font-size:.88rem;font-weight:900;color:#fff}
+.sec-english .sec-hdr{background:linear-gradient(135deg,#0077B6,#1d4ed8)}
+.sec-maths .sec-hdr{background:linear-gradient(135deg,#2D9E2D,#15803d)}
+.sec-body{background:#fff;padding:12px}
+.qcard{background:#f9fafb;border-radius:11px;padding:12px;border:2.5px solid transparent;margin-bottom:8px}
+.qcard:last-child{margin-bottom:0}
+.qcard.right{border-color:#22c55e;background:#f0fdf4}
+.qcard.wrong{border-color:#ef4444;background:#fff5f5}
+.qn{font-size:.68rem;font-weight:700;color:#94a3b8;margin-bottom:4px}
+.qt{font-size:.86rem;font-weight:700;color:#1e1b4b;margin-bottom:8px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{padding:9px 11px;border-radius:8px;border:2px solid #e5e7eb;background:#fff;font-size:.83rem;font-weight:600;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;-webkit-tap-highlight-color:transparent}
+.opt.sc{background:#dcfce7;border-color:#22c55e;color:#166534}
+.opt.sw{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+.opt.rc2{background:#dcfce7;border-color:#22c55e}
+.opt.dis{pointer-events:none;opacity:.55}
+.sub-bar{position:fixed;bottom:0;left:0;right:0;padding:10px 14px;background:#fff;border-top:1px solid #ede9fe}
+.sub-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.sub-btn:disabled{opacity:.35;cursor:default}
+.result{display:none;padding:20px 14px;text-align:center}
+.res-emoji{font-size:3.5rem;margin-bottom:10px}.res-score{font-size:2.2rem;font-weight:900;color:#7c3aed}
+.res-msg{font-size:.9rem;color:#475569;margin:6px 0 14px}
+.word-section{display:none;padding:14px}
+.word-card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-top:4px solid #7c3aed}
+.wday{font-size:1.3rem;font-weight:900;color:#7c3aed;margin-bottom:4px}
+.wdef{font-size:.85rem;color:#475569;margin-bottom:8px;line-height:1.5}
+.weg{font-size:.83rem;color:#64748b;font-style:italic;border-left:3px solid #7c3aed;padding-left:10px;margin-bottom:12px;line-height:1.5}
+.echo-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--hi),color-mix(in srgb,var(--hi) 70%,#000));color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+.rev-block{background:#fff8e1;border:2px solid #f59e0b;border-radius:12px;padding:12px;margin-top:10px;display:none}
+.rev-word{font-size:1.05rem;font-weight:800;color:#92400e;margin-bottom:3px}
+.rev-def{font-size:.8rem;color:#78350f;margin-bottom:8px;line-height:1.4}
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:100;flex-direction:column}
+.overlay.open{display:flex}
+.qstrip{background:rgba(255,255,255,.05);padding:11px 14px;font-size:.8rem;color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,.07);line-height:1.5}
+.wpill{display:inline-block;background:#ef4444;color:#fff;border-radius:20px;padding:2px 9px;font-size:.72rem;font-weight:700;margin-left:5px}
+.crow{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.cemoji{font-size:2.1rem}.cname{font-size:.88rem;font-weight:800;color:#f1f5f9}
+.mbadge{font-size:.68rem;background:var(--lite);color:var(--hi);border:1px solid var(--bd);border-radius:20px;padding:2px 8px;font-weight:700}
+.tdots{display:flex;gap:4px;margin-left:auto}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)}.dot.d{background:var(--hi)}
+.skip-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#94a3b8;border-radius:8px;padding:4px 9px;font-size:.72rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.chat{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+.bub{max-width:83%;padding:10px 13px;border-radius:14px;font-size:.85rem;line-height:1.55}
+.bub.e{align-self:flex-start;background:var(--lite);border:1px solid var(--bd);color:#f1f5f9}
+.bub.c{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700;font-style:italic}
+.typing{display:flex;gap:5px;align-items:center;padding:8px 12px}
+.typing span{width:8px;height:8px;border-radius:50%;background:var(--hi);animation:bop .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+.tbot{padding:10px 14px;border-top:1px solid rgba(255,255,255,.07)}
+.git-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--hi),color-mix(in srgb,var(--hi) 72%,#000));color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:7px}
+.sarea{display:flex;gap:7px;margin-bottom:5px}
+.stxt{flex:1;padding:8px 10px;border-radius:9px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.83rem;resize:none}
+.ssend{padding:8px 13px;background:var(--hi);color:#fff;border:none;border-radius:9px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.82rem;white-space:nowrap}
+.mrow{display:flex;align-items:center;gap:7px}
+.mstat{font-size:.72rem;color:#94a3b8;flex:1}
+.mbtn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#f1f5f9;border-radius:8px;padding:6px 11px;font-size:.78rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.mbtn.listening{background:rgba(239,68,68,.18);border-color:#ef4444;color:#fca5a5}
+.setup{display:none;position:fixed;inset:0;background:rgba(15,15,30,.98);z-index:200;align-items:center;justify-content:center;flex-direction:column;padding:24px}
+.setup.show{display:flex}
+.scard{background:#1e293b;border-radius:18px;padding:22px;max-width:340px;width:100%;text-align:center}
+.scard h2{color:#f1f5f9;font-size:1rem;margin-bottom:6px}
+.scard p{color:#94a3b8;font-size:.8rem;margin-bottom:14px;line-height:1.5}
+.kinput{width:100%;padding:9px;border-radius:9px;border:1.5px solid #334155;background:#0f172a;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.83rem;margin-bottom:8px}
+.ksave{width:100%;padding:11px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:9px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.kerr{color:#f87171;font-size:.78rem;margin-top:5px;display:none}
 </style>
 </head>
 <body>
-
-<div id="setup-screen">
-  <div class="setup-box">
-    <h2>🔑 Enter API Key</h2>
-    <p>Ask a parent to enter your Anthropic API key to activate your helper!</p>
-    <input class="setup-input" id="key-input" type="password" placeholder="sk-ant-...">
-    <button class="setup-btn" onclick="saveKey()">Save &amp; Start ▶</button>
-    <div class="setup-err" id="key-err">That doesn't look right — key should start with sk-</div>
-  </div>
+<div class="setup" id="setup"><div class="scard"><h2>Echo needs your key</h2><p>Ask a parent to enter the Anthropic API key once.</p><input class="kinput" id="kinput" type="password" placeholder="sk-ant-..."><button class="ksave" onclick="saveKey()">Save and start</button><div class="kerr" id="kerr">That key looks wrong. Try again.</div></div></div>
+<div class="overlay" id="overlay">
+  <div class="qstrip" id="qstrip"></div>
+  <div class="crow"><span class="cemoji" id="cemoji"></span><span class="cname" id="cname"></span><span class="mbadge" id="mbadge">✍️ Let's think!</span><div class="tdots" id="tdots"></div><button class="skip-btn" onclick="parentSkip()">✓ Skip</button></div>
+  <div class="chat" id="chat"></div>
+  <div class="tbot"><button class="git-btn" onclick="gotIt()">Got it! ✓</button><div class="sarea"><textarea class="stxt" id="speech-text" placeholder="Speak or type…" rows="2"></textarea><button class="ssend" onclick="submitSpeech()">Send ➤</button></div><div class="mrow"><div class="mstat" id="mstat">Tap 🎤 Speak, wait 2 secs…</div><button class="mbtn" id="mbtn" onclick="toggleMic()">🎤 Speak</button></div></div>
 </div>
-
-<div class="header">
-  <div>
-    <div style="font-size:18px;font-weight:800">⭐ IL — Week 21 · Monday</div>
-    <div class="sub">English · Maths · Word of the Day</div>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px">
-    <div class="pts-bar">
-      <span id="hdr-pts">240</span>
-      <div class="pts-track"><div class="pts-fill" id="pts-fill" style="width:0%"></div></div>
-    </div>
-    <button class="key-btn" onclick="resetKey()">⚙ Key</button>
-  </div>
-</div>
-
-<div class="main">
-
-<div class="rules-card" id="rules-card">
-  <div class="rules-header">⚡ TODAY'S WEAPONS</div>
-  <div class="rules-sub">Master these and today's questions will feel easier.</div>
-  <div class="rule-item">✏️ <strong>Homophones:</strong> Too means also or very. Two is the number 2. To goes before a doing word (to run, to eat). Read the sentence slowly and think about the meaning!</div>
-  <div class="rule-item">🔢 <strong>Times tables:</strong> 7 times 8 equals 56. Say it like a rap: 7 times 8 is 56, 7 times 8 is 56! Repeat it three times now.</div>
-  <button class="rules-btn" onclick="markRulesRead()">I've read this — let's go! 🚀</button>
-</div>
-<div class="rules-done" id="rules-done">✅ Tips noted — let's go!</div>
-
-<div id="exercise" class="questions-locked">
-
-<div class="section">
-  <div class="sec-head english">✏️ English — 6 Questions</div>
-  <div class="q-block" id="qb-0">
-    <div class="q-num">Q1</div>
-    <div class="q-text">Choose the right word: The children were ___ tired to walk any further.</div>
-    <div class="opts" id="opts-0">
-      <div class="opt" onclick="answer(0,'A')"><span class="ltr">A</span>to</div>
-      <div class="opt" onclick="answer(0,'B')"><span class="ltr">B</span>two</div>
-      <div class="opt" onclick="answer(0,'C')"><span class="ltr">C</span>too</div>
-      <div class="opt" onclick="answer(0,'D')"><span class="ltr">D</span>tow</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-1">
-    <div class="q-num">Q2</div>
-    <div class="q-text">Which tense is the doing word in: The dog ran across the park.</div>
-    <div class="opts" id="opts-1">
-      <div class="opt" onclick="answer(1,'A')"><span class="ltr">A</span>future</div>
-      <div class="opt" onclick="answer(1,'B')"><span class="ltr">B</span>present</div>
-      <div class="opt" onclick="answer(1,'C')"><span class="ltr">C</span>past</div>
-      <div class="opt" onclick="answer(1,'D')"><span class="ltr">D</span>no tense</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-2">
-    <div class="q-num">Q3</div>
-    <div class="q-text">Which sentence has capital letters in the right places?</div>
-    <div class="opts" id="opts-2">
-      <div class="opt" onclick="answer(2,'A')"><span class="ltr">A</span>my dog is called rex.</div>
-      <div class="opt" onclick="answer(2,'B')"><span class="ltr">B</span>My dog is called Rex.</div>
-      <div class="opt" onclick="answer(2,'C')"><span class="ltr">C</span>my Dog is called rex.</div>
-      <div class="opt" onclick="answer(2,'D')"><span class="ltr">D</span>my dog is Called rex.</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-3">
-    <div class="q-num">Q4</div>
-    <div class="q-text">Choose the right word: The cat ___ sitting on the mat.</div>
-    <div class="opts" id="opts-3">
-      <div class="opt" onclick="answer(3,'A')"><span class="ltr">A</span>are</div>
-      <div class="opt" onclick="answer(3,'B')"><span class="ltr">B</span>is</div>
-      <div class="opt" onclick="answer(3,'C')"><span class="ltr">C</span>were</div>
-      <div class="opt" onclick="answer(3,'D')"><span class="ltr">D</span>be</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-4">
-    <div class="q-num">Q5</div>
-    <div class="q-text">Which is the correct spelling?</div>
-    <div class="opts" id="opts-4">
-      <div class="opt" onclick="answer(4,'A')"><span class="ltr">A</span>runing</div>
-      <div class="opt" onclick="answer(4,'B')"><span class="ltr">B</span>running</div>
-      <div class="opt" onclick="answer(4,'C')"><span class="ltr">C</span>runnning</div>
-      <div class="opt" onclick="answer(4,'D')"><span class="ltr">D</span>ruuning</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-5">
-    <div class="q-num">Q6</div>
-    <div class="q-text">Which word means the same as happy?</div>
-    <div class="opts" id="opts-5">
-      <div class="opt" onclick="answer(5,'A')"><span class="ltr">A</span>grumpy</div>
-      <div class="opt" onclick="answer(5,'B')"><span class="ltr">B</span>tired</div>
-      <div class="opt" onclick="answer(5,'C')"><span class="ltr">C</span>cheerful</div>
-      <div class="opt" onclick="answer(5,'D')"><span class="ltr">D</span>worried</div>
+<div class="hdr"><div><h1>Monday — English &amp; Maths</h1><p>Week 21 · IL · 12 questions today</p></div><div class="hdr-r"><div class="pts" id="pts-badge">… pts</div><span class="char-av" id="char-av">🐍</span><button class="key-btn" onclick="clearKey()">⚙ Key</button></div></div>
+<div class="rw">
+  <div class="rc">
+    <div class="rh" onclick="toggleRules()"><h2>⚡ TODAY'S WEAPONS</h2><span id="rh-arrow">▼ tap to read</span></div>
+    <div class="rb" id="rb">
+      <div class="rtip"><strong>Capital letters:</strong> Names, places, and the start of every sentence always start with a BIG letter!</div>
+      <div class="rtip"><strong>Times tables:</strong> Count up on your fingers if you need to. There is no rush — get it right!</div>
+      <button class="rgo" onclick="markRulesRead()">I've read this — let's go! 🚀</button>
     </div>
   </div>
 </div>
-
-<div class="section">
-  <div class="sec-head maths">🔢 Maths — 6 Questions</div>
-  <div class="q-block" id="qb-6">
-    <div class="q-num">Q7</div>
-    <div class="q-text">What is 145 plus 67?</div>
-    <div class="opts" id="opts-6">
-      <div class="opt" onclick="answer(6,'A')"><span class="ltr">A</span>202</div>
-      <div class="opt" onclick="answer(6,'B')"><span class="ltr">B</span>212</div>
-      <div class="opt" onclick="answer(6,'C')"><span class="ltr">C</span>222</div>
-      <div class="opt" onclick="answer(6,'D')"><span class="ltr">D</span>200</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-7">
-    <div class="q-num">Q8</div>
-    <div class="q-text">What is 200 take away 84?</div>
-    <div class="opts" id="opts-7">
-      <div class="opt" onclick="answer(7,'A')"><span class="ltr">A</span>116</div>
-      <div class="opt" onclick="answer(7,'B')"><span class="ltr">B</span>126</div>
-      <div class="opt" onclick="answer(7,'C')"><span class="ltr">C</span>106</div>
-      <div class="opt" onclick="answer(7,'D')"><span class="ltr">D</span>136</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-8">
-    <div class="q-num">Q9</div>
-    <div class="q-text">What is 7 times 8?</div>
-    <div class="opts" id="opts-8">
-      <div class="opt" onclick="answer(8,'A')"><span class="ltr">A</span>54</div>
-      <div class="opt" onclick="answer(8,'B')"><span class="ltr">B</span>56</div>
-      <div class="opt" onclick="answer(8,'C')"><span class="ltr">C</span>58</div>
-      <div class="opt" onclick="answer(8,'D')"><span class="ltr">D</span>63</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-9">
-    <div class="q-num">Q10</div>
-    <div class="q-text">What is 9 times 6?</div>
-    <div class="opts" id="opts-9">
-      <div class="opt" onclick="answer(9,'A')"><span class="ltr">A</span>54</div>
-      <div class="opt" onclick="answer(9,'B')"><span class="ltr">B</span>56</div>
-      <div class="opt" onclick="answer(9,'C')"><span class="ltr">C</span>48</div>
-      <div class="opt" onclick="answer(9,'D')"><span class="ltr">D</span>63</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-10">
-    <div class="q-num">Q11</div>
-    <div class="q-text">What is half of 36?</div>
-    <div class="opts" id="opts-10">
-      <div class="opt" onclick="answer(10,'A')"><span class="ltr">A</span>16</div>
-      <div class="opt" onclick="answer(10,'B')"><span class="ltr">B</span>18</div>
-      <div class="opt" onclick="answer(10,'C')"><span class="ltr">C</span>20</div>
-      <div class="opt" onclick="answer(10,'D')"><span class="ltr">D</span>14</div>
-    </div>
-  </div>
-  <div class="q-block" id="qb-11">
-    <div class="q-num">Q12</div>
-    <div class="q-text">What is 48 divided by 6?</div>
-    <div class="opts" id="opts-11">
-      <div class="opt" onclick="answer(11,'A')"><span class="ltr">A</span>6</div>
-      <div class="opt" onclick="answer(11,'B')"><span class="ltr">B</span>7</div>
-      <div class="opt" onclick="answer(11,'C')"><span class="ltr">C</span>8</div>
-      <div class="opt" onclick="answer(11,'D')"><span class="ltr">D</span>9</div>
-    </div>
-  </div>
+<div id="main-content" style="pointer-events:none;opacity:.45">
+  <div class="sec-card sec-english"><div class="sec-hdr"><h3>✍️ English</h3></div><div class="sec-body" id="qs-english"></div></div>
+  <div class="sec-card sec-maths"><div class="sec-hdr"><h3>🔢 Maths</h3></div><div class="sec-body" id="qs-maths"></div></div>
 </div>
-
-<div class="section">
-  <div class="sec-head word">⭐ Word of the Day</div>
+<div class="sub-bar"><button class="sub-btn" id="sub-btn" onclick="handleSubmit()" disabled>Submit my answers ✓</button></div>
+<div class="result" id="result"><div class="res-emoji" id="res-emoji">🌟</div><div class="res-score" id="res-score"></div><div class="res-msg" id="res-msg"></div></div>
+<div class="word-section" id="word-section">
   <div class="word-card">
-    <div class="word-title">curious</div>
-    <div class="word-def">Adjective — eager to know or learn about something.</div>
-    <div class="word-eg">"The curious girl peered through the keyhole to see what was inside."</div>
-    <button class="word-btn" onclick="dictReady()">I am ready! 📖</button>
+    <div class="wday">gleaming</div>
+    <div class="wdef">Adjective — shining brightly and cleanly.</div>
+    <div class="weg">"She polished the old coins until they were gleaming like new."</div>
+    <button class="echo-btn" id="echo-dict-btn" onclick="openDictOverlay()">Ask Echo about this word 🐍</button>
+    <div id="rev-block" class="rev-block"></div>
   </div>
 </div>
-
-<div class="submit-wrap">
-  <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">Check my answers ✓</button>
-</div>
-
-</div>
-
-<div id="retry-screen">
-  <div class="retry-char" id="retry-char">😅</div>
-  <div class="retry-score" id="retry-score"></div>
-  <div class="retry-msg">Nearly there! Have another go!</div>
-  <button class="retry-btn" onclick="retryExercise()">Try again! →</button>
-</div>
-
-<div id="result-screen"></div>
-
-</div>
-
-<div id="tutor-overlay">
-  <div class="q-strip" id="q-strip">
-    <div class="q-strip-label" id="strip-label">QUESTION</div>
-    <div class="q-strip-text" id="strip-text"></div>
-    <div class="q-strip-opts" id="strip-opts"></div>
-  </div>
-  <div class="char-row">
-    <div class="char-emoji" id="char-emoji"></div>
-    <div class="char-info">
-      <div class="char-name" id="char-name"></div>
-      <div class="char-mode" id="char-mode"></div>
-      <div class="turn-dots" id="turn-dots"></div>
-    </div>
-    <button class="parent-skip" onclick="closeTutor()">✓ Skip</button>
-  </div>
-  <div class="chat-area" id="chat-area"></div>
-  <div class="tutor-bottom">
-    <button class="got-it-btn" onclick="gotIt()">Got it! ✓</button>
-    <div class="speech-area">
-      <textarea class="speech-textarea" id="speech-text" placeholder="Speak or type your answer here…" rows="2"></textarea>
-      <button class="speech-send-btn" onclick="submitSpeech()">Send ➤</button>
-    </div>
-    <div class="mic-row">
-      <div class="mic-status" id="mic-status">Tap 🎤 Speak, wait 2 secs…</div>
-      <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎤</button>
-    </div>
-  </div>
-</div>
-
 <script>
 const CHILD='IL',DAY='Monday',WEEK=21;
 const WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-const PTS_KEY='pts_IL',BASE_PTS=240;
-const TOTAL_QS=12,PASS_SCORE=Math.ceil(12*0.8);
-const DICT_WORD='curious';
-const DICT_DEF='Adjective — eager to know or learn about something.';
-const DICT_EG='The curious girl peered through the keyhole to see what was inside.';
+const PTS_KEY='pts_IL',BASE_PTS=240,TOTAL_QS=12,PASS_SCORE=10;
+const DICT_WORD='gleaming',DICT_DEF='Adjective — shining brightly and cleanly.',DICT_EG='She polished the old coins until they were gleaming like new.';
 
 const QUESTIONS={
-  0:{section:'English',code:'E1.6',correct:'C',text:'Choose the right word: The children were ___ tired to walk any further.',opts:{'A':'to','B':'two','C':'too','D':'tow'}},
-  1:{section:'English',code:'E2.1',correct:'C',text:'Which tense is the doing word in: The dog ran across the park.',opts:{'A':'future','B':'present','C':'past','D':'no tense'}},
-  2:{section:'English',code:'E3.1',correct:'B',text:'Which sentence has capital letters in the right places?',opts:{'A':'my dog is called rex.','B':'My dog is called Rex.','C':'my Dog is called rex.','D':'my dog is Called rex.'}},
-  3:{section:'English',code:'E2.3',correct:'B',text:'Choose the right word: The cat ___ sitting on the mat.',opts:{'A':'are','B':'is','C':'were','D':'be'}},
-  4:{section:'English',code:'E1.4',correct:'B',text:'Which is the correct spelling?',opts:{'A':'runing','B':'running','C':'runnning','D':'ruuning'}},
-  5:{section:'English',code:'E4.1',correct:'C',text:'Which word means the same as happy?',opts:{'A':'grumpy','B':'tired','C':'cheerful','D':'worried'}},
-  6:{section:'Maths',code:'M1.1',correct:'B',text:'What is 145 plus 67?',opts:{'A':'202','B':'212','C':'222','D':'200'},mathConcept:'addition'},
-  7:{section:'Maths',code:'M1.2',correct:'A',text:'What is 200 take away 84?',opts:{'A':'116','B':'126','C':'106','D':'136'},mathConcept:'subtraction'},
-  8:{section:'Maths',code:'M1.3',correct:'B',text:'What is 7 times 8?',opts:{'A':'54','B':'56','C':'58','D':'63'},mathConcept:'times tables'},
-  9:{section:'Maths',code:'M1.3',correct:'A',text:'What is 9 times 6?',opts:{'A':'54','B':'56','C':'48','D':'63'},mathConcept:'times tables'},
-  10:{section:'Maths',code:'M2.1',correct:'B',text:'What is half of 36?',opts:{'A':'16','B':'18','C':'20','D':'14'},mathConcept:'fractions of amounts'},
-  11:{section:'Maths',code:'M1.5',correct:'C',text:'What is 48 divided by 6?',opts:{'A':'6','B':'7','C':'8','D':'9'},mathConcept:'division'}
+  // ENGLISH (0-5)
+  0:{section:'English',code:'E1.1',correct:'B',star:false,text:'Which word has the "ai" sound spelled correctly?',opts:{A:'rayn',B:'rain',C:'rein',D:'rane'}},
+  1:{section:'English',code:'E2.3',correct:'C',star:false,text:'Which sentence is correct?',opts:{A:'The cats was sleeping.',B:'The cat are sleeping.',C:'The cats were sleeping.',D:'The cats is sleeping.'}},
+  2:{section:'English',code:'E2.7',correct:'B',star:false,text:'Which word is a describing word?',opts:{A:'quickly',B:'enormous',C:'jumped',D:'under'}},
+  3:{section:'English',code:'E3.1',correct:'C',star:true,text:'Which sentence uses capital letters correctly?',opts:{A:'my friend lives in London.',B:'My friend lives in london.',C:'My friend lives in London.',D:'my Friend lives in London.'}},
+  4:{section:'English',code:'E4.1',correct:'C',star:false,text:'Which word means the same as "happy"?',opts:{A:'sad',B:'tired',C:'joyful',D:'angry'}},
+  5:{section:'English',code:'E5.1',correct:'B',star:false,text:'A story says Tom has three cats, two dogs and one rabbit. How many pets does Tom have altogether?',opts:{A:'5',B:'6',C:'7',D:'8'}},
+  // MATHS (6-11)
+  6:{section:'Maths',code:'M1.3',correct:'B',star:false,text:'What is 7 times 8?',opts:{A:'54',B:'56',C:'48',D:'63'}},
+  7:{section:'Maths',code:'M1.5',correct:'C',star:false,text:'24 divided by 4 equals what?',opts:{A:'5',B:'7',C:'6',D:'8'}},
+  8:{section:'Maths',code:'M1.1',correct:'B',star:false,text:'What is 347 add 256?',opts:{A:'593',B:'603',C:'613',D:'503'}},
+  9:{section:'Maths',code:'M5.5',correct:'D',star:false,text:'How many degrees are in a right angle?',opts:{A:'45',B:'180',C:'360',D:'90'}},
+  10:{section:'Maths',code:'M2.1',correct:'B',star:false,text:'What is one half of 48?',opts:{A:'12',B:'24',C:'16',D:'32'}},
+  11:{section:'Maths',code:'M1.8',correct:'A',star:false,text:'What is 3 minus 8?',opts:{A:'-5',B:'5',C:'-11',D:'11'}},
 };
 
-let answers={},firstAttempt=null,attemptNumber=0;
-let tutorTurns={},strugglingQs=new Set();
-let currentTutorQ=null,micActive=false,recognition=null;
-let ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';
-
-if(!ANTHROPIC_KEY)document.getElementById('setup-screen').classList.add('show');
-function saveKey(){const v=document.getElementById('key-input').value.trim();if(!v.startsWith('sk-')){document.getElementById('key-err').style.display='block';return;}ANTHROPIC_KEY=v;localStorage.setItem('anthropic_key_v1',v);document.getElementById('setup-screen').classList.remove('show');}
-function resetKey(){localStorage.removeItem('anthropic_key_v1');ANTHROPIC_KEY='';document.getElementById('setup-screen').classList.add('show');}
-
-let currentPts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
-function updatePtsBar(){document.getElementById('hdr-pts').textContent=currentPts;const ms=[40,190,340,830,1800,2800,4000];let lo=0,hi=ms[0];for(let i=0;i<ms.length;i++){if(currentPts>=ms[i]){lo=ms[i];hi=ms[i+1]||ms[i]+200;}}const pct=Math.min(100,Math.round((currentPts-lo)/(hi-lo)*100));document.getElementById('pts-fill').style.width=pct+'%';}
-updatePtsBar();
-
-const _today=new Date().toISOString().slice(0,10);
-let _ck=localStorage.getItem('char_date')===_today?localStorage.getItem('char_key'):null;
-if(!_ck){_ck=Math.random()>0.5?'snake':'shark';localStorage.setItem('char_key',_ck);localStorage.setItem('char_date',_today);}
 const CHARS={
-  snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper work!",personality:'You are Ssssam the Snake. Warm, encouraging, playful. Simple words only. You occasionally slip in a soft sss sound. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only. Max 70 words.'},
-  shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic!",personality:'You are Finn the Shark. Energetic and celebratory. You say things like Splashing great and Fin-tastic. NEVER use emoji. NEVER use * or ** in your reply. No markdown formatting. Plain spoken words only. Max 70 words.'}
+  snake:{key:'snake',name:'Ssssam',emoji:'🐍',gotIt:"Sssuper! That's ssso good!",pers:'You are Ssssam the Snake. Warm, encouraging. Simple words only for a 7-year-old. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only. Max 70 words.'},
+  shark:{key:'shark',name:'Finn',emoji:'🦈',gotIt:"Fin-tastic! Well done!",pers:'You are Finn the Shark. Energetic, celebratory. Simple words age 7. Say Splashing great, Fin-tastic. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only. Max 70 words.'},
 };
-const CHAR=CHARS[_ck];
-document.body.classList.add(_ck);
-document.getElementById('char-emoji').textContent=CHAR.emoji;
-document.getElementById('char-name').textContent=CHAR.name;
+let CHAR=CHARS.snake,answers={},firstAttempt=null,overlayOpen=false,currentQIdx=-1,currentTurn=0,convHistory=[],tutorTurns={},strugglingQs=new Set(),rulesRead=false;
+let dictConvHistory=[],dictTurn=0;
+let ANTHROPIC_KEY='',_cachedVoice=null,recognition=null,micActive=false;
 
-let _cachedVoice=null;
 const _PREF=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha'];
-function _pickVoice(){const vs=window.speechSynthesis.getVoices();if(!vs.length)return;for(const n of _PREF){const v=vs.find(x=>x.name===n);if(v){_cachedVoice=v;return;}}_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||vs[0];}
-window.speechSynthesis.onvoiceschanged=_pickVoice;_pickVoice();
+window.speechSynthesis.onvoiceschanged=()=>{const vs=window.speechSynthesis.getVoices();for(const n of _PREF){const v=vs.find(x=>x.name.startsWith(n)&&x.lang.startsWith('en'));if(v){_cachedVoice=v;break;}}if(!_cachedVoice)_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||null;};
+function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
+function speak(text){if(!text)return;try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const u=new SpeechSynthesisUtterance(text);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?0.92:0.98;u.pitch=CHAR.key==='snake'?0.95:1.02;u.volume=1;u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};window.speechSynthesis.speak(u);},120);}
+function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;document.getElementById('speech-text').focus();};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — type below':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
+function submitSpeech(){const t=document.getElementById('speech-text').value.trim();if(!t)return;document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';if(currentQIdx===-1){sendDictReply(t);}else{sendTutorReply(t);}}
 
-function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance(' ');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
-function speak(text){if(!text)return;try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const utt=new SpeechSynthesisUtterance(text);if(_cachedVoice)utt.voice=_cachedVoice;utt.rate=CHAR.rate;utt.pitch=CHAR.pitch;utt.volume=1;utt.onend=()=>{try{const kp=new SpeechSynthesisUtterance(' ');kp.volume=0.01;kp.rate=16;window.speechSynthesis.speak(kp);}catch(e){}};utt.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(utt),250);};window.speechSynthesis.speak(utt);},120);}
-
-function markRulesRead(){_iosWarm();document.getElementById('rules-card').style.display='none';document.getElementById('rules-done').style.display='block';document.getElementById('exercise').classList.remove('questions-locked');setTimeout(()=>document.getElementById('qb-0').scrollIntoView({behavior:'smooth'}),100);}
-
-function answer(qIdx,choice){_iosWarm();if(answers[qIdx]!==undefined)return;answers[qIdx]=choice;const q=QUESTIONS[qIdx];const optsEl=document.getElementById('opts-'+qIdx);Array.from(optsEl.children).forEach(el=>el.classList.add('disabled'));const chosen=optsEl.children[['A','B','C','D'].indexOf(choice)];if(choice===q.correct){chosen.classList.add('correct');}else{chosen.classList.add('wrong');optsEl.children[['A','B','C','D'].indexOf(q.correct)].classList.add('correct');if(!firstAttempt)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};showTutor(qIdx,choice);}if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};checkAllAnswered();}
-
-function checkAllAnswered(){const allDone=Object.keys(answers).length===TOTAL_QS;const btn=document.getElementById('btn-submit');const hasKey=!!(ANTHROPIC_KEY&&ANTHROPIC_KEY.startsWith('sk-'));if(allDone&&!hasKey){btn.textContent='⚙ Enter API key first';btn.classList.remove('ready');return;}if(allDone)btn.classList.add('ready');}
-
-function showTutor(qIdx,chosenWrong){currentTutorQ=qIdx;if(!tutorTurns[qIdx])tutorTurns[qIdx]=0;const q=QUESTIONS[qIdx];document.getElementById('strip-text').textContent=q.text;document.getElementById('strip-label').textContent=q.section+' — Q'+(qIdx+1);const so=document.getElementById('strip-opts');so.innerHTML='';['A','B','C','D'].forEach(l=>{const d=document.createElement('div');d.className='q-strip-opt'+(l===chosenWrong?' chosen-wrong':'');d.textContent=l+': '+q.opts[l];so.appendChild(d);});const modes={English:'✍ What do you think?',Maths:'🔢 Let me show you!'};document.getElementById('char-mode').textContent=modes[q.section]||'✍ What do you think?';renderDots(tutorTurns[qIdx]);document.getElementById('chat-area').innerHTML='';document.getElementById('tutor-overlay').classList.add('show');callAI(qIdx);}
-
-function renderDots(n){const td=document.getElementById('turn-dots');td.innerHTML='';for(let i=0;i<14;i++){const d=document.createElement('div');d.className='turn-dot'+(i<n?' active':'');td.appendChild(d);}}
-
-async function callAI(qIdx){_iosWarm();const prompt=buildSystemPrompt(qIdx);const chatArea=document.getElementById('chat-area');const typing=document.createElement('div');typing.className='typing';typing.innerHTML='<span></span><span></span><span></span>';chatArea.appendChild(typing);chatArea.scrollTop=chatArea.scrollHeight;try{const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:prompt,messages:[{role:'user',content:'Hello!'}]})});if(resp.status===401){showKeyError();return;}const data=await resp.json();const text=data.content&&data.content[0]?data.content[0].text:"Let's try together!";typing.remove();addBubble(text,'char');speak(text);if(qIdx!=='dict'){tutorTurns[qIdx]=(tutorTurns[qIdx]||0)+1;if(tutorTurns[qIdx]>=6)strugglingQs.add(QUESTIONS[qIdx].code);renderDots(tutorTurns[qIdx]);}}catch(e){typing.remove();addBubble("Let's try together!",'char');}}
-
-async function sendTutorReply(text){_iosWarm();const qIdx=currentTutorQ;addBubble(text,'child');const chatArea=document.getElementById('chat-area');const typing=document.createElement('div');typing.className='typing';typing.innerHTML='<span></span><span></span><span></span>';chatArea.appendChild(typing);chatArea.scrollTop=chatArea.scrollHeight;const msgs=[{role:'user',content:'Hello!'}];chatArea.querySelectorAll('.bubble').forEach(b=>{msgs.push({role:b.classList.contains('char')?'assistant':'user',content:b.textContent});});try{const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:buildSystemPrompt(qIdx),messages:msgs})});const data=await resp.json();const reply=data.content&&data.content[0]?data.content[0].text:'Amazing try!';typing.remove();addBubble(reply,'char');speak(reply);if(qIdx!=='dict'){tutorTurns[qIdx]=(tutorTurns[qIdx]||0)+1;if(tutorTurns[qIdx]>=6)strugglingQs.add(QUESTIONS[qIdx].code);renderDots(tutorTurns[qIdx]);}}catch(e){typing.remove();addBubble("You're doing brilliantly!",'char');}}
-
-function addBubble(text,type){const chatArea=document.getElementById('chat-area');const b=document.createElement('div');b.className='bubble '+type;b.textContent=text;chatArea.appendChild(b);chatArea.scrollTop=chatArea.scrollHeight;}
-
-function buildSystemPrompt(qIdx){const isDict=(qIdx==='dict');const cp=CHAR.personality;const strictOpening=`ABSOLUTE RULE — FIRST REPLY ONLY: Start with ONE short funny joke about the topic. Then teach. Plain simple English only. Max 70 words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb. NEVER use emoji. NEVER use * or ** or any markdown. No greetings. Write as you speak aloud. Vary your joke format — use puns, What do you call, What did X say to Y, or Why did. NEVER use Why did every single time. ★ Each turn: use a DIFFERENT angle. ★ Respond to what the child SAID.`;if(isDict){return `${cp}
-${strictOpening}
-Word: "${DICT_WORD}". It means: "${DICT_DEF}". Example: "${DICT_EG}". First: joke then 2 easy examples in everyday life. End: "Can you make a sentence with ${DICT_WORD}?" Then: say well done and help fix any mistakes gently. Keep it fun and short.`;}const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;if(q.section==='Maths'){const concept=q.mathConcept||'maths';return `${cp}
-${strictOpening}
-Question: "${q.text}" Options: ${optsStr}. Right answer: ${q.correct} = "${q.opts[q.correct]}". Topic: ${concept}. [Turn ${turn}] First: joke then show a simple example using small numbers. Step by step. End: "Does that make sense?" Then re-ask the question. Celebrate if correct.`;}return `${cp}
-${strictOpening}
-Question: "${q.text}" Options: ${optsStr}. Right answer: ${q.correct} = "${q.opts[q.correct]}". [Turn ${turn}] First: joke then ask ONE simple question to help the child think it through. Do not give the answer yet. After 2 turns, gently reveal it.`;}
-
-function showKeyError(){localStorage.removeItem('anthropic_key_v1');ANTHROPIC_KEY='';document.getElementById('tutor-overlay').classList.remove('show');document.getElementById('setup-screen').classList.add('show');document.getElementById('key-err').style.display='block';document.getElementById('key-err').textContent='API key rejected — please re-enter.';}
-function closeTutor(){window.speechSynthesis.cancel();if(recognition)recognition.stop();document.getElementById('tutor-overlay').classList.remove('show');micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';const _st=document.getElementById('speech-text');if(_st)_st.value='';}
-function gotIt(){speak(CHAR.gotIt);setTimeout(closeTutor,1800);}
-
-function dictReady(){_iosWarm();currentTutorQ='dict';document.getElementById('strip-text').textContent=DICT_WORD+' — '+DICT_DEF;document.getElementById('strip-label').textContent='WORD OF THE DAY';document.getElementById('strip-opts').innerHTML='';document.getElementById('char-mode').textContent='📖 Word Builder';renderDots(0);document.getElementById('chat-area').innerHTML='';document.getElementById('tutor-overlay').classList.add('show');callAI('dict');}
-
-function toggleMic(){
-  _iosWarm();
-  if(micActive){if(recognition)recognition.stop();micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
-  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
-  recognition.onresult=(e)=>{const t=e.results[0][0].transcript;micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';const ta=document.getElementById('speech-text');ta.value=t;ta.focus();};
-  recognition.onerror=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Could not hear — type below or try again';};
-  recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mic-btn').classList.remove('listening');}};
-  micActive=true;document.getElementById('mic-btn').classList.add('listening');
-  document.getElementById('mic-status').textContent='⏳ Get ready… 2 seconds…';
-  recognition.start();
-  setTimeout(()=>{if(micActive)document.getElementById('mic-status').textContent='● Listening… speak now!';},2000);
-}
-function submitSpeech(){
-  const ta=document.getElementById('speech-text');
-  const text=ta.value.trim();
-  if(!text)return;
-  ta.value='';
-  document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';
-  sendTutorReply(text);
+function buildSP(qi,turn){
+  const q=QUESTIONS[qi];const wk=answers[qi]||'?';const wt=q.opts[wk]||'?';const ct=q.opts[q.correct];
+  const isM=q.section==='Maths';
+  return `${CHAR.pers}
+First reply: ONE short funny joke for age 7 about ${isM?'maths or numbers':'reading or spelling or letters'}. Simple! Rotate formats.
+After joke: straight to teaching. No greeting. Max 70 words. NEVER say wrong/mistake/silly/dumb.
+★ Very simple language. ★ Advance each turn. [Turn ${turn+1} of up to 5]
+${isM?`MATHS QUESTION: "${q.text}". Correct: ${q.correct}) "${ct}". Child chose: "${wt}".
+Teach with a simpler example first. Memory tip. Then re-ask: "${q.text}" — what do you pick now?`:
+`ENGLISH QUESTION: "${q.text}". Options: A) ${q.opts.A} B) ${q.opts.B} C) ${q.opts.C} D) ${q.opts.D}. Correct: ${q.correct}) "${ct}". Child chose: "${wt}".
+Use one simple question to help child reason the answer. Do not give answer in first turn.`}`;
 }
 
-function handleSubmit(){attemptNumber++;if(!firstAttempt)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};let correct=0,engC=0,engT=0,mathC=0,mathT=0;for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=answers[i];const isC=(a===q.correct);if(q.section==='English'){engT++;if(isC)engC++;}else{mathT++;if(isC)mathC++;}if(isC)correct++;}let _fa=0;for(let _j=0;_j<TOTAL_QS;_j++){if(firstAttempt.answers[_j]===QUESTIONS[_j].correct)_fa++;}const firstPct=Math.round(_fa/TOTAL_QS*100);if(correct<PASS_SCORE){document.getElementById('exercise').style.display='none';document.getElementById('retry-char').textContent=CHAR.emoji;document.getElementById('retry-score').textContent=correct+' out of '+TOTAL_QS+' ('+firstPct+'%)';document.getElementById('retry-screen').style.display='block';return;}let pts=5;if(engC===engT)pts+=3;if(mathC===mathT)pts+=3;pts=Math.min(pts,8);const newPts=currentPts+pts;localStorage.setItem(PTS_KEY,newPts);currentPts=newPts;sendWebhook(correct,pts,engC,engT,mathC,mathT,firstPct,attemptNumber);showResult(correct,pts,newPts,engC,engT,mathC,mathT);}
+const SSNAKE=['Ssslick!','Ssspot on!','Sssuper!','Yes!'];const SSHARK=['Fin-tastic!','Splashing great!','Well done!','Right!'];
+function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SSNAKE[Math.floor(Math.random()*4)]:SSHARK[Math.floor(Math.random()*4)]);}
 
-function retryExercise(){answers={};document.getElementById('retry-screen').style.display='none';document.getElementById('exercise').style.display='block';for(let i=0;i<TOTAL_QS;i++){const optsEl=document.getElementById('opts-'+i);if(!optsEl)continue;Array.from(optsEl.children).forEach(el=>el.classList.remove('correct','wrong','disabled'));}document.getElementById('btn-submit').classList.remove('ready');window.scrollTo(0,0);}
+function renderSection(start,count,cid){
+  const c=document.getElementById(cid);c.innerHTML='';
+  for(let i=start;i<start+count;i++){
+    const q=QUESTIONS[i];const d=document.createElement('div');d.className='qcard';d.id=`qc-${i}`;
+    d.innerHTML=`<div class="qn">Q${i+1}${q.star?' ⭐':''} · ${q.code}</div><div class="qt">${q.text}</div><div class="opts">${Object.entries(q.opts).map(([k,v])=>`<button class="opt" id="opt-${i}-${k}" onclick="answer(${i},'${k}')">${k}) ${v}</button>`).join('')}</div>`;
+    c.appendChild(d);
+  }
+}
 
-function milestoneLabel(pts){if(pts>=4000)return'Grand Master 👑';if(pts>=2800)return'Champion 🏅';if(pts>=1800)return'Diamond 💎';if(pts>=830)return'Platinum 🏆';if(pts>=340)return'Gold 🥇';if(pts>=190)return'Silver 🥈';if(pts>=40)return'Bronze 🥉';return pts+' pts';}
-function nextMilestone(pts){for(const[t,n]of[[40,'Bronze 🥉'],[190,'Silver 🥈'],[340,'Gold 🥇'],[830,'Platinum 🏆'],[1800,'Diamond 💎'],[2800,'Champion 🏅'],[4000,'Grand Master 👑']]){if(pts<t)return(t-pts)+' to '+n;}return'MAX!';}
+function answer(qi,ch){
+  _iosWarm();if(answers[qi]!==undefined||!rulesRead)return;
+  answers[qi]=ch;const q=QUESTIONS[qi];const ok=ch===q.correct;
+  'ABCD'.split('').forEach(k=>document.getElementById(`opt-${qi}-${k}`)?.classList.add('dis'));
+  document.getElementById(`opt-${qi}-${ch}`)?.classList.add(ok?'sc':'sw');
+  document.getElementById(`qc-${qi}`)?.classList.add(ok?'right':'wrong');
+  if(!ok)document.getElementById(`opt-${qi}-${q.correct}`)?.classList.add('rc2');
+  tutorTurns[qi]=0;
+  if(ok){onCorrectAnswer();}else{openOverlay(qi);}
+  if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)captureFirstAttempt();
+  updateSubmit();
+}
+function captureFirstAttempt(){if(firstAttempt)return;firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};}
+function updateSubmit(){document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;}
 
-function showResult(correct,pts,newPts,eC,eT,mC,mT){document.getElementById('exercise').style.display='none';document.getElementById('result-screen').style.display='block';document.getElementById('result-screen').innerHTML=`<div class="result-char">${CHAR.emoji}</div><div class="result-title">Amazing work, IL! 🌟</div><div class="result-pts">+${pts} points</div><div class="result-milestone">${currentPts} pts total — ${milestoneLabel(currentPts)} · ${nextMilestone(currentPts)}</div><div class="result-breakdown"><div class="bd-row"><span>English</span><span class="bd-score">${eC}/${eT}</span></div><div class="bd-row"><span>Maths</span><span class="bd-score">${mC}/${mT}</span></div><div class="bd-row"><span>Total</span><span class="bd-score">${correct}/${TOTAL_QS}</span></div></div><p style="font-size:13px;color:#aaa;margin-top:12px">Results sent ✓</p>`;updatePtsBar();speak('Amazing work! You earned '+pts+' points. You now have '+currentPts+' points. '+milestoneLabel(currentPts)+'!');}
+function openOverlay(qi){
+  currentQIdx=qi;currentTurn=0;convHistory=[];overlayOpen=true;
+  const q=QUESTIONS[qi];const wk=answers[qi]||'?';
+  document.getElementById('qstrip').innerHTML=`<strong>Q${qi+1}:</strong> ${q.text}<span class="wpill">You chose: ${wk}) ${q.opts[wk]||'?'}</span>`;
+  document.getElementById('cemoji').textContent=CHAR.emoji;document.getElementById('cname').textContent=CHAR.name;
+  document.getElementById('mbadge').textContent=q.section==='Maths'?'🔢 Let\'s work it out!':'✍️ Let\'s think!';
+  renderDots(0);document.getElementById('chat').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';
+  document.getElementById('overlay').classList.add('open');callAI(qi);
+}
+function renderDots(t){const el=document.getElementById('tdots');el.innerHTML='';for(let i=0;i<5;i++){const d=document.createElement('div');d.className='dot'+(i<t?' d':'');el.appendChild(d);}}
+async function callAI(qi){
+  _iosWarm();showTyping();
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:buildSP(qi,currentTurn),messages:convHistory.length?convHistory:[{role:'user',content:'Start!'}]})});
+  if(r.status===401){showKeyError();return;}const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
+  hideTyping();addBubble(txt,'e');speak(txt);convHistory.push({role:'assistant',content:txt});
+  currentTurn++;renderDots(currentTurn);tutorTurns[qi]=(tutorTurns[qi]||0)+1;
+  if(tutorTurns[qi]>=4)strugglingQs.add(QUESTIONS[qi].code);}catch(e){hideTyping();addBubble('Let\'s think together!','e');}
+}
+function sendTutorReply(text){_iosWarm();addBubble(text,'c');convHistory.push({role:'user',content:text});currentTurn++;renderDots(currentTurn);if(currentTurn>=5){addBubble('You gave it a great go! Tap Got it!','e');speak('Great go! Tap Got it!');return;}callAI(currentQIdx);}
+function addBubble(txt,cls){const d=document.createElement('div');d.className=`bub ${cls}`;d.textContent=txt;document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=9999;}
+function showTyping(){const d=document.createElement('div');d.className='typing';d.id='typing';d.innerHTML='<span></span><span></span><span></span>';document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=9999;}
+function hideTyping(){document.getElementById('typing')?.remove();}
+function gotIt(){try{window.speechSynthesis.cancel();}catch(e){}if(recognition){try{recognition.stop();}catch(e){}micActive=false;}document.getElementById('speech-text').value='';const u=new SpeechSynthesisUtterance(CHAR.gotIt);u.onend=()=>closeOverlay();u.onerror=()=>closeOverlay();if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?0.92:0.98;u.pitch=CHAR.key==='snake'?0.95:1.02;window.speechSynthesis.speak(u);}
+function parentSkip(){try{window.speechSynthesis.cancel();}catch(e){}if(recognition){try{recognition.stop();}catch(e){}micActive=false;}document.getElementById('speech-text').value='';closeOverlay();}
+function closeOverlay(){try{window.speechSynthesis.cancel();}catch(e){}overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');}
 
-function sendWebhook(correct,pts,eC,eT,mC,mT,firstPct,attemptNum){const qArr=[];for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=firstAttempt.answers[i]||'';qArr.push({q_number:i+1,code:q.code,section:q.section,correct:(a===q.correct),answer_chosen:a,correct_answer:q.correct,wrong_answer_chosen:a!==q.correct?a:null,tutor_used:(tutorTurns[i]||0)>0,tutor_turns:tutorTurns[i]||0});}const payload={type:'exercise_result',child:CHILD,date:new Date().toISOString().slice(0,10),week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,points_earned:pts,score_summary:`English:${eC}/${eT} Maths:${mC}/${mT}`,subject_focus:'Mixed',attempt_number:attemptNum,first_attempt_pct:firstPct,struggling_codes:[...firstAttempt.struggling],questions:qArr};fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});}
+function handleSubmit(){
+  if(Object.keys(answers).length<TOTAL_QS)return;if(!firstAttempt)captureFirstAttempt();
+  let c=0;for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)c++;}
+  showResult(c);
+}
+function showResult(correct){
+  document.getElementById('main-content').style.display='none';document.getElementById('sub-bar').style.display='none';
+  const pct=Math.round(correct/TOTAL_QS*100);const passed=correct>=PASS_SCORE;
+  document.getElementById('res-emoji').textContent=passed?'🌟':'💪';
+  document.getElementById('res-score').textContent=`${correct} / ${TOTAL_QS} correct`;
+  document.getElementById('res-msg').textContent=passed?`${pct}% — ${CHAR.name} is so proud of you!`:`${pct}% — great effort! Keep practising!`;
+  const pts=passed?5:2;const stored=parseInt(localStorage.getItem(PTS_KEY)||'0');localStorage.setItem(PTS_KEY,stored+pts);document.getElementById('pts-badge').textContent=`${stored+pts} pts`;
+  document.getElementById('result').style.display='block';
+  sendWebhook(correct,pts);setTimeout(()=>{document.getElementById('word-section').style.display='block';initDict();},800);
+}
+function sendWebhook(correct,pts){
+  const fa=firstAttempt||{answers:{...answers},struggling:new Set()};let fac=0;for(let i=0;i<TOTAL_QS;i++){if(fa.answers[i]===QUESTIONS[i].correct)fac++;}
+  const eng=[0,1,2,3,4,5];const mat=[6,7,8,9,10,11];
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'exercise_result',child:CHILD,date:new Date().toISOString().slice(0,10),week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,points_earned:pts,score_summary:`English:${eng.filter(i=>answers[i]===QUESTIONS[i].correct).length}/6 Maths:${mat.filter(i=>answers[i]===QUESTIONS[i].correct).length}/6`,subject_focus:'Mixed',attempt_number:1,first_attempt_pct:Math.round(fac/TOTAL_QS*100),struggling_codes:[...(fa.struggling||new Set())],questions:Object.entries(QUESTIONS).map(([i,q])=>({q_number:parseInt(i)+1,code:q.code,section:q.section,correct:answers[i]===q.correct,answer_chosen:answers[i]||'',correct_answer:q.correct,wrong_answer_chosen:answers[i]!==q.correct?answers[i]:null,tutor_used:(tutorTurns[i]||0)>0,tutor_turns:tutorTurns[i]||0}))})}).catch(()=>{});}
+
+function pickRevisionWord(){try{const h=JSON.parse(localStorage.getItem('dict_history_il')||'[]');const today=new Date().toISOString().slice(0,10);const el=h.filter(w=>w.date!==today&&w.word!==DICT_WORD);if(!el.length)return null;const now=Date.now();el.forEach(w=>{const d=(now-new Date(w.date).getTime())/86400000;w._s=(w.confidence==='low'?3:w.confidence==='medium'?2:1)+(d<2?-10:Math.min(d/7,3));});return el.sort((a,b)=>b._s-a._s)[0];}catch(e){return null;}}
+function initDict(){const rev=pickRevisionWord();if(rev){const rb=document.getElementById('rev-block');rb.innerHTML=`<div class="rev-word">🔄 Past word: ${rev.word}</div><div class="rev-def">${rev.def}</div>`;rb.style.display='block';}}
+async function openDictOverlay(){document.getElementById('echo-dict-btn').disabled=true;dictConvHistory=[];dictTurn=0;overlayOpen=true;currentQIdx=-1;document.getElementById('overlay').classList.add('open');document.getElementById('cemoji').textContent=CHAR.emoji;document.getElementById('cname').textContent=CHAR.name;document.getElementById('qstrip').innerHTML=`📖 <strong>Word of the Day:</strong> ${DICT_WORD}`;document.getElementById('mbadge').textContent='📖 Word Builder';document.getElementById('chat').innerHTML='';document.getElementById('speech-text').value='';const sys=`${CHAR.pers}\nWord: "${DICT_WORD}". Def: "${DICT_DEF}". Eg: "${DICT_EG}". ONE short simple joke for age 7. 2 vivid simple examples. Ask child to make own sentence. 3-beat wrap-up when correct. Max 70 words. No emoji.`;showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:sys,messages:[{role:'user',content:'Start!'}]})});const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});}catch(e){hideTyping();addBubble(`Let's learn ${DICT_WORD}! Can you make a sentence?`,'e');}}
+function sendDictReply(text){addBubble(text,'c');dictConvHistory.push({role:'user',content:text});dictTurn++;if(dictTurn>=4){addBubble('Brilliant! Tap Got it!','e');speak('Brilliant! Tap Got it!');saveDictHistory();return;}const sys=`${CHAR.pers}\nWord: "${DICT_WORD}". Evaluate. 3-beat wrap-up when correct. Max 70 words. No emoji. [Turn ${dictTurn+1}]`;fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:sys,messages:dictConvHistory})}).then(r=>r.json()).then(d=>{const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});if(/Brilliant!|Yes!|Well done!|Spot on!|Exactly!|Perfect!/i.test(txt))saveDictHistory();}).catch(()=>addBubble('Great effort!','e'));}
+function saveDictHistory(){try{const h=JSON.parse(localStorage.getItem('dict_history_il')||'[]');const today=new Date().toISOString().slice(0,10);if(!h.find(w=>w.word===DICT_WORD&&w.date===today)){h.push({word:DICT_WORD,def:DICT_DEF,date:today,confidence:'medium'});localStorage.setItem('dict_history_il',JSON.stringify(h.slice(-60)));};}catch(e){}}
+
+function toggleRules(){const rb=document.getElementById('rb');const open=rb.style.display==='block';rb.style.display=open?'none':'block';document.getElementById('rh-arrow').textContent=open?'▼ tap to read':'▲ close';}
+function markRulesRead(){_iosWarm();rulesRead=true;document.getElementById('rb').style.display='none';document.getElementById('rh-arrow').textContent='▼ tap to read';document.getElementById('main-content').style.opacity='1';document.getElementById('main-content').style.pointerEvents='auto';speak(`${CHAR.name} says: English first, then maths. Take your time and you can do it!`);}
+function saveKey(){const v=document.getElementById('kinput').value.trim();if(!v.startsWith('sk-')||v.length<20){document.getElementById('kerr').style.display='block';return;}ANTHROPIC_KEY=v;localStorage.setItem('anthropic_key_v1',v);document.getElementById('setup').classList.remove('show');}
+function clearKey(){ANTHROPIC_KEY='';localStorage.removeItem('anthropic_key_v1');document.getElementById('kinput').value='';document.getElementById('kerr').style.display='none';document.getElementById('setup').classList.add('show');}
+function showKeyError(){document.getElementById('overlay').classList.remove('open');overlayOpen=false;clearKey();}
+window.onload=function(){
+  ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';if(!ANTHROPIC_KEY)document.getElementById('setup').classList.add('show');
+  const today=new Date().toISOString().slice(0,10);let ck=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
+  if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',today);}
+  CHAR=CHARS[ck];document.body.classList.add(ck);document.getElementById('char-av').textContent=CHAR.emoji;
+  document.getElementById('pts-badge').textContent=`${parseInt(localStorage.getItem(PTS_KEY)||'0')+BASE_PTS} pts`;
+  renderSection(0,6,'qs-english');renderSection(6,6,'qs-maths');
+  document.getElementById('rb').style.display='block';document.getElementById('rh-arrow').textContent='▲ close';
+};
 </script>
 </body>
 </html>
