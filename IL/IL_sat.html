@@ -2,578 +2,365 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IL — Week 21 Saturday</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>IL Saturday — Week 21</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:#fdf6ff;color:#1e1b4b;min-height:100vh}
-.header{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between}
-.sub{font-size:12px;opacity:.85}
-.pts-bar{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
-.pts-track{width:90px;height:8px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden}
-.pts-fill{height:100%;background:#fbbf24;border-radius:4px;transition:width .4s}
-.key-btn{background:rgba(255,255,255,.25);border:none;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer}
-.main{max-width:860px;margin:0 auto;padding:16px}
-.rules-card{background:#fff;border:2px solid #7c3aed;border-radius:14px;padding:16px;margin-bottom:16px}
-.rules-header{font-size:16px;font-weight:800;color:#7c3aed;margin-bottom:4px}
-.rules-sub{font-size:12px;color:#888;margin-bottom:12px}
-.rule-item{margin-bottom:8px;font-size:14px;line-height:1.5}
-.rules-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;margin-top:12px}
-.rules-done{background:#ede9fe;border-radius:10px;padding:8px 14px;font-size:13px;color:#7c3aed;margin-bottom:12px;display:none}
-/* Two-column layout */
-.split-layout{display:flex;gap:12px;margin:0 0 16px;height:calc(100vh - 270px);min-height:420px;max-height:680px}
-.passage-col{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff;border:2px solid #c4b5fd;border-radius:14px;overscroll-behavior:contain}
-.questions-col{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;overscroll-behavior:contain}
-@media(max-width:600px){.split-layout{flex-direction:column;height:auto;max-height:none}.passage-col,.questions-col{max-height:52vh}}
-.col-header{padding:10px 14px;font-size:13px;font-weight:800;color:#fff;position:sticky;top:0;z-index:2;border-radius:12px 12px 0 0}
-.col-header.ph{background:#7c3aed}
-.col-header.qh{background:#5b21b6}
-.passage-body{padding:14px 16px;font-size:14px;line-height:1.8;color:#1e1b4b}
-.passage-title{font-size:16px;font-weight:800;color:#7c3aed;margin-bottom:10px}
-.passage-source{font-size:11px;color:#aaa;margin-top:14px;line-height:1.4}
-.section{background:#fff;border:2px solid #c4b5fd;border-radius:14px;margin-bottom:12px;overflow:hidden}
-.sec-head{padding:10px 14px;color:#fff;font-size:14px;font-weight:800}
-.sec-head.comp{background:#7c3aed}
-.sec-head.writing{background:#5b21b6}
-.sec-head.word{background:#b45309}
-.q-block{padding:12px 14px;border-bottom:1px solid #ede9fe}
-.q-block:last-child{border-bottom:none}
-.q-num{font-size:11px;color:#8b5cf6;font-weight:600;margin-bottom:4px}
-.q-text{font-size:14px;font-weight:700;line-height:1.4;margin-bottom:8px;color:#1e1b4b}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.opt{display:flex;align-items:center;gap:8px;padding:9px 11px;border:2px solid #c4b5fd;border-radius:10px;background:#fdf6ff;cursor:pointer;font-size:13px;font-weight:600;min-height:44px;transition:all .15s;-webkit-tap-highlight-color:transparent}
-.opt .ltr{width:24px;height:24px;border-radius:50%;border:2px solid #c4b5fd;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;color:#7c3aed}
-.opt.correct{border-color:#16A34A;background:#F0FDF4}
-.opt.correct .ltr{background:#16A34A;color:#fff;border-color:#16A34A}
-.opt.wrong{border-color:#DC2626;background:#FEF2F2}
-.opt.wrong .ltr{background:#DC2626;color:#fff;border-color:#DC2626}
-.opt.disabled{pointer-events:none}
+body{font-family:'Nunito',sans-serif;background:#fdf6ff;min-height:100vh;padding-bottom:80px}
+body.snake{--hi:#27AE60;--lite:rgba(39,174,96,.18);--bd:rgba(39,174,96,.4)}
+body.shark{--hi:#2980B9;--lite:rgba(41,128,185,.18);--bd:rgba(41,128,185,.4)}
+.hdr{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.hdr h1{font-size:1rem;font-weight:900}.hdr p{font-size:.75rem;opacity:.85}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.pts{background:rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:800}
+.char-av{font-size:1.8rem}.key-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:4px 9px;font-size:.72rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.rw{padding:12px 14px 0}
+.rc{background:#fff;border-radius:14px;border:2px solid #c4b5fd;overflow:hidden;margin-bottom:12px}
+.rh{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.rh h2{font-size:.88rem;font-weight:800}.rh span{font-size:.8rem;opacity:.8}
+.rb{padding:12px 14px;display:none}
+.rtip{font-size:.82rem;line-height:1.5;margin-bottom:8px;padding-left:10px;border-left:3px solid #7c3aed}
+.rgo{width:100%;margin-top:10px;padding:11px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+/* Two column */
+.ex-wrap{padding:0 14px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.ex-wrap{grid-template-columns:1fr}}
+.passage-col{position:sticky;top:60px;max-height:calc(100vh - 80px);overflow-y:auto}
+.passage-card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.passage-card h3{font-size:.9rem;font-weight:900;color:#7c3aed;margin-bottom:10px}
+.passage-text{font-size:.88rem;line-height:1.7;color:#334155}
+.passage-text em{font-style:italic;color:#7c3aed;font-weight:700}
+/* Questions */
+.qs-col{display:flex;flex-direction:column;gap:10px}
+.qcard{background:#fff;border-radius:13px;padding:13px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:2.5px solid transparent}
+.qcard.right{border-color:#22c55e;background:#f0fdf4}
+.qcard.wrong{border-color:#ef4444;background:#fff5f5}
+.qn{font-size:.7rem;font-weight:700;color:#94a3b8;margin-bottom:5px}
+.qt{font-size:.86rem;font-weight:700;color:#1e1b4b;margin-bottom:9px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{padding:9px 12px;border-radius:9px;border:2px solid #e5e7eb;background:#f9fafb;font-size:.84rem;font-weight:600;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;-webkit-tap-highlight-color:transparent}
+.opt.sc{background:#dcfce7;border-color:#22c55e;color:#166534}
+.opt.sw{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+.opt.rc2{background:#dcfce7;border-color:#22c55e}
+.opt.dis{pointer-events:none;opacity:.55}
 /* Writing questions */
-.wq-card{background:#fff;border:2px solid #c4b5fd;border-radius:14px;margin-bottom:12px;overflow:hidden;transition:border-color .3s}
-.wq-card.wq-active{border-color:#7c3aed}
-.wq-card.wq-done{border-color:#16A34A}
-.wq-card.wq-locked{opacity:.35;pointer-events:none}
-.wq-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#ede9fe;border-bottom:1px solid #c4b5fd}
-.wq-num{width:28px;height:28px;border-radius:50%;background:#7c3aed;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
-.wq-type{font-size:12px;color:#7c3aed;font-weight:700;text-transform:uppercase;flex:1}
-.wq-att{font-size:12px;color:#888}
-.wq-question{padding:12px 14px;font-size:14px;font-weight:700;line-height:1.5;color:#1e1b4b;border-bottom:1px solid #ede9fe}
-.wq-chat{padding:8px 14px;display:flex;flex-direction:column;gap:6px;min-height:20px}
-.wq-bubble{max-width:90%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5}
-.wq-bubble.char{align-self:flex-start;background:#ede9fe;color:#1e1b4b;border:1px solid #c4b5fd}
-.wq-bubble.child{align-self:flex-end;background:#7c3aed;color:#fff;font-style:italic}
-.wq-typing{align-self:flex-start;padding:8px 12px}
-.wq-typing span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#7c3aed;animation:bounce 0.8s infinite}
-.wq-typing span:nth-child(2){animation-delay:.15s}
-.wq-typing span:nth-child(3){animation-delay:.3s}
-.wq-input-row{display:flex;gap:8px;padding:10px 14px;border-top:1px solid #ede9fe}
-.wq-input{flex:1;padding:8px 12px;border:2px solid #c4b5fd;border-radius:10px;font-size:14px;font-family:'Nunito',sans-serif;outline:none;color:#1e1b4b}
-.wq-input:focus{border-color:#7c3aed}
-.wq-mic{width:40px;height:40px;border-radius:50%;background:#ede9fe;border:2px solid #c4b5fd;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.wq-send{padding:8px 14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;flex-shrink:0}
-.wq-done-badge{display:none;padding:10px 14px;background:#F0FDF4;color:#16A34A;font-size:14px;font-weight:800;text-align:center}
+.wq-section{padding:0 14px;margin-top:14px}
+.wq-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:10px;border-top:4px solid #7c3aed;display:none}
+.wq-card.show{display:block}
+.wq-label{font-size:.7rem;font-weight:700;color:#7c3aed;margin-bottom:5px}
+.wq-prompt{font-size:.88rem;font-weight:700;color:#1e1b4b;margin-bottom:10px;line-height:1.5}
+.wq-chat{display:flex;flex-direction:column;gap:7px;margin-bottom:9px;min-height:20px}
+.wq-bub{max-width:87%;padding:8px 11px;border-radius:11px;font-size:.84rem;line-height:1.5}
+.wq-bub.e{align-self:flex-start;background:#f3f0ff;border:1px solid #c4b5fd;color:#1e1b4b}
+.wq-bub.c{align-self:flex-end;background:#7c3aed;color:#fff;font-weight:700}
+.wq-input{display:flex;gap:7px}
+.wq-ta{flex:1;padding:8px 10px;border-radius:9px;border:2px solid #e5e7eb;font-family:'Nunito',sans-serif;font-size:.84rem;resize:none;background:#fdf6ff}
+.wq-send{padding:8px 12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:9px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.8rem;white-space:nowrap}
+.wq-done{font-size:.78rem;color:#166534;font-weight:800;margin-top:5px;display:none}
+/* Submit */
+.sub-bar{position:fixed;bottom:0;left:0;right:0;padding:10px 14px;background:#fff;border-top:1px solid #ede9fe}
+.sub-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.sub-btn:disabled{opacity:.35;cursor:default}
+/* Result */
+.result{display:none;padding:20px 14px;text-align:center}
+.res-emoji{font-size:3.5rem;margin-bottom:10px}.res-score{font-size:2.2rem;font-weight:900;color:#7c3aed}
+.res-msg{font-size:.9rem;color:#475569;margin:6px 0 14px}
 /* Word of day */
-.word-card{padding:14px}
-.word-title{font-size:20px;font-weight:800;color:#b45309;margin-bottom:5px}
-.word-def{font-size:13px;color:#555;margin-bottom:5px;line-height:1.5}
-.word-eg{font-size:12px;color:#888;font-style:italic;margin-bottom:12px;line-height:1.5}
-.word-btn{width:100%;padding:12px;background:linear-gradient(135deg,#C77800,#A06000);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.submit-wrap{margin-top:8px;padding-bottom:32px}
-.btn-submit{width:100%;padding:16px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:14px;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;opacity:.4;pointer-events:none;transition:opacity .2s}
-.btn-submit.ready{opacity:1;pointer-events:auto}
-.questions-locked .split-layout{opacity:.45;pointer-events:none;user-select:none}
-.questions-locked .section{opacity:.45;pointer-events:none;user-select:none}
-.questions-locked .wq-card{opacity:.45;pointer-events:none;user-select:none}
-.questions-locked .submit-wrap{opacity:.35;pointer-events:none}
-#retry-screen{display:none;background:#fdf6ff;padding:32px 20px;text-align:center}
-.retry-char{font-size:64px;animation:wobble 0.5s ease infinite alternate}
-@keyframes wobble{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
-.retry-score{font-size:28px;font-weight:800;color:#7c3aed;margin:16px 0 8px}
-.retry-msg{font-size:16px;color:#555;margin-bottom:24px}
-.retry-btn{padding:14px 32px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:14px;font-size:18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-#result-screen{display:none;padding:24px 16px;text-align:center;max-width:640px;margin:0 auto}
-.result-char{font-size:72px;margin-bottom:8px}
-.result-title{font-size:24px;font-weight:800;color:#7c3aed;margin-bottom:4px}
-.result-pts{font-size:40px;font-weight:800;color:#1e1b4b;margin:12px 0}
-.result-milestone{font-size:16px;color:#555;margin-bottom:20px}
-.result-breakdown{background:#fff;border:2px solid #c4b5fd;border-radius:14px;padding:16px;margin-bottom:20px;text-align:left}
-.bd-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #ede9fe;font-size:14px}
-.bd-row:last-child{border-bottom:none}
-.bd-score{font-weight:800;color:#7c3aed}
-#setup-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center}
-#setup-screen.show{display:flex}
-.setup-box{background:#fff;border-radius:20px;padding:28px 24px;max-width:360px;width:90%;text-align:center}
-.setup-box h2{font-size:20px;font-weight:800;margin-bottom:8px;color:#7c3aed}
-.setup-box p{font-size:14px;color:#666;margin-bottom:16px;line-height:1.5}
-.setup-input{width:100%;padding:12px;border:2px solid #c4b5fd;border-radius:10px;font-size:14px;font-family:'Nunito',sans-serif;margin-bottom:12px}
-.setup-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.setup-err{color:#DC2626;font-size:13px;margin-top:8px;display:none}
-#tutor-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:50;flex-direction:column}
-#tutor-overlay.show{display:flex}
-.q-strip{background:rgba(0,0,0,.32);padding:14px 16px;flex-shrink:0}
-.q-strip-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;color:#a78bfa}
-.q-strip-text{color:#fff;font-size:15px;font-weight:700;line-height:1.4;margin-bottom:8px}
-.q-strip-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.q-strip-opt{padding:7px 10px;border-radius:8px;font-size:13px;font-weight:600;color:#fff;background:rgba(255,255,255,.1)}
-.q-strip-opt.chosen-wrong{background:rgba(220,38,38,.6)}
-.char-row{padding:12px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.1)}
-.char-emoji{font-size:48px}
-.char-info{flex:1}
-.char-name{color:#fff;font-size:17px;font-weight:800}
-.char-mode{font-size:12px;margin-top:2px;color:#a78bfa}
-.turn-dots{display:flex;gap:3px;margin-top:4px}
-.turn-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)}
-.turn-dot.active{background:#a78bfa}
-.parent-skip{font-size:12px;color:rgba(255,255,255,.6);background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;padding:4px 8px}
-.chat-area{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
-.bubble{max-width:85%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.5}
-.bubble.char{align-self:flex-start;border:1.5px solid rgba(167,139,250,.45);background:rgba(167,139,250,.22);color:#fff}
-.bubble.child{align-self:flex-end;background:rgba(255,255,255,.94);color:#1a1a1a;font-style:italic;font-weight:600}
-.typing{align-self:flex-start;padding:10px 14px}
-.typing span{display:inline-block;width:8px;height:8px;border-radius:50%;background:#a78bfa;animation:bounce 0.8s infinite}
-.typing span:nth-child(2){animation-delay:.15s}
-.typing span:nth-child(3){animation-delay:.3s}
-@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
-.tutor-bottom{flex-shrink:0;padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:10px}
-.got-it-btn{width:100%;padding:14px;background:#7c3aed;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.mic-row{display:flex;align-items:center;justify-content:center;gap:12px}
-.mic-btn{width:72px;height:72px;border-radius:50%;background:#fff;border:3px solid rgba(167,139,250,.45);cursor:pointer;font-size:30px;display:flex;align-items:center;justify-content:center;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.mic-btn.listening{background:#7c3aed;border-color:#7c3aed;box-shadow:0 0 0 8px rgba(124,58,237,.3)}
-.mic-status{font-size:12px;color:rgba(255,255,255,.7)}
-
-.speech-area{display:flex;align-items:flex-end;gap:8px;padding:0 12px 10px;}
-.speech-textarea{flex:1;border-radius:12px;border:2px solid var(--t-border,rgba(255,255,255,.4));background:rgba(255,255,255,.12);color:#fff;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:15px;resize:none;min-height:48px;outline:none;}
-.speech-textarea::placeholder{color:rgba(255,255,255,.45);}
-.speech-textarea:focus{border-color:var(--t-hi,#fff);}
-.speech-send-btn{background:var(--t-hi,#27AE60);color:#fff;border:none;border-radius:12px;padding:0 18px;font-size:15px;font-weight:700;cursor:pointer;min-height:48px;min-width:80px;white-space:nowrap;font-family:'Nunito',sans-serif;}
+.word-section{display:none;padding:14px}
+.word-card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-top:4px solid #7c3aed}
+.wday{font-size:1.3rem;font-weight:900;color:#7c3aed;margin-bottom:4px}
+.wdef{font-size:.85rem;color:#475569;margin-bottom:8px;line-height:1.5}
+.weg{font-size:.83rem;color:#64748b;font-style:italic;border-left:3px solid #7c3aed;padding-left:10px;margin-bottom:12px;line-height:1.5}
+.echo-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--hi),color-mix(in srgb,var(--hi) 70%,#000));color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:8px}
+.rev-block{background:#fff8e1;border:2px solid #f59e0b;border-radius:12px;padding:12px;margin-top:10px;display:none}
+.rev-word{font-size:1.05rem;font-weight:800;color:#92400e;margin-bottom:3px}
+.rev-def{font-size:.8rem;color:#78350f;margin-bottom:8px;line-height:1.4}
+/* Overlay */
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:100;flex-direction:column}
+.overlay.open{display:flex}
+.qstrip{background:rgba(255,255,255,.05);padding:11px 14px;font-size:.8rem;color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,.07);line-height:1.5}
+.wpill{display:inline-block;background:#ef4444;color:#fff;border-radius:20px;padding:2px 9px;font-size:.72rem;font-weight:700;margin-left:5px}
+.crow{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.cemoji{font-size:2.1rem}.cname{font-size:.88rem;font-weight:800;color:#f1f5f9}
+.mbadge{font-size:.68rem;background:var(--lite);color:var(--hi);border:1px solid var(--bd);border-radius:20px;padding:2px 8px;font-weight:700}
+.tdots{display:flex;gap:4px;margin-left:auto}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)}.dot.d{background:var(--hi)}
+.skip-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#94a3b8;border-radius:8px;padding:4px 9px;font-size:.72rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.chat{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+.bub{max-width:83%;padding:10px 13px;border-radius:14px;font-size:.85rem;line-height:1.55}
+.bub.e{align-self:flex-start;background:var(--lite);border:1px solid var(--bd);color:#f1f5f9}
+.bub.c{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700;font-style:italic}
+.typing{display:flex;gap:5px;align-items:center;padding:8px 12px}
+.typing span{width:8px;height:8px;border-radius:50%;background:var(--hi);animation:bop .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+.tbot{padding:10px 14px;border-top:1px solid rgba(255,255,255,.07)}
+.git-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--hi),color-mix(in srgb,var(--hi) 72%,#000));color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:7px}
+.sarea{display:flex;gap:7px;margin-bottom:5px}
+.stxt{flex:1;padding:8px 10px;border-radius:9px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.83rem;resize:none}
+.ssend{padding:8px 13px;background:var(--hi);color:#fff;border:none;border-radius:9px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.82rem;white-space:nowrap}
+.mrow{display:flex;align-items:center;gap:7px}
+.mstat{font-size:.72rem;color:#94a3b8;flex:1}
+.mbtn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#f1f5f9;border-radius:8px;padding:6px 11px;font-size:.78rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.mbtn.listening{background:rgba(239,68,68,.18);border-color:#ef4444;color:#fca5a5}
+.setup{display:none;position:fixed;inset:0;background:rgba(15,15,30,.98);z-index:200;align-items:center;justify-content:center;flex-direction:column;padding:24px}
+.setup.show{display:flex}
+.scard{background:#1e293b;border-radius:18px;padding:22px;max-width:340px;width:100%;text-align:center}
+.scard h2{color:#f1f5f9;font-size:1rem;margin-bottom:6px}
+.scard p{color:#94a3b8;font-size:.8rem;margin-bottom:14px;line-height:1.5}
+.kinput{width:100%;padding:9px;border-radius:9px;border:1.5px solid #334155;background:#0f172a;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.83rem;margin-bottom:8px}
+.ksave{width:100%;padding:11px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:9px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.kerr{color:#f87171;font-size:.78rem;margin-top:5px;display:none}
 </style>
 </head>
 <body>
-
-<div id="setup-screen">
-  <div class="setup-box">
-    <h2>🔑 Enter API Key</h2>
-    <p>Ask a parent to enter the Anthropic API key to activate the helper!</p>
-    <input class="setup-input" id="key-input" type="password" placeholder="sk-ant-...">
-    <button class="setup-btn" onclick="saveKey()">Save &amp; Start ▶</button>
-    <div class="setup-err" id="key-err">That doesn't look right — key should start with sk-</div>
-  </div>
+<div class="setup" id="setup"><div class="scard"><h2>Echo needs your key</h2><p>Ask a parent to enter the Anthropic API key once.</p><input class="kinput" id="kinput" type="password" placeholder="sk-ant-..."><button class="ksave" onclick="saveKey()">Save and start</button><div class="kerr" id="kerr">That key looks wrong. Try again.</div></div></div>
+<div class="overlay" id="overlay">
+  <div class="qstrip" id="qstrip"></div>
+  <div class="crow"><span class="cemoji" id="cemoji"></span><span class="cname" id="cname"></span><span class="mbadge" id="mbadge">✍️ Think it through!</span><div class="tdots" id="tdots"></div><button class="skip-btn" onclick="parentSkip()">✓ Skip</button></div>
+  <div class="chat" id="chat"></div>
+  <div class="tbot"><button class="git-btn" onclick="gotIt()">Got it! ✓</button><div class="sarea"><textarea class="stxt" id="speech-text" placeholder="Speak or type your answer here…" rows="2"></textarea><button class="ssend" onclick="submitSpeech()">Send ➤</button></div><div class="mrow"><div class="mstat" id="mstat">Tap 🎤 Speak, wait 2 secs…</div><button class="mbtn" id="mbtn" onclick="toggleMic()">🎤 Speak</button></div></div>
 </div>
-
-<div class="header">
-  <div>
-    <div style="font-size:18px;font-weight:800">⭐ IL — Week 21 · Saturday</div>
-    <div class="sub">Story + Questions + Writing</div>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px">
-    <div class="pts-bar">
-      <span id="hdr-pts">240</span>
-      <div class="pts-track"><div class="pts-fill" id="pts-fill" style="width:0%"></div></div>
+<div class="hdr"><div><h1>Saturday — Weekend Challenge</h1><p>Week 21 · IL · Read and think carefully!</p></div><div class="hdr-r"><div class="pts" id="pts-badge">… pts</div><span class="char-av" id="char-av">🐍</span><button class="key-btn" onclick="clearKey()">⚙ Key</button></div></div>
+<div class="rw">
+  <div class="rc">
+    <div class="rh" onclick="toggleRules()"><h2>⚠️ WATCH OUT FOR THESE</h2><span id="rh-arrow">▼ tap to read</span></div>
+    <div class="rb" id="rb">
+      <div class="rtip"><strong>Reading questions:</strong> Read the story twice before you answer. Look for clues in the words.</div>
+      <div class="rtip"><strong>Writing questions:</strong> Write at least one full sentence. Echo will help you make it even better!</div>
+      <button class="rgo" onclick="markRulesRead()">I've read this — let's go! 🚀</button>
     </div>
-    <button class="key-btn" onclick="resetKey()">⚙ Key</button>
   </div>
 </div>
-
-<div class="main">
-
-<div class="rules-card" id="rules-card">
-  <div class="rules-header">⚠️ WATCH OUT FOR THESE</div>
-  <div class="rules-sub">Read the story carefully — the answers are hiding in it!</div>
-  <div class="rule-item">📖 <strong>Reading tip:</strong> Read the whole story first before you answer any questions. Then read each question slowly and look back at the story to find the answer!</div>
-  <div class="rule-item">✍️ <strong>Writing tip:</strong> For the writing questions, there are no right or wrong ideas — just say what YOU think! Use full sentences and try to explain your answer.</div>
-  <button class="rules-btn" onclick="markRulesRead()">I've read this — let's go! 🚀</button>
-</div>
-<div class="rules-done" id="rules-done">✅ Tips noted — let's go!</div>
-
-<div id="exercise" class="questions-locked">
-
-<!-- TWO-COLUMN LAYOUT -->
-<div class="split-layout">
+<div class="ex-wrap" id="ex-wrap" style="pointer-events:none;opacity:.45">
   <div class="passage-col">
-    <div class="col-header ph">📖 READ — scroll here</div>
-    <div class="passage-body">
-      <div class="passage-title">Ember the Baking Dragon</div>
-      <p>Deep in the Cinnamon Hills, there lived a dragon named Ember. Unlike other dragons, Ember did not breathe fire — she breathed warm cinnamon-scented air, which was perfect for baking.</p>
-      <br>
-      <p>Every morning, Ember shaped ginger biscuits from a huge bowl of dough, then huffed gently over them to bake them golden. The whole hillside smelled wonderful.</p>
-      <br>
-      <p>One afternoon, a traveller stumbled into her cave. He was cold and frightened, and his teeth were chattering.</p>
-      <br>
-      <p>"A dragon!" he gasped, pressing himself against the wall.</p>
-      <br>
-      <p>Ember blinked slowly. Then she gave him a smoky smile and set a cup of chamomile tea and a warm ginger biscuit on the stone beside him.</p>
-      <br>
-      <p>The traveller stared. He looked at the biscuit. He looked at the dragon. Slowly, he reached out and took a bite.</p>
-      <br>
-      <p>"Oh," he said. "Oh, that's wonderful."</p>
-      <br>
-      <p>Ember puffed a small cloud of cinnamon smoke and went back to her baking.</p>
-      <div class="passage-source">~160 words · Original practice passage written for this exercise · Not from a published source · For reading practice only</div>
+    <div class="passage-card">
+      <h3>📖 Max Finds a Treasure</h3>
+      <div class="passage-text">
+        Max the dog loved the park. One sunny morning, Max was digging near the big oak tree when his paw hit something hard. He barked loudly and his owner, Sam, came running.<br><br>
+        Sam knelt down and brushed away the soil with her hands. Underneath was a small tin box. It was rusty and old, with a picture of a ship on the lid.<br><br>
+        Sam opened the box carefully. Inside were five old coins and a tiny piece of paper with a drawing on it.<br><br>
+        <em>"It's a map!"</em> said Sam.<br><br>
+        Max wagged his tail and jumped up, barking happily. He did not know what a map was, but Sam's excitement was catching.
+      </div>
     </div>
   </div>
-
-  <div class="questions-col">
-    <div class="col-header qh">✏️ Questions — scroll here</div>
-
-    <div class="section" style="margin:8px;border-radius:10px">
-      <div class="sec-head comp" style="border-radius:10px 10px 0 0">📝 Questions 1–5</div>
-
-      <div class="q-block" id="qb-0">
-        <div class="q-num">Q1</div>
-        <div class="q-text">What does Ember bake every morning?</div>
-        <div class="opts" id="opts-0">
-          <div class="opt" onclick="answer(0,'A')"><span class="ltr">A</span>Chocolate cake</div>
-          <div class="opt" onclick="answer(0,'B')"><span class="ltr">B</span>Ginger biscuits</div>
-          <div class="opt" onclick="answer(0,'C')"><span class="ltr">C</span>Cinnamon rolls</div>
-          <div class="opt" onclick="answer(0,'D')"><span class="ltr">D</span>Fruit scones</div>
-        </div>
-      </div>
-
-      <div class="q-block" id="qb-1">
-        <div class="q-num">Q2</div>
-        <div class="q-text">What did Ember give the cold traveller?</div>
-        <div class="opts" id="opts-1">
-          <div class="opt" onclick="answer(1,'A')"><span class="ltr">A</span>A blanket and soup</div>
-          <div class="opt" onclick="answer(1,'B')"><span class="ltr">B</span>A warm jacket</div>
-          <div class="opt" onclick="answer(1,'C')"><span class="ltr">C</span>Tea and a biscuit</div>
-          <div class="opt" onclick="answer(1,'D')"><span class="ltr">D</span>A map and money</div>
-        </div>
-      </div>
-
-      <div class="q-block" id="qb-2">
-        <div class="q-num">Q3</div>
-        <div class="q-text">The traveller was cold and his teeth were chattering. How was he feeling?</div>
-        <div class="opts" id="opts-2">
-          <div class="opt" onclick="answer(2,'A')"><span class="ltr">A</span>Angry and upset</div>
-          <div class="opt" onclick="answer(2,'B')"><span class="ltr">B</span>Excited and curious</div>
-          <div class="opt" onclick="answer(2,'C')"><span class="ltr">C</span>Scared and uncomfortable</div>
-          <div class="opt" onclick="answer(2,'D')"><span class="ltr">D</span>Calm and happy</div>
-        </div>
-      </div>
-
-      <div class="q-block" id="qb-3">
-        <div class="q-num">Q4</div>
-        <div class="q-text">Ember gave the traveller a smoky smile. How was Ember most likely feeling?</div>
-        <div class="opts" id="opts-3">
-          <div class="opt" onclick="answer(3,'A')"><span class="ltr">A</span>Frightened of the traveller</div>
-          <div class="opt" onclick="answer(3,'B')"><span class="ltr">B</span>Pleased and amused</div>
-          <div class="opt" onclick="answer(3,'C')"><span class="ltr">C</span>Very sad and lonely</div>
-          <div class="opt" onclick="answer(3,'D')"><span class="ltr">D</span>Angry and cross</div>
-        </div>
-      </div>
-
-      <div class="q-block" id="qb-4">
-        <div class="q-num">Q5</div>
-        <div class="q-text">"Unlike other dragons" — why does the author begin the story this way?</div>
-        <div class="opts" id="opts-4">
-          <div class="opt" onclick="answer(4,'A')"><span class="ltr">A</span>To show that Ember is dangerous</div>
-          <div class="opt" onclick="answer(4,'B')"><span class="ltr">B</span>To make us curious about what makes Ember different</div>
-          <div class="opt" onclick="answer(4,'C')"><span class="ltr">C</span>To tell us exactly where Ember lives</div>
-          <div class="opt" onclick="answer(4,'D')"><span class="ltr">D</span>To explain why dragons breathe fire</div>
-        </div>
-      </div>
-
-    </div>
+  <div class="qs-col">
+    <div id="qs-main"></div>
   </div>
 </div>
-
-<!-- WRITING SECTION -->
-<div class="section">
-  <div class="sec-head writing">✍️ Writing Questions 6–8 — Chat with the AI helper!</div>
-
-  <div class="wq-card wq-active" id="wq-0">
-    <div class="wq-header">
-      <div class="wq-num">6</div>
-      <div class="wq-type">Finding it in the story</div>
-      <div class="wq-att" id="wq-att-0">0 / 5</div>
-    </div>
-    <div class="wq-question">What did Ember bake every morning? Look carefully in the story.</div>
+<!-- Writing questions -->
+<div class="wq-section" id="wq-section" style="pointer-events:none;opacity:.45">
+  <div class="wq-card show" id="wq-0">
+    <div class="wq-label">✍️ Writing Question 1 of 3</div>
+    <div class="wq-prompt">Write ONE sentence describing what the tin box looked like.</div>
     <div class="wq-chat" id="wq-chat-0"></div>
-    <div class="wq-input-row" id="wq-area-0">
-      <input class="wq-input" id="wq-inp-0" placeholder="Type your answer here..." onkeydown="if(event.key==='Enter')wqSend(0)">
-      <button class="wq-mic" onclick="wqMic(0)">🎤</button>
-      <button class="wq-send" onclick="wqSend(0)">Send →</button>
-    </div>
-    <div class="wq-done-badge" id="wq-done-0">✓ Well done! Question 7 unlocked!</div>
+    <div class="wq-input" id="wq-input-0"><textarea class="wq-ta" id="wq-ta-0" placeholder="Write your sentence here…" rows="2"></textarea><button class="wq-send" onclick="sendWQ(0)">Send ➤</button></div>
+    <div class="wq-done" id="wq-done-0">✅ Great — next question unlocked!</div>
   </div>
-
-  <div class="wq-card wq-locked" id="wq-1">
-    <div class="wq-header">
-      <div class="wq-num">7</div>
-      <div class="wq-type">What do you think?</div>
-      <div class="wq-att" id="wq-att-1">0 / 5</div>
-    </div>
-    <div class="wq-question">Why do you think the traveller was surprised when he met Ember?</div>
+  <div class="wq-card" id="wq-1">
+    <div class="wq-label">✍️ Writing Question 2 of 3</div>
+    <div class="wq-prompt">Sam said "It's a map!" — write one sentence about how you think she felt when she saw it.</div>
     <div class="wq-chat" id="wq-chat-1"></div>
-    <div class="wq-input-row" id="wq-area-1">
-      <input class="wq-input" id="wq-inp-1" placeholder="Type your answer here..." onkeydown="if(event.key==='Enter')wqSend(1)">
-      <button class="wq-mic" onclick="wqMic(1)">🎤</button>
-      <button class="wq-send" onclick="wqSend(1)">Send →</button>
-    </div>
-    <div class="wq-done-badge" id="wq-done-1">✓ Brilliant thinking! Question 8 unlocked!</div>
+    <div class="wq-input" id="wq-input-1"><textarea class="wq-ta" id="wq-ta-1" placeholder="Write your sentence here…" rows="2"></textarea><button class="wq-send" onclick="sendWQ(1)">Send ➤</button></div>
+    <div class="wq-done" id="wq-done-1">✅ Brilliant — one more to go!</div>
   </div>
-
-  <div class="wq-card wq-locked" id="wq-2">
-    <div class="wq-header">
-      <div class="wq-num">8</div>
-      <div class="wq-type">Your ideas!</div>
-      <div class="wq-att" id="wq-att-2">0 / 5</div>
-    </div>
-    <div class="wq-question">What would you ask Ember if you visited her cave? Write one question you would ask her.</div>
+  <div class="wq-card" id="wq-2">
+    <div class="wq-label">✍️ Writing Question 3 of 3</div>
+    <div class="wq-prompt">Write one sentence about what you think Sam and Max might do next.</div>
     <div class="wq-chat" id="wq-chat-2"></div>
-    <div class="wq-input-row" id="wq-area-2">
-      <input class="wq-input" id="wq-inp-2" placeholder="Write your question here..." onkeydown="if(event.key==='Enter')wqSend(2)">
-      <button class="wq-mic" onclick="wqMic(2)">🎤</button>
-      <button class="wq-send" onclick="wqSend(2)">Send →</button>
-    </div>
-    <div class="wq-done-badge" id="wq-done-2">✓ Amazing! All done!</div>
+    <div class="wq-input" id="wq-input-2"><textarea class="wq-ta" id="wq-ta-2" placeholder="Write your sentence here…" rows="2"></textarea><button class="wq-send" onclick="sendWQ(2)">Send ➤</button></div>
+    <div class="wq-done" id="wq-done-2">✅ All three done — amazing writing!</div>
   </div>
 </div>
-
-<!-- WORD OF DAY -->
-<div class="section">
-  <div class="sec-head word">⭐ Word of the Day</div>
+<div class="sub-bar"><button class="sub-btn" id="sub-btn" onclick="handleSubmit()" disabled>Submit my answers ✓</button></div>
+<div class="result" id="result"><div class="res-emoji" id="res-emoji">🌟</div><div class="res-score" id="res-score"></div><div class="res-msg" id="res-msg"></div></div>
+<div class="word-section" id="word-section">
   <div class="word-card">
-    <div class="word-title">sparkle</div>
-    <div class="word-def"><strong>Verb or noun</strong> — to shine with many small flashes of light; a small bright flash of light.</div>
-    <div class="word-eg">"The fairy dust made everything it touched sparkle with a magical golden light."</div>
-    <button class="word-btn" onclick="dictReady()">I am ready! 📖</button>
+    <div class="wday">determined</div>
+    <div class="wdef">Adjective — having made up your mind firmly and not giving up.</div>
+    <div class="weg">"Max was determined to keep digging until he found what was hiding underground."</div>
+    <button class="echo-btn" id="echo-dict-btn" onclick="openDictOverlay()">Ask Echo about this word 🐍</button>
+    <div id="rev-block" class="rev-block"></div>
   </div>
 </div>
-
-<div class="submit-wrap">
-  <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">Check my answers ✓</button>
-</div>
-
-</div>
-
-<div id="retry-screen">
-  <div class="retry-char" id="retry-char">😅</div>
-  <div class="retry-score" id="retry-score"></div>
-  <div class="retry-msg">Nearly there! Have another go at the reading questions!</div>
-  <button class="retry-btn" onclick="retryExercise()">Try again! →</button>
-</div>
-<div id="result-screen"></div>
-
-</div>
-
-<!-- MCQ TUTOR OVERLAY -->
-<div id="tutor-overlay">
-  <div class="q-strip" id="q-strip">
-    <div class="q-strip-label" id="strip-label">QUESTION</div>
-    <div class="q-strip-text" id="strip-text"></div>
-    <div class="q-strip-opts" id="strip-opts"></div>
-  </div>
-  <div class="char-row">
-    <div class="char-emoji" id="char-emoji"></div>
-    <div class="char-info">
-      <div class="char-name" id="char-name"></div>
-      <div class="char-mode" id="char-mode"></div>
-      <div class="turn-dots" id="turn-dots"></div>
-    </div>
-    <button class="parent-skip" onclick="closeTutor()">✓ Skip</button>
-  </div>
-  <div class="chat-area" id="chat-area"></div>
-  <div class="tutor-bottom">
-    <button class="got-it-btn" onclick="gotIt()">Got it! ✓</button>
-    <div class="speech-area">
-      <textarea class="speech-textarea" id="speech-text" placeholder="Speak or type your answer here…" rows="2"></textarea>
-      <button class="speech-send-btn" onclick="submitSpeech()">Send ➤</button>
-    </div>
-    <div class="mic-row">
-      <div class="mic-status" id="mic-status">Tap 🎤 Speak, wait 2 secs…</div>
-      <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎤</button>
-    </div>
-  </div>
-</div>
-
 <script>
-const CHILD='IL',DAY='Saturday',WEEK=21;
+const CHILD='IL',DAY='Saturday',WEEK=21,POINTS_EARNED=8;
 const WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-const PTS_KEY='pts_IL',BASE_PTS=240;
-const TOTAL_QS=5,PASS_SCORE=4,POINTS_EARNED=8;
-const WQ_MAX=5;
+const PTS_KEY='pts_IL',BASE_PTS=240,TOTAL_QS=5,PASS_SCORE=4;
+const DICT_WORD='determined',DICT_DEF='Adjective — having made up your mind firmly and not giving up.',DICT_EG='Max was determined to keep digging until he found what was hiding underground.';
 
 const QUESTIONS={
-  0:{section:'Comprehension',code:'E5.1',correct:'B',text:'What does Ember bake every morning?',opts:{A:'Chocolate cake',B:'Ginger biscuits',C:'Cinnamon rolls',D:'Fruit scones'}},
-  1:{section:'Comprehension',code:'E5.1',correct:'C',text:'What did Ember give the cold traveller?',opts:{A:'A blanket and soup',B:'A warm jacket',C:'Tea and a biscuit',D:'A map and money'}},
-  2:{section:'Comprehension',code:'E5.2',correct:'C',text:'The traveller was cold and his teeth were chattering. How was he feeling?',opts:{A:'Angry and upset',B:'Excited and curious',C:'Scared and uncomfortable',D:'Calm and happy'}},
-  3:{section:'Comprehension',code:'E5.2',correct:'B',text:'Ember gave the traveller a smoky smile. How was Ember most likely feeling?',opts:{A:'Frightened of the traveller',B:'Pleased and amused',C:'Very sad and lonely',D:'Angry and cross'}},
-  4:{section:'Comprehension',code:'E5.4',correct:'B',text:'Unlike other dragons — why does the author begin the story this way?',opts:{A:'To show that Ember is dangerous',B:'To make us curious about what makes Ember different',C:'To tell us exactly where Ember lives',D:'To explain why dragons breathe fire'}},
+  0:{code:'E5.1',correct:'C',star:false,text:'Where was Max digging?',opts:{A:'In the garden',B:'Under a bench',C:'Near the big oak tree',D:'In the flower beds'}},
+  1:{code:'E5.1',correct:'B',star:false,text:'What was inside the tin box?',opts:{A:'Gold rings and jewels',B:'Five old coins and a tiny map',C:'Old photographs',D:'Letters from a friend'}},
+  2:{code:'E5.2',correct:'C',star:false,text:'Why do you think Max barked loudly when his paw hit the box?',opts:{A:'He was frightened of the tree',B:'He was hurt by the hard box',C:'He was surprised and wanted to tell Sam',D:'He did not like digging'}},
+  3:{code:'E5.2',correct:'B',star:true,text:'What does "catching" mean in this story? "Sam\'s excitement was catching."',opts:{A:'Something you catch when you are ill',B:'Something that spreads from one person to another, like happiness',C:'Something that is very old',D:'Something hidden underground'}},
+  4:{code:'E5.4',correct:'C',star:false,text:'Why does the author tell us Max did not know what a map was?',opts:{A:'To show Max is not very clever',B:'To explain what a map is to the reader',C:'To make it funny and show how Sam and Max share the excitement differently',D:'To tell us maps are old-fashioned'}},
 };
 
-const WRITING_QS=[
-  {id:0,text:'What did Ember bake every morning? Look carefully in the story.',ref:'Ginger biscuits',type:'retrieval'},
-  {id:1,text:'Why do you think the traveller was surprised when he met Ember?',ref:'Because he expected a dangerous dragon but found she was kind and offered him tea and a biscuit',type:'inference'},
-  {id:2,text:'What would you ask Ember if you visited her cave? Write one question.',ref:'Any genuine question about Ember or her baking',type:'creative'},
-];
-
-let answers={},firstAttempt=null,attemptNumber=0;
-let tutorTurns={},strugglingQs=new Set();
-let wqAttempts=[0,0,0],wqDone=[false,false,false];
-let currentTutorQ=null,micActive=false,recognition=null;
-let wqMicActive=[false,false,false],wqRecognition=[null,null,null];
-let ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';
-
-if(!ANTHROPIC_KEY)document.getElementById('setup-screen').classList.add('show');
-function saveKey(){const v=document.getElementById('key-input').value.trim();if(!v.startsWith('sk-')){document.getElementById('key-err').style.display='block';return;}ANTHROPIC_KEY=v;localStorage.setItem('anthropic_key_v1',v);document.getElementById('setup-screen').classList.remove('show');}
-function resetKey(){localStorage.removeItem('anthropic_key_v1');ANTHROPIC_KEY='';document.getElementById('setup-screen').classList.add('show');}
-
-let currentPts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
-function updatePtsBar(){document.getElementById('hdr-pts').textContent=currentPts;const ms=[40,190,340,830,1800,2800,4000];let lo=0,hi=ms[0];for(let i=0;i<ms.length;i++){if(currentPts>=ms[i]){lo=ms[i];hi=ms[i+1]||ms[i]+200;}}const pct=Math.min(100,Math.round((currentPts-lo)/(hi-lo)*100));document.getElementById('pts-fill').style.width=pct+'%';}
-updatePtsBar();
-
-const _today=new Date().toISOString().slice(0,10);
-let _ck=localStorage.getItem('char_date')===_today?localStorage.getItem('char_key'):null;
-if(!_ck){_ck=Math.random()>0.5?'snake':'shark';localStorage.setItem('char_key',_ck);localStorage.setItem('char_date',_today);}
 const CHARS={
-  snake:{key:'snake',emoji:'🐍',name:'Ssssam',rate:0.92,pitch:0.95,gotIt:"Sssuper!",personality:'You are Ssssam the Snake. Warm, encouraging. Simple words only. You occasionally slip a soft sss sound. NEVER use emoji. NEVER use * or ** in your reply. No markdown. Plain spoken words only. Max 70 words.'},
-  shark:{key:'shark',emoji:'🦈',name:'Finn',rate:0.98,pitch:1.02,gotIt:"Fin-tastic!",personality:'You are Finn the Shark. Energetic, celebratory. You say Splashing great and Fin-tastic. NEVER use emoji. NEVER use * or ** in your reply. No markdown. Plain spoken words only. Max 70 words.'}
+  snake:{key:'snake',name:'Ssssam',emoji:'🐍',gotIt:"Sssuper! That's ssso good!",pers:'You are Ssssam the Snake. Warm, encouraging. Simple words only for a 7-year-old. Occasional soft sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only. Max 70 words.'},
+  shark:{key:'shark',name:'Finn',emoji:'🦈',gotIt:"Fin-tastic! Well done!",pers:'You are Finn the Shark. Energetic, celebratory. Simple words only for a 7-year-old. Say Splashing great, Fin-tastic. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only. Max 70 words.'},
 };
-const CHAR=CHARS[_ck];
-document.getElementById('char-emoji').textContent=CHAR.emoji;
-document.getElementById('char-name').textContent=CHAR.name;
+let CHAR=CHARS.snake;
+let answers={},firstAttempt=null,overlayOpen=false,currentQIdx=-1,currentTurn=0,convHistory=[],tutorTurns={},strugglingQs=new Set(),rulesRead=false;
+let wqDone=[false,false,false],wqAttempts=[0,0,0];
+let ANTHROPIC_KEY='',_cachedVoice=null,recognition=null,micActive=false;
+let dictConvHistory=[],dictTurn=0;
 
-let _cachedVoice=null;
 const _PREF=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha'];
-function _pickVoice(){const vs=window.speechSynthesis.getVoices();if(!vs.length)return;for(const n of _PREF){const v=vs.find(x=>x.name===n);if(v){_cachedVoice=v;return;}}_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||vs[0];}
-window.speechSynthesis.onvoiceschanged=_pickVoice;_pickVoice();
-
+window.speechSynthesis.onvoiceschanged=()=>{const vs=window.speechSynthesis.getVoices();for(const n of _PREF){const v=vs.find(x=>x.name.startsWith(n)&&x.lang.startsWith('en'));if(v){_cachedVoice=v;break;}}if(!_cachedVoice)_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||null;};
 function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
-function speak(text){if(!text)return;try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const utt=new SpeechSynthesisUtterance(text);if(_cachedVoice)utt.voice=_cachedVoice;utt.rate=CHAR.rate;utt.pitch=CHAR.pitch;utt.volume=1;utt.onend=()=>{try{const kp=new SpeechSynthesisUtterance('\u00A0');kp.volume=0.01;kp.rate=16;window.speechSynthesis.speak(kp);}catch(e){}};utt.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(utt),250);};window.speechSynthesis.speak(utt);},120);}
+function speak(text){if(!text)return;try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const u=new SpeechSynthesisUtterance(text);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?0.92:0.98;u.pitch=CHAR.key==='snake'?0.95:1.02;u.volume=1;u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};window.speechSynthesis.speak(u);},120);}
 
-function markRulesRead(){_iosWarm();document.getElementById('rules-card').style.display='none';document.getElementById('rules-done').style.display='block';document.getElementById('exercise').classList.remove('questions-locked');setTimeout(()=>document.getElementById('qb-0').scrollIntoView({behavior:'smooth'}),100);}
+function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;document.getElementById('speech-text').focus();};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — type below':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
+function submitSpeech(){const t=document.getElementById('speech-text').value.trim();if(!t)return;document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';if(currentQIdx===-1){sendDictReply(t);}else{sendTutorReply(t);}}
 
-function answer(qIdx,choice){_iosWarm();if(answers[qIdx]!==undefined)return;answers[qIdx]=choice;const q=QUESTIONS[qIdx];const optsEl=document.getElementById('opts-'+qIdx);Array.from(optsEl.children).forEach(el=>el.classList.add('disabled'));const chosen=optsEl.children[['A','B','C','D'].indexOf(choice)];if(choice===q.correct){chosen.classList.add('correct');}else{chosen.classList.add('wrong');optsEl.children[['A','B','C','D'].indexOf(q.correct)].classList.add('correct');if(!firstAttempt)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};showTutor(qIdx,choice);}if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};checkAllAnswered();}
-
-function checkAllAnswered(){const mcqDone=Object.keys(answers).length===TOTAL_QS;const wqAllDone=wqDone.every(d=>d);const allDone=mcqDone&&wqAllDone;const btn=document.getElementById('btn-submit');const hasKey=!!(ANTHROPIC_KEY&&ANTHROPIC_KEY.startsWith('sk-'));if(allDone&&!hasKey){btn.textContent='⚙ Enter API key first';btn.classList.remove('ready');return;}if(allDone)btn.classList.add('ready');}
-
-// MCQ tutor
-function showTutor(qIdx,chosenWrong){currentTutorQ=qIdx;if(!tutorTurns[qIdx])tutorTurns[qIdx]=0;const q=QUESTIONS[qIdx];document.getElementById('strip-text').textContent=q.text;document.getElementById('strip-label').textContent='Q'+(qIdx+1);const so=document.getElementById('strip-opts');so.innerHTML='';['A','B','C','D'].forEach(l=>{const d=document.createElement('div');d.className='q-strip-opt'+(l===chosenWrong?' chosen-wrong':'');d.textContent=l+': '+q.opts[l];so.appendChild(d);});document.getElementById('char-mode').textContent='✍ What do you think?';renderDots(tutorTurns[qIdx]);document.getElementById('chat-area').innerHTML='';document.getElementById('tutor-overlay').classList.add('show');callAI(qIdx);}
-
-function renderDots(n){const td=document.getElementById('turn-dots');td.innerHTML='';for(let i=0;i<14;i++){const d=document.createElement('div');d.className='turn-dot'+(i<n?' active':'');td.appendChild(d);}}
-
-async function callAI(qIdx){_iosWarm();const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;const prompt=`${CHAR.personality}\nABSOLUTE RULE — FIRST REPLY ONLY: Start with ONE short funny joke about the topic. Then help. Plain simple English. Max 70 words. NEVER say: wrong, incorrect, mistake. NEVER use emoji. NEVER use * or **. No markdown. Write as you speak aloud. Vary your joke format — use puns, What do you call, What did X say to Y, or Why did. NEVER use Why did every single time. ★ Each turn use a DIFFERENT angle.\nThis is a STORY question about Ember the dragon. Question: "${q.text}" Options: ${optsStr}. Right answer: ${q.correct} = "${q.opts[q.correct]}". [Turn ${turn}] Story summary: Ember is a dragon who bakes ginger biscuits. A cold traveller finds her cave and is surprised when she gives him tea and a biscuit instead of being scary. First: joke then ONE simple question to help the child find the answer in the story. Do not reveal the answer yet.`;
-const chatArea=document.getElementById('chat-area');const typing=document.createElement('div');typing.className='typing';typing.innerHTML='<span></span><span></span><span></span>';chatArea.appendChild(typing);chatArea.scrollTop=chatArea.scrollHeight;
-try{const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:prompt,messages:[{role:'user',content:'Hello!'}]})});if(resp.status===401){showKeyError();return;}const data=await resp.json();const text=data.content&&data.content[0]?data.content[0].text:"Let's look at the story together!";typing.remove();addBubble(text,'char');speak(text);tutorTurns[qIdx]=(tutorTurns[qIdx]||0)+1;renderDots(tutorTurns[qIdx]);}catch(e){typing.remove();addBubble("Let's try together!",'char');}}
-
-async function sendTutorReply(text){_iosWarm();const qIdx=currentTutorQ;addBubble(text,'child');const chatArea=document.getElementById('chat-area');const typing=document.createElement('div');typing.className='typing';typing.innerHTML='<span></span><span></span><span></span>';chatArea.appendChild(typing);chatArea.scrollTop=chatArea.scrollHeight;const q=QUESTIONS[qIdx];const optsStr=`A: ${q.opts.A}, B: ${q.opts.B}, C: ${q.opts.C}, D: ${q.opts.D}`;const turn=(tutorTurns[qIdx]||0)+1;const prompt=`${CHAR.personality}\nPlain simple English. Max 70 words. NEVER say: wrong, mistake. ★ Each turn DIFFERENT angle.\nStory question about Ember the baking dragon. Question: "${q.text}" Options: ${optsStr}. Right answer: ${q.correct} = "${q.opts[q.correct]}". [Turn ${turn}] Guide the child closer. After 2 turns, reveal the answer gently.`;const msgs=[{role:'user',content:'Hello!'},{role:'assistant',content:chatArea.querySelectorAll('.bubble.char')[0]?.textContent||''}];chatArea.querySelectorAll('.bubble').forEach((b,i)=>{if(i>0)msgs.push({role:b.classList.contains('char')?'assistant':'user',content:b.textContent});});try{const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:prompt,messages:msgs})});const data=await resp.json();const reply=data.content&&data.content[0]?data.content[0].text:'Great try!';typing.remove();addBubble(reply,'char');speak(reply);tutorTurns[qIdx]=(tutorTurns[qIdx]||0)+1;renderDots(tutorTurns[qIdx]);}catch(e){typing.remove();addBubble("You're doing great!",'char');}}
-
-function addBubble(text,type){const chatArea=document.getElementById('chat-area');const b=document.createElement('div');b.className='bubble '+type;b.textContent=text;chatArea.appendChild(b);chatArea.scrollTop=chatArea.scrollHeight;}
-function showKeyError(){localStorage.removeItem('anthropic_key_v1');ANTHROPIC_KEY='';document.getElementById('tutor-overlay').classList.remove('show');document.getElementById('setup-screen').classList.add('show');document.getElementById('key-err').style.display='block';document.getElementById('key-err').textContent='API key rejected — please re-enter.';}
-function closeTutor(){window.speechSynthesis.cancel();if(recognition)recognition.stop();document.getElementById('tutor-overlay').classList.remove('show');micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';const _st=document.getElementById('speech-text');if(_st)_st.value='';}
-function gotIt(){speak(CHAR.gotIt);setTimeout(closeTutor,1800);}
-
-// WRITING QUESTIONS
-async function wqSend(wqIdx){
-  _iosWarm();
-  const inp=document.getElementById('wq-inp-'+wqIdx);
-  const text=inp.value.trim();
-  if(!text)return;
-  inp.value='';
-  wqAttempts[wqIdx]++;
-  document.getElementById('wq-att-'+wqIdx).textContent=wqAttempts[wqIdx]+' / '+WQ_MAX;
-  // Add child bubble
-  const chat=document.getElementById('wq-chat-'+wqIdx);
-  const cb=document.createElement('div');cb.className='wq-bubble child';cb.textContent=text;chat.appendChild(cb);chat.scrollTop=chat.scrollHeight;
-  // Typing
-  const typing=document.createElement('div');typing.className='wq-typing';typing.innerHTML='<span></span><span></span><span></span>';chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
-  const q=WRITING_QS[wqIdx];
-  const attempt=wqAttempts[wqIdx];
-  const prompt=`${CHAR.personality}\nABSOLUTE RULE — FIRST REPLY ONLY: ONE short funny joke about the story topic. Then evaluate.\nPlain simple English. Max 70 words. NEVER say: wrong, incorrect, mistake.\nYou are helping a 7-year-old answer a question about Ember the baking dragon.\nAttempt ${attempt} of ${WQ_MAX}.\nQuestion: "${q.text}"\nReference answer (your eyes only, reveal ONLY on attempt ${WQ_MAX}): "${q.ref}"\nChild's answer: "${text}"\n${q.type==='creative'?'Any genuine question with a question mark = CORRECT. Celebrate warmly!':'Attempt 1-2: Correct → celebrate BIG. Wrong → praise + ONE specific hint.\nAttempt 3-4: Stronger hint. Look at the part of the story that mentions...\nAttempt 5: Reveal gently: The answer is '+q.ref+'.'}\nSignal CORRECT using: Yes!, Correct!, Well done!, Brilliant!, Exactly!, Spot on!`;
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:prompt,messages:[{role:'user',content:text}]})});
-    if(resp.status===401){showKeyError();return;}
-    const data=await resp.json();
-    const reply=data.content&&data.content[0]?data.content[0].text:'Amazing try!';
-    typing.remove();
-    const rb=document.createElement('div');rb.className='wq-bubble char';rb.textContent=reply;chat.appendChild(rb);chat.scrollTop=chat.scrollHeight;
-    speak(reply);
-    // Check if correct
-    const correctWords=['Yes!','Correct!','Well done!','Brilliant!','Exactly!','Spot on!','Perfect!'];
-    const isCorrect=correctWords.some(w=>reply.includes(w));
-    if(isCorrect||attempt>=WQ_MAX){
-      markWQDone(wqIdx);
-    }
-  }catch(e){typing.remove();const eb=document.createElement('div');eb.className='wq-bubble char';eb.textContent='Wonderful try — keep going!';chat.appendChild(eb);}
+function buildSystemPrompt(qi,turn){
+  const q=QUESTIONS[qi];const wrongKey=answers[qi]||'?';const wrongText=q.opts[wrongKey]||'?';const correctText=q.opts[q.correct];
+  return `${CHAR.pers}
+ABSOLUTE RULE — FIRST REPLY: ONE short funny joke about reading or stories or dogs. Simple enough for age 7.
+JOKE FORMATS (rotate): What do you call · What did X say to Y · Did you hear · Pun · One-liner.
+After joke: straight to teaching. No greeting. No transition. Max 70 words.
+NEVER say: wrong, incorrect, failed, mistake, silly, dumb.
+★ Very simple language — age 7. ★ Advance each turn.
+[Turn ${turn+1} of up to 5]
+COMPREHENSION QUESTION: "${q.text}"
+Child chose (wrong): "${wrongText}". Correct: ${q.correct}) "${correctText}".
+All options: A) ${q.opts.A} · B) ${q.opts.B} · C) ${q.opts.C} · D) ${q.opts.D}
+Story: Max the dog found a tin box with old coins and a map while digging in the park. His owner Sam opened it.
+Teaching: Use one simple question to help child reason the answer. Do not give answer in first turn.`;
 }
 
-function markWQDone(wqIdx){
-  wqDone[wqIdx]=true;
-  document.getElementById('wq-'+wqIdx).classList.remove('wq-active');
-  document.getElementById('wq-'+wqIdx).classList.add('wq-done');
-  document.getElementById('wq-area-'+wqIdx).style.display='none';
-  document.getElementById('wq-done-'+wqIdx).style.display='block';
-  // Unlock next
-  if(wqIdx+1<WRITING_QS.length){
-    document.getElementById('wq-'+(wqIdx+1)).classList.remove('wq-locked');
-    document.getElementById('wq-'+(wqIdx+1)).classList.add('wq-active');
+function buildWQPrompt(wqIdx,attempt,childText){
+  const prompts=['Describe what the tin box looked like.','How did Sam feel when she found the map?','What might Sam and Max do next?'];
+  return `${CHAR.pers}
+A 7-year-old is doing writing practice. Very simple kind feedback only.
+Writing question: "${prompts[wqIdx]}"
+Child wrote (attempt ${attempt} of 3): "${childText}"
+RULES: Max 70 words. Plain English. No markdown. No emoji. NEVER say wrong or mistake.
+Celebrate the attempt. If the sentence makes sense: celebrate + ask to add ONE more detail.
+If very short (under 5 words): "Great start! Can you write a bit more about it?"
+If attempt 3: celebrate no matter what. "Brilliant! You did great!"
+Signal DONE with: "Brilliant!" "Yes!" "Well done!" "Spot on!" "Exactly!" "Perfect!"`;
+}
+
+const SSNAKE=['Ssslick answer!','Ssspot on!','That\'s ssso right!','Sssuper!'];
+const SSHARK=['Fin-tastic!','Splashing great!','Well done!','Making waves!'];
+function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SSNAKE[Math.floor(Math.random()*4)]:SSHARK[Math.floor(Math.random()*4)]);}
+
+function renderQuestions(){
+  const col=document.getElementById('qs-main');col.innerHTML='';
+  for(let i=0;i<TOTAL_QS;i++){
+    const q=QUESTIONS[i];const div=document.createElement('div');div.className='qcard';div.id=`qc-${i}`;
+    div.innerHTML=`<div class="qn">Q${i+1}${q.star?' ⭐':''} · ${q.code}</div><div class="qt">${q.text}</div><div class="opts">${Object.entries(q.opts).map(([k,v])=>`<button class="opt" id="opt-${i}-${k}" onclick="answer(${i},'${k}')">${k}) ${v}</button>`).join('')}</div>`;
+    col.appendChild(div);
   }
-  checkAllAnswered();
 }
 
-function wqMic(wqIdx){
-  _iosWarm();
-  if(wqMicActive[wqIdx]){if(wqRecognition[wqIdx])wqRecognition[wqIdx].stop();wqMicActive[wqIdx]=false;return;}
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){alert('Microphone not supported — please type!');return;}
-  wqMicActive[wqIdx]=true;
-  const inpEl=document.getElementById('wq-inp-'+wqIdx);
-  const _origPH=inpEl.placeholder;
-  inpEl.placeholder='⏳ Get ready… 2 seconds…';
-  setTimeout(()=>{
-    if(!wqMicActive[wqIdx])return;
-    inpEl.placeholder='● Listening… speak now!';
-    const r=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-    r.lang='en-GB';r.interimResults=false;r.maxAlternatives=1;
-    r.onresult=(e)=>{
-      inpEl.value=e.results[0][0].transcript;
-      inpEl.placeholder='✏️ Edit if needed, then tap Send →';
-      wqMicActive[wqIdx]=false;
-    };
-    r.onerror=()=>{wqMicActive[wqIdx]=false;inpEl.placeholder=_origPH;};
-    r.onend=()=>{wqMicActive[wqIdx]=false;};
-    r.start();wqRecognition[wqIdx]=r;
-  },2000);
+function answer(qi,choice){
+  _iosWarm();if(answers[qi]!==undefined||!rulesRead)return;
+  answers[qi]=choice;const q=QUESTIONS[qi];const isRight=choice===q.correct;
+  'ABCD'.split('').forEach(k=>document.getElementById(`opt-${qi}-${k}`)?.classList.add('dis'));
+  document.getElementById(`opt-${qi}-${choice}`)?.classList.add(isRight?'sc':'sw');
+  document.getElementById(`qc-${qi}`)?.classList.add(isRight?'right':'wrong');
+  if(!isRight)document.getElementById(`opt-${qi}-${q.correct}`)?.classList.add('rc2');
+  tutorTurns[qi]=0;
+  if(isRight){onCorrectAnswer();}else{openOverlay(qi);}
+  if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)captureFirstAttempt();
+  updateSubmit();
+}
+function captureFirstAttempt(){if(firstAttempt)return;firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};}
+function updateSubmit(){document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;}
+
+function openOverlay(qi){
+  currentQIdx=qi;currentTurn=0;convHistory=[];overlayOpen=true;
+  const q=QUESTIONS[qi];const wk=answers[qi]||'?';
+  document.getElementById('qstrip').innerHTML=`<strong>Q${qi+1}:</strong> ${q.text}<span class="wpill">You chose: ${wk}) ${q.opts[wk]||'?'}</span>`;
+  document.getElementById('cemoji').textContent=CHAR.emoji;document.getElementById('cname').textContent=CHAR.name;
+  renderDots(0);document.getElementById('chat').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';
+  document.getElementById('overlay').classList.add('open');callAI(qi);
+}
+function renderDots(t){const el=document.getElementById('tdots');el.innerHTML='';for(let i=0;i<5;i++){const d=document.createElement('div');d.className='dot'+(i<t?' d':'');el.appendChild(d);}}
+async function callAI(qi){
+  _iosWarm();showTyping();
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:buildSystemPrompt(qi,currentTurn),messages:convHistory.length?convHistory:[{role:'user',content:'Start!'}]})});
+  if(r.status===401){showKeyError();return;}const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
+  hideTyping();addBubble(txt,'e');speak(txt);convHistory.push({role:'assistant',content:txt});
+  currentTurn++;renderDots(currentTurn);tutorTurns[qi]=(tutorTurns[qi]||0)+1;
+  if(tutorTurns[qi]>=4)strugglingQs.add(QUESTIONS[qi].code);}catch(e){hideTyping();addBubble('Let\'s think about this together!','e');}
+}
+function sendTutorReply(text){_iosWarm();addBubble(text,'c');convHistory.push({role:'user',content:text});currentTurn++;renderDots(currentTurn);if(currentTurn>=5){addBubble('You gave it a great go! Tap Got it!','e');speak('You gave it a great go! Tap Got it!');return;}callAI(currentQIdx);}
+function addBubble(txt,cls){const d=document.createElement('div');d.className=`bub ${cls}`;d.textContent=txt;document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=9999;}
+function showTyping(){const d=document.createElement('div');d.className='typing';d.id='typing';d.innerHTML='<span></span><span></span><span></span>';document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=9999;}
+function hideTyping(){document.getElementById('typing')?.remove();}
+function gotIt(){try{window.speechSynthesis.cancel();}catch(e){}if(recognition){try{recognition.stop();}catch(e){}micActive=false;}document.getElementById('speech-text').value='';const u=new SpeechSynthesisUtterance(CHAR.gotIt);u.onend=()=>closeOverlay();u.onerror=()=>closeOverlay();if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?0.92:0.98;u.pitch=CHAR.key==='snake'?0.95:1.02;window.speechSynthesis.speak(u);}
+function parentSkip(){try{window.speechSynthesis.cancel();}catch(e){}if(recognition){try{recognition.stop();}catch(e){}micActive=false;}document.getElementById('speech-text').value='';closeOverlay();}
+function closeOverlay(){try{window.speechSynthesis.cancel();}catch(e){}overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');}
+
+// Writing questions
+async function sendWQ(idx){
+  if(wqDone[idx])return;
+  const ta=document.getElementById(`wq-ta-${idx}`);const text=ta.value.trim();if(!text)return;
+  wqAttempts[idx]++;ta.disabled=true;
+  addWQBubble(idx,text,'c');const sys=buildWQPrompt(idx,wqAttempts[idx],text);
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:sys,messages:[{role:'user',content:text}]})});
+  const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
+  addWQBubble(idx,txt,'e');speak(txt);
+  const done=/Brilliant!|Yes!|Well done!|Spot on!|Exactly!|Perfect!/i.test(txt);
+  if(done||wqAttempts[idx]>=3){completeWQ(idx);}else{ta.disabled=false;ta.value='';}
+  }catch(e){addWQBubble(idx,'Great try! Can you write a bit more?','e');ta.disabled=false;}
+}
+function addWQBubble(idx,txt,cls){const c=document.getElementById(`wq-chat-${idx}`);const d=document.createElement('div');d.className=`wq-bub ${cls}`;d.textContent=txt;c.appendChild(d);c.scrollTop=9999;}
+function completeWQ(idx){
+  wqDone[idx]=true;document.getElementById(`wq-input-${idx}`).style.display='none';document.getElementById(`wq-done-${idx}`).style.display='block';
+  // Unlock next
+  if(idx<2&&!document.getElementById(`wq-${idx+1}`).classList.contains('show')){document.getElementById(`wq-${idx+1}`).classList.add('show');}
+  updateSubmit();
 }
 
-// Word of day
-function dictReady(){_iosWarm();currentTutorQ='dict';document.getElementById('strip-text').textContent='sparkle — to shine with many small flashes of light.';document.getElementById('strip-label').textContent='WORD OF THE DAY';document.getElementById('strip-opts').innerHTML='';document.getElementById('char-mode').textContent='📖 Word Builder';renderDots(0);document.getElementById('chat-area').innerHTML='';document.getElementById('tutor-overlay').classList.add('show');const prompt=`${CHAR.personality}\nABSOLUTE RULE FIRST REPLY: ONE short funny joke about sparkle or shiny things. Then teach.\nPlain simple English. Max 70 words.\nWord: "sparkle". Meaning: to shine with many small flashes of light. Example: "The fairy dust made everything sparkle with golden light."\nFirst: joke then 2 fun examples of things that sparkle (stars, glitter, water, gems). End: Can you make your own sentence with sparkle?\nThen: celebrate their sentence! Help fix gently if needed.`;
-fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:prompt,messages:[{role:'user',content:'Hello!'}]})}).then(r=>r.json()).then(data=>{const text=data.content&&data.content[0]?data.content[0].text:"Let's learn this word!";const chatArea=document.getElementById('chat-area');const b=document.createElement('div');b.className='bubble char';b.textContent=text;chatArea.appendChild(b);speak(text);}).catch(()=>{const chatArea=document.getElementById('chat-area');const b=document.createElement('div');b.className='bubble char';b.textContent="Let's learn the word sparkle!";chatArea.appendChild(b);});}
-
-function toggleMic(){
-  _iosWarm();
-  if(micActive){if(recognition)recognition.stop();micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';return;}
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){document.getElementById('speech-text').placeholder='Microphone not supported — type here!';return;}
-  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
-  recognition.onresult=(e)=>{const t=e.results[0][0].transcript;micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='✏️ Edit if needed, then tap Send!';const ta=document.getElementById('speech-text');ta.value=t;ta.focus();};
-  recognition.onerror=()=>{micActive=false;document.getElementById('mic-btn').classList.remove('listening');document.getElementById('mic-status').textContent='Could not hear — type below or try again';};
-  recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mic-btn').classList.remove('listening');}};
-  micActive=true;document.getElementById('mic-btn').classList.add('listening');
-  document.getElementById('mic-status').textContent='⏳ Get ready… 2 seconds…';
-  recognition.start();
-  setTimeout(()=>{if(micActive)document.getElementById('mic-status').textContent='● Listening… speak now!';},2000);
+function handleSubmit(){
+  if(Object.keys(answers).length<TOTAL_QS)return;if(!firstAttempt)captureFirstAttempt();
+  let correct=0;for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;}
+  showResult(correct);
 }
-function submitSpeech(){
-  const ta=document.getElementById('speech-text');
-  const text=ta.value.trim();
-  if(!text)return;
-  ta.value='';
-  document.getElementById('mic-status').textContent='Tap 🎤 Speak, wait 2 secs…';
-  sendTutorReply(text);
+function showResult(correct){
+  document.getElementById('ex-wrap').style.display='none';document.getElementById('wq-section').style.display='none';document.getElementById('sub-bar').style.display='none';
+  const pct=Math.round(correct/TOTAL_QS*100);const passed=correct>=PASS_SCORE;
+  document.getElementById('res-emoji').textContent=passed?'🌟':'💪';
+  document.getElementById('res-score').textContent=`${correct} / ${TOTAL_QS} correct`;
+  document.getElementById('res-msg').textContent=passed?`${pct}% — ${CHAR.name} is so proud of you!`:`${pct}% — great effort! Keep practising!`;
+  const stored=parseInt(localStorage.getItem(PTS_KEY)||'0');localStorage.setItem(PTS_KEY,stored+POINTS_EARNED);document.getElementById('pts-badge').textContent=`${stored+POINTS_EARNED} pts`;
+  document.getElementById('result').style.display='block';
+  sendWebhook(correct);setTimeout(()=>{document.getElementById('word-section').style.display='block';initDict();},800);
 }
+function sendWebhook(correct){
+  const fa=firstAttempt||{answers:{...answers},struggling:new Set()};let fac=0;for(let i=0;i<TOTAL_QS;i++){if(fa.answers[i]===QUESTIONS[i].correct)fac++;}
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'exercise_result',child:CHILD,date:new Date().toISOString().slice(0,10),week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,points_earned:POINTS_EARNED,score_summary:`Comprehension:${correct}/${TOTAL_QS}`,subject_focus:'English',attempt_number:1,first_attempt_pct:Math.round(fac/TOTAL_QS*100),struggling_codes:[...(fa.struggling||new Set())],questions:Object.entries(QUESTIONS).map(([i,q])=>({q_number:parseInt(i)+1,code:q.code,section:'Comprehension',correct:answers[i]===q.correct,answer_chosen:answers[i]||'',correct_answer:q.correct,wrong_answer_chosen:answers[i]!==q.correct?answers[i]:null,tutor_used:(tutorTurns[i]||0)>0,tutor_turns:tutorTurns[i]||0}))})}).catch(()=>{});}
 
-function handleSubmit(){attemptNumber++;if(!firstAttempt)firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};let correct=0;for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=answers[i];if(a===q.correct)correct++;}let _fa=0;for(let _j=0;_j<TOTAL_QS;_j++){if(firstAttempt.answers[_j]===QUESTIONS[_j].correct)_fa++;}const firstPct=Math.round(_fa/TOTAL_QS*100);if(correct<PASS_SCORE){document.getElementById('exercise').style.display='none';document.getElementById('retry-char').textContent=CHAR.emoji;document.getElementById('retry-score').textContent=correct+' out of '+TOTAL_QS+' ('+firstPct+'%)';document.getElementById('retry-screen').style.display='block';return;}const pts=POINTS_EARNED;const newPts=currentPts+pts;localStorage.setItem(PTS_KEY,newPts);currentPts=newPts;sendWebhook(correct,pts,firstPct,attemptNumber);showResult(correct,pts,newPts);}
+function pickRevisionWord(){try{const h=JSON.parse(localStorage.getItem('dict_history_il')||'[]');const today=new Date().toISOString().slice(0,10);const el=h.filter(w=>w.date!==today&&w.word!==DICT_WORD);if(!el.length)return null;const now=Date.now();el.forEach(w=>{const d=(now-new Date(w.date).getTime())/86400000;w._s=(w.confidence==='low'?3:w.confidence==='medium'?2:1)+(d<2?-10:Math.min(d/7,3));});return el.sort((a,b)=>b._s-a._s)[0];}catch(e){return null;}}
+function initDict(){const rev=pickRevisionWord();if(rev){const rb=document.getElementById('rev-block');rb.innerHTML=`<div class="rev-word">🔄 Past word: ${rev.word}</div><div class="rev-def">${rev.def}</div><button class="echo-btn" style="margin-bottom:0" onclick="openRevOverlay('${rev.word.replace(/'/g,"\\'")}','${rev.def.replace(/'/g,"\\'")}')">Ask Echo to test me!</button>`;rb.style.display='block';}}
+async function openDictOverlay(){document.getElementById('echo-dict-btn').disabled=true;dictConvHistory=[];dictTurn=0;openDictChat();const sys=`${CHAR.pers}\nWord: "${DICT_WORD}". Def: "${DICT_DEF}". Eg: "${DICT_EG}". ONE short simple joke for age 7. 2 simple examples. Ask child to make own sentence. Evaluate. 3-beat wrap-up. Max 70 words. No emoji.`;showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:sys,messages:[{role:'user',content:'Start!'}]})});const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});}catch(e){hideTyping();addBubble(`Let's learn ${DICT_WORD}! Can you make a sentence?`,'e');}}
+function openDictChat(){overlayOpen=true;currentQIdx=-1;document.getElementById('overlay').classList.add('open');document.getElementById('cemoji').textContent=CHAR.emoji;document.getElementById('cname').textContent=CHAR.name;document.getElementById('qstrip').innerHTML=`📖 <strong>Word of the Day:</strong> ${DICT_WORD}`;document.getElementById('mbadge').textContent='📖 Word Builder';document.getElementById('chat').innerHTML='';document.getElementById('speech-text').value='';}
+function sendDictReply(text){addBubble(text,'c');dictConvHistory.push({role:'user',content:text});dictTurn++;if(dictTurn>=4){addBubble('Brilliant! Tap Got it!','e');speak('Brilliant! Tap Got it!');saveDictHistory('high');return;}callDictAI();}
+async function callDictAI(){showTyping();const sys=`${CHAR.pers}\nWord: "${DICT_WORD}". Evaluate grammar+use. 3-beat wrap-up when correct. Max 70 words. No emoji. [Turn ${dictTurn+1}]`;try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:sys,messages:dictConvHistory})});const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});if(/Brilliant!|Yes!|Well done!|Spot on!|Exactly!|Perfect!/i.test(txt))saveDictHistory('high');}catch(e){hideTyping();addBubble('Brilliant effort! Tap Got it!','e');}}
+function saveDictHistory(conf){try{const h=JSON.parse(localStorage.getItem('dict_history_il')||'[]');const today=new Date().toISOString().slice(0,10);if(!h.find(w=>w.word===DICT_WORD&&w.date===today)){h.push({word:DICT_WORD,def:DICT_DEF,date:today,confidence:conf||'medium'});localStorage.setItem('dict_history_il',JSON.stringify(h.slice(-60)));};}catch(e){}}
+async function openRevOverlay(word,def){dictConvHistory=[];dictTurn=0;openDictChat();document.getElementById('qstrip').innerHTML=`🔄 <strong>Past word:</strong> ${word}`;const sys=`${CHAR.pers}\nREVISION — word: "${word}". Def: "${def}". No joke. Warmth only. Ask child to use word in a sentence. Simple language age 7. Max 60 words. No emoji.`;showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:sys,messages:[{role:'user',content:'Start!'}]})});const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});}catch(e){hideTyping();addBubble(`Can you use the word ${word} in a sentence?`,'e');}}
 
-function retryExercise(){answers={};document.getElementById('retry-screen').style.display='none';document.getElementById('exercise').style.display='block';for(let i=0;i<TOTAL_QS;i++){const optsEl=document.getElementById('opts-'+i);if(!optsEl)continue;Array.from(optsEl.children).forEach(el=>el.classList.remove('correct','wrong','disabled'));}document.getElementById('btn-submit').classList.remove('ready');window.scrollTo(0,0);}
+function toggleRules(){const rb=document.getElementById('rb');const open=rb.style.display==='block';rb.style.display=open?'none':'block';document.getElementById('rh-arrow').textContent=open?'▼ tap to read':'▲ close';}
+function markRulesRead(){_iosWarm();rulesRead=true;document.getElementById('rb').style.display='none';document.getElementById('rh-arrow').textContent='▼ tap to read';document.getElementById('ex-wrap').style.opacity='1';document.getElementById('ex-wrap').style.pointerEvents='auto';document.getElementById('wq-section').style.opacity='1';document.getElementById('wq-section').style.pointerEvents='auto';speak(`${CHAR.name} says: read the story carefully, then answer the questions. You can do this!`);}
+function saveKey(){const v=document.getElementById('kinput').value.trim();if(!v.startsWith('sk-')||v.length<20){document.getElementById('kerr').style.display='block';return;}ANTHROPIC_KEY=v;localStorage.setItem('anthropic_key_v1',v);document.getElementById('setup').classList.remove('show');}
+function clearKey(){ANTHROPIC_KEY='';localStorage.removeItem('anthropic_key_v1');document.getElementById('kinput').value='';document.getElementById('kerr').style.display='none';document.getElementById('setup').classList.add('show');}
+function showKeyError(){document.getElementById('overlay').classList.remove('open');overlayOpen=false;clearKey();}
 
-function milestoneLabel(pts){if(pts>=4000)return'Grand Master 👑';if(pts>=2800)return'Champion 🏅';if(pts>=1800)return'Diamond 💎';if(pts>=830)return'Platinum 🏆';if(pts>=340)return'Gold 🥇';if(pts>=190)return'Silver 🥈';if(pts>=40)return'Bronze 🥉';return pts+' pts';}
-function nextMilestone(pts){for(const[t,n]of[[40,'Bronze 🥉'],[190,'Silver 🥈'],[340,'Gold 🥇'],[830,'Platinum 🏆'],[1800,'Diamond 💎'],[2800,'Champion 🏅'],[4000,'Grand Master 👑']]){if(pts<t)return(t-pts)+' to '+n;}return'MAX!';}
-
-function showResult(correct,pts,newPts){document.getElementById('exercise').style.display='none';document.getElementById('result-screen').style.display='block';document.getElementById('result-screen').innerHTML=`<div class="result-char">${CHAR.emoji}</div><div class="result-title">Amazing work, IL! 🌟</div><div class="result-pts">+${pts} points</div><div class="result-milestone">${currentPts} pts total — ${milestoneLabel(currentPts)} · ${nextMilestone(currentPts)}</div><div class="result-breakdown"><div class="bd-row"><span>Reading</span><span class="bd-score">${correct}/${TOTAL_QS}</span></div><div class="bd-row"><span>Writing</span><span class="bd-score">3/3 ✓</span></div></div><p style="font-size:13px;color:#aaa;margin-top:12px">Results sent ✓</p>`;updatePtsBar();speak('Amazing work! You earned '+pts+' points. You now have '+currentPts+' points. '+milestoneLabel(currentPts)+'!');}
-
-function sendWebhook(correct,pts,firstPct,attemptNum){const qArr=[];for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];const a=answers[i]||'';qArr.push({q_number:i+1,code:q.code,section:q.section,correct:(a===q.correct),answer_chosen:a,correct_answer:q.correct,wrong_answer_chosen:a!==q.correct?a:null,tutor_used:(tutorTurns[i]||0)>0,tutor_turns:tutorTurns[i]||0});}const payload={type:'weekend_session',child:CHILD,date:new Date().toISOString().slice(0,10),week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,points_earned:pts,score_summary:`Comprehension:${correct}/${TOTAL_QS} Writing:3/3`,subject_focus:'English',attempt_number:attemptNum,first_attempt_pct:firstPct,struggling_codes:[...firstAttempt.struggling],questions:qArr};fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});}
+window.onload=function(){
+  ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';if(!ANTHROPIC_KEY)document.getElementById('setup').classList.add('show');
+  const today=new Date().toISOString().slice(0,10);let ck=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
+  if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',today);}
+  CHAR=CHARS[ck];document.body.classList.add(ck);document.getElementById('char-av').textContent=CHAR.emoji;
+  document.getElementById('pts-badge').textContent=`${parseInt(localStorage.getItem(PTS_KEY)||'0')+BASE_PTS} pts`;
+  renderQuestions();document.getElementById('rb').style.display='block';document.getElementById('rh-arrow').textContent='▲ close';
+};
 </script>
 </body>
 </html>
