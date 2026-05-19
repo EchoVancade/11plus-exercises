@@ -2,313 +2,866 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Ask Me Anything! 🤔</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Ask Echo — 11+ Tutor</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Nunito',sans-serif;background:#F0F4FF;color:#1e1b4b;min-height:100vh;display:flex;flex-direction:column}
-body.snake{--hi:#27AE60;--bg:#17432E;--lite:rgba(39,174,96,.18);--border:rgba(39,174,96,.45)}
-body.shark{--hi:#2980B9;--bg:#0B2E52;--lite:rgba(41,128,185,.18);--border:rgba(41,128,185,.45)}
-
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0a0f1e;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;font-size:16px}
 /* HEADER */
-.header{background:linear-gradient(135deg,#4F46E5,#7C3AED);padding:16px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between}
-.header h1{font-size:18px;font-weight:800;color:#fff}
-.header h1 span{color:#fbbf24}
-.key-btn{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
-
-/* TOPIC INPUT */
-.topic-bar{padding:12px 16px;background:#fff;border-bottom:1px solid #E8E0FF}
-.topic-row{display:flex;gap:8px}
-.topic-input{flex:1;padding:11px 14px;border:2px solid #c4b5fd;border-radius:12px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;color:#1e1b4b}
-.topic-input:focus{border-color:#7c3aed}
-.topic-btn{padding:11px 18px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;min-height:46px}
-.topic-btn:active{opacity:.88}
-.topic-hint{font-size:12px;color:#8b5cf6;margin-top:8px;line-height:1.5}
-.topic-examples{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.topic-chip{background:#ede9fe;color:#7c3aed;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid #c4b5fd}
-.topic-chip:active{background:#c4b5fd}
-
-/* CHARACTER INDICATOR */
-.char-strip{display:none;padding:10px 16px;background:#f5f3ff;border-bottom:1px solid #E8E0FF;align-items:center;gap:8px}
-.char-strip.show{display:flex}
-.char-strip .emoji{font-size:28px}
-.char-strip .name{font-size:14px;font-weight:800;color:#4c1d95}
-.char-strip .phase{font-size:12px;background:#ede9fe;color:#7c3aed;border-radius:20px;padding:2px 10px;font-weight:700}
-
-/* CHAT */
-.chat-area{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px;display:flex;flex-direction:column;gap:10px;background:#F0F4FF;min-height:40px}
-.bubble{max-width:88%;padding:12px 16px;border-radius:18px;font-size:16px;line-height:1.6;word-break:break-word;font-family:'Nunito',sans-serif}
-.bubble.ai{background:#fff;border:1.5px solid #c4b5fd;color:#1e1b4b;border-bottom-left-radius:4px;align-self:flex-start;box-shadow:0 2px 8px rgba(124,58,237,.08)}
-.bubble.user{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;font-style:italic}
-.bubble.system{background:#fef3c7;border:1.5px solid #fbbf24;color:#92400e;font-size:14px;text-align:center;border-radius:10px;align-self:center;max-width:95%}
-.typing-dots{display:flex;gap:5px;align-items:center;padding:4px 0}
-.typing-dots span{width:7px;height:7px;border-radius:50%;background:#7c3aed;opacity:.4;animation:blink 1.2s ease-in-out infinite}
-.typing-dots span:nth-child(2){animation-delay:.2s}
-.typing-dots span:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-.empty-state{text-align:center;color:#a78bfa;padding:50px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;flex:1}
-.empty-emoji{font-size:64px}
-.empty-text{font-size:16px;font-weight:700;color:#7c3aed}
-.empty-sub{font-size:14px;color:#a78bfa;max-width:280px;line-height:1.5}
-
-/* INPUT ROW */
-.input-bar{padding:12px 16px;background:#fff;border-top:1px solid #E8E0FF;display:flex;gap:8px;align-items:center}
-.msg-input{flex:1;padding:11px 14px;border:2px solid #c4b5fd;border-radius:12px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;color:#1e1b4b;min-height:46px}
-.msg-input:focus{border-color:#7c3aed}
-.mic-btn{width:46px;height:46px;border-radius:50%;border:2px solid #c4b5fd;background:#fdf6ff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s}
-.mic-btn.listening{border-color:#7c3aed;animation:mic-pulse 1s ease-in-out infinite}
-@keyframes mic-pulse{0%{box-shadow:0 0 0 0 rgba(124,58,237,.4)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
-.send-btn{width:46px;height:46px;border-radius:50%;border:none;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.send-btn:active{opacity:.85}
-
+.hdr{background:linear-gradient(135deg,#0e7490,#0f4c5c);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hdr h1{font-size:1.05rem;font-weight:900;color:#fff}
+.hdr p{font-size:.78rem;color:rgba(255,255,255,.7);margin-top:1px}
+.hdr-r{display:flex;gap:8px;align-items:center}
+.char-av{font-size:1.8rem;cursor:default}
+.voice-pill{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);white-space:nowrap}
+.voice-pill.natural{background:rgba(34,197,94,.2);color:#86efac;border-color:rgba(34,197,94,.35)}
+.settings-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:5px 10px;font-size:.76rem;cursor:pointer;font-family:'Nunito',sans-serif}
+/* QUESTION BAR */
+.q-bar{background:#111827;border-bottom:1px solid rgba(255,255,255,.07);padding:12px 14px;flex-shrink:0}
+.q-row{display:flex;gap:8px;align-items:flex-end}
+.q-input{flex:1;background:#1e293b;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 13px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.95rem;resize:none;line-height:1.45;min-height:44px;max-height:110px}
+.q-input:focus{outline:none;border-color:#06b6d4}
+.q-input::placeholder{color:#475569}
+.ask-btn{background:linear-gradient(135deg,#0e7490,#0f4c5c);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.9rem;white-space:nowrap;flex-shrink:0}
+.ask-btn:disabled{opacity:.4;cursor:default}
+.new-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:10px;padding:10px 13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.85rem;white-space:nowrap;flex-shrink:0;display:none}
+.q-active{font-size:.85rem;color:#67e8f9;font-weight:700;margin-top:7px;padding:6px 11px;background:rgba(6,182,212,.08);border-radius:8px;border:1px solid rgba(6,182,212,.15);display:none}
+/* STAGE MAP */
+.smap-wrap{background:#0d1525;border-bottom:1px solid rgba(255,255,255,.06);padding:12px 14px;flex-shrink:0;display:none}
+.smap-lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#475569;margin-bottom:8px}
+.smap{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.smap::-webkit-scrollbar{height:3px}
+.smap::-webkit-scrollbar-thumb{background:#1e293b;border-radius:2px}
+.sc{background:#111827;border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:10px 12px;flex-shrink:0;min-width:152px;transition:border-color .2s}
+.sc.sa{border-color:#06b6d4}.sc.sd{border-color:rgba(34,197,94,.3)}
+.sc-title{font-size:.78rem;font-weight:800;color:#f1f5f9;margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.sc.sd .sc-title{color:#86efac}.sc.sa .sc-title{color:#67e8f9}
+.step-row{display:flex;gap:4px}
+.sb{flex:1;padding:6px 3px;border-radius:7px;border:1.5px solid transparent;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.sb.sp{background:#1e293b;color:#475569;border-color:#1e293b;cursor:default}
+.sb.sd2{background:rgba(34,197,94,.15);color:#86efac;border-color:rgba(34,197,94,.3);cursor:pointer}
+.sb.sd2:active{transform:scale(.96)}
+.sb.sa2{background:#f97316;color:#fff;border-color:#f97316;animation:pulse 2s infinite;cursor:pointer}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,.4)}50%{box-shadow:0 0 0 5px rgba(249,115,22,0)}}
+.sb.sv{background:rgba(139,92,246,.2);color:#c4b5fd;border-color:rgba(139,92,246,.4);cursor:pointer}
+@media(max-width:400px){.sb{font-size:.64rem}}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.chat-area{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:11px;-webkit-overflow-scrolling:touch}
+/* Context banner */
+.step-ctx{background:#0d1525;border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:10px 13px;display:flex;align-items:center;gap:10px}
+.ctx-badge{font-size:.76rem;font-weight:800;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.ctx-ido{background:rgba(6,182,212,.15);color:#67e8f9;border:1px solid rgba(6,182,212,.3)}
+.ctx-wedo{background:rgba(249,115,22,.15);color:#fb923c;border:1px solid rgba(249,115,22,.3)}
+.ctx-youdo{background:rgba(168,85,247,.15);color:#c4b5fd;border:1px solid rgba(168,85,247,.3)}
+.ctx-desc{font-size:.84rem;color:#94a3b8;flex:1;line-height:1.4}
+/* Review / redo banners */
+.review-banner{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);border-radius:10px;padding:9px 13px;display:none;align-items:center;gap:8px;flex-wrap:wrap}
+.review-banner span{font-size:.84rem;color:#a78bfa;font-weight:700}
+.back-current-btn{background:rgba(249,115,22,.15);color:#fb923c;border:1px solid rgba(249,115,22,.3);border-radius:8px;padding:5px 12px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+.redo-btn-sm{background:linear-gradient(135deg,#0e7490,#0f4c5c);color:#fff;border:none;border-radius:8px;padding:5px 13px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+.redo-banner{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.2);border-radius:10px;padding:9px 13px;display:none;align-items:center;gap:8px}
+.redo-banner span{font-size:.84rem;color:#67e8f9;font-weight:700;flex:1}
+.back-review-btn{background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:5px 12px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+/* Bubbles */
+.bub{max-width:87%;padding:12px 15px;border-radius:14px;font-size:1rem;line-height:1.65}
+.bub.echo{align-self:flex-start;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.22);color:#e2e8f0}
+.bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
+.bub.sys{align-self:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:#64748b;font-size:.84rem;padding:7px 14px;border-radius:20px;text-align:center}
+.typing{display:flex;gap:5px;align-items:center;padding:10px 14px;align-self:flex-start;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.18);border-radius:12px}
+.typing span{width:8px;height:8px;border-radius:50%;background:#06b6d4;animation:bop .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+/* Empty */
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:32px 24px}
+.empty-icon{font-size:3.2rem}
+.empty h2{font-size:1.2rem;font-weight:800;color:#f1f5f9}
+.empty p{font-size:.92rem;color:#64748b;max-width:290px;line-height:1.65}
+.empty-hint{font-size:.82rem;color:#475569;background:#111827;border-radius:10px;padding:9px 15px;border:1px solid rgba(255,255,255,.06)}
+/* Q BOXES */
+.qbox-wrap{display:flex;flex-direction:column;gap:10px}
+.qbox{background:#0d1525;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:11px 12px}
+.qbox-lbl{font-size:.84rem;font-weight:700;color:#67e8f9;margin-bottom:6px;line-height:1.45}
+.qbox-single .qbox-lbl{color:#94a3b8}
+.ans-row{display:flex;gap:7px;align-items:flex-end}
+.ans-ta{flex:1;background:#1e293b;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;padding:9px 12px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.95rem;resize:none;min-height:44px;max-height:110px;line-height:1.4}
+.ans-ta:focus{outline:none;border-color:#f97316}
+.mic-btn-q{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:#f1f5f9;border-radius:9px;padding:8px 12px;font-size:.88rem;cursor:pointer;font-family:'Nunito',sans-serif;flex-shrink:0;transition:all .15s}
+.mic-btn-q.listening{background:rgba(239,68,68,.18);border-color:#ef4444;color:#fca5a5}
+.mic-stat{font-size:.74rem;color:#475569;margin-top:4px}
+/* INPUT AREA */
+.input-area{background:#111827;border-top:1px solid rgba(255,255,255,.07);padding:11px 14px;display:none;flex-direction:column;gap:8px;flex-shrink:0}
+.input-area.show{display:flex}
+.send-row{display:flex;justify-content:flex-end}
+.send-all-btn{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.92rem}
+.send-all-btn:disabled{opacity:.4;cursor:default}
+/* NEXT */
+.next-wrap{background:#111827;border-top:1px solid rgba(255,255,255,.07);padding:10px 14px;display:none;flex-shrink:0}
+.next-wrap.show{display:block}
+.next-btn{width:100%;padding:13px;background:linear-gradient(135deg,#0e7490,#0f4c5c);color:#fff;border:none;border-radius:11px;font-size:.97rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.next-btn.done-btn{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.next-btn.back-btn2{background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.1)}
+/* COMPLETION */
+.completion{display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 20px;text-align:center;flex:1}
+.completion.show{display:flex}
+.comp-icon{font-size:3.5rem}
+.comp-title{font-size:1.25rem;font-weight:900;color:#f1f5f9}
+.comp-msg{font-size:.9rem;color:#94a3b8;max-width:310px;line-height:1.65}
+.comp-list{background:#111827;border-radius:13px;padding:14px;width:100%;max-width:400px;text-align:left}
+.comp-row{font-size:.84rem;color:#86efac;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.comp-row:last-child{border-bottom:none}
+.comp-new-btn{background:linear-gradient(135deg,#0e7490,#0f4c5c);color:#fff;border:none;border-radius:11px;padding:13px 26px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.95rem;margin-top:6px}
 /* SETUP */
-.setup-screen{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:20px}
-.setup-screen.show{display:flex}
-.setup-box{background:#fff;border-radius:20px;padding:26px 22px;max-width:400px;width:100%;text-align:center}
-.setup-emoji{font-size:40px;margin-bottom:10px}
-.setup-title{font-size:18px;font-weight:800;color:#1e1b4b;margin-bottom:6px;font-family:'Nunito',sans-serif}
-.setup-msg{font-size:13px;color:#6B7280;line-height:1.5;margin-bottom:14px;font-family:'Nunito',sans-serif}
-.setup-error{display:none;color:#DC2626;font-size:12px;font-weight:700;background:#FFF0F0;padding:7px 10px;border-radius:8px;margin-bottom:10px;font-family:'Nunito',sans-serif}
-.setup-input{width:100%;padding:11px 13px;border:2px solid #c4b5fd;border-radius:10px;font-size:13px;font-family:monospace;margin-bottom:10px;outline:none;color:#1e1b4b}
-.setup-input:focus{border-color:#7c3aed}
-.setup-btn{width:100%;padding:13px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:8px;min-height:48px;font-family:'Nunito',sans-serif}
-.setup-hint{font-size:11px;color:#9CA3AF;font-family:'Nunito',sans-serif}
-.mic-status-bar{transition:opacity .3s;}
+.setup{display:none;position:fixed;inset:0;background:rgba(10,15,30,.98);z-index:200;align-items:center;justify-content:center;flex-direction:column;padding:24px}
+.setup.show{display:flex}
+.setup-card{background:#111827;border-radius:18px;padding:24px;max-width:360px;width:100%;border:1px solid rgba(255,255,255,.07)}
+.setup-card h2{color:#f1f5f9;font-size:1.05rem;font-weight:800;margin-bottom:4px}
+.setup-card .sub{color:#64748b;font-size:.82rem;margin-bottom:16px;line-height:1.5}
+.key-group{margin-bottom:14px}
+.key-group-label{font-size:.76rem;font-weight:700;color:#94a3b8;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.req-badge{font-size:.65rem;font-weight:700;background:rgba(239,68,68,.15);color:#f87171;border-radius:20px;padding:1px 7px;border:1px solid rgba(239,68,68,.25)}
+.opt-badge{font-size:.65rem;font-weight:700;background:rgba(34,197,94,.1);color:#86efac;border-radius:20px;padding:1px 7px;border:1px solid rgba(34,197,94,.2)}
+.key-inp{width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #1e293b;background:#0a0f1e;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.88rem}
+.key-inp:focus{outline:none;border-color:#06b6d4}
+.key-hint{font-size:.73rem;color:#475569;margin-top:4px;line-height:1.4}
+.key-save{width:100%;padding:12px;background:linear-gradient(135deg,#0e7490,#0f4c5c);color:#fff;border:none;border-radius:9px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.92rem;margin-top:4px}
+.key-err{color:#f87171;font-size:.8rem;margin-top:6px;display:none}
+/* SETTINGS OVERLAY */
+.settings-overlay{display:none;position:fixed;inset:0;background:rgba(10,15,30,.98);z-index:200;align-items:center;justify-content:center;flex-direction:column;padding:24px}
+.settings-overlay.show{display:flex}
+.settings-card{background:#111827;border-radius:18px;padding:24px;max-width:360px;width:100%;border:1px solid rgba(255,255,255,.07)}
+.settings-card h2{color:#f1f5f9;font-size:1.05rem;font-weight:800;margin-bottom:14px}
+.setting-row{margin-bottom:16px}
+.setting-row:last-of-type{margin-bottom:0}
+.setting-lbl{font-size:.76rem;font-weight:700;color:#94a3b8;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.key-status{font-size:.7rem;padding:2px 8px;border-radius:20px;font-weight:700}
+.ks-ok{background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.25)}
+.ks-missing{background:rgba(255,255,255,.06);color:#475569;border:1px solid rgba(255,255,255,.08)}
+.setting-inp{width:100%;padding:9px 12px;border-radius:9px;border:1.5px solid #1e293b;background:#0a0f1e;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.86rem}
+.setting-inp:focus{outline:none;border-color:#06b6d4}
+.setting-hint{font-size:.72rem;color:#475569;margin-top:4px;line-height:1.4}
+.settings-save{width:100%;padding:11px;background:linear-gradient(135deg,#0e7490,#0f4c5c);color:#fff;border:none;border-radius:9px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:14px}
+.settings-close{width:100%;padding:10px;background:rgba(255,255,255,.06);color:#94a3b8;border:1px solid rgba(255,255,255,.1);border-radius:9px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px}
+.voice-preview{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.2);border-radius:9px;padding:9px 12px;margin-top:10px;font-size:.8rem;color:#67e8f9;font-weight:700;cursor:pointer;text-align:center}
+.voice-preview:hover{background:rgba(6,182,212,.12)}
+.voice-preview:disabled{opacity:.5;cursor:default}
 </style>
 </head>
 <body>
 
-<div class="setup-screen" id="setup-screen">
-  <div class="setup-box">
-    <div class="setup-emoji">🔑</div>
-    <h2 class="setup-title">Parent Setup</h2>
-    <p class="setup-msg">Enter the Anthropic API key once. Saved on this device.</p>
-    <div class="setup-error" id="setup-error">Key was rejected. Please check and try again.</div>
-    <input class="setup-input" type="password" id="setup-key-input" placeholder="paste your API key" autocomplete="off" autocorrect="off" spellcheck="false"/>
-    <button class="setup-btn" onclick="saveKey()">Save and start →</button>
-    <p class="setup-hint">console.anthropic.com → API Keys</p>
+<!-- ── SETUP SCREEN ── -->
+<div class="setup" id="setup">
+  <div class="setup-card">
+    <h2>Welcome to Ask Echo</h2>
+    <div class="sub">Echo works fully with just the Anthropic key. The OpenAI key is only needed if you want a natural AI voice — skip it for now and add it later any time.</div>
+
+    <div class="key-group">
+      <div class="key-group-label">Anthropic API key <span class="req-badge">required — Echo's brain</span></div>
+      <input class="key-inp" id="anth-inp" type="password" placeholder="sk-ant-..." autocomplete="off">
+      <div class="key-hint">Powers all of Echo's teaching, explanations and feedback.</div>
+    </div>
+
+    <div class="key-group">
+      <div class="key-group-label">OpenAI API key <span class="opt-badge">optional — natural voice only</span></div>
+      <input class="key-inp" id="oai-inp" type="password" placeholder="sk-..." autocomplete="off">
+      <div class="key-hint">Leave blank to use your device's built-in voice for free. Add later via ⚙ if you want natural AI voice.</div>
+    </div>
+
+    <button class="key-save" onclick="saveKeys()">Save and start</button>
+    <div class="key-err" id="key-err">Anthropic key looks wrong — must start with sk-ant-</div>
   </div>
 </div>
 
-<div class="header">
-  <h1>Ask Me <span>Anything</span>! 🤔</h1>
-  <button class="key-btn" onclick="resetKey()">⚙ Key</button>
-</div>
+<!-- ── SETTINGS OVERLAY ── -->
+<div class="settings-overlay" id="settings-overlay">
+  <div class="settings-card">
+    <h2>⚙ Settings</h2>
 
-<div class="topic-bar">
-  <div class="topic-row">
-    <input class="topic-input" id="topic-input" type="text" placeholder="What do you want to learn today?" autocomplete="off">
-    <button class="topic-btn" onclick="startTopic()">Let's go! →</button>
+    <div class="setting-row">
+      <div class="setting-lbl">
+        Anthropic key <span class="key-status" id="anth-status">–</span>
+      </div>
+      <input class="setting-inp" id="anth-setting-inp" type="password" placeholder="sk-ant-..." autocomplete="off">
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-lbl">
+        OpenAI key — natural voice <span class="key-status" id="oai-status">–</span>
+      </div>
+      <input class="setting-inp" id="oai-setting-inp" type="password" placeholder="sk-..." autocomplete="off">
+      <div class="setting-hint">Ssssam uses "fable" voice · Finn uses "echo" voice · model: tts-1-hd</div>
+      <button class="voice-preview" id="preview-btn" onclick="previewVoice()">▶ Hear a preview (tap to test)</button>
+    </div>
+
+    <button class="settings-save" onclick="saveSettings()">Save</button>
+    <button class="settings-close" onclick="closeSettings()">Close</button>
   </div>
-  <div class="topic-hint">Type any topic — your AI tutor will explain it step by step, give examples, and check your understanding!</div>
-  <div class="topic-examples">
-    <span class="topic-chip" onclick="quickTopic('What is a simile?')">Similes</span>
-    <span class="topic-chip" onclick="quickTopic('How do percentages work?')">Percentages</span>
-    <span class="topic-chip" onclick="quickTopic('What is inference in reading?')">Inference</span>
-    <span class="topic-chip" onclick="quickTopic('How do fractions and decimals connect?')">Fractions</span>
-    <span class="topic-chip" onclick="quickTopic('What makes a great story opening?')">Writing</span>
-    <span class="topic-chip" onclick="quickTopic('How does speed distance time work?')">Speed & Time</span>
+</div>
+
+<!-- ── HEADER ── -->
+<div class="hdr">
+  <div>
+    <h1>Ask Echo Anything</h1>
+    <p>I-do · We-do · You-do · Step by step</p>
+  </div>
+  <div class="hdr-r">
+    <div class="voice-pill" id="voice-pill">🔊 Device</div>
+    <span class="char-av" id="char-av">🐍</span>
+    <button class="settings-btn" onclick="openSettings()">⚙</button>
   </div>
 </div>
 
-<div class="char-strip" id="char-strip">
-  <span class="emoji" id="char-emoji"></span>
-  <span class="name" id="char-name-strip"></span>
-  <span class="phase" id="phase-label">Concept</span>
+<!-- ── QUESTION BAR ── -->
+<div class="q-bar">
+  <div class="q-row">
+    <textarea class="q-input" id="q-input" placeholder="Ask anything — e.g. How do I convert fractions to percentages?" rows="1"
+      oninput="autoResize(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();startSession()}"></textarea>
+    <button class="new-btn" id="new-btn" onclick="newQuestion()">↺ New</button>
+    <button class="ask-btn" id="ask-btn" onclick="startSession()">Ask Echo ➤</button>
+  </div>
+  <div class="q-active" id="q-active"></div>
 </div>
 
-<div class="empty-state" id="empty-state">
-  <div class="empty-emoji">🤔</div>
-  <div class="empty-text">What do you want to learn?</div>
-  <div class="empty-sub">Type a topic above or tap one of the quick topics to get started!</div>
+<!-- ── STAGE MAP ── -->
+<div class="smap-wrap" id="smap-wrap">
+  <div class="smap-lbl">Your learning journey — tap any green step to review or redo</div>
+  <div class="smap" id="smap"></div>
 </div>
-<div class="chat-area" id="chat-area"></div>
 
-<div class="input-bar">
-  <input class="msg-input" id="msg-input" type="text" placeholder="Ask a follow-up or type your answer…" autocomplete="off">
-  <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎤</button>
-  <button class="send-btn" onclick="sendMsg()">➤</button>
+<!-- ── MAIN ── -->
+<div class="main" id="main">
+  <div class="empty" id="empty">
+    <div class="empty-icon">🐍</div>
+    <h2>Hi! I'm Echo your tutor</h2>
+    <p>Ask me anything — grammar, maths, writing techniques, or how anything works. I'll guide you step by step.</p>
+    <div class="empty-hint">Try: "What is inference?" or "How do I find percentages?"</div>
+  </div>
+
+  <div class="chat-area" id="chat-area" style="display:none">
+    <div id="ctx-container"></div>
+    <div class="review-banner" id="review-banner">
+      <span>👀 Reviewing a past step</span>
+      <button class="redo-btn-sm" onclick="triggerRedo()">🔄 Try fresh example</button>
+      <button class="back-current-btn" onclick="goToActiveStep()">↩ Back to current</button>
+    </div>
+    <div class="redo-banner" id="redo-banner">
+      <span>🔄 Fresh example — new practice run</span>
+      <button class="back-review-btn" onclick="exitRedo()">← Back</button>
+    </div>
+  </div>
+
+  <div class="completion" id="completion">
+    <div class="comp-icon">🌟</div>
+    <div class="comp-title" id="comp-title">You've mastered it!</div>
+    <div class="comp-msg" id="comp-msg"></div>
+    <div class="comp-list" id="comp-list"></div>
+    <button class="comp-new-btn" onclick="newQuestion()">Ask a new question ➤</button>
+  </div>
 </div>
-<div class="mic-status-bar" id="mic-status-bar" style="display:none;padding:4px 16px 8px;font-size:13px;color:#6d28d9;font-family:'Nunito',sans-serif;"></div>
+
+<!-- ── INPUT AREA ── -->
+<div class="input-area" id="input-area">
+  <div class="qbox-wrap" id="qbox-wrap"></div>
+  <div class="send-row">
+    <button class="send-all-btn" id="send-btn" onclick="sendAnswer()">Send ➤</button>
+  </div>
+</div>
+
+<!-- ── NEXT BUTTON ── -->
+<div class="next-wrap" id="next-wrap">
+  <button class="next-btn" id="next-btn" onclick="advance()">Next →</button>
+</div>
 
 <script>
-const WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-let ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';
-if(!ANTHROPIC_KEY)document.getElementById('setup-screen').classList.add('show');
-function saveKey(){const v=document.getElementById('setup-key-input').value.trim();if(!v.startsWith('sk-')){alert('Key should start with sk-');return;}localStorage.setItem('anthropic_key_v1',v);document.getElementById('setup-error').style.display='none';document.getElementById('setup-key-input').value='';document.getElementById('setup-screen').classList.remove('show');ANTHROPIC_KEY=v;}
-function resetKey(){localStorage.removeItem('anthropic_key_v1');ANTHROPIC_KEY='';document.getElementById('setup-key-input').value='';document.getElementById('setup-screen').classList.add('show');}
-function showKeyError(){document.getElementById('setup-error').style.display='block';document.getElementById('setup-key-input').value='';ANTHROPIC_KEY='';localStorage.removeItem('anthropic_key_v1');document.getElementById('setup-screen').classList.add('show');}
-
-// Characters
-const today=new Date().toISOString().slice(0,10);
-let charKey=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
-if(!charKey){charKey=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',charKey);localStorage.setItem('char_date',today);}
-const CHAR_DATA={
-  snake:{emoji:'🐍',name:'Ssssam',personality:'Your name is Ssssam the Snake. Slip ssss sounds in naturally. Clever, warm, loves surprising kids with knowledge. NEVER use emoji. NEVER use * or ** in your reply. No markdown. Plain spoken words only.'},
-  shark:{emoji:'🦈',name:'Finn',personality:'Your name is Finn the Shark. Use ocean phrases: Splashing great, Fin-tastic, Making waves. Energetic and encouraging. NEVER use emoji. NEVER use * or ** in your reply. No markdown. Plain spoken words only.'},
+// ═══════════════════════════════════════════════════════════
+// CHARS + VOICE MAPPING
+// ═══════════════════════════════════════════════════════════
+const CHARS={
+  snake:{key:'snake',name:'Ssssam',emoji:'🐍',
+    pers:'You are Ssssam the Snake, a warm clever 11+ tutor. Occasional soft sss sounds. NEVER use emoji. No markdown. No asterisks. No bullet points. Plain spoken English only.'},
+  shark:{key:'shark',name:'Finn',emoji:'🦈',
+    pers:'You are Finn the Shark, an energetic encouraging 11+ tutor. Say Fin-tastic, Splashing great occasionally. NEVER use emoji. No markdown. No asterisks. No bullet points. Plain spoken English only.'}
 };
-const CHAR=CHAR_DATA[charKey];
-document.body.classList.add(charKey);
-document.getElementById('char-emoji').textContent=CHAR.emoji;
-document.getElementById('char-name-strip').textContent=CHAR.name;
+// OpenAI voice per character: fable = warm storyteller (Ssssam), echo = clear energetic male (Finn)
+const CHAR_VOICE={snake:'fable',shark:'echo'};
+// Playback speed per character
+const CHAR_SPEED={snake:0.92,shark:0.97};
 
-let convHistory=[];
-let currentTopic='';
-let teachingPhase='concept'; // concept → examples → practice → feedback → open
+let CHAR=CHARS.snake;
 
-const PHASES=['Concept','Examples','Practice','Feedback'];
-function updatePhaseLabel(){document.getElementById('phase-label').textContent=teachingPhase.charAt(0).toUpperCase()+teachingPhase.slice(1);}
+// ═══════════════════════════════════════════════════════════
+// API KEYS
+// ═══════════════════════════════════════════════════════════
+let ANTHROPIC_KEY='';
+let OPENAI_KEY='';
 
-function buildSystemPrompt(){
-  return`${CHAR.personality}
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const STEPS=['ido','wedo','youdo'];
+const SLABELS={ido:'I-do',wedo:'We-do',youdo:'You-do'};
+const SDESC={
+  ido:'Watch Echo work through an example',
+  wedo:'Echo gives a new example with a hint — you complete it',
+  youdo:'Your turn — no hints! Work independently'
+};
+let S={
+  question:'',numStages:0,stages:[],
+  curStage:0,curStep:'ido',viewStage:0,viewStep:'ido',
+  status:{},history:{},
+  isReview:false,isRedo:false,redoSI:0,redoStep:'ido',
+  awaitFeedback:false,sessionOn:false
+};
+let currentQs=[];
+let micActive=false,micTarget=0,recognition=null;
 
-You are an engaging, energetic AI tutor for primary school children preparing for the 11+ exam.
-Current topic: "${currentTopic}"
-Teaching phase: ${teachingPhase}
+function sk(si,st){return `${si}-${st}`;}
+function sts(si,st){return S.status[sk(si,st)]||'pending';}
+function hist(si,st){return S.history[sk(si,st)]||[];}
 
-ABSOLUTE RULES:
-- Plain spoken English only. No asterisks, bold, or markdown. NEVER use emoji of any kind.
-- Write as you speak aloud — no formatting characters.
-- Vary your joke format — use puns, What do you call, What did X say to Y, or Why did. NEVER use Why did every single time.
-- Max 90 words per response. NEVER exceed this.
-- NEVER say: wrong, incorrect, failed, mistake.
-- Each reply must advance the teaching — never repeat what you already explained.
-- Respond to what the child ACTUALLY said — never give a generic response.
-- High energy and warmth — celebrate curiosity and effort.
-
-TEACHING SEQUENCE (progress through these phases):
-1. CONCEPT: Start with ONE short funny joke about the topic. Then explain the concept in the simplest possible terms — one clear sentence definition. End: "Does that make sense so far?"
-2. EXAMPLES: Give 2-3 vivid, relatable examples (sport, food, school, animals). Each example builds on the last. End: "Can you think of another example?"
-3. PRACTICE: Ask ONE practice question to check understanding. Give hints if needed. Max 3 attempts.
-4. FEEDBACK: Celebrate what they got right. Explain the concept one more time using a completely fresh angle. 
-5. OPEN: Answer any follow-up questions enthusiastically. If they ask a new topic, start the sequence again.
-
-Progress to the next phase naturally based on the conversation.
-OFF-TOPIC MAGIC: If they ask something unrelated, briefly answer it in one sentence then bring it back to the lesson.`;
+// ═══════════════════════════════════════════════════════════
+// ── AUDIO ─────────────────────────────────────────────────
+// cleanForSpeech: strip underscores, markdown and TTS-ugly patterns
+// ═══════════════════════════════════════════════════════════
+function cleanForSpeech(text){
+  return text
+    .replace(/_{3,}/g,'blank')           // _____ → "blank" (fill-in-the-gap)
+    .replace(/_{1,2}/g,'')               // stray 1–2 underscores → silent
+    .replace(/QUESTION\s*\d+\s*:\s*/gi,'') // strip "QUESTION 1:" labels (shown visually)
+    .replace(/\bQ(\d+)\s*:/g,'Question $1:') // Q1: → Question 1:
+    .replace(/\*\*/g,'')                 // strip bold markers
+    .replace(/\*/g,'')                   // strip italic markers
+    .replace(/#{1,6}\s/g,'')             // strip heading markers
+    .replace(/\n{3,}/g,'\n\n')           // collapse excess newlines
+    .trim();
 }
 
-function stripMd(t){return t.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/`(.*?)`/g,'$1').replace(/#{1,6}\s+/g,'').replace(/^\s*[-*+]\s+/gm,'').trim();}
+// OpenAI audio state — tracked so hardStop can kill in-flight audio
+let _oaiAudio=null;          // current HTMLAudioElement
+let _oaiObjectUrl=null;      // blob URL to revoke on stop
+let _oaiController=null;     // AbortController for in-flight fetch
+let _oaiFetching=false;      // true while awaiting OpenAI response
 
-function addBubble(text,cls){
-  const _es=document.getElementById('empty-state');if(_es)_es.style.display='none';
-  const el=document.createElement('div');el.className='bubble '+cls;el.textContent=text;
-  document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});
-}
-function showTyping(){
-  document.getElementById('empty-state').style.display='none';
-  const el=document.createElement('div');el.className='bubble ai';el.id='typing-ind';
-  el.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
-  document.getElementById('chat-area').appendChild(el);el.scrollIntoView({behavior:'smooth',block:'end'});
-}
-function removeTyping(){const el=document.getElementById('typing-ind');if(el)el.remove();}
-
-function quickTopic(topic){document.getElementById('topic-input').value=topic;startTopic();}
-
-function startTopic(){
-  const topic=document.getElementById('topic-input').value.trim();
-  if(!topic)return;
-  currentTopic=topic;
-  teachingPhase='concept';
-  convHistory=[];
-  document.getElementById('chat-area').innerHTML='';
-  const es=document.getElementById('empty-state');if(es)es.style.display='none';
-  document.getElementById('char-strip').classList.add('show');
-  updatePhaseLabel();
-  const systemMsg={type:'system',text:'Topic: '+topic};
-  addBubble('📚 Topic: "'+topic+'"','system');
-  convHistory.push({role:'user',content:'Please teach me about: '+topic});
-  callAI();
-}
-
-async function callAI(){
-  _iosWarm();
-  showTyping();
-  const headers={'Content-Type':'application/json'};
-  if(ANTHROPIC_KEY){headers['x-api-key']=ANTHROPIC_KEY;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers,
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:150,system:buildSystemPrompt(),messages:convHistory})});
-    if(res.status===401){removeTyping();showKeyError();return;}
-    const data=await res.json();
-    const reply=stripMd(data.content?.find(b=>b.type==='text')?.text||'Let me try explaining that a different way!');
-    removeTyping();
-    convHistory.push({role:'assistant',content:reply});
-    addBubble(reply,'ai');
-    speak(reply);
-    // Advance teaching phase based on turn count
-    const turns=convHistory.filter(m=>m.role==='assistant').length;
-    if(turns===1)teachingPhase='examples';
-    else if(turns===2)teachingPhase='practice';
-    else if(turns>=4)teachingPhase='feedback';
-    updatePhaseLabel();
-  }catch(e){removeTyping();addBubble('Let me try a different way!','ai');}
-}
-
-async function sendMsg(){
-  const inp=document.getElementById('msg-input');
-  const text=inp.value.trim();if(!text)return;
-  if(!currentTopic){startTopic();return;}  // if no topic yet, treat as topic
-  inp.value='';
-  addBubble(text,'user');
-  convHistory.push({role:'user',content:text});
-  await callAI();
-}
-
-// TTS
+// Web Speech state
 let _cachedVoice=null;
-const _PREF=['Daniel','Serena','Moira','Karen','Samantha'];
-function _loadVoice(){const vs=window.speechSynthesis.getVoices();if(!vs.length)return;for(const n of _PREF){const v=vs.find(v=>v.name===n||v.name.startsWith(n));if(v){_cachedVoice=v;return;}}_cachedVoice=vs.find(v=>v.lang==='en-GB')||vs.find(v=>v.lang.startsWith('en'))||null;}
+const _PREF=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha'];
+window.speechSynthesis.onvoiceschanged=()=>{
+  const vs=window.speechSynthesis.getVoices();
+  for(const n of _PREF){const v=vs.find(x=>x.name.startsWith(n)&&x.lang.startsWith('en'));if(v){_cachedVoice=v;break;}}
+  if(!_cachedVoice)_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||null;
+};
 function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
-function speak(text){if(!text)return;try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const utt=new SpeechSynthesisUtterance(text);if(_cachedVoice)utt.voice=_cachedVoice;utt.rate=charKey==='snake'?.92:.98;utt.pitch=charKey==='snake'?.95:1.02;utt.volume=1;utt.onend=()=>{try{const kp=new SpeechSynthesisUtterance('\u00A0');kp.volume=0.01;kp.rate=16;window.speechSynthesis.speak(kp);}catch(e){}};window.speechSynthesis.speak(utt);},120);}
 
-// Mic
-let isListening=false,recognition=null;
-function toggleMic(){
-  if(isListening){stopMic();return;}
-  _iosWarm();window.speechSynthesis.cancel();
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){document.getElementById('msg-input').placeholder='Voice not available — please type';return;}
-  // Create and start recognition immediately — iOS requires gesture context
-  recognition=new SR();
-  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
-  recognition.onresult=e=>{
-    const t=e.results[0][0].transcript;
-    document.getElementById('msg-input').value=t;
-    setMicStatus('✏️ Edit if needed, then tap Send!');
-    // DO NOT auto-send — child reviews and presses Send themselves
-  };
-  recognition.onend=()=>{stopMic();};
-  recognition.onerror=()=>{stopMic();setMicStatus('Could not hear — type below or try again');};
-  isListening=true;
-  document.getElementById('mic-btn').classList.add('listening');
-  document.getElementById('mic-btn').textContent='⏳';
-  setMicStatus('⏳ Get ready… 2 seconds…');
-  recognition.start();  // immediately — still in gesture context
-  setTimeout(()=>{
-    if(isListening){
-      document.getElementById('mic-btn').textContent='●';
-      setMicStatus('● Listening… speak now!');
+// hardStop — kills BOTH OpenAI audio AND Web Speech immediately
+function hardStop(){
+  // 1. Abort any in-flight OpenAI TTS fetch
+  if(_oaiController){try{_oaiController.abort();}catch(e){}_oaiController=null;_oaiFetching=false;}
+  // 2. Stop and destroy current OpenAI audio element
+  if(_oaiAudio){
+    try{_oaiAudio.pause();_oaiAudio.src='';}catch(e){}
+    _oaiAudio=null;
+  }
+  // 3. Revoke blob URL
+  if(_oaiObjectUrl){try{URL.revokeObjectURL(_oaiObjectUrl);}catch(e){}_oaiObjectUrl=null;}
+  // 4. Stop Web Speech API
+  try{window.speechSynthesis.pause();}catch(e){}
+  try{window.speechSynthesis.cancel();}catch(e){}
+}
+
+// speak — routes to OpenAI or Web Speech based on key availability
+async function speak(text){
+  if(!text)return;
+  const clean=cleanForSpeech(text);
+  if(!clean)return;
+  hardStop(); // always stop previous audio before starting new
+  if(OPENAI_KEY){
+    await speakOpenAI(clean);
+  } else {
+    speakWebSpeech(clean);
+  }
+}
+
+// speakOpenAI — fetches MP3 from OpenAI, plays via Audio element
+async function speakOpenAI(clean){
+  _oaiFetching=true;
+  _oaiController=new AbortController();
+  try{
+    const r=await fetch('https://api.openai.com/v1/audio/speech',{
+      method:'POST',
+      signal:_oaiController.signal,
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${OPENAI_KEY}`},
+      body:JSON.stringify({
+        model:'tts-1-hd',
+        voice:CHAR_VOICE[CHAR.key],
+        input:clean,
+        speed:CHAR_SPEED[CHAR.key]
+      })
+    });
+    _oaiFetching=false;
+    if(!r.ok){
+      // 401 = bad key, 429 = rate limit — fall back to device voice
+      console.warn('OpenAI TTS error',r.status,'— falling back to device voice');
+      speakWebSpeech(clean);
+      if(r.status===401){showOaiKeyError();}
+      return;
     }
-  },2000);
-}
-function stopMic(){
-  if(recognition)try{recognition.stop();}catch(e){}
-  isListening=false;
-  document.getElementById('mic-btn').classList.remove('listening');
-  document.getElementById('mic-btn').textContent='🎤';
-  setTimeout(()=>setMicStatus(''),1500);
-}
-function setMicStatus(msg){
-  const el=document.getElementById('mic-status-bar');
-  if(!el)return;
-  el.textContent=msg;
-  el.style.display=msg?'block':'none';
+    const blob=await r.blob();
+    const url=URL.createObjectURL(blob);
+    _oaiObjectUrl=url;
+    _oaiAudio=new Audio(url);
+    _oaiAudio.onended=()=>{
+      try{URL.revokeObjectURL(url);}catch(e){}
+      _oaiAudio=null;_oaiObjectUrl=null;
+    };
+    _oaiAudio.onerror=()=>{
+      try{URL.revokeObjectURL(url);}catch(e){}
+      _oaiAudio=null;_oaiObjectUrl=null;
+      speakWebSpeech(clean); // fallback if audio element fails
+    };
+    await _oaiAudio.play();
+  }catch(e){
+    _oaiFetching=false;
+    if(e.name==='AbortError')return; // hardStop was called — expected, not an error
+    console.warn('OpenAI TTS fetch failed — falling back',e);
+    speakWebSpeech(clean);
+  }
 }
 
-document.getElementById('msg-input').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
-document.getElementById('topic-input').addEventListener('keydown',e=>{if(e.key==='Enter')startTopic();});
-window.speechSynthesis.onvoiceschanged=_loadVoice;_loadVoice();
+// speakWebSpeech — device voice fallback (original implementation)
+function speakWebSpeech(clean){
+  _iosWarm();
+  setTimeout(()=>{
+    const u=new SpeechSynthesisUtterance(clean);
+    if(_cachedVoice)u.voice=_cachedVoice;
+    u.rate=CHAR.key==='snake'?0.91:0.97;u.pitch=CHAR.key==='snake'?0.94:1.02;u.volume=1;
+    u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};
+    u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};
+    window.speechSynthesis.speak(u);
+  },120);
+}
+
+// Voice preview in settings
+async function previewVoice(){
+  if(!OPENAI_KEY){addBubble('sys','Add an OpenAI key first to hear the natural voice.');return;}
+  const btn=document.getElementById('preview-btn');
+  btn.disabled=true;btn.textContent='Loading…';
+  await speak(`Hi! I'm ${CHAR.name}, your 11+ tutor. Ask me anything and I will teach you step by step!`);
+  btn.disabled=false;btn.textContent='▶ Hear a preview (tap to test)';
+}
+
+// ═══════════════════════════════════════════════════════════
+// MIC — accumulates text, never clears within same step
+// ═══════════════════════════════════════════════════════════
+function toggleMicFor(qIdx){
+  hardStop(); // stop TTS when mic starts
+  if(micActive&&micTarget===qIdx){recognition?.stop();micActive=false;updateMicBtns();return;}
+  if(micActive){recognition?.stop();micActive=false;}
+  micTarget=qIdx;
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){setMicStat(qIdx,'Mic not supported — type below');return;}
+  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;
+  recognition.onresult=(e)=>{
+    micActive=false;updateMicBtns();
+    const newText=e.results[0][0].transcript;
+    const ta=document.getElementById(`ans-q-${qIdx}`);
+    if(ta){
+      // ACCUMULATE — append, never replace within same step
+      const existing=ta.value.trim();
+      ta.value=existing?existing+' '+newText:newText;
+      autoResize(ta);
+    }
+    setMicStat(qIdx,'✏️ Edit if needed, then tap Send');
+  };
+  recognition.onerror=(e)=>{
+    micActive=false;updateMicBtns();
+    const msg=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone'
+              :e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';
+    setMicStat(qIdx,msg);
+  };
+  recognition.onend=()=>{if(micActive){micActive=false;updateMicBtns();}};
+  micActive=true;updateMicBtns();
+  setMicStat(qIdx,'⏳ Get ready… speak now!');
+  recognition.start(); // synchronous — must be in user gesture handler
+  setTimeout(()=>{if(micActive)setMicStat(qIdx,'🔴 Listening…');},1500);
+}
+function updateMicBtns(){for(let i=0;i<Math.max(1,currentQs.length);i++){const b=document.getElementById(`mic-q-${i}`);if(b)b.classList.toggle('listening',micActive&&micTarget===i);}}
+function setMicStat(qIdx,msg){const el=document.getElementById(`mic-stat-${qIdx}`);if(el)el.textContent=msg;}
+
+// ═══════════════════════════════════════════════════════════
+// QUESTION BOXES — parse multi-Q from Echo response
+// ═══════════════════════════════════════════════════════════
+function parseQuestions(text){
+  const matches=[...text.matchAll(/QUESTION\s*(\d+)\s*:\s*([^\n]+)/gi)];
+  return matches.length>1?matches.map(m=>m[2].trim()):[];
+}
+function renderInputBoxes(questions,clearVals=true){
+  currentQs=questions;
+  const wrap=document.getElementById('qbox-wrap');wrap.innerHTML='';
+  const n=questions.length||1;
+  for(let i=0;i<n;i++){
+    const hasLbl=questions.length>1;
+    const lbl=hasLbl?`<div class="qbox-lbl">Q${i+1}: ${questions[i]}</div>`:'';
+    wrap.innerHTML+=`<div class="qbox${hasLbl?'':' qbox-single'}">${lbl}
+      <div class="ans-row">
+        <textarea class="ans-ta" id="ans-q-${i}" placeholder="${hasLbl?'Your answer to Q'+(i+1)+'…':'Type or speak your answer…'}" rows="1"
+          oninput="autoResize(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAnswer()}"></textarea>
+        <button class="mic-btn-q" id="mic-q-${i}" onclick="toggleMicFor(${i})">🎤</button>
+      </div>
+      <div class="mic-stat" id="mic-stat-${i}">Tap 🎤 to speak your answer</div>
+    </div>`;
+  }
+  if(clearVals){for(let i=0;i<n;i++){const ta=document.getElementById(`ans-q-${i}`);if(ta){ta.value='';ta.style.height='44px';}}}
+}
+function collectAnswers(){
+  if(currentQs.length>1)return currentQs.map((q,i)=>`Q${i+1}: ${document.getElementById(`ans-q-${i}`)?.value.trim()||'(no answer)'}`).join('\n');
+  return document.getElementById('ans-q-0')?.value.trim()||'';
+}
+function clearInputBoxes(){const n=Math.max(1,currentQs.length);for(let i=0;i<n;i++){const ta=document.getElementById(`ans-q-${i}`);if(ta){ta.value='';ta.style.height='44px';}}}
+
+// ═══════════════════════════════════════════════════════════
+// KEY MANAGEMENT
+// ═══════════════════════════════════════════════════════════
+function saveKeys(){
+  const anth=document.getElementById('anth-inp').value.trim();
+  const oai=document.getElementById('oai-inp').value.trim();
+  if(!anth.startsWith('sk-ant-')||anth.length<20){document.getElementById('key-err').style.display='block';return;}
+  ANTHROPIC_KEY=anth;localStorage.setItem('anthropic_key_v1',anth);
+  if(oai&&oai.startsWith('sk-')&&oai.length>20){OPENAI_KEY=oai;localStorage.setItem('openai_key_v1',oai);}
+  document.getElementById('setup').classList.remove('show');
+  updateVoicePill();
+}
+function openSettings(){
+  document.getElementById('anth-setting-inp').value=ANTHROPIC_KEY?'••••••••••••':'';
+  document.getElementById('oai-setting-inp').value=OPENAI_KEY?'••••••••••••':'';
+  document.getElementById('anth-status').textContent=ANTHROPIC_KEY?'✓ Active':'Not set';
+  document.getElementById('anth-status').className='key-status '+(ANTHROPIC_KEY?'ks-ok':'ks-missing');
+  document.getElementById('oai-status').textContent=OPENAI_KEY?'✓ Natural voice active':'Not set — using device voice';
+  document.getElementById('oai-status').className='key-status '+(OPENAI_KEY?'ks-ok':'ks-missing');
+  document.getElementById('settings-overlay').classList.add('show');
+}
+function closeSettings(){document.getElementById('settings-overlay').classList.remove('show');}
+function saveSettings(){
+  const anth=document.getElementById('anth-setting-inp').value.trim();
+  const oai=document.getElementById('oai-setting-inp').value.trim();
+  if(anth&&!anth.startsWith('•')&&anth.length>20){ANTHROPIC_KEY=anth;localStorage.setItem('anthropic_key_v1',anth);}
+  if(oai&&!oai.startsWith('•')&&oai.startsWith('sk-')&&oai.length>20){OPENAI_KEY=oai;localStorage.setItem('openai_key_v1',oai);}
+  else if(oai===''){OPENAI_KEY='';localStorage.removeItem('openai_key_v1');} // blank = remove
+  updateVoicePill();closeSettings();
+}
+function showOaiKeyError(){
+  // OpenAI key rejected — remove it, fall back to device voice silently
+  OPENAI_KEY='';localStorage.removeItem('openai_key_v1');updateVoicePill();
+}
+function updateVoicePill(){
+  const pill=document.getElementById('voice-pill');
+  if(OPENAI_KEY){pill.textContent='🔊 Natural';pill.className='voice-pill natural';}
+  else{pill.textContent='🔊 Device';pill.className='voice-pill';}
+}
+
+// ═══════════════════════════════════════════════════════════
+// iOS AUDIO WARMUP — run on first user gesture
+// ═══════════════════════════════════════════════════════════
+let _audioWarmed=false;
+function _warmAudio(){
+  if(_audioWarmed)return;
+  // Warm Web Speech
+  _iosWarm();
+  // Warm HTMLAudio for OpenAI blobs — silent 1-sample WAV
+  try{
+    const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+    a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});
+  }catch(e){_audioWarmed=true;}
+}
+document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});
+document.addEventListener('click',_warmAudio,{once:true});
+
+// ═══════════════════════════════════════════════════════════
+// API FETCH
+// ═══════════════════════════════════════════════════════════
+async function apiFetch(sys,msgs,maxTok){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTok||280,system:sys,messages:msgs})
+  });
+  if(r.status===401){clearKey401();throw new Error('401');}
+  return r.json();
+}
+function clearKey401(){ANTHROPIC_KEY='';localStorage.removeItem('anthropic_key_v1');document.getElementById('anth-inp').value='';document.getElementById('key-err').style.display='block';document.getElementById('setup').classList.add('show');}
+
+// ═══════════════════════════════════════════════════════════
+// SESSION
+// ═══════════════════════════════════════════════════════════
+async function startSession(){
+  _warmAudio();
+  const q=document.getElementById('q-input').value.trim();
+  if(!q||q.length<4)return;
+  if(!ANTHROPIC_KEY){document.getElementById('setup').classList.add('show');return;}
+  S.question=q;lockQuestionBar(q);showChatArea();
+  addBubble('sys',`Planning your lesson on: "${q}"…`);showTyping();
+  try{
+    const plan=await planSession(q);hideTyping();
+    initState(plan);renderStageMap();
+    document.getElementById('smap-wrap').style.display='block';
+    S.sessionOn=true;await loadStep(0,'ido');
+  }catch(e){hideTyping();addBubble('sys','Something went wrong. Check your API key and try again.');}
+}
+
+async function planSession(q){
+  const sys=`You are an expert 11+ tutor. Student asks: "${q}"
+Decide 3 or 5 stages:
+- 3 stages: single clear concept that builds in 3 escalating examples
+- 5 stages: multi-part concept where each sub-concept needs separate teaching
+Return ONLY valid JSON, no code fences:
+{"numStages":3,"stages":[{"title":"Short title 3-5 words","concept":"One sentence — what this stage teaches"},{"title":"...","concept":"..."},{"title":"...","concept":"..."}]}`;
+  const r=await apiFetch(sys,[{role:'user',content:'Plan the lesson.'}],450);
+  const txt=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
+  return JSON.parse(txt.replace(/```json|```/g,'').trim());
+}
+
+function initState(plan){
+  S.numStages=plan.numStages;S.stages=plan.stages;
+  S.curStage=0;S.curStep='ido';S.viewStage=0;S.viewStep='ido';
+  S.status={};S.history={};S.isReview=false;S.isRedo=false;S.awaitFeedback=false;
+  for(let si=0;si<plan.numStages;si++)for(const st of STEPS){S.status[sk(si,st)]='pending';S.history[sk(si,st)]=[];}
+}
+
+// ═══════════════════════════════════════════════════════════
+// STAGE MAP
+// ═══════════════════════════════════════════════════════════
+function renderStageMap(){
+  const map=document.getElementById('smap');map.innerHTML='';
+  for(let si=0;si<S.numStages;si++){
+    const stage=S.stages[si];
+    const allDone=STEPS.every(s=>sts(si,s)==='done');
+    const isCurSt=si===S.curStage;
+    const card=document.createElement('div');
+    card.className=`sc ${isCurSt&&!allDone?'sa':allDone?'sd':''}`;
+    const title=document.createElement('div');
+    title.className='sc-title';title.title=stage.title;title.textContent=`${si+1}. ${stage.title}`;card.appendChild(title);
+    const row=document.createElement('div');row.className='step-row';
+    for(const st of STEPS){
+      const s=sts(si,st);
+      const isActiveStep=si===S.curStage&&st===S.curStep&&!S.isReview&&!S.isRedo;
+      const isViewStep=si===S.viewStage&&st===S.viewStep&&(S.isReview||S.isRedo);
+      const cls=isActiveStep?'sa2':s==='done'?(isViewStep?'sv':'sd2'):'sp';
+      const btn=document.createElement('button');btn.className=`sb ${cls}`;btn.textContent=SLABELS[st];btn.title=SDESC[st];
+      if(s==='done'){btn.onclick=()=>reviewStep(si,st);}else if(s==='active'){btn.onclick=()=>goToActiveStep();}
+      row.appendChild(btn);
+    }
+    card.appendChild(row);map.appendChild(card);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOAD STEP
+// ═══════════════════════════════════════════════════════════
+const QFMT=`\nIf asking more than one question (max 3), use this EXACT format on separate lines:\nQUESTION 1: [your first question]\nQUESTION 2: [your second question]\nOnly use this format when you genuinely need separate answers. One question is usually better.`;
+
+async function loadStep(si,st){
+  hardStop();
+  S.curStage=si;S.curStep=st;S.viewStage=si;S.viewStep=st;
+  S.isReview=false;S.isRedo=false;S.awaitFeedback=false;
+  S.status[sk(si,st)]='active';
+  renderStageMap();clearChat();updateCtx(si,st);hideBanners();hideInput();hideNext();
+
+  const stage=S.stages[si];
+  const redoTag=''; // not a redo
+  const prompts={
+    ido:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}\nSTEP: I-DO — You demonstrate, student watches.\n\nShow ONE clear worked example. Be concrete. Use real numbers or real sentences.\nEnd with: "Did you follow that? Tap Next when you are ready!"\nMax 140 words. Plain English. No markdown. No emoji.`,
+    wedo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}\nSTEP: WE-DO — New example WITH hint, student completes it.\n\nShow a DIFFERENT example from I-do. Include a clear scaffold or gap to fill.${QFMT}\nMax 120 words. Plain English. No emoji.`,
+    youdo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}"\nSTEP: YOU-DO — Student works alone. NO hints.\n\nShow a third DIFFERENT example. Give no scaffold.\nEnd: "Your turn! Show me what you have got."\nMax 100 words. Plain English. No emoji.`
+  };
+
+  showTyping();
+  try{
+    const r=await apiFetch(prompts[st],[{role:'user',content:'Begin the step.'}],280);
+    const content=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
+    hideTyping();addBubble('echo',content);speak(content);
+    S.history[sk(si,st)].push({role:'assistant',content});
+    if(st==='ido'){updateNextBtn(si,st);showNext();}
+    else{renderInputBoxes(parseQuestions(content),true);showInput();document.getElementById('ans-q-0')?.focus();}
+  }catch(e){hideTyping();addBubble('sys','Something went wrong — try again.');}
+}
+
+// ═══════════════════════════════════════════════════════════
+// SEND ANSWER
+// ═══════════════════════════════════════════════════════════
+async function sendAnswer(){
+  _warmAudio();
+  const ans=collectAnswers();if(!ans.trim())return;
+  addBubble('user',ans);
+  document.getElementById('send-btn').disabled=true;
+  S.history[sk(S.curStage,S.curStep)].push({role:'user',content:ans});
+  const si=S.curStage,st=S.curStep;const stage=S.stages[si];
+  const fbSys={
+    wedo:`${CHAR.pers}\n\nTeaching: "${S.question}", Stage ${si+1} We-do: "${stage.title}"\nStudent answered: "${ans}"\n\nEvaluate warmly. If correct: celebrate specifically, confirm approach, end "Tap Next when ready!" If close: name what is right, correct the error, end "Have another go, or tap Next." If wrong: reteach with fresh angle, ask to try again.\nMax 90 words. No emoji.`,
+    youdo:`${CHAR.pers}\n\nTeaching: "${S.question}", Stage ${si+1} You-do: "${stage.title}"\nStudent answered: "${ans}"\n\nEvaluate independently. If correct: celebrate specifically, confirm mastery, end "Tap Next Stage when ready!" If close: name right part, correct error, end "Good effort — tap Next." If wrong: one clear correction, end "Have another try, or tap Next."\nMax 90 words. No emoji.`
+  };
+  showTyping();
+  try{
+    const r=await apiFetch(fbSys[st]||fbSys.youdo,[...hist(si,st)],240);
+    const fb=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
+    hideTyping();addBubble('echo',fb);speak(fb);
+    S.history[sk(si,st)].push({role:'assistant',content:fb});
+    document.getElementById('send-btn').disabled=false;
+    clearInputBoxes();S.awaitFeedback=true;updateNextBtn(si,st);showNext();
+  }catch(e){hideTyping();addBubble('sys','Something went wrong — try again.');document.getElementById('send-btn').disabled=false;}
+}
+
+// ═══════════════════════════════════════════════════════════
+// ADVANCE
+// ═══════════════════════════════════════════════════════════
+async function advance(){
+  hardStop();
+  const si=S.curStage,st=S.curStep;
+  const idx=STEPS.indexOf(st);
+  S.status[sk(si,st)]='done';
+  if(idx<STEPS.length-1){await loadStep(si,STEPS[idx+1]);}
+  else if(si<S.numStages-1){await loadStep(si+1,'ido');}
+  else{S.status[sk(si,st)]='done';renderStageMap();showCompletion();}
+}
+
+function updateNextBtn(si,st){
+  const btn=document.getElementById('next-btn');btn.className='next-btn';
+  const idx=STEPS.indexOf(st),lastStep=idx===STEPS.length-1,lastStage=si===S.numStages-1;
+  if(lastStep&&lastStage){btn.textContent='✓ All done!';btn.classList.add('done-btn');}
+  else if(lastStep){btn.textContent=`Next Stage: ${S.stages[si+1].title} →`;}
+  else{btn.textContent=`Next: ${SLABELS[STEPS[idx+1]]} →`;}
+  btn.onclick=advance;
+}
+
+// ═══════════════════════════════════════════════════════════
+// REVIEW + REDO
+// ═══════════════════════════════════════════════════════════
+function reviewStep(si,st){
+  if(si===S.curStage&&st===S.curStep&&!S.isReview){goToActiveStep();return;}
+  hardStop();
+  S.viewStage=si;S.viewStep=st;S.isReview=true;S.isRedo=false;
+  renderStageMap();clearChat();updateCtx(si,st);
+  for(const msg of hist(si,st)){addBubble(msg.role==='user'?'user':'echo',msg.content);}
+  document.getElementById('review-banner').style.display='flex';
+  document.getElementById('redo-banner').style.display='none';
+  hideInput();hideNext();scrollChat();
+}
+function goToActiveStep(){
+  hardStop();
+  S.viewStage=S.curStage;S.viewStep=S.curStep;S.isReview=false;S.isRedo=false;
+  renderStageMap();clearChat();updateCtx(S.curStage,S.curStep);hideBanners();
+  for(const msg of hist(S.curStage,S.curStep)){addBubble(msg.role==='user'?'user':'echo',msg.content);}
+  const st=S.curStep;
+  if(st!=='ido'){const lastMsg=S.history[sk(S.curStage,st)].findLast?.(m=>m.role==='assistant')||null;if(lastMsg){renderInputBoxes(parseQuestions(lastMsg.content),false);showInput();}}
+  if(st==='ido'||S.awaitFeedback){updateNextBtn(S.curStage,st);showNext();}
+  scrollChat();
+}
+function triggerRedo(){redoStep(S.viewStage,S.viewStep);}
+async function redoStep(si,st){
+  hardStop();
+  S.isRedo=true;S.isReview=false;S.redoSI=si;S.redoStep=st;
+  renderStageMap();clearChat();updateCtx(si,st);
+  document.getElementById('review-banner').style.display='none';
+  document.getElementById('redo-banner').style.display='flex';
+  hideInput();hideNext();
+  const stage=S.stages[si];
+  const redoPrompts={
+    ido:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1}: "${stage.title}" — ${stage.concept}\nSTEP: I-DO REDO — Fresh example only. Use completely different numbers, words, context.\nShow ONE new worked example. End: "Did you follow that? Tap Done when ready!"\nMax 140 words. No emoji.`,
+    wedo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1}: "${stage.title}"\nSTEP: WE-DO REDO — Fresh example with hint. Completely different from before.${QFMT}\nMax 120 words. No emoji.`,
+    youdo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1}: "${stage.title}"\nSTEP: YOU-DO REDO — Fresh challenge, no hints, completely different example.\nEnd: "Your turn!" Max 100 words. No emoji.`
+  };
+  addBubble('sys',`Generating a fresh ${SLABELS[st]} example for Stage ${si+1}…`);showTyping();
+  try{
+    const r=await apiFetch(redoPrompts[st],[{role:'user',content:'Generate fresh example.'}],280);
+    const content=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
+    hideTyping();addBubble('echo',content);speak(content);
+    if(st==='ido'){
+      const btn=document.getElementById('next-btn');btn.textContent='✓ Done — go back';
+      btn.className='next-btn back-btn2';btn.onclick=exitRedo;showNext();
+    }else{
+      renderInputBoxes(parseQuestions(content),true);showInput();
+      document.getElementById('send-btn').onclick=redoSendAnswer;
+      const nBtn=document.getElementById('next-btn');nBtn.textContent='Done — go back';
+      nBtn.className='next-btn back-btn2';nBtn.onclick=exitRedo;
+    }
+  }catch(e){hideTyping();addBubble('sys','Could not generate fresh example — try again.');}
+}
+async function redoSendAnswer(){
+  _warmAudio();
+  const ans=collectAnswers();if(!ans.trim())return;
+  addBubble('user',ans);clearInputBoxes();
+  document.getElementById('send-btn').disabled=true;
+  const si=S.redoSI,stage=S.stages[si];
+  const sys=`${CHAR.pers}\n\nTeaching "${S.question}", Stage ${si+1} ${SLABELS[S.redoStep]}: "${stage.title}"\nStudent answered (redo practice): "${ans}"\n\nEvaluate warmly. Celebrate understanding. Mention what was right. End: "Tap Done when satisfied!"\nMax 80 words. No emoji.`;
+  showTyping();
+  try{const r=await apiFetch(sys,[{role:'user',content:ans}],200);const txt=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble('echo',txt);speak(txt);document.getElementById('send-btn').disabled=false;showNext();}
+  catch(e){hideTyping();addBubble('sys','Try again.');document.getElementById('send-btn').disabled=false;}
+}
+function exitRedo(){
+  hardStop();S.isRedo=false;document.getElementById('send-btn').onclick=sendAnswer;
+  reviewStep(S.redoSI,S.redoStep);
+}
+
+// ═══════════════════════════════════════════════════════════
+// COMPLETION
+// ═══════════════════════════════════════════════════════════
+function showCompletion(){
+  hardStop();
+  document.getElementById('chat-area').style.display='none';hideInput();hideNext();
+  document.getElementById('comp-title').textContent=CHAR.key==='snake'?'Sssuper! You\'ve mastered it!':'Fin-tastic! You\'ve mastered it!';
+  document.getElementById('comp-msg').textContent=`You worked through all ${S.numStages} stages and can now do this independently!`;
+  document.getElementById('comp-list').innerHTML=S.stages.map((s,i)=>`<div class="comp-row">✓ Stage ${i+1}: ${s.title}</div>`).join('');
+  document.getElementById('completion').classList.add('show');
+  speak(CHAR.key==='snake'?'Sssuper work! You have mastered every stage. Well done!':'Fin-tastic work! You nailed every stage. Well done!');
+}
+
+// ═══════════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════════
+function updateCtx(si,st){
+  const stage=S.stages[si];const bc=st==='ido'?'ctx-ido':st==='wedo'?'ctx-wedo':'ctx-youdo';
+  document.getElementById('ctx-container').innerHTML=`<div class="step-ctx"><span class="ctx-badge ${bc}">${SLABELS[st]}</span><div class="ctx-desc"><strong>Stage ${si+1}: ${stage.title}</strong> — ${SDESC[st]}</div></div>`;
+}
+function lockQuestionBar(q){document.getElementById('q-input').disabled=true;document.getElementById('q-input').style.display='none';document.getElementById('ask-btn').disabled=true;document.getElementById('new-btn').style.display='block';document.getElementById('q-active').textContent=q;document.getElementById('q-active').style.display='block';}
+function showChatArea(){document.getElementById('empty').style.display='none';document.getElementById('chat-area').style.display='flex';document.getElementById('completion').classList.remove('show');}
+function hideBanners(){document.getElementById('review-banner').style.display='none';document.getElementById('redo-banner').style.display='none';}
+function showInput(){document.getElementById('input-area').classList.add('show');}
+function hideInput(){document.getElementById('input-area').classList.remove('show');}
+function showNext(){document.getElementById('next-wrap').classList.add('show');}
+function hideNext(){document.getElementById('next-wrap').classList.remove('show');}
+function clearChat(){const a=document.getElementById('chat-area');[...a.children].filter(el=>el.classList.contains('bub')||el.classList.contains('typing')).forEach(el=>el.remove());}
+function addBubble(type,text){const a=document.getElementById('chat-area');const d=document.createElement('div');d.className=`bub ${type}`;d.textContent=text;a.appendChild(d);scrollChat();}
+function showTyping(){const a=document.getElementById('chat-area');const t=document.createElement('div');t.className='typing';t.id='typing';t.innerHTML='<span></span><span></span><span></span>';a.appendChild(t);scrollChat();}
+function hideTyping(){document.getElementById('typing')?.remove();}
+function scrollChat(){const a=document.getElementById('chat-area');a.scrollTop=a.scrollHeight;}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+
+function newQuestion(){
+  hardStop();if(micActive){recognition?.stop();micActive=false;}
+  Object.assign(S,{question:'',numStages:0,stages:[],curStage:0,curStep:'ido',viewStage:0,viewStep:'ido',status:{},history:{},isReview:false,isRedo:false,awaitFeedback:false,sessionOn:false});
+  currentQs=[];document.getElementById('q-input').value='';document.getElementById('q-input').disabled=false;
+  document.getElementById('q-input').style.display='';document.getElementById('q-input').style.height='44px';
+  document.getElementById('ask-btn').disabled=false;document.getElementById('new-btn').style.display='none';
+  document.getElementById('q-active').style.display='none';document.getElementById('smap-wrap').style.display='none';
+  document.getElementById('smap').innerHTML='';document.getElementById('chat-area').style.display='none';
+  document.getElementById('empty').style.display='flex';document.getElementById('completion').classList.remove('show');
+  document.getElementById('ctx-container').innerHTML='';document.getElementById('send-btn').onclick=sendAnswer;
+  hideBanners();hideInput();hideNext();clearChat();document.getElementById('q-input').focus();
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+window.onload=function(){
+  ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';
+  OPENAI_KEY=localStorage.getItem('openai_key_v1')||'';
+  if(!ANTHROPIC_KEY)document.getElementById('setup').classList.add('show');
+  const today=new Date().toISOString().slice(0,10);
+  let ck=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
+  if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',today);}
+  CHAR=CHARS[ck];document.getElementById('char-av').textContent=CHAR.emoji;
+  updateVoicePill();
+  window.speechSynthesis.getVoices(); // warm up voice list
+};
 </script>
 </body>
 </html>
