@@ -210,74 +210,35 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'IL';
 const DAY      = 'Monday';
-const WEEK     = 21;
+const WEEK     = 22;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'puddle';
-const DICT_DEF  = 'Noun — a small pool of water on the ground, usually from rain.';
-const DICT_EG   = 'After the storm, the path was covered in puddles.';
+const DICT_WORD = 'brilliant';
+const DICT_DEF  = 'Adjective — very clever, or very bright and impressive.';
+const DICT_EG   = 'She had a brilliant idea to solve the problem.';
 const RULES_TIPS = [
-  'E1.1: Double letters — "buzz", "fizz", "bell", "ball" all have two of the same letter at the end.',
-  'M1.1: Tens and ones — in the number 47, the 4 is worth 40 and the 7 is worth 7.',
-  'E2.1: A joining word like "and", "but", or "so" joins two ideas together in one sentence.',
+  'E5.2 Inference: Look at what characters DO to work out how they feel.',
+  'M1.1 Adding: Line the numbers up and always start from the ones column on the right.',
+  'E3.1 Capital letters: Every new sentence starts with a capital letter.',
 ];
-const MISSION_PACK = {
-  id:'IL-A', title:'The Feeling Scene', codes:['W1.1','W4.1'],
-  prompt:'Write 2 or 3 sentences about a character who feels something really strongly. Use what their body does to show the feeling — and try to use one brilliant describing word!',
-};
+const MISSION_PACK = {id:'IL-D',title:'The Description',codes:['W2.3','W4.4'],prompt:'Write 2 to 3 sentences describing a place. Use one exact detail that makes it feel real (W2.3) and a comparing word like "as cold as ice" or "like a blanket" to describe how it looks or feels (W4.4).'};
 const QUESTIONS = {
-  0:{ section:'Vocab', code:'E4.1', correct:'C', star:false,
-      text:'What does "brave" mean?',
-      opts:{A:'Very scared and hiding',B:'Feeling very cold',C:'Not afraid even when something is difficult or dangerous',D:'Moving very slowly'},
-      vocabWord:'brave' },
-  1:{ section:'Vocab', code:'E4.2', correct:'A', star:false,
-      text:'Which word means something is very, very big?',
-      opts:{A:'Enormous',B:'Tiny',C:'Wobbly',D:'Stripy'},
-      vocabWord:'enormous' },
-  2:{ section:'Vocab', code:'E4.3', correct:'B', star:false,
-      text:'What does "gentle" mean?',
-      opts:{A:'Very loud and rough',B:'Soft and kind, not using much force',C:'Very fast and strong',D:'Bright and colourful'},
-      vocabWord:'gentle' },
-  3:{ section:'Vocab', code:'E4.4', correct:'D', star:true,
-      text:'★ STAR — The mischievous puppy had chewed three socks. What does "mischievous" mean?',
-      opts:{A:'Very sleepy',B:'Very hungry',C:'Very kind and helpful',D:'Playful in a naughty, slightly bad way'},
-      vocabWord:'mischievous' },
-  4:{ section:'English', code:'E2.1', correct:'B', star:false,
-      text:'Which sentence joins two ideas with "and" in the right place?',
-      opts:{A:'The cat and sat on the mat.',B:'The cat sat on the mat and purred loudly.',C:'And the cat sat on the mat.',D:'The cat sat and on the mat.'} },
-  5:{ section:'English', code:'E1.1', correct:'A', star:false,
-      text:'Which word is spelled correctly?',
-      opts:{A:'Fizz',B:'Fiz',C:'Fizzz',D:'Fiiz'} },
-  6:{ section:'English', code:'E2.3', correct:'C', star:false,
-      text:'Which word is a describing word in this sentence: The fluffy rabbit hopped over the fence.',
-      opts:{A:'Rabbit',B:'Hopped',C:'Fluffy',D:'Fence'} },
-  7:{ section:'English', code:'E3.1', correct:'D', star:false,
-      text:'Which sentence ends with the right punctuation mark?',
-      opts:{A:'Can you pass the salt.',B:'What a beautiful day',C:'She walked to school?',D:'Where did you put my bag?'} },
-  8:{ section:'English', code:'E1.3', correct:'B', star:false,
-      text:'Which word is spelled correctly?',
-      opts:{A:'Frend',B:'Friend',C:'Freind',D:'Frind'} },
-  9:{ section:'English', code:'E2.2', correct:'A', star:false,
-      text:'Which of these is an exclamation (a sentence showing strong feeling)?',
-      opts:{A:'What an amazing goal that was!',B:'She scored a goal.',C:'Did she score a goal?',D:'The goal was scored by her.'} },
-  10:{ section:'Maths', code:'M1.1', correct:'C', star:false,
-       text:'What does the digit 6 stand for in the number 64?',
-       opts:{A:'6',B:'600',C:'60',D:'4'}, mathConcept:'place value' },
-  11:{ section:'Maths', code:'M1.3', correct:'B', star:false,
-       text:'What is 8 times 5?',
-       opts:{A:'35',B:'40',C:'45',D:'48'}, mathConcept:'times tables' },
-  12:{ section:'Maths', code:'M2.2', correct:'D', star:false,
-       text:'What is one quarter of 20?',
-       opts:{A:'4',B:'8',C:'10',D:'5'}, mathConcept:'fractions' },
-  13:{ section:'Maths', code:'M1.4', correct:'A', star:false,
-       text:'What is 54 plus 39?',
-       opts:{A:'93',B:'83',C:'94',D:'92'}, mathConcept:'addition' },
-  14:{ section:'Maths', code:'M3.1', correct:'C', star:false,
-       text:'A ruler is 30 centimetres long. How many millimetres is that?',
-       opts:{A:'3 millimetres',B:'30 millimetres',C:'300 millimetres',D:'3000 millimetres'}, mathConcept:'measurement' },
-  15:{ section:'Maths', code:'M1.5', correct:'B', star:false,
-       text:'What is 82 take away 45?',
-       opts:{A:'36',B:'37',C:'47',D:'43'}, mathConcept:'subtraction' },
+  0:{section:'Vocab',code:'E4.1',correct:'C',star:false,text:'What does "enormous" mean?',opts:{A:'Very tiny',B:'Very quiet',C:'Very large',D:'Very fast'},vocabWord:'enormous'},
+  1:{section:'Vocab',code:'E4.2',correct:'B',star:false,text:'Which word means "wanting to know more"?',opts:{A:'Tired',B:'Curious',C:'Scared',D:'Silly'},vocabWord:'curious'},
+  2:{section:'Vocab',code:'E4.3',correct:'A',star:false,text:'The word "triumph" means a great win. Which sentence uses it correctly?',opts:{A:'Winning the cup was a triumph for the team.',B:'She triumph the whole morning.',C:'He ate a triumph for breakfast.',D:'The triumph was very quiet.'},vocabWord:'triumph'},
+  3:{section:'Vocab',code:'E4.1',correct:'A',star:true,text:'★ STAR — What does "brilliant" mean?',opts:{A:'Very clever or very bright and impressive',B:'Very tired',C:'Very loud',D:'Very slow'},vocabWord:'brilliant'},
+  4:{section:'English',code:'E1.1',correct:'B',star:false,text:'Which of these is spelled correctly?',opts:{A:'frend',B:'friend',C:'freind',D:'frind'}},
+  5:{section:'English',code:'E5.2',correct:'B',star:false,text:'Jack ran as fast as he could and his face went red. What does this tell you about Jack?',opts:{A:'He is cold',B:'He is trying very hard',C:'He is eating something',D:'He is asleep'}},
+  6:{section:'English',code:'E3.1',correct:'B',star:false,text:'Which sentence starts with a capital letter correctly?',opts:{A:'the dog ran into the garden.',B:'The dog ran into the garden.',C:'the Dog ran into the garden.',D:'The Dog Ran Into The Garden.'}},
+  7:{section:'English',code:'E2.3',correct:'B',star:false,text:'Which is the doing word in "The cat jumped over the fence"?',opts:{A:'cat',B:'jumped',C:'fence',D:'over'}},
+  8:{section:'English',code:'E2.1',correct:'A',star:false,text:'Which sentence is in the past tense?',opts:{A:'The bird sang all morning.',B:'The bird is singing.',C:'The bird will sing.',D:'The bird sings.'}},
+  9:{section:'English',code:'E5.1',correct:'B',star:false,text:'It was raining. Ben looked out of the window with a sad face. How did Ben feel?',opts:{A:'Happy',B:'Disappointed he could not go out',C:'Hungry',D:'Excited'}},
+  10:{section:'Maths',code:'M1.1',correct:'C',star:false,text:'What is 15 plus 27?',opts:{A:'40',B:'41',C:'42',D:'43'}},
+  11:{section:'Maths',code:'M1.2',correct:'B',star:false,text:'What is half of 18?',opts:{A:'8',B:'9',C:'10',D:'7'}},
+  12:{section:'Maths',code:'M1.3',correct:'C',star:false,text:'What is 24 take away 8?',opts:{A:'14',B:'15',C:'16',D:'17'}},
+  13:{section:'Maths',code:'M1.4',correct:'C',star:false,text:'What is 3 times 7?',opts:{A:'18',B:'24',C:'21',D:'27'}},
+  14:{section:'Maths',code:'M3.1',correct:'C',star:false,text:'Which shape has 4 equal sides and 4 corners?',opts:{A:'Triangle',B:'Circle',C:'Square',D:'Pentagon'}},
+  15:{section:'Maths',code:'M1.5',correct:'C',star:false,text:'What is 20 divided by 4?',opts:{A:'4',B:'6',C:'5',D:'8'}},
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -340,7 +301,7 @@ function toggleMic(){
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}
   recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
   recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;
-  recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;};
+  recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};
   recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};
   recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};
   micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';
