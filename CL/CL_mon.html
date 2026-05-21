@@ -210,74 +210,35 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'CL';
 const DAY      = 'Monday';
-const WEEK     = 21;
+const WEEK     = 22;
 const PTS_KEY  = 'pts_CL';
 const BASE_PTS = 950;
-const DICT_WORD = 'astute';
-const DICT_DEF  = 'Adjective — having a clever ability to notice and understand things quickly.';
-const DICT_EG   = 'The astute detective spotted the clue that everyone else had completely missed.';
+const DICT_WORD = 'tenacious';
+const DICT_DEF  = 'Adjective — holding firmly to something; not giving up easily.';
+const DICT_EG   = 'The tenacious athlete trained every day for five years to reach the final.';
 const RULES_TIPS = [
-  'E5.2: Inference — find the exact line in the passage that supports your answer before you choose.',
-  'M2.1: Adding fractions? Get a common denominator first — never add the tops and bottoms separately.',
-  'E5.4: Purpose questions — ask yourself why the writer chose THAT word, not just what it means.',
+  'E5.2 Inference: Ask what the writer is showing you indirectly — never just the surface.',
+  'M2.1 Percentages: Quick weapon — 10 percent of any number = divide by 10. Then build.',
+  'E3.1 Commas: Every fronted adverbial needs a comma after it before the main clause.',
 ];
-const MISSION_PACK = {
-  id:'M-A', title:'The Action Scene', codes:['W1.5','W3.1','W4.1'],
-  prompt:'Write 3 to 5 sentences of an action scene. Use body language to show emotion, a simile or metaphor to make it vivid, and end with one short punch sentence.',
-};
+const MISSION_PACK = {id:'M-D',title:'The Tension Builder',codes:['W1.7','W3.8','W3.1'],prompt:'Write 3 to 5 sentences building tension. Use short sentences for pace (W1.7), hold back a key detail to keep the reader guessing (W3.8), and include one sharp sensory detail that puts the reader in the scene (W3.1).'};
 const QUESTIONS = {
-  0:{ section:'Vocab', code:'E4.1', correct:'B', star:false,
-      text:'What does "abundant" mean?',
-      opts:{A:'Very rare and hard to find',B:'Present in very large quantities',C:'Extremely dangerous',D:'Moving very quickly'},
-      vocabWord:'abundant' },
-  1:{ section:'Vocab', code:'E4.2', correct:'C', star:false,
-      text:'Which word means clever in a slightly sneaky or deceptive way?',
-      opts:{A:'Timid',B:'Generous',C:'Cunning',D:'Reckless'},
-      vocabWord:'cunning' },
-  2:{ section:'Vocab', code:'E4.3', correct:'A', star:false,
-      text:'What does "tranquil" mean?',
-      opts:{A:'Calm and free from disturbance',B:'Extremely noisy and busy',C:'Full of anger',D:'Moving in a hurried rush'},
-      vocabWord:'tranquil' },
-  3:{ section:'Vocab', code:'E4.4', correct:'D', star:true,
-      text:'★ STAR — The spy gave a furtive glance over his shoulder. What does "furtive" mean?',
-      opts:{A:'Very proud and confident',B:'Slow and careless',C:'Loud and obvious',D:'Trying to avoid being noticed; secretive'},
-      vocabWord:'furtive' },
-  4:{ section:'English', code:'E5.2', correct:'B', star:false,
-      text:'A passage says: "She kept glancing at the clock and her foot would not stop tapping." What can the reader infer?',
-      opts:{A:'She is bored with nothing to do',B:'She is anxious and waiting for something important',C:'She is listening carefully to music',D:'She is angry at someone in the room'} },
-  5:{ section:'English', code:'E3.1', correct:'A', star:false,
-      text:'Which sentence correctly places a comma after an introductory phrase?',
-      opts:{A:'By the time the storm arrived, the tent had collapsed.',B:'By the time, the storm arrived the tent had collapsed.',C:'By the time the storm, arrived the tent had collapsed.',D:'By the time the storm arrived the tent, had collapsed.'} },
-  6:{ section:'English', code:'E1.7', correct:'C', star:false,
-      text:'Which spelling is correct?',
-      opts:{A:'Accomodate',B:'Acommodate',C:'Accommodate',D:'Acomodate'} },
-  7:{ section:'English', code:'E5.4', correct:'D', star:false,
-      text:'A writer describes a crowd as "a sea of faces". What effect does this create?',
-      opts:{A:'It tells the reader the crowd is near the ocean',B:'It suggests the crowd is calm and peaceful',C:'It shows the crowd is noisy and dangerous',D:'It creates an image of something vast and shifting, hard to see across'} },
-  8:{ section:'English', code:'E2.7', correct:'A', star:false,
-      text:'Which sentence contains a subordinate clause?',
-      opts:{A:'Although it was raining, they continued the match.',B:'The rain fell and the match continued.',C:'They continued the match in the rain.',D:'It rained heavily that afternoon.'} },
-  9:{ section:'English', code:'E3.2', correct:'C', star:false,
-      text:'Which sentence uses an apostrophe correctly to show possession?',
-      opts:{A:"The explorers map was old and torn.",B:"The explorers' map was old and torn. (used for one explorer)",C:"The explorer's map was old and torn.",D:"The explorers map's was old and torn."} },
-  10:{ section:'Maths', code:'M2.1', correct:'D', star:false,
-       text:'What is two fifths plus one third?',
-       opts:{A:'Three eighths',B:'Two fifteenths',C:'Ten fifteenths',D:'Eleven fifteenths'}, mathConcept:'fractions' },
-  11:{ section:'Maths', code:'M2.1', correct:'B', star:false,
-       text:'What is five sixths minus one quarter?',
-       opts:{A:'Four twelfths',B:'Seven twelfths',C:'Nine twelfths',D:'Four sixths'}, mathConcept:'fractions' },
-  12:{ section:'Maths', code:'M1.7', correct:'A', star:false,
-       text:'Round 8 point 251 to one decimal place.',
-       opts:{A:'8 point 3',B:'8 point 2',C:'8 point 25',D:'8 point 0'}, mathConcept:'rounding' },
-  13:{ section:'Maths', code:'M3.1', correct:'C', star:false,
-       text:'Share 48 in the ratio 3 to 5. What is the larger share?',
-       opts:{A:'18',B:'24',C:'30',D:'36'}, mathConcept:'ratio' },
-  14:{ section:'Maths', code:'M5.2', correct:'B', star:false,
-       text:'What is the area of a triangle with base 12 centimetres and height 8 centimetres?',
-       opts:{A:'40 square centimetres',B:'48 square centimetres',C:'96 square centimetres',D:'20 square centimetres'}, mathConcept:'area' },
-  15:{ section:'Maths', code:'M6.1', correct:'D', star:false,
-       text:'A sequence goes: 3, 7, 11, 15 — what are the next two terms?',
-       opts:{A:'18 and 21',B:'20 and 24',C:'18 and 22',D:'19 and 23'}, mathConcept:'sequences' },
+  0:{section:'Vocab',code:'E4.3',correct:'B',star:false,text:'Which word is a synonym for "lament"?',opts:{A:'Celebrate',B:'Mourn or grieve',C:'Complain loudly',D:'Look forward to'},vocabWord:'lament'},
+  1:{section:'Vocab',code:'E4.2',correct:'C',star:false,text:'Which word means the opposite of "transparent"?',opts:{A:'Clear',B:'Bright',C:'Opaque',D:'Visible'},vocabWord:'opaque'},
+  2:{section:'Vocab',code:'E4.1',correct:'A',star:false,text:'The teacher spoke with authority. "Authority" means:',opts:{A:'The power or right to give orders and make decisions',B:'A feeling of great happiness',C:'A slow and careful method',D:'A very loud voice'},vocabWord:'authority'},
+  3:{section:'Vocab',code:'E4.1',correct:'D',star:true,text:'★ STAR — Which sentence uses "tenacious" correctly?',opts:{A:'The tenacious puppy gave up immediately when the ball rolled away.',B:'She had a tenacious approach — she quit every time it got hard.',C:'He was tenacious in the way he sat quietly doing nothing.',D:'The tenacious climber kept going despite the biting cold and shaking legs.'},vocabWord:'tenacious'},
+  4:{section:'English',code:'E5.2',correct:'C',star:false,text:"Read this: 'She did not look up when he entered. She turned a page, very slowly.' What can you infer about her feelings?",opts:{A:'She is excited to see him',B:'She did not hear him come in',C:'She is deliberately ignoring him',D:'She is concentrating on her book'}},
+  5:{section:'English',code:'E1.7',correct:'A',star:false,text:'Which of these is spelled correctly?',opts:{A:'Accommodate',B:'Accomodate',C:'Acommodate',D:'Acomodate'}},
+  6:{section:'English',code:'E3.1',correct:'B',star:false,text:'Where does the comma go? "Although it was cold and raining the match continued"',opts:{A:'After "cold"',B:'After "raining"',C:'After "match"',D:'No comma is needed'}},
+  7:{section:'English',code:'E5.4',correct:'D',star:false,text:"Which word best describes the mood of: 'Golden light streamed through the window. Children laughed outside. She hummed quietly to herself.'",opts:{A:'Mysterious',B:'Tense',C:'Eerie',D:'Peaceful'}},
+  8:{section:'English',code:'E2.5',correct:'B',star:false,text:'Which sentence contains a relative clause?',opts:{A:'The dog ran into the garden quickly.',B:'The dog, which had escaped twice before, ran into the garden.',C:'The dog ran and the cat sat.',D:'The dog ran into the garden because it was hot.'}},
+  9:{section:'English',code:'E3.3',correct:'C',star:false,text:'Which sentence uses inverted commas correctly?',opts:{A:'The teacher said, it is time to go home.',B:'The teacher said "it is time to go home.',C:'"It is time to go home," said the teacher.',D:'The teacher said it is "time to go home".'}},
+  10:{section:'Maths',code:'M2.1',correct:'B',star:false,text:'What is 60 percent of 150?',opts:{A:'80',B:'90',C:'100',D:'60'},mathConcept:'percentages'},
+  11:{section:'Maths',code:'M1.1',correct:'C',star:false,text:'What is 346 plus 278?',opts:{A:'614',B:'622',C:'624',D:'634'},mathConcept:'addition'},
+  12:{section:'Maths',code:'M3.1',correct:'D',star:false,text:'A square has side length 7 cm. What is its perimeter?',opts:{A:'7 cm',B:'14 cm',C:'21 cm',D:'28 cm'},mathConcept:'perimeter'},
+  13:{section:'Maths',code:'M5.1',correct:'A',star:false,text:'A tally chart shows 4 full groups of 5 and 3 extra marks. How many items in total?',opts:{A:'23',B:'20',C:'25',D:'24'},mathConcept:'tally charts'},
+  14:{section:'Maths',code:'M1.2',correct:'C',star:false,text:'What is 13 multiplied by 7?',opts:{A:'84',B:'87',C:'91',D:'98'},mathConcept:'multiplication'},
+  15:{section:'Maths',code:'M2.3',correct:'B',star:false,text:'Which decimal is equal to three quarters?',opts:{A:'0.34',B:'0.75',C:'0.73',D:'0.25'},mathConcept:'decimals'},
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -340,7 +301,7 @@ function toggleMic(){
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}
   recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
   recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;
-  recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;};
+  recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};
   recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};
   recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};
   micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';
