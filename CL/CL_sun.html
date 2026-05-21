@@ -190,91 +190,27 @@ const DAY      = 'Sunday';
 const WEEK     = 21;
 const PTS_KEY  = 'pts_CL';
 const BASE_PTS = 950;
-const DICT_WORD = 'ominous';
-const DICT_DEF  = 'Adjective — suggesting that something bad or unpleasant is going to happen.';
-const DICT_EG   = 'Dark clouds gathered on the horizon, and the silence felt ominous.';
+const DICT_WORD = 'eloquent';
+const DICT_DEF  = 'Adjective — able to speak or write in a clear, fluent and persuasive way.';
+const DICT_EG   = 'Her eloquent speech moved the entire audience to tears.';
 const RULES_TIPS = [
-  'W1.7: Short sentences speed up the pace and build tension — use them just before something big happens.',
-  'W3.8: Withholding information creates suspense — let the reader wonder what is coming.',
-  'W5.1: A strong argument states its point clearly, then backs it up with at least one specific reason.',
+  'W1.7 Short sentences: Use them like drum beats — short, short, short — for pace and tension.',
+  'W3.6 Rhetorical question: Ask a question you do not expect an answer to — you want the reader to agree.',
+  'W5.1 Balanced argument: Present BOTH sides before giving your view — fairness wins marks.',
 ];
-// Two Mission Packs — 5 questions each.
-// PACK_1 covers Q0–Q4, PACK_2 covers Q5–Q9
-const PACK_1 = {
-  id:'M-D', title:'The Tension Builder',
-  codes:['W1.7','W3.8','W3.1'],
-  technique:'Short sentences quicken the pace. Withholding information builds suspense. A punch sentence lands the moment.',
-};
-const PACK_2 = {
-  id:'M-E', title:'The Argument',
-  codes:['W5.1','W3.6','W3.2'],
-  technique:'State your point clearly. Use a rhetorical question to draw the reader in. Back it up with a specific example.',
-};
+const PACK_1 = {id:'M-D',title:'The Tension Builder',codes:['W1.7','W3.8','W3.1'],technique:'Short sentences pace the action. Withholding a detail builds suspense. Sensory details put the reader in the scene.'};
+const PACK_2 = {id:'M-E',title:'The Argument',codes:['W5.1','W3.6','W3.2'],technique:'Present both sides fairly. Rhetorical question engages the reader. Strong final sentence closes the argument.'};
 const QUESTIONS = {
-  // ── PACK 1 (0–4): M-D — The Tension Builder ──────────────────────────────
-  0:{ pack:1, code:'W1.7', correct:'B', star:false,
-      text:'Which passage best uses short sentences to build tension?',
-      opts:{
-        A:'She walked very slowly and carefully towards the door, listening all the time for any sound from inside the room.',
-        B:'She stopped. She listened. Nothing.',
-        C:'There was a door at the end of the corridor and she made her way towards it.',
-        D:'She was very nervous as she approached the old wooden door at the end of the hallway.'} },
-  1:{ pack:1, code:'W3.8', correct:'D', star:false,
-      text:'Which technique is the writer using in: "The box had been locked for fifty years. Nobody knew what was inside."?',
-      opts:{A:'Simile',B:'Alliteration',C:'Personification',D:'Withholding information to create suspense'} },
-  2:{ pack:1, code:'W3.1', correct:'C', star:false,
-      text:'Which is the most effective "punch sentence" to end a paragraph about a character discovering a secret?',
-      opts:{
-        A:'She found out the secret and was very surprised indeed.',
-        B:'It was quite a big secret that she had not known about before.',
-        C:'Everything she thought she knew was wrong.',
-        D:'She discovered the secret which changed many things for her.'} },
-  3:{ pack:1, code:'W1.7', correct:'A', star:false,
-      text:'How do very short sentences affect the pace of a story?',
-      opts:{A:'They speed the pace up and make the reader feel urgency',B:'They slow the pace down and create a calm atmosphere',C:'They make the story feel more formal and serious',D:'They add extra descriptive detail to the scene'} },
-  4:{ pack:1, code:'W3.8', correct:'D', star:true,
-      text:'★ STAR — A writer ends a chapter with: "She opened the envelope. Then she sat very still." What technique is used and what effect does it create?',
-      opts:{
-        A:'Personification — making the envelope seem alive',
-        B:'Alliteration — creating a musical sound pattern',
-        C:'Simile — comparing her stillness to something else',
-        D:'Withholding the contents — creating suspense and making the reader want to continue'} },
-  // ── PACK 2 (5–9): M-E — The Argument ─────────────────────────────────────
-  5:{ pack:2, code:'W5.1', correct:'B', star:false,
-      text:'Which opening best introduces a clear argument?',
-      opts:{
-        A:'Some people think homework is good and some people think it is bad.',
-        B:'Homework should be banned in primary schools, and here is why.',
-        C:'Homework is something that lots of children have to do every night after school.',
-        D:'There are many different opinions about whether homework is useful or not.'} },
-  6:{ pack:2, code:'W3.6', correct:'C', star:false,
-      text:'Which sentence is a rhetorical question used to persuade the reader?',
-      opts:{
-        A:'What time does school start in the morning?',
-        B:'She asked whether the argument was correct.',
-        C:'If we truly care about children\'s wellbeing, can we really justify taking away their free time?',
-        D:'How many students attend this school each day?'} },
-  7:{ pack:2, code:'W3.2', correct:'A', star:false,
-      text:'Which sentence best supports an argument with a specific example?',
-      opts:{
-        A:'In Finland, where homework was reduced, test scores actually improved by 15 percent in reading.',
-        B:'Many experts agree that homework is not always useful for children.',
-        C:'Homework can be quite stressful for some children in some situations.',
-        D:'It is well known that too much homework can be a problem.'} },
-  8:{ pack:2, code:'W5.1', correct:'B', star:false,
-      text:'In a persuasive text, what is the purpose of the concluding paragraph?',
-      opts:{
-        A:'To introduce a new argument that was not mentioned before',
-        B:'To restate the main point and leave the reader with a strong final message',
-        C:'To list all the arguments on both sides of the debate equally',
-        D:'To apologise for any points that might not be completely correct'} },
-  9:{ pack:2, code:'W3.6', correct:'D', star:false,
-      text:'Which sentence uses direct address to involve the reader in an argument?',
-      opts:{
-        A:'Children across the country feel the pressure of homework.',
-        B:'Research shows that sleep deprivation affects learning.',
-        C:'The government introduced the policy in 2019.',
-        D:'Ask yourself: when did you last enjoy an evening completely free from school tasks?'} },
+  0:{ pack:1, code:'W1.7', correct:'B', star:false, text:'Which technique does this use? "The door creaked. She froze. Something moved in the dark."', opts:{A:'A long flowing sentence to describe the setting.',B:'Short sentences to build tension and pace.',C:'Repetition to emphasise emotion.',D:'A simile to compare two things.'} },
+  1:{ pack:1, code:'W3.8', correct:'C', star:false, text:'A writer ends a chapter: "And then she opened the box — and what she found inside changed everything." What technique is this?', opts:{A:'A sensory detail.',B:'A short sentence for pace.',C:'Withholding information to create a cliffhanger.',D:'A metaphor.'} },
+  2:{ pack:1, code:'W3.1', correct:'A', star:false, text:'Which sentence uses a sensory detail to create atmosphere?', opts:{A:'The damp smell of the cellar filled her nose as she crept down the steps.',B:'She was very scared.',C:'It was dark outside.',D:'He did not know what to do.'} },
+  3:{ pack:1, code:'W1.7', correct:'D', star:false, text:'Which version best uses short sentences to build tension?', opts:{A:'She walked slowly through the long, winding corridor, feeling nervous.',B:'Running quickly, she reached the end of the dark corridor.',C:'The corridor was long and dark and she felt nervous walking through it.',D:'She stopped. She listened. She heard breathing.'} },
+  4:{ pack:1, code:'W3.1', correct:'B', star:true,  text:'★ STAR — "A cold wind bit at her cheeks as she opened the rusty gate." What does this sensory detail achieve?', opts:{A:'It tells the reader that she is going to be in danger.',B:'It creates atmosphere by making the reader feel the physical discomfort of the scene.',C:'It explains why the gate is difficult to open.',D:'It shows that the character is not dressed warmly enough.'} },
+  5:{ pack:2, code:'W5.1', correct:'A', star:false, text:'In a discussion essay, why is it important to present two opposing views?', opts:{A:'To show that there are different perspectives on the topic, making the argument more balanced.',B:'To confuse the reader so they are not sure what to think.',C:'To make the essay much longer.',D:'Because essays must always have exactly two paragraphs.'} },
+  6:{ pack:2, code:'W3.6', correct:'C', star:false, text:'Which sentence uses a rhetorical question?', opts:{A:'There are many reasons why this rule should change.',B:'Studies show that exercise improves mental health significantly.',C:'Surely no one would argue that children deserve less play time?',D:'The evidence clearly shows that this approach is effective.'} },
+  7:{ pack:2, code:'W3.2', correct:'B', star:false, text:'Which sentence would work best as the conclusion of an argument?', opts:{A:'In conclusion, there are many things to think about.',B:'The evidence is clear: this change must happen now, for the benefit of everyone.',C:'Some people agree and some people disagree.',D:'This has been a very interesting topic to discuss.'} },
+  8:{ pack:2, code:'W5.1', correct:'D', star:false, text:'Which paragraph structure best represents a balanced argument essay?', opts:{A:'Three paragraphs all arguing the same point.',B:'One very long paragraph with all views mixed together.',C:'An introduction, then only counter-arguments, then a conclusion.',D:"An introduction, one paragraph for, one paragraph against, then the writer's view."} },
+  9:{ pack:2, code:'W3.6', correct:'A', star:true,  text:'★ STAR — A writer asks: "Is it not obvious that all children deserve access to fresh air and exercise every day?" What effect does this have?', opts:{A:'It nudges the reader to agree without the writer needing to provide evidence — a persuasive technique.',B:'It shows that the writer does not know the answer.',C:'It signals that the essay is about to change topic.',D:'It makes the essay sound more formal and academic.'} },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -314,7 +250,7 @@ function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/w
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});document.addEventListener('click',_warmAudio,{once:true});
 function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPENAI_KEY){p.textContent='🔊 Natural';p.className='voice-pill natural';}else{p.textContent='🔊 Device';p.className='voice-pill';}}
 function hardStop(){if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
-function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
+function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
 function charTurns(){return CHILD==='IL'?5:7;}
