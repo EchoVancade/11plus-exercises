@@ -190,59 +190,27 @@ const DAY      = 'Sunday';
 const WEEK     = 21;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'curious';
-const DICT_DEF  = 'Adjective — wanting to know or find out about something.';
-const DICT_EG   = 'The curious puppy sniffed everything in the garden.';
+const DICT_WORD = 'magnificent';
+const DICT_DEF  = 'Adjective — impressively beautiful, elaborate or extravagant.';
+const DICT_EG   = 'The magnificent castle towered over the valley below.';
 const RULES_TIPS = [
-  'W1.1: Body Language Secret — show how a character feels by what their body does, not just what they say.',
-  'W4.1: Describing word trick — one really good describing word is better than three ordinary ones.',
-  'W2.6: Scene Setter — give the reader one sound, smell, or sight to make them feel they are really there.',
+  "W1.1 Show not tell: Show feelings through actions — not 'she was happy' but 'she jumped up and clapped'.",
+  'W2.6 Specific detail: One real exact detail makes a place feel much more alive.',
+  'W4.2 Comparing words: A simile uses "like" or "as" to compare two things in an interesting way.',
 ];
-// Two Mission Packs — 5 questions each.
-// PACK_1 covers Q0–Q4, PACK_2 covers Q5–Q9
-const PACK_1 = {
-  id:'IL-A', title:'The Feeling Scene',
-  codes:['W1.1','W4.1'],
-  technique:'Use body language to show feelings. Pick one brilliant describing word to make it vivid.',
-};
-const PACK_2 = {
-  id:'IL-B', title:'The Place',
-  codes:['W2.6','W4.2'],
-  technique:'Give one clear sensory detail to set the scene. A comparison like "as" or "like" brings it to life.',
-};
+const PACK_1 = {id:'IL-A',title:'The Feeling Scene',codes:['W1.1','W4.1'],technique:'Show feelings through actions, not telling. Use describing words to paint the character.'};
+const PACK_2 = {id:'IL-B',title:'The Place',codes:['W2.6','W4.2'],technique:'Use a specific real detail. Add a comparing word (simile or metaphor) to describe the place.'};
 const QUESTIONS = {
-  // ── PACK 1 (0–4): IL-A — The Feeling Scene ───────────────────────────────
-  0:{ pack:1, code:'W1.1', correct:'A', star:false,
-      text:'Which sentence shows that a character is excited using body language?',
-      opts:{A:'She jumped up and down and could not stop grinning.',B:'She was feeling very excited.',C:'Excitement was in the room.',D:'She thought about how excited she was.'} },
-  1:{ pack:1, code:'W4.1', correct:'C', star:false,
-      text:'Which describing word makes this sentence most interesting: "The dragon had a __ roar."',
-      opts:{A:'Loud',B:'Big',C:'Thunderous',D:'Noisy'} },
-  2:{ pack:1, code:'W1.1', correct:'B', star:false,
-      text:'Which sentence shows that a character is sad, without using the word "sad"?',
-      opts:{A:'She felt very sad inside.',B:'Tears dripped down her cheeks and she looked at the floor.',C:'She was unhappy about what happened.',D:'Everyone knew she was sad.'} },
-  3:{ pack:1, code:'W4.1', correct:'D', star:false,
-      text:'Which sentence has the best describing word?',
-      opts:{A:'The night was dark.',B:'The night was very dark.',C:'The night was quite dark and cold.',D:'The night was ink-black and silent.'} },
-  4:{ pack:1, code:'W1.1', correct:'A', star:true,
-      text:'★ STAR — Which sentence shows two feelings at once using body language?',
-      opts:{A:'She bit her lip and reached for his hand, her eyes shining.',B:'She felt scared and happy at the same time.',C:'She had two feelings inside her.',D:'She was both nervous and excited about it.'} },
-  // ── PACK 2 (5–9): IL-B — The Place ──────────────────────────────────────
-  5:{ pack:2, code:'W2.6', correct:'B', star:false,
-      text:'Which sentence gives the reader the best sensory detail about a place?',
-      opts:{A:'The beach was nice.',B:'Salty air filled her nose and the sand squeaked under her feet.',C:'She went to the beach.',D:'The beach had sand and sea.'} },
-  6:{ pack:2, code:'W4.2', correct:'C', star:false,
-      text:'Which sentence uses a comparison to describe snow?',
-      opts:{A:'Snow fell on the ground.',B:'The snow was white and cold.',C:'The snow was like a thick white blanket covering everything.',D:'It snowed a lot that morning.'} },
-  7:{ pack:2, code:'W2.6', correct:'A', star:false,
-      text:'A writer wants to describe a bakery. Which detail is the most sensory?',
-      opts:{A:'Warm bread smell floated through the open door.',B:'There was a bakery on the corner of the street.',C:'The bakery sold lots of different types of bread.',D:'It was a nice bakery.'} },
-  8:{ pack:2, code:'W4.2', correct:'D', star:false,
-      text:'Which simile best describes how bright the sun was?',
-      opts:{A:'The sun was very hot.',B:'The sun was there in the sky.',C:'The sun was bright and yellow.',D:'The sun blazed like a giant torch above the rooftops.'} },
-  9:{ pack:2, code:'W2.6', correct:'B', star:false,
-      text:'A story is set in a forest. Which sentence makes you feel like you are really there?',
-      opts:{A:'There were trees everywhere.',B:'Twigs snapped under her boots and somewhere above, a woodpecker drummed on bark.',C:'The forest was very big and dark.',D:'She walked through the forest for a long time.'} },
+  0:{ pack:1, code:'W1.1', correct:'B', star:false, text:'"Lily jumped up and down, clapping her hands." What does this show?', opts:{A:'Lily is angry.',B:'Lily is excited — we can see it from what she does.',C:'Lily is bored.',D:'Lily is tired.'} },
+  1:{ pack:1, code:'W4.1', correct:'A', star:false, text:'Which sentence uses the best describing words to show a character?', opts:{A:'The tiny, trembling puppy pressed against the wall.',B:'The puppy was there.',C:'It was a dog.',D:'A puppy sat.'} },
+  2:{ pack:1, code:'W1.1', correct:'C', star:false, text:'"Tom stared at the floor. He spoke very quietly." What does this show about Tom?', opts:{A:'Tom is happy.',B:'Tom is hungry.',C:'Tom is upset or embarrassed.',D:'Tom is sleepy.'} },
+  3:{ pack:1, code:'W4.1', correct:'D', star:false, text:'Which pair of describing words best creates a happy, warm feeling?', opts:{A:'dark, cold',B:'gloomy, heavy',C:'grey, damp',D:'warm, golden'} },
+  4:{ pack:1, code:'W1.1', correct:'B', star:true,  text:'★ STAR — "She did not smile or look up when he walked in." What does this show?', opts:{A:'She did not see him come in.',B:'She is unhappy or trying to ignore someone.',C:'She is very busy reading.',D:'She is about to say something.'} },
+  5:{ pack:2, code:'W2.6', correct:'A', star:false, text:'"The kitchen smelled of burnt toast and orange peel." Why is this detail good?', opts:{A:'It makes you feel like you are really in that kitchen.',B:'It tells you what was cooked for breakfast.',C:'It is a long sentence.',D:'It has lots of big words.'} },
+  6:{ pack:2, code:'W4.2', correct:'C', star:false, text:'Which sentence uses a comparing word (a simile)?', opts:{A:'The swimming pool was very cold.',B:'She jumped in the pool.',C:'The swimming pool was as cold as ice.',D:'The pool had blue water.'} },
+  7:{ pack:2, code:'W2.6', correct:'B', star:false, text:'A writer says "three red roses grew near the gate". Why does the number "three" make the description better?', opts:{A:'Three is a lucky number.',B:'Exact details make the place feel real.',C:'More roses are always better in a story.',D:'It tells us the season.'} },
+  8:{ pack:2, code:'W4.2', correct:'D', star:false, text:'"The moon was a silver coin in the dark sky." What does this comparing phrase tell us?', opts:{A:'The moon was made of metal.',B:'The moon was very far away.',C:'The moon was hidden by clouds.',D:'The moon was round, small and bright.'} },
+  9:{ pack:2, code:'W2.6', correct:'A', star:true,  text:'★ STAR — Which detail best makes a bedroom feel real?', opts:{A:'A single football boot sat under the radiator.',B:'The room was nice.',C:'It was a big room.',D:'There was a bed in the room.'} },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -282,7 +250,7 @@ function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/w
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});document.addEventListener('click',_warmAudio,{once:true});
 function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPENAI_KEY){p.textContent='🔊 Natural';p.className='voice-pill natural';}else{p.textContent='🔊 Device';p.className='voice-pill';}}
 function hardStop(){if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
-function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
+function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
 function charTurns(){return CHILD==='IL'?5:7;}
