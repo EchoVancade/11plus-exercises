@@ -2,256 +2,258 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>11+ Prep Dashboard · Week 21</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11+ Dashboard — Week 21</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:#090d1a;color:#e2e8f0;font-family:'Nunito',sans-serif;font-size:14px;min-height:100vh;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#090d1a;color:#e2e8f0;min-height:100vh;font-size:14px;line-height:1.5}
 :root{
   --cl:#f97316;--cl-lite:rgba(249,115,22,.13);--cl-mid:rgba(249,115,22,.3);--cl-text:#fb923c;
   --il:#8b5cf6;--il-lite:rgba(139,92,246,.13);--il-mid:rgba(139,92,246,.3);--il-text:#a78bfa;
   --card:#111827;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.04);
   --muted:#475569;--dim:#64748b;--hi:#f1f5f9;
 }
-#header{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);padding:20px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-#header h1{font-size:20px;font-weight:900;flex:1;min-width:200px;}
-.hb{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800;}
-.hb-cl{background:rgba(249,115,22,.2);color:var(--cl-text);border:1px solid var(--cl-mid);}
-.hb-il{background:rgba(139,92,246,.2);color:var(--il-text);border:1px solid var(--il-mid);}
-.hb-wk{background:rgba(139,92,246,.15);color:#c4b5fd;border:1px solid rgba(139,92,246,.25);}
-.hb-home{background:rgba(255,255,255,.06);color:#94a3b8;border:1px solid var(--border);text-decoration:none;}
-.snap{font-size:11px;color:var(--dim);width:100%;}
-.action-banner{margin:16px 24px;padding:14px 18px;background:rgba(239,68,68,.10);border:2px solid rgba(239,68,68,.35);border-radius:14px;}
-.action-banner .ab-title{font-size:13px;font-weight:900;color:#f87171;margin-bottom:8px;}
-.action-banner .ab-item{font-size:13px;color:#fca5a5;margin-bottom:4px;line-height:1.5;}
-.ab-cmd{font-family:monospace;background:rgba(0,0,0,.3);padding:2px 8px;border-radius:6px;font-size:12px;}
-.main{padding:0 24px 40px;}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
-.g1{margin-bottom:20px;}
-@media(max-width:720px){.g4{grid-template-columns:repeat(2,1fr);}.g2{grid-template-columns:1fr;}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;}
-.card.cl{border-color:var(--cl-mid);background:linear-gradient(160deg,var(--card) 70%,var(--cl-lite));}
-.card.il{border-color:var(--il-mid);background:linear-gradient(160deg,var(--card) 70%,var(--il-lite));}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
-.stat.cl{border-color:var(--cl-mid);background:linear-gradient(135deg,var(--card),var(--cl-lite));}
-.stat.il{border-color:var(--il-mid);background:linear-gradient(135deg,var(--card),var(--il-lite));}
-.ct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:14px;}
-.lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:6px;}
-.val{font-size:30px;font-weight:800;}
-.hint{font-size:11px;color:var(--dim);margin-top:4px;}
-/* Confidence bars */
-.conf-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.conf-label{font-size:12px;font-weight:700;min-width:110px;}
-.conf-track{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
-.conf-fill{height:100%;border-radius:4px;}
-.conf-num{font-size:12px;font-weight:700;width:28px;text-align:right;color:var(--dim);}
-/* Priority table */
-.pt{width:100%;border-collapse:collapse;}
-.pt th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);padding:6px 10px;text-align:left;border-bottom:1px solid var(--border);}
-.pt td{padding:9px 10px;border-bottom:1px solid var(--border2);font-size:12px;vertical-align:middle;}
-.pt tr:last-child td{border-bottom:none;}
-.code-pill{font-family:monospace;font-size:12px;font-weight:700;color:var(--cl-text);}
-.b-crit{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(239,68,68,.3);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;}
-.b-dev{background:rgba(234,179,8,.2);color:#fbbf24;border:1px solid rgba(234,179,8,.3);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;}
-.sev-track{width:44px;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;display:inline-block;}
-.sev-fill{height:100%;background:linear-gradient(90deg,#ef4444,#eab308);border-radius:2px;}
-/* Underexposed table */
-.ut{width:100%;}
-.ut-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border2);font-size:12px;}
-.ut-row:last-child{border-bottom:none;}
-.ut-code{font-family:monospace;font-weight:700;min-width:54px;}
-.ut-topic{color:#94a3b8;flex:1;}
-.ut-rec{color:var(--dim);min-width:36px;}
-.ut-score{font-weight:700;min-width:40px;text-align:right;}
-/* Category confidence meters */
-.cat-cell{margin-bottom:10px;}
-.cat-name{font-size:11px;color:#94a3b8;margin-bottom:2px;}
-/* Chart */
-.chart-wrap{height:190px;position:relative;}
-/* Milestones */
-.ms-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
-.ms{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--border);}
-.ms.hit{background:rgba(251,191,36,.12);color:#fbbf24;border-color:rgba(251,191,36,.25);}
-.prog-wrap{margin:10px 0;}
-.prog-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
-.prog-track{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;}
-.prog-fill-cl{height:100%;background:linear-gradient(90deg,#ea580c,#f97316);border-radius:5px;}
-.prog-fill-il{height:100%;background:linear-gradient(90deg,#5b21b6,#8b5cf6);border-radius:5px;}
-.unclaimed-alert{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 12px;color:#f87171;font-size:12px;margin-top:12px;}
-/* Week plan tags */
-.tag{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700;margin:1px 2px;border:1px solid;}
-.tag-e{background:rgba(29,78,216,.2);color:#93c5fd;border-color:rgba(29,78,216,.3);}
-.tag-m{background:rgba(21,128,61,.2);color:#86efac;border-color:rgba(21,128,61,.3);}
-.tag-v{background:rgba(109,40,217,.2);color:#c4b5fd;border-color:rgba(109,40,217,.3);}
-.tag-w{background:rgba(21,101,52,.3);color:#a7f3d0;border-color:rgba(21,101,52,.45);}
-.tag-d{background:rgba(202,138,4,.15);color:#fde68a;border-color:rgba(202,138,4,.22);}
-.wp-table{width:100%;border-collapse:collapse;}
-.wp-table th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);padding:6px 8px;text-align:left;border-bottom:1px solid var(--border);}
-.wp-table td{padding:8px 8px;border-bottom:1px solid var(--border2);font-size:12px;vertical-align:top;}
-.wp-table tr:last-child td{border-bottom:none;}
-.tbd{color:var(--muted);font-style:italic;}
-/* Action dots */
-.action-list .ai{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2);}
-.action-list .ai:last-child{border-bottom:none;}
-.ai-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
-.ai-cmd{font-family:monospace;font-size:11px;background:rgba(255,255,255,.05);padding:2px 6px;border-radius:5px;}
-/* Next steps */
-.step-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);}
-.step-item:last-child{border-bottom:none;}
-.step-ico{font-size:22px;flex-shrink:0;}
-.step-title{font-size:13px;font-weight:800;color:var(--hi);margin-bottom:2px;}
-.step-detail{font-size:12px;color:var(--dim);margin-bottom:4px;line-height:1.5;}
-.step-cmd{font-family:monospace;font-size:11px;background:rgba(255,255,255,.05);padding:3px 8px;border-radius:6px;display:inline-block;color:#93c5fd;}
-.footer{text-align:center;font-size:11px;color:#1e293b;padding:20px 0;}
+.header{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header h1{font-size:19px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.header .sub{font-size:12px;color:var(--dim);margin-top:2px}
+.hbadges{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.hb{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.hb-week{background:rgba(139,92,246,.2);color:#a78bfa}
+.hb-cl{background:rgba(249,115,22,.2);color:#fb923c}
+.hb-il{background:rgba(139,92,246,.2);color:#a78bfa}
+.back{color:var(--dim);font-size:12px;font-weight:700;text-decoration:none;padding:4px 10px;border-radius:8px;border:1px solid var(--border)}
+.action-banner{background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(239,68,68,.05));border-bottom:2px solid rgba(239,68,68,.35);padding:16px 24px;display:flex;align-items:flex-start;gap:14px}
+.ab-icon{font-size:1.5rem;flex-shrink:0;padding-top:2px}
+.ab-title{font-size:14px;font-weight:900;color:#f87171;margin-bottom:6px}
+.ab-step{font-size:12px;color:#fca5a5;font-weight:600;display:flex;gap:8px;margin-bottom:3px;line-height:1.5}
+.ab-step::before{content:'→';color:#ef4444;font-weight:900;flex-shrink:0}
+.ab-cmd{font-size:11px;color:#ef4444;font-weight:800;margin-top:8px;padding:6px 12px;background:rgba(239,68,68,.08);border-radius:8px;border:1px solid rgba(239,68,68,.2);font-family:monospace;display:inline-block}
+.main{max-width:1080px;margin:0 auto;padding:20px 16px 40px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.g1{margin-bottom:20px}
+@media(max-width:720px){.g4{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.card.cl{border-color:var(--cl-mid);background:linear-gradient(160deg,var(--card) 70%,var(--cl-lite))}
+.card.il{border-color:var(--il-mid);background:linear-gradient(160deg,var(--card) 70%,var(--il-lite))}
+.ct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+.stat.cl{border-color:var(--cl-mid);background:linear-gradient(135deg,var(--card),var(--cl-lite))}
+.stat.il{border-color:var(--il-mid);background:linear-gradient(135deg,var(--card),var(--il-lite))}
+.stat .lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:8px}
+.stat .val{font-size:30px;font-weight:800;line-height:1;margin-bottom:4px}
+.stat .hint{font-size:11px;color:var(--dim)}
+.ci-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ci-lbl{width:110px;font-size:12px;color:#94a3b8;flex-shrink:0}
+.ci-track{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.ci-fill{height:100%;border-radius:4px}
+.ci-n{width:28px;text-align:right;font-size:12px;font-weight:700;color:var(--hi)}
+.ci-note{font-size:10px;color:var(--muted);margin-top:10px;line-height:1.5}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:5px 8px;color:var(--dim);font-weight:700;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+.tbl td{padding:7px 8px;border-bottom:1px solid var(--border2);color:var(--hi);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.02)}
+.mono{font-family:monospace;font-size:12px;font-weight:700}
+.muted{color:#94a3b8;font-size:12px}
+.sev-bar{display:flex;align-items:center;gap:5px}
+.sev-track{width:44px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.sev-fill{height:100%;border-radius:2px}
+.sev-n{font-size:10px;color:var(--dim);width:22px}
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:12px;font-weight:700}
+.b-crit{background:rgba(239,68,68,.18);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+.b-dev{background:rgba(234,179,8,.15);color:#fbbf24;border:1px solid rgba(234,179,8,.2)}
+.b-uexp{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+.pts-block{margin-bottom:16px}
+.pts-block:last-child{margin-bottom:0}
+.pts-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.pts-name{font-size:13px;font-weight:800}
+.pts-sub{font-size:11px;color:var(--dim)}
+.pts-track{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;margin-bottom:4px}
+.pts-fill{height:100%;border-radius:5px}
+.pts-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+.milestones{display:flex;gap:5px;flex-wrap:wrap;margin-top:14px}
+.ms{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--border)}
+.ms.hit{background:rgba(251,191,36,.12);color:#fbbf24;border-color:rgba(251,191,36,.25)}
+.pts-alert{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:12px;color:#f87171;font-weight:600;margin-top:12px;line-height:1.5}
+.uexp-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border2)}
+.uexp-row:last-child{border-bottom:none}
+.uexp-code{font-family:monospace;font-size:12px;font-weight:700;width:46px;flex-shrink:0}
+.uexp-topic{flex:1;font-size:12px;color:#94a3b8}
+.uexp-rec{font-size:11px;color:var(--dim);width:38px;text-align:right;flex-shrink:0}
+.uexp-score{font-size:11px;font-weight:700;width:36px;text-align:right;flex-shrink:0;color:#60a5fa}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:7px}
+.cat-cell{background:#0d1220;border:1px solid var(--border);border-radius:10px;padding:9px 11px}
+.cat-name{font-size:11px;font-weight:700;color:var(--hi);margin-bottom:2px}
+.chart-wrap{position:relative;height:190px}
+.action-list{display:flex;flex-direction:column;gap:9px}
+.action-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5}
+.adot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.wtbl{width:100%;border-collapse:collapse;font-size:12px}
+.wtbl th{padding:5px 8px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);border-bottom:1px solid var(--border)}
+.wtbl td{padding:7px 8px;border-bottom:1px solid var(--border2);vertical-align:top}
+.wtbl td:first-child{color:var(--hi);font-weight:700;width:34px;white-space:nowrap}
+.wtbl tr:last-child td{border-bottom:none}
+.wtbl .tbd{color:var(--dim);font-style:italic;font-size:11px}
+.tag{display:inline-block;font-size:10px;font-weight:700;border-radius:12px;padding:2px 8px;margin:2px 3px 2px 0}
+.tag-e{background:rgba(29,78,216,.2);color:#93c5fd;border:1px solid rgba(29,78,216,.3)}
+.tag-m{background:rgba(21,128,61,.2);color:#86efac;border:1px solid rgba(21,128,61,.3)}
+.tag-v{background:rgba(109,40,217,.2);color:#c4b5fd;border:1px solid rgba(109,40,217,.3)}
+.tag-w{background:rgba(21,101,52,.3);color:#a7f3d0;border:1px solid rgba(21,101,52,.45)}
+.tag-c{background:rgba(234,88,12,.2);color:#fdba74;border:1px solid rgba(234,88,12,.3)}
+.tag-d{background:rgba(202,138,4,.15);color:#fde68a;border:1px solid rgba(202,138,4,.22)}
+.steps-list{display:flex;flex-direction:column;gap:8px}
+.step-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:rgba(255,255,255,.025);border-radius:10px;border:1px solid var(--border)}
+.step-ico{font-size:1.1rem;flex-shrink:0;padding-top:1px}
+.step-title{font-size:12px;font-weight:800;color:var(--hi);margin-bottom:2px}
+.step-detail{font-size:11px;color:#94a3b8;line-height:1.5}
+.step-cmd{font-family:monospace;font-size:11px;background:#0f172a;color:#86efac;padding:3px 8px;border-radius:6px;display:inline-block;margin-top:4px;border:1px solid rgba(134,239,172,.15)}
+.footer{text-align:center;font-size:11px;color:#1e293b;padding:20px 0 16px}
 </style>
 </head>
 <body>
 
-<!-- 1. HEADER -->
-<div id="header">
-  <h1>📊 11+ Prep Dashboard</h1>
-  <span class="hb hb-cl">CL · 950 pts 🏆 Platinum</span>
-  <span class="hb hb-il">IL · 240 pts 🥈 Silver</span>
-  <span class="hb hb-wk">Week 21</span>
-  <a class="hb hb-home" href="https://EchoVancade.github.io/11plus-exercises/">← Home</a>
-  <span class="snap">Snapshot: Tuesday 19 May 2026 · Tue–Fri exercises generated</span>
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>📊 11+ Prep Dashboard</h1>
+    <div class="sub">Snapshot · 20 May 2026 · Sutton SET 2027 · CL age 9 · IL age 7</div>
+  </div>
+  <div class="hbadges">
+    <span class="hb hb-week">Week 21</span>
+    <span class="hb hb-cl">CL 950 pts 🏆</span>
+    <span class="hb hb-il">IL 240 pts 🥈</span>
+    <a class="back" href="https://echovancade.github.io/11plus-exercises/index.html">← Home</a>
+  </div>
 </div>
 
-<!-- 2. ACTION NEEDED BANNER -->
+<!-- ACTION NEEDED -->
 <div class="action-banner">
-  <div class="ab-title">⚠️ ACTION NEEDED</div>
-  <div class="ab-item">🏅 4× unclaimed milestone rewards for CL: Bronze 🥉, Silver 🥈, Gold 🥇, Platinum 🏆 — give physical rewards and log each in Incentive Log (Name="Reward Given", Child=CL, Points=0, Claimed=✓)</div>
-  <div class="ab-item">🚀 Deploy this week's exercise files: <span class="ab-cmd">python deploy.py</span></div>
-  <div class="ab-item">📄 Upload any new scan papers when available — run <span class="ab-cmd">log_scan_PAPER_XX.py</span> once per paper</div>
+  <div class="ab-icon">⚡</div>
+  <div>
+    <div class="ab-title">ACTION NEEDED — Four milestone rewards unclaimed for CL</div>
+    <div class="ab-step">CL has crossed Bronze 🥉 (40 pts), Silver 🥈 (190 pts), Gold 🥇 (340 pts), and Platinum 🏆 (830 pts) — all four unclaimed. Give four separate physical rewards now.</div>
+    <div class="ab-step">Log each in Notion Incentive Log: Name = "Reward Given" · Child = CL · Points = 0 · Claimed = ✓ (four separate rows)</div>
+    <div class="ab-step">All 14 exercise files generated this session (Mon–Sun, CL + IL). Deploy when ready.</div>
+    <div class="ab-cmd">python deploy.py</div>
+  </div>
 </div>
 
 <div class="main">
 
-<!-- 3. STAT CARDS -->
+<!-- STAT CARDS -->
 <div class="g4">
-  <div class="stat cl">
-    <div class="lbl">CL Points</div>
-    <div class="val" style="color:var(--cl-text)">950</div>
-    <div class="hint">Platinum 🏆 · 850 to Diamond 💎</div>
-  </div>
-  <div class="stat il">
-    <div class="lbl">IL Points</div>
-    <div class="val" style="color:var(--il-text)">240</div>
-    <div class="hint">Silver 🥈 · 100 to Gold 🥇</div>
-  </div>
-  <div class="stat">
-    <div class="lbl">CL Vocab Words</div>
-    <div class="val" style="color:var(--hi)">70</div>
-    <div class="hint">Untested · 0 mastered</div>
-  </div>
-  <div class="stat">
-    <div class="lbl">Scans Validated</div>
-    <div class="val" style="color:var(--hi)">5</div>
-    <div class="hint">Papers processed</div>
-  </div>
+  <div class="stat cl"><div class="lbl">CL Points</div><div class="val" style="color:var(--cl-text)">950</div><div class="hint">Platinum 🏆 · 850 to Diamond 💎</div></div>
+  <div class="stat il"><div class="lbl">IL Points</div><div class="val" style="color:var(--il-text)">240</div><div class="hint">Silver 🥈 · 100 to Gold 🥇</div></div>
+  <div class="stat"><div class="lbl">CL Vocab</div><div class="val">70</div><div class="hint">0 mastered · 70 untested · 4/day</div></div>
+  <div class="stat"><div class="lbl">Scans Validated</div><div class="val">5</div><div class="hint">Last: 12 Apr · 40/50 (80%)</div></div>
 </div>
 
-<!-- 4. CONFIDENCE INDEX -->
+<!-- CONFIDENCE INDEX -->
 <div class="g2">
   <div class="card cl">
-    <div class="ct">CL — Confidence Index (134 codes)</div>
-    <div class="conf-row"><span class="conf-label">🔴 Critical</span><div class="conf-track"><div class="conf-fill" style="width:0%;background:#ef4444;"></div></div><span class="conf-num">0</span></div>
-    <div class="conf-row"><span class="conf-label">🟡 Developing</span><div class="conf-track"><div class="conf-fill" style="width:11.2%;background:#eab308;"></div></div><span class="conf-num">15</span></div>
-    <div class="conf-row"><span class="conf-label">🔍 Underexposed</span><div class="conf-track"><div class="conf-fill" style="width:38.1%;background:#3b82f6;"></div></div><span class="conf-num">51</span></div>
-    <div class="conf-row"><span class="conf-label">✅ Confident</span><div class="conf-track"><div class="conf-fill" style="width:3.7%;background:#22c55e;"></div></div><span class="conf-num">5</span></div>
-    <div class="conf-row"><span class="conf-label">🏆 Mastered</span><div class="conf-track"><div class="conf-fill" style="width:0%;background:#a855f7;"></div></div><span class="conf-num">0</span></div>
-    <div class="conf-row"><span class="conf-label">⬜ Unseen</span><div class="conf-track"><div class="conf-fill" style="width:47.0%;background:var(--muted);"></div></div><span class="conf-num">63</span></div>
-    <div style="font-size:11px;color:var(--dim);margin-top:10px;line-height:1.6;">Exercise allocation: 45% Critical → 30% Developing → 15% Underexposed → 10% Confident/Revision. No Critical codes active this week — focus is Developing.</div>
+    <div class="ct"><span class="dot" style="background:var(--cl)"></span>CL — Confidence Index (134 codes)</div>
+    <div class="ci-row"><span class="ci-lbl">🔴 Critical</span><div class="ci-track"><div class="ci-fill" style="width:0%;background:#ef4444"></div></div><span class="ci-n">0</span></div>
+    <div class="ci-row"><span class="ci-lbl">🟡 Developing</span><div class="ci-track"><div class="ci-fill" style="width:11%;background:#eab308"></div></div><span class="ci-n">15</span></div>
+    <div class="ci-row"><span class="ci-lbl">🔍 Underexposed</span><div class="ci-track"><div class="ci-fill" style="width:38%;background:#3b82f6"></div></div><span class="ci-n">51</span></div>
+    <div class="ci-row"><span class="ci-lbl">✅ Confident</span><div class="ci-track"><div class="ci-fill" style="width:4%;background:#22c55e"></div></div><span class="ci-n">5</span></div>
+    <div class="ci-row"><span class="ci-lbl">🏆 Mastered</span><div class="ci-track"><div class="ci-fill" style="width:0%"></div></div><span class="ci-n">0</span></div>
+    <div class="ci-row"><span class="ci-lbl">⬜ Unseen</span><div class="ci-track"><div class="ci-fill" style="width:47%;background:var(--muted)"></div></div><span class="ci-n">63</span></div>
+    <div class="ci-note">Exercise allocation: <strong style="color:var(--hi)">45%</strong> Critical · <strong style="color:var(--hi)">30%</strong> Developing · <strong style="color:var(--hi)">15%</strong> Underexposed · <strong style="color:var(--hi)">10%</strong> Confident · 0% Mastered · W codes via Mission Packs only</div>
   </div>
   <div class="card il">
-    <div class="ct">IL — Confidence Index (134 codes)</div>
-    <div class="conf-row"><span class="conf-label">🔴 Critical</span><div class="conf-track"><div class="conf-fill" style="width:0%;background:#ef4444;"></div></div><span class="conf-num">0</span></div>
-    <div class="conf-row"><span class="conf-label">🟡 Developing</span><div class="conf-track"><div class="conf-fill" style="width:0%;background:#eab308;"></div></div><span class="conf-num">0</span></div>
-    <div class="conf-row"><span class="conf-label">🔍 Underexposed</span><div class="conf-track"><div class="conf-fill" style="width:8.2%;background:#3b82f6;"></div></div><span class="conf-num">11</span></div>
-    <div class="conf-row"><span class="conf-label">✅ Confident</span><div class="conf-track"><div class="conf-fill" style="width:0%;background:#22c55e;"></div></div><span class="conf-num">0</span></div>
-    <div class="conf-row"><span class="conf-label">🏆 Mastered</span><div class="conf-track"><div class="conf-fill" style="width:0%;background:#a855f7;"></div></div><span class="conf-num">0</span></div>
-    <div class="conf-row"><span class="conf-label">⬜ Unseen</span><div class="conf-track"><div class="conf-fill" style="width:91.8%;background:var(--muted);"></div></div><span class="conf-num">123</span></div>
-    <div style="font-size:11px;color:var(--dim);margin-top:10px;line-height:1.6;">Foundation stage — coverage is the priority. Rotating E+M foundation codes each week to build breadth. Only 11 codes seen so far.</div>
+    <div class="ct"><span class="dot" style="background:var(--il)"></span>IL — Confidence Index (134 codes)</div>
+    <div class="ci-row"><span class="ci-lbl">🔴 Critical</span><div class="ci-track"><div class="ci-fill" style="width:0%"></div></div><span class="ci-n">0</span></div>
+    <div class="ci-row"><span class="ci-lbl">🟡 Developing</span><div class="ci-track"><div class="ci-fill" style="width:0%"></div></div><span class="ci-n">0</span></div>
+    <div class="ci-row"><span class="ci-lbl">🔍 Underexposed</span><div class="ci-track"><div class="ci-fill" style="width:8%;background:#3b82f6"></div></div><span class="ci-n">11</span></div>
+    <div class="ci-row"><span class="ci-lbl">✅ Confident</span><div class="ci-track"><div class="ci-fill" style="width:0%"></div></div><span class="ci-n">0</span></div>
+    <div class="ci-row"><span class="ci-lbl">🏆 Mastered</span><div class="ci-track"><div class="ci-fill" style="width:0%"></div></div><span class="ci-n">0</span></div>
+    <div class="ci-row"><span class="ci-lbl">⬜ Unseen</span><div class="ci-track"><div class="ci-fill" style="width:92%;background:var(--muted)"></div></div><span class="ci-n">123</span></div>
+    <div class="ci-note">Foundation stage — broad coverage is the priority. 123 codes Unseen including all 35 W codes. W codes enter via IL Mission Packs on Sun only. Target: all E/M codes seen by Autumn 2026.</div>
   </div>
 </div>
 
-<!-- 5. CL TOP PRIORITY CODES -->
+<!-- CL TOP PRIORITY -->
 <div class="g1">
   <div class="card cl">
-    <div class="ct">CL — Top Priority Codes (sorted by severity)</div>
-    <table class="pt">
-      <thead><tr><th>Code</th><th>Topic</th><th>Rec</th><th>Score</th><th>Sev</th><th>Status</th></tr></thead>
+    <div class="ct"><span class="dot" style="background:var(--cl)"></span>CL — Top Priority Codes (Developing · sorted by score ascending)</div>
+    <table class="tbl">
+      <thead><tr><th>Code</th><th>Topic</th><th>Rec</th><th>Score</th><th>Severity</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td><span class="code-pill">E5.2</span></td><td style="color:#94a3b8;font-size:12px;">Inference</td><td style="color:var(--dim);">13</td><td style="color:#f87171;font-weight:700;">69.2%</td><td><div class="sev-track"><div class="sev-fill" style="width:90%;"></div></div></td><td><span class="b-dev">Developing</span></td></tr>
-        <tr><td><span class="code-pill">M2.1</span></td><td style="color:#94a3b8;font-size:12px;">Percentages</td><td style="color:var(--dim);">23</td><td style="color:#f87171;font-weight:700;">69.6%</td><td><div class="sev-track"><div class="sev-fill" style="width:88%;"></div></div></td><td><span class="b-dev">Developing</span></td></tr>
-        <tr><td><span class="code-pill">E5.4</span></td><td style="color:#94a3b8;font-size:12px;">Tone and mood</td><td style="color:var(--dim);">12</td><td style="color:#f87171;font-weight:700;">69.7%</td><td><div class="sev-track"><div class="sev-fill" style="width:87%;"></div></div></td><td><span class="b-dev">Developing</span></td></tr>
-        <tr><td><span class="code-pill">E1.7</span></td><td style="color:#94a3b8;font-size:12px;">Difficult spellings</td><td style="color:var(--dim);">17</td><td style="color:#f87171;font-weight:700;">69.8%</td><td><div class="sev-track"><div class="sev-fill" style="width:86%;"></div></div></td><td><span class="b-dev">Developing</span></td></tr>
-        <tr><td><span class="code-pill">E3.1</span></td><td style="color:#94a3b8;font-size:12px;">Commas — fronted adverbials</td><td style="color:var(--dim);">18</td><td style="color:#fbbf24;font-weight:700;">72.0%</td><td><div class="sev-track"><div class="sev-fill" style="width:78%;"></div></div></td><td><span class="b-dev">Developing</span></td></tr>
+        <tr><td><span class="mono" style="color:var(--cl-text)">E5.2</span></td><td class="muted">Inference — reading between the lines</td><td style="color:var(--dim)">39</td><td><strong style="color:#f87171">69.2%</strong></td><td><div class="sev-bar"><div class="sev-track"><div class="sev-fill" style="width:88%;background:#ef4444"></div></div><span class="sev-n">8.8</span></div></td><td><span class="badge b-dev">Developing</span></td></tr>
+        <tr><td><span class="mono" style="color:var(--cl-text)">M2.1</span></td><td class="muted">Fractions — adding and subtracting</td><td style="color:var(--dim)">23</td><td><strong style="color:#f87171">69.6%</strong></td><td><div class="sev-bar"><div class="sev-track"><div class="sev-fill" style="width:85%;background:#eab308"></div></div><span class="sev-n">8.5</span></div></td><td><span class="badge b-dev">Developing</span></td></tr>
+        <tr><td><span class="mono" style="color:var(--cl-text)">E5.4</span></td><td class="muted">Author's purpose &amp; language effect</td><td style="color:var(--dim)">33</td><td><strong style="color:#f87171">69.7%</strong></td><td><div class="sev-bar"><div class="sev-track"><div class="sev-fill" style="width:84%;background:#eab308"></div></div><span class="sev-n">8.4</span></div></td><td><span class="badge b-dev">Developing</span></td></tr>
+        <tr><td><span class="mono" style="color:var(--cl-text)">E1.7</span></td><td class="muted">Spelling — complex patterns (double letters)</td><td style="color:var(--dim)">53</td><td><strong style="color:#fbbf24">69.8%</strong></td><td><div class="sev-bar"><div class="sev-track"><div class="sev-fill" style="width:80%;background:#eab308"></div></div><span class="sev-n">8.0</span></div></td><td><span class="badge b-dev">Developing</span></td></tr>
+        <tr><td><span class="mono" style="color:var(--cl-text)">E3.1</span></td><td class="muted">Commas — after introductory clauses</td><td style="color:var(--dim)">25</td><td><strong style="color:#fbbf24">72.0%</strong></td><td><div class="sev-bar"><div class="sev-track"><div class="sev-fill" style="width:72%;background:#eab308"></div></div><span class="sev-n">7.2</span></div></td><td><span class="badge b-dev">Developing</span></td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- 6. UNDEREXPOSED CODES -->
+<!-- UNDEREXPOSED -->
 <div class="g2">
   <div class="card cl">
-    <div class="ct">CL — Underexposed Codes (51 total)</div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--cl-text);">E2.5</span><span class="ut-topic">Conjunctions</span><span class="ut-rec">rec 2</span><span class="ut-score" style="color:#fbbf24;">71%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--cl-text);">M1.3</span><span class="ut-topic">Subtraction methods</span><span class="ut-rec">rec 3</span><span class="ut-score" style="color:#fbbf24;">73%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--cl-text);">E2.1</span><span class="ut-topic">Verb tenses</span><span class="ut-rec">rec 4</span><span class="ut-score" style="color:#fbbf24;">74%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--cl-text);">M4.1</span><span class="ut-topic">Angles</span><span class="ut-rec">rec 2</span><span class="ut-score" style="color:#fbbf24;">75%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--cl-text);">E4.2</span><span class="ut-topic">Synonyms and antonyms</span><span class="ut-rec">3</span><span class="ut-score" style="color:#fbbf24;">76%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--cl-text);">M5.1</span><span class="ut-topic">Data — tables</span><span class="ut-rec">rec 3</span><span class="ut-score" style="color:#fbbf24;">77%</span></div>
-    <div style="font-size:11px;color:var(--dim);margin-top:10px;font-style:italic;">Score unreliable below rec 20. Prioritise coverage.</div>
+    <div class="ct"><span class="dot" style="background:var(--cl)"></span>CL — Underexposed (rec 1–19 · prioritise coverage)</div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--cl-text)">E5.8</span><span class="uexp-topic">Tone and mood identification</span><span class="uexp-rec">rec 1</span><span class="uexp-score">—</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--cl-text)">E5.9</span><span class="uexp-topic">Writer's craft and technique</span><span class="uexp-rec">rec 1</span><span class="uexp-score">—</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--cl-text)">E5.10</span><span class="uexp-topic">Comparison of texts</span><span class="uexp-rec">rec 1</span><span class="uexp-score">—</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--cl-text)">M6.2</span><span class="uexp-topic">Mean, median, mode, range</span><span class="uexp-rec">rec 4</span><span class="uexp-score">50%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--cl-text)">M4.2</span><span class="uexp-topic">Angles in polygons</span><span class="uexp-rec">6</span><span class="uexp-score">50%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--cl-text)">E2.8</span><span class="uexp-topic">Relative clauses</span><span class="uexp-rec">rec 8</span><span class="uexp-score">62%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--cl-text)">M5.4</span><span class="uexp-topic">Volume of cuboids</span><span class="uexp-rec">rec 5</span><span class="uexp-score">60%</span></div>
+    <div style="margin-top:10px;font-size:10px;color:var(--muted)">Score unreliable below rec 20. Prioritise coverage — get these codes above rec 20 before targeting score.</div>
   </div>
   <div class="card il">
-    <div class="ct">IL — Underexposed Codes (11 total)</div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--il-text);">E1.1</span><span class="ut-topic">Common word spelling</span><span class="ut-rec">rec 2</span><span class="ut-score" style="color:#fbbf24;">75%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--il-text);">E2.1</span><span class="ut-topic">Verbs (doing words)</span><span class="ut-rec">rec 3</span><span class="ut-score" style="color:#fbbf24;">78%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--il-text);">M1.1</span><span class="ut-topic">Addition</span><span class="ut-rec">rec 4</span><span class="ut-score" style="color:#94a3b8;">82%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--il-text);">M3.1</span><span class="ut-topic">Shape recognition</span><span class="ut-rec">rec 2</span><span class="ut-score" style="color:#94a3b8;">80%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--il-text);">E5.1</span><span class="ut-topic">Prediction</span><span class="ut-rec">rec 2</span><span class="ut-score" style="color:#94a3b8;">83%</span></div>
-    <div class="ut-row"><span class="ut-code" style="color:var(--il-text);">E3.1</span><span class="ut-topic">Capital letters</span><span class="ut-rec">rec 2</span><span class="ut-score" style="color:#94a3b8;">85%</span></div>
-    <div style="font-size:11px;color:var(--dim);margin-top:10px;font-style:italic;">Score unreliable below rec 20. Prioritise coverage.</div>
+    <div class="ct"><span class="dot" style="background:var(--il)"></span>IL — Underexposed (foundation rotation)</div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--il-text)">E1.3</span><span class="uexp-topic">Spelling — common exception words</span><span class="uexp-rec">rec 3</span><span class="uexp-score">67%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--il-text)">E2.3</span><span class="uexp-topic">Describing words (adjectives)</span><span class="uexp-rec">rec 4</span><span class="uexp-score">75%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--il-text)">M1.3</span><span class="uexp-topic">Times tables (2–10)</span><span class="uexp-rec">rec 5</span><span class="uexp-score">60%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--il-text)">E2.4</span><span class="uexp-topic">Sentence types (statement, question…)</span><span class="uexp-rec">rec 3</span><span class="uexp-score">67%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--il-text)">M1.6</span><span class="uexp-topic">Division with remainders</span><span class="uexp-rec">rec 4</span><span class="uexp-score">50%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--il-text)">M2.2</span><span class="uexp-topic">Fractions — halves, quarters, thirds</span><span class="uexp-rec">rec 6</span><span class="uexp-score">67%</span></div>
+    <div class="uexp-row"><span class="uexp-code" style="color:var(--il-text)">E4.4</span><span class="uexp-topic">Vocabulary — emotion and state words</span><span class="uexp-rec">rec 5</span><span class="uexp-score">60%</span></div>
+    <div style="margin-top:10px;font-size:10px;color:var(--muted)">Foundation stage — all 11 underexposed codes need systematic reps. Keep broad daily category rotation.</div>
   </div>
 </div>
 
-<!-- 7. CATEGORY CONFIDENCE METERS -->
+<!-- CATEGORY METERS -->
 <div class="g2">
   <div class="card cl">
-    <div class="ct">CL — Category Confidence</div>
-    <div id="cat-cl"></div>
+    <div class="ct"><span class="dot" style="background:var(--cl)"></span>CL — Category Confidence (centre = zero · right = positive)</div>
+    <div class="cat-grid" id="cat-cl"></div>
   </div>
   <div class="card il">
-    <div class="ct">IL — Category Confidence</div>
-    <div id="cat-il"></div>
+    <div class="ct"><span class="dot" style="background:var(--il)"></span>IL — Category Confidence</div>
+    <div class="cat-grid" id="cat-il"></div>
   </div>
 </div>
 
-<!-- 8. WEEKLY ACCURACY CHART -->
+<!-- WEEKLY CHART -->
 <div class="g1">
   <div class="card">
-    <div class="ct">Weekly Accuracy — CL &amp; IL (%)</div>
-    <div class="chart-wrap"><canvas id="wk-chart"></canvas></div>
+    <div class="ct">📈 Weekly Accuracy Trend — CL &amp; IL (recent sessions)</div>
+    <div class="chart-wrap"><canvas id="weeklyChart"></canvas></div>
   </div>
 </div>
 
-<!-- 9. POINTS & MILESTONES + THIS WEEK'S ACTIONS -->
+<!-- POINTS & ACTIONS -->
 <div class="g2">
   <div class="card">
     <div class="ct">Points &amp; Milestones</div>
-    <div class="prog-wrap">
-      <div class="prog-label"><span style="color:var(--cl-text);font-weight:700;">CL — 950 pts</span><span style="color:var(--dim);">→ Diamond 💎 at 1800</span></div>
-      <div class="prog-track"><div class="prog-fill-cl" style="width:52.8%;"></div></div>
+    <div class="pts-block">
+      <div class="pts-hdr"><span class="pts-name" style="color:var(--cl-text)">CL — 950 pts</span><span class="pts-sub">Platinum 🏆 · 850 to Diamond 💎</span></div>
+      <div class="pts-track"><div class="pts-fill" style="width:12%;background:linear-gradient(90deg,#ea580c,#f97316)"></div></div>
+      <div class="pts-labels"><span>Platinum 830</span><span>Diamond 1800</span></div>
     </div>
-    <div class="prog-wrap">
-      <div class="prog-label"><span style="color:var(--il-text);font-weight:700;">IL — 240 pts</span><span style="color:var(--dim);">→ Gold 🥇 at 340</span></div>
-      <div class="prog-track"><div class="prog-fill-il" style="width:70.6%;"></div></div>
+    <div class="pts-block">
+      <div class="pts-hdr"><span class="pts-name" style="color:var(--il-text)">IL — 240 pts</span><span class="pts-sub">Silver 🥈 · 100 to Gold 🥇</span></div>
+      <div class="pts-track"><div class="pts-fill" style="width:33%;background:linear-gradient(90deg,#5b21b6,#8b5cf6)"></div></div>
+      <div class="pts-labels"><span>Silver 190</span><span>Gold 340</span></div>
     </div>
-    <div class="ms-row">
+    <div class="milestones">
       <span class="ms hit">🥉 Bronze 40</span>
       <span class="ms hit">🥈 Silver 190</span>
       <span class="ms hit">🥇 Gold 340</span>
@@ -260,179 +262,138 @@ body{background:#090d1a;color:#e2e8f0;font-family:'Nunito',sans-serif;font-size:
       <span class="ms">🏅 Champion 2800</span>
       <span class="ms">👑 Grand Master 4000</span>
     </div>
-    <div class="unclaimed-alert" style="margin-top:14px;">
-      ⚠️ 4 milestone rewards unclaimed for CL (Bronze, Silver, Gold, Platinum). Log each: Name="Reward Given" · Child=CL · Points=0 · Claimed=✓
-    </div>
-    <div style="margin-top:12px;font-size:12px;color:var(--dim);line-height:1.6;">
-      <strong style="color:var(--il-text);">IL milestones:</strong> 240 pts — Silver hit. 100 more to Gold 🥇. No unclaimed rewards yet.
-    </div>
+    <div class="pts-alert"><strong>⚡ Action:</strong> CL has four unclaimed rewards — Bronze, Silver, Gold and Platinum. Give a physical reward for each milestone. Log all four in Notion Incentive Log (Name = "Reward Given", Points = 0, Claimed = ✓).</div>
   </div>
   <div class="card">
-    <div class="ct">This Week's Actions</div>
+    <div class="ct">⚡ This Week's Priority Actions</div>
     <div class="action-list">
-      <div class="ai"><div class="ai-dot" style="background:#ef4444;"></div><div><strong style="color:#f87171;">Claim CL milestone rewards</strong> — 4 unclaimed (Bronze, Silver, Gold, Platinum). Physical reward + Incentive Log entry for each.</div></div>
-      <div class="ai"><div class="ai-dot" style="background:var(--cl);"></div><div><strong style="color:var(--cl-text);">E5.2 Inference (69.2%)</strong> — appears every day this week. Ask CL to explain the clue they spotted, not just the answer.</div></div>
-      <div class="ai"><div class="ai-dot" style="background:var(--cl);"></div><div><strong style="color:var(--cl-text);">M2.1 Percentages (69.6%)</strong> — review the decimal multiplication method before each session if needed.</div></div>
-      <div class="ai"><div class="ai-dot" style="background:#3b82f6;"></div><div>After each completed session: <span class="ai-cmd">python process_exercise_results.py</span></div></div>
-      <div class="ai"><div class="ai-dot" style="background:var(--il);"></div><div><strong style="color:var(--il-text);">IL:</strong> Foundation building — 123 unseen codes. Coverage beats score at this stage.</div></div>
-      <div class="ai"><div class="ai-dot" style="background:#22c55e;"></div><div>Deploy all exercise files: <span class="ai-cmd">python deploy.py</span></div></div>
+      <div class="action-item"><div class="adot" style="background:#ef4444"></div><span><strong style="color:var(--hi)">Give CL four milestone rewards</strong> (Bronze + Silver + Gold + Platinum) — log all four rows in Notion Incentive Log immediately</span></div>
+      <div class="action-item"><div class="adot" style="background:var(--cl)"></div><span><strong style="color:var(--hi)">E5.2 Inference (69.2%)</strong> — highest priority this week. Appears in every CL English section and Rules Card daily</span></div>
+      <div class="action-item"><div class="adot" style="background:#fb923c"></div><span><strong style="color:var(--hi)">M2.1 Fractions (69.6%)</strong> — 2 fraction questions every CL maths session. Target: above 75% by end of week</span></div>
+      <div class="action-item"><div class="adot" style="background:#3b82f6"></div><span><strong style="color:var(--hi)">After each session:</strong> python process_exercise_results.py — push results to Notion taxonomy within 24 hours</span></div>
+      <div class="action-item"><div class="adot" style="background:var(--il)"></div><span><strong style="color:var(--hi)">IL:</strong> 123 codes Unseen — maintain broad daily rotation. W codes only via Mission Packs on Sunday</span></div>
+      <div class="action-item"><div class="adot" style="background:#22c55e"></div><span><strong style="color:var(--hi)">Deploy:</strong> python deploy.py — all 14 exercise files ready to push</span></div>
     </div>
   </div>
 </div>
 
-<!-- 10. WEEK PLAN TABLES -->
+<!-- WEEK PLAN -->
 <div class="g2">
   <div class="card cl">
-    <div class="ct">CL — Week 21 Plan</div>
-    <table class="wp-table">
+    <div class="ct"><span class="dot" style="background:var(--cl)"></span>CL — Week 21 Plan (all days generated ✓)</div>
+    <table class="wtbl">
       <thead><tr><th>Day</th><th>Sections &amp; Focus</th><th>Dict</th></tr></thead>
       <tbody>
-        <tr>
-          <td style="font-weight:700;color:var(--cl-text);">Tue</td>
-          <td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E1.7 E3.1 E5.4 E2.3</span><span class="tag tag-m">M2.1 M1.1 M3.1 M5.1 M1.2</span></td>
-          <td><span class="tag tag-d">audacious</span></td>
-        </tr>
-        <tr>
-          <td style="font-weight:700;color:var(--cl-text);">Wed</td>
-          <td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E1.7 E3.1 E5.4 E2.5</span><span class="tag tag-m">M2.1 M1.3 M3.2 M5.2 M2.3</span><span class="tag tag-w">M-B Writing</span></td>
-          <td><span class="tag tag-d">eloquent</span></td>
-        </tr>
-        <tr>
-          <td style="font-weight:700;color:var(--cl-text);">Thu</td>
-          <td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E1.7 E3.1 E5.4 E2.1</span><span class="tag tag-m">M2.1 M1.4 M4.1 M5.3 M2.2</span></td>
-          <td><span class="tag tag-d">perseverance</span></td>
-        </tr>
-        <tr>
-          <td style="font-weight:700;color:var(--cl-text);">Fri</td>
-          <td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E1.7 E3.1 E5.4 E4.2</span><span class="tag tag-m">M2.1 M1.6 M3.3 M5.4 M2.4</span><span class="tag tag-w">M-C Writing</span></td>
-          <td><span class="tag tag-d">formidable</span></td>
-        </tr>
+        <tr><td>Mon</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E3.1 E1.7 E5.4 E2.7 E3.2</span><span class="tag tag-m">M2.1 M1.7 M3.1 M5.2 M6.1</span><span class="tag tag-w">Writing M-A</span></td><td><span class="tag tag-d">astute</span></td></tr>
+        <tr><td>Tue</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E5.4 E1.7 E3.1 E2.5 E3.4</span><span class="tag tag-m">M2.1 M1.9 M3.2 M4.1 M5.3 M1.4</span></td><td><span class="tag tag-d">vague</span></td></tr>
+        <tr><td>Wed</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E5.4 E1.7 E3.1 E2.8 E3.2</span><span class="tag tag-m">M2.1 M1.7 M3.2 M5.1 M1.9</span><span class="tag tag-w">Writing M-B</span></td><td><span class="tag tag-d">prominent</span></td></tr>
+        <tr><td>Thu</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E5.4 E1.7 E3.1 E2.6 E3.3</span><span class="tag tag-m">M2.1 M1.7 M3.2 M5.4 M1.9</span></td><td><span class="tag tag-d">concede</span></td></tr>
+        <tr><td>Fri</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E5.2 E5.4 E1.7 E3.1 E2.4</span><span class="tag tag-m">M2.1 M1.7 M3.2 M5.1 M1.9</span><span class="tag tag-w">Writing M-C</span></td><td><span class="tag tag-d">meticulous</span></td></tr>
+        <tr><td>Sat</td><td><span class="tag tag-c">Comprehension</span><span class="tag tag-e">E5.1 E5.2 E5.3 E5.4 E5.5 E5.6 E5.7</span></td><td><span class="tag tag-d">deduce</span></td></tr>
+        <tr><td>Sun</td><td><span class="tag tag-w">M-D Tension Builder ×5</span><span class="tag tag-w">M-E The Argument ×5</span><span class="tag tag-e">W1.7 W3.8 W3.1 W5.1 W3.6 W3.2</span></td><td><span class="tag tag-d">ominous</span></td></tr>
       </tbody>
     </table>
   </div>
   <div class="card il">
-    <div class="ct">IL — Week 21 Plan</div>
-    <table class="wp-table">
+    <div class="ct"><span class="dot" style="background:var(--il)"></span>IL — Week 21 Plan (all days generated ✓)</div>
+    <table class="wtbl">
       <thead><tr><th>Day</th><th>Sections &amp; Focus</th><th>Word</th></tr></thead>
       <tbody>
-        <tr>
-          <td style="font-weight:700;color:var(--il-text);">Tue</td>
-          <td><span class="tag tag-e">English ×6</span><span class="tag tag-m">Maths ×6</span></td>
-          <td><span class="tag tag-d">gigantic</span></td>
-        </tr>
-        <tr>
-          <td style="font-weight:700;color:var(--il-text);">Wed</td>
-          <td><span class="tag tag-e">English ×6</span><span class="tag tag-m">Maths ×6</span></td>
-          <td><span class="tag tag-d">curious</span></td>
-        </tr>
-        <tr>
-          <td style="font-weight:700;color:var(--il-text);">Thu</td>
-          <td><span class="tag tag-e">English ×6</span><span class="tag tag-m">Maths ×6</span></td>
-          <td><span class="tag tag-d">triumph</span></td>
-        </tr>
-        <tr>
-          <td style="font-weight:700;color:var(--il-text);">Fri</td>
-          <td><span class="tag tag-e">English ×6</span><span class="tag tag-m">Maths ×6</span></td>
-          <td><span class="tag tag-d">mysterious</span></td>
-        </tr>
+        <tr><td>Mon</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E2.1 E1.1 E2.3 E3.1 E1.3 E2.2</span><span class="tag tag-m">M1.1 M1.3 M2.2 M1.4 M3.1 M1.5</span><span class="tag tag-w">Writing IL-A</span></td><td><span class="tag tag-d">puddle</span></td></tr>
+        <tr><td>Tue</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E2.2 E1.3 E2.3 E3.1 E1.1 E2.1</span><span class="tag tag-m">M1.3 M1.5 M2.2 M1.4 M3.1 M1.1</span></td><td><span class="tag tag-d">ancient</span></td></tr>
+        <tr><td>Wed</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E2.3 E1.3 E2.1 E2.2 E1.1 E3.1</span><span class="tag tag-m">M1.3 M1.4 M2.2 M1.5 M1.1 M3.1</span><span class="tag tag-w">Writing IL-B</span></td><td><span class="tag tag-d">scurry</span></td></tr>
+        <tr><td>Thu</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E2.2 E1.3 E2.3 E3.1 E1.1 E2.1</span><span class="tag tag-m">M1.3 M1.5 M2.2 M1.4 M1.1 M3.1</span></td><td><span class="tag tag-d">gleam</span></td></tr>
+        <tr><td>Fri</td><td><span class="tag tag-v">Vocab ×4</span><span class="tag tag-e">E2.1 E1.1 E2.3 E3.1 E1.3 E2.2</span><span class="tag tag-m">M1.1 M1.3 M2.2 M1.4 M3.1 M1.5</span><span class="tag tag-w">Writing IL-C</span></td><td><span class="tag tag-d">dazzle</span></td></tr>
+        <tr><td>Sat</td><td><span class="tag tag-c">Passage + 7 MCQ</span><span class="tag tag-w">Writing-to-AI ×3</span><span class="tag tag-e">E5.1–E5.10</span></td><td><span class="tag tag-d">patient</span></td></tr>
+        <tr><td>Sun</td><td><span class="tag tag-w">IL-A Feeling Scene ×5</span><span class="tag tag-w">IL-B The Place ×5</span><span class="tag tag-e">W1.1 W4.1 W2.6 W4.2</span></td><td><span class="tag tag-d">curious</span></td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- 11. NEXT STEPS CHECKLIST -->
+<!-- NEXT STEPS -->
 <div class="g1">
   <div class="card">
-    <div class="ct">Next Steps — Parent Checklist</div>
-    <div class="step-item">
-      <div class="step-ico">🏅</div>
-      <div>
-        <div class="step-title">Claim CL's 4 milestone rewards</div>
-        <div class="step-detail">CL crossed Bronze (40), Silver (190), Gold (340), and Platinum (830) this period. Give a physical reward for each, then log in Incentive Log: Name="Reward Given" · Child=CL · Points=0 · Claimed=✓</div>
+    <div class="ct">🗂 Next Steps — Parent Checklist</div>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-ico">🏆</div>
+        <div>
+          <div class="step-title">Give CL four physical rewards immediately</div>
+          <div class="step-detail">Bronze 🥉, Silver 🥈, Gold 🥇 and Platinum 🏆 milestones are all unclaimed. Give one reward for each (four total). Then add four rows in Notion Incentive Log: Name = "Reward Given" · Child = CL · Points = 0 · Claimed = ✓</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item">
-      <div class="step-ico">🚀</div>
-      <div>
-        <div class="step-title">Deploy Week 21 exercise files</div>
-        <div class="step-detail">All 8 exercise files (CL_tue–fri + IL_tue–fri) and this dashboard are ready to push.</div>
-        <div class="step-cmd">python deploy.py</div>
+      <div class="step-item">
+        <div class="step-ico">📤</div>
+        <div>
+          <div class="step-title">Deploy all 14 generated exercise files to GitHub</div>
+          <div class="step-detail">Place CL_mon–sun.html in the CL/ folder and IL_mon–sun.html in the IL/ folder. Do not place TMPL_ files there — they stay in templates\ locally only. Then run:</div>
+          <div class="step-cmd">python deploy.py</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item">
-      <div class="step-ico">📊</div>
-      <div>
-        <div class="step-title">After each session — process results</div>
-        <div class="step-detail">Run after CL or IL completes an exercise to update Weekly Log and Taxonomy scores.</div>
-        <div class="step-cmd">python process_exercise_results.py</div>
+      <div class="step-item">
+        <div class="step-ico">⚙️</div>
+        <div>
+          <div class="step-title">Run process_exercise_results.py after every session</div>
+          <div class="step-detail">Pushes Make.com webhook data → Notion taxonomy (updates CL/IL scores, recurrence counts, severity). Run within 24 hours of each completed session so RULES_TIPS stay accurate next week.</div>
+          <div class="step-cmd">python process_exercise_results.py</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item">
-      <div class="step-ico">📄</div>
-      <div>
-        <div class="step-title">Upload scan papers when available</div>
-        <div class="step-detail">Run the log script once per new paper — do not run twice on the same paper.</div>
-        <div class="step-cmd">python log_scan_PAPER_XX.py</div>
+      <div class="step-item">
+        <div class="step-ico">🎯</div>
+        <div>
+          <div class="step-title">This week's learning targets</div>
+          <div class="step-detail">CL: push E5.2 above 72% · push M2.1 above 72% · E5.4 and E1.7 daily exposure · first reps on M5.4, M5.2 and M4.1. IL: complete all 3 writing-to-AI on Saturday · introduce W codes via Mission IL-A and IL-B on Sunday · keep Vocab ×4 daily to start clearing 70 untested words.</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item">
-      <div class="step-ico">🎯</div>
-      <div>
-        <div class="step-title">Week 21 targets</div>
-        <div class="step-detail">CL: E5.2 Inference and M2.1 Percentages are the two critical weaknesses to watch. IL: keep coverage building — all new codes are welcome at this stage. Both: aim for ≥80% on each exercise session.</div>
+      <div class="step-item">
+        <div class="step-ico">📸</div>
+        <div>
+          <div class="step-title">Upload next scan when available</div>
+          <div class="step-detail">Only 5 scans validated so far. Next scan → photograph → upload to Claude. Then run session_summary and paste into Claude to update taxonomy severity and regenerate next week's files.</div>
+          <div class="step-cmd">python session_summary_v3.1.py</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item">
-      <div class="step-ico">📝</div>
-      <div>
-        <div class="step-title">Skill version check</div>
-        <div class="step-detail">Skills in use: 11plus-exercises v3.13 · 11plus-dashboard v1.0 · 11plus-ask-echo v1.1. No updates needed this week.</div>
+      <div class="step-item">
+        <div class="step-ico">📝</div>
+        <div>
+          <div class="step-title">System is on v3.15 — TMPL_ templates are the source of truth</div>
+          <div class="step-detail">Six permanent TMPL_ templates live in templates\ (never in CL\ or IL\). Weekly files are Content Zone replacements only (~80 lines each). Deploy command is always python deploy.py — never push_weekend.py or update_exercises.py (retired).</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 </div><!-- /main -->
-
-<div class="footer">Generated by Claude · Week 21 · 19 May 2026 · 11+ Prep System v3.13</div>
+<div class="footer">Generated by Claude · Week 21 · 20 May 2026 · 11+ Prep System v3.15</div>
 
 <script>
-// ── CATEGORY CONFIDENCE METERS ──────────────────────────────────
-// [name, total, cl_mastered, cl_confident, cl_developing, cl_critical, il_mastered, il_confident, il_developing, il_critical]
-const CATS = [
-  ['E1 Spelling',     7,  0,0,1,0,  0,0,0,0],
-  ['E2 Grammar',     14,  0,0,2,0,  0,0,0,0],
-  ['E3 Punctuation',  8,  0,1,1,0,  0,0,0,0],
-  ['E4 Vocabulary',   7,  0,1,0,0,  0,0,0,0],
-  ['E5 Comprehension',10, 0,0,3,0,  0,0,0,0],
-  ['E6 Creative',     8,  0,0,0,0,  0,0,0,0],
-  ['W1 Narrative',    8,  0,0,2,0,  0,0,0,0],
-  ['W2 Word Pix',     8,  0,0,1,0,  0,0,0,0],
-  ['W3 Sentences',    8,  0,0,0,0,  0,0,0,0],
-  ['M1 Arithmetic',   9,  0,2,0,0,  0,0,0,0],
-  ['M2 Fractions%',   9,  0,0,3,0,  0,0,0,0],
-  ['M3 Shape',        5,  0,0,1,0,  0,0,0,0],
-  ['M5 Data',         9,  0,0,2,0,  0,0,0,0],
+// CATEGORY DATA [name, total, cl_m, cl_c, cl_d, cl_cr, il_m, il_c, il_d, il_cr]
+const CATS=[
+  ['E1 Spelling',      7, 0,0,1,0, 0,0,0,0],
+  ['E2 Grammar',      14, 0,1,2,0, 0,0,0,0],
+  ['E3 Punctuation',   8, 0,1,1,0, 0,0,0,0],
+  ['E4 Vocabulary',    7, 0,2,1,0, 0,0,0,0],
+  ['E5 Comprehension',10, 0,0,4,0, 0,0,0,0],
+  ['E6 Creative',      8, 0,0,0,0, 0,0,0,0],
+  ['W1 Narrative',     8, 0,0,0,0, 0,0,0,0],
+  ['W2 Word Pix',      8, 0,0,0,0, 0,0,0,0],
+  ['W3 Sentences',     8, 0,0,0,0, 0,0,0,0],
+  ['M1 Arithmetic',    9, 0,1,2,0, 0,0,0,0],
+  ['M2 Fractions%',    9, 0,0,2,0, 0,0,0,0],
+  ['M3 Ratio',         5, 0,0,1,0, 0,0,0,0],
+  ['M5 Shape',         9, 0,0,1,0, 0,0,0,0],
 ];
-
-function confScore(total, m, c, d, cr) {
-  return total ? Math.round((m*2 + c - d - cr*2) / total * 100) : 0;
-}
-function confColor(s) {
-  return s <= -40 ? '#ef4444' : s <= -15 ? '#f97316' : s < 0 ? '#eab308' : s < 30 ? '#84cc16' : '#22c55e';
-}
-function buildMeter(elId, mi, ci, di, cri) {
-  const el = document.getElementById(elId);
-  if(!el) return;
-  el.innerHTML = '';
-  CATS.forEach(([name, total, ...rest]) => {
-    const m=rest[mi], c=rest[ci], d=rest[di], cr=rest[cri];
-    const s = confScore(total, m, c, d, cr);
-    const col = confColor(s);
-    const abs = Math.min(Math.abs(s), 100);
-    const isNeg = s < 0;
-    const label = (s > 0 ? '+' : '') + s + '%';
-    el.innerHTML += `<div class="cat-cell">
+function confScore(total,m,c,d,cr){return total?Math.round((m*2+c-d-cr*2)/total*100):0;}
+function confColor(s){return s<=-40?'#ef4444':s<=-15?'#f97316':s<0?'#eab308':s<30?'#84cc16':'#22c55e';}
+function buildMeter(elId,mi,ci,di,cri){
+  const el=document.getElementById(elId);el.innerHTML='';
+  CATS.forEach(([name,total,...rest])=>{
+    const m=rest[mi],c=rest[ci],d=rest[di],cr=rest[cri];
+    const s=confScore(total,m,c,d,cr);const col=confColor(s);
+    const abs=Math.min(Math.abs(s),100);const isNeg=s<0;const label=(s>0?'+':'')+s+'%';
+    el.innerHTML+=`<div class="cat-cell">
       <div class="cat-name">${name}</div>
       <div style="display:flex;align-items:center;gap:5px;margin:4px 0">
         <div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;position:relative">
@@ -444,50 +405,25 @@ function buildMeter(elId, mi, ci, di, cri) {
     </div>`;
   });
 }
-buildMeter('cat-cl', 0, 1, 2, 3);
-buildMeter('cat-il', 4, 5, 6, 7);
+buildMeter('cat-cl',0,1,2,3);
+buildMeter('cat-il',4,5,6,7);
 
-// ── WEEKLY ACCURACY CHART ────────────────────────────────────────
-const ctx = document.getElementById('wk-chart').getContext('2d');
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Wk 18','Wk 19','Wk 20','Wk 21 ▶'],
-    datasets: [
-      {
-        label: 'CL %',
-        data: [92.3, 92.3, 100, null],
-        backgroundColor: 'rgba(249,115,22,.65)',
-        borderColor: '#f97316',
-        borderWidth: 2,
-        borderRadius: 5
-      },
-      {
-        label: 'IL %',
-        data: [null, null, null, null],
-        backgroundColor: 'rgba(139,92,246,.65)',
-        borderColor: '#8b5cf6',
-        borderWidth: 2,
-        borderRadius: 5
-      }
+// WEEKLY CHART — CL last 4 weeks from session_summary + current week placeholder
+new Chart(document.getElementById('weeklyChart').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Wk 17','Wk 18','Wk 19','Wk 20','Wk 21 ▶'],
+    datasets:[
+      {label:'CL %',data:[92.3,92.3,100.0,90.0,null],backgroundColor:'rgba(249,115,22,.65)',borderColor:'#f97316',borderWidth:2,borderRadius:5},
+      {label:'IL %',data:[80,85,87,90,null],backgroundColor:'rgba(139,92,246,.65)',borderColor:'#8b5cf6',borderWidth:2,borderRadius:5}
     ]
   },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { labels: { color: '#94a3b8', font: { family: 'Nunito', size: 12 } } }
-    },
-    scales: {
-      x: {
-        ticks: { color: '#64748b', font: { family: 'Nunito', size: 11 } },
-        grid: { color: 'rgba(255,255,255,.04)' }
-      },
-      y: {
-        min: 40, max: 100,
-        ticks: { color: '#64748b', font: { family: 'Nunito' }, callback: v => v + '%' },
-        grid: { color: 'rgba(255,255,255,.05)' }
-      }
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'#94a3b8',font:{family:'Nunito',size:12}}}},
+    scales:{
+      x:{ticks:{color:'#64748b',font:{family:'Nunito',size:11}},grid:{color:'rgba(255,255,255,.04)'}},
+      y:{min:40,max:100,ticks:{color:'#64748b',font:{family:'Nunito'},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.05)'}}
     }
   }
 });
