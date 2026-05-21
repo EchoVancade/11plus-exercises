@@ -3,460 +3,559 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>CL Monday — Week 21</title>
+<title>CL Exercises</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+/* ── CL THEME ── orange */
+:root{--hdr:linear-gradient(135deg,#FF6B35,#E85D04);--bg:#FFF8F0;--acc:#E85D04;--acc2:#FF6B35;--vocab:#7B2D8B}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:#FFF8F0;min-height:100vh;padding-bottom:80px}
-body.snake{--hi:#27AE60;--lite:rgba(39,174,96,.18);--bd:rgba(39,174,96,.4)}
-body.shark{--hi:#2980B9;--lite:rgba(41,128,185,.18);--bd:rgba(41,128,185,.4)}
-.hdr{background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.hdr h1{font-size:1rem;font-weight:900}.hdr p{font-size:.75rem;opacity:.85}
-.hdr-r{display:flex;align-items:center;gap:8px}
-.pts{background:rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:.82rem;font-weight:800}
-.char-av{font-size:1.8rem}.key-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:4px 9px;font-size:.72rem;cursor:pointer;font-family:'Nunito',sans-serif}
-.rw{padding:12px 14px 0}
-.rc{background:#fff;border-radius:14px;border:2px solid #e5c97e;overflow:hidden;margin-bottom:12px}
-.rh{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.rh h2{font-size:.88rem;font-weight:800}.rh span{font-size:.8rem;opacity:.8}
-.rb{padding:12px 14px;display:none}
-.rtip{font-size:.82rem;line-height:1.5;margin-bottom:8px;padding-left:10px;border-left:3px solid #FF6B35}
-.rgo{width:100%;margin-top:10px;padding:11px;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
-/* Section cards */
-.sec-card{border-radius:14px;overflow:hidden;margin:0 14px 12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.sec-hdr{padding:10px 14px;display:flex;align-items:center;gap:8px}
-.sec-hdr h3{font-size:.88rem;font-weight:900;color:#fff}
-.sec-hdr .sec-code{font-size:.72rem;opacity:.8;color:#fff}
-.sec-vocab .sec-hdr{background:linear-gradient(135deg,#7B2D8B,#6B21A8)}
-.sec-english .sec-hdr{background:linear-gradient(135deg,#0077B6,#1d4ed8)}
-.sec-maths .sec-hdr{background:linear-gradient(135deg,#2D9E2D,#15803d)}
-.sec-body{background:#fff;padding:12px}
-/* Questions */
-.qcard{background:#f9fafb;border-radius:11px;padding:12px;border:2px solid transparent;transition:border-color .2s;margin-bottom:8px}
-.qcard:last-child{margin-bottom:0}
-.qcard.right{border-color:#22c55e;background:#f0fdf4}
-.qcard.wrong{border-color:#ef4444;background:#fff5f5}
-.qcard.reviewed{border-color:#22c55e;background:#f0fdf4}
-.qn{font-size:.68rem;font-weight:700;color:#94a3b8;margin-bottom:4px}
-.qt{font-size:.84rem;font-weight:700;color:#1e293b;margin-bottom:8px;line-height:1.5}
-.opts{display:flex;flex-direction:column;gap:5px}
-.opt{padding:8px 11px;border-radius:8px;border:2px solid #e5e7eb;background:#fff;font-size:.82rem;font-weight:600;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;-webkit-tap-highlight-color:transparent}
-.opt.sc{background:#dcfce7;border-color:#22c55e;color:#166534}
-.opt.sw{background:#fee2e2;border-color:#ef4444;color:#991b1b}
-.opt.rc2{background:#dcfce7;border-color:#22c55e}
-.opt.dis{pointer-events:none;opacity:.55}
-.rev-badge{font-size:.7rem;color:#166534;font-weight:800;margin-top:5px}
-/* Writing section */
-.writing-sec{border-radius:14px;margin:0 14px 12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.writing-hdr{background:linear-gradient(135deg,#166534,#15803d);padding:13px 15px}
-.wtag{font-size:.68rem;font-weight:800;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
-.wtitle{font-size:.95rem;font-weight:900;color:#fff;margin:2px 0}
-.wcodes{font-size:.72rem;color:rgba(255,255,255,.8)}
-.wgoal{font-size:.78rem;color:rgba(255,255,255,.7);margin-top:5px;font-style:italic}
-.writing-body{background:#fff;padding:13px}
-.wprompt{font-size:.9rem;font-weight:800;color:#166534;line-height:1.5;margin-bottom:10px;padding:10px;background:#f0fdf4;border-radius:9px;border-left:3px solid #22c55e}
-.w-chat{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;min-height:30px}
-.w-bub{max-width:85%;padding:9px 12px;border-radius:12px;font-size:.84rem;line-height:1.5}
-.w-bub.e{align-self:flex-start;background:#f0fdf4;border:1px solid #86efac;color:#166534}
-.w-bub.c{align-self:flex-end;background:#1e293b;color:#f1f5f9;font-weight:700;font-style:italic}
-.w-input-area{display:flex;gap:7px}
-.w-textarea{flex:1;padding:9px 10px;border-radius:9px;border:2px solid #e5e7eb;font-family:'Nunito',sans-serif;font-size:.84rem;resize:none;background:#f9fafb}
-.w-send{padding:9px 14px;background:linear-gradient(135deg,#166534,#15803d);color:#fff;border:none;border-radius:9px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.82rem;white-space:nowrap}
-.w-done-badge{background:#f0fdf4;border:2px solid #22c55e;border-radius:10px;padding:10px;text-align:center;font-weight:800;color:#166534;font-size:.88rem;display:none}
-.w-attempts{font-size:.72rem;color:#94a3b8;margin-top:5px;text-align:right}
-/* Submit bar */
-.sub-bar{position:fixed;bottom:0;left:0;right:0;padding:10px 14px;background:#fff;border-top:1px solid #f1f5f9;z-index:9}
-.sub-btn{width:100%;padding:14px;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
-.sub-btn:disabled{opacity:.35;cursor:default}
-/* Result */
-.result{display:none;padding:20px 14px;text-align:center}
-.res-emoji{font-size:3.5rem;margin-bottom:10px}.res-score{font-size:2.2rem;font-weight:900;color:#FF6B35}
-.res-msg{font-size:.9rem;color:#475569;margin:6px 0 14px}
-.vid-block{background:#fff;border-radius:13px;padding:14px;text-align:left;margin-top:10px}
-.vid-block h4{font-size:.82rem;font-weight:800;margin-bottom:8px}
-.vid-link{display:block;padding:8px 10px;background:#f1f5f9;border-radius:8px;margin-bottom:5px;font-size:.8rem;color:#3b82f6;text-decoration:none;font-weight:600}
-/* Remediation */
-.remed-banner{display:none;margin:0 14px 12px;background:linear-gradient(135deg,var(--hi),color-mix(in srgb,var(--hi) 65%,#000));color:#fff;border-radius:13px;padding:13px;text-align:center;font-weight:800;font-size:.9rem}
-/* Mini retest */
-.mini-overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:90;overflow-y:auto;padding:20px 14px}
-.mini-overlay.open{display:block}
-.mini-card{background:#1e293b;border-radius:16px;padding:16px;margin-bottom:12px}
-.mini-hdr{color:var(--hi);font-size:.8rem;font-weight:700;margin-bottom:6px}
-.mini-q-text{color:#f1f5f9;font-size:.88rem;font-weight:700;margin-bottom:10px;line-height:1.5}
-.mini-opts{display:flex;flex-direction:column;gap:6px}
-.mini-opt{padding:9px 12px;border-radius:9px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#f1f5f9;font-size:.83rem;font-weight:600;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif}
-.mini-opt.msc{background:rgba(34,197,94,.2);border-color:#22c55e;color:#86efac}
-.mini-opt.msw{background:rgba(239,68,68,.2);border-color:#ef4444;color:#fca5a5}
-.mini-opt.mdis{pointer-events:none}
-.mini-submit{width:100%;padding:13px;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:11px;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;display:none}
-/* Dict */
-.dict-section{display:none;padding:14px}
-.dict-card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-top:4px solid #C77800}
-.dword{font-size:1.35rem;font-weight:900;color:#C77800;margin-bottom:4px}
-.ddef{font-size:.85rem;color:#475569;margin-bottom:8px;line-height:1.5}
-.deg{font-size:.83rem;color:#64748b;font-style:italic;border-left:3px solid #C77800;padding-left:10px;margin-bottom:12px;line-height:1.5}
-.echo-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--hi),color-mix(in srgb,var(--hi) 70%,#000));color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:8px}
-.rev-block{background:#fff8e1;border:2px solid #f59e0b;border-radius:12px;padding:12px;margin-top:10px;display:none}
-.rev-word{font-size:1.05rem;font-weight:800;color:#92400e;margin-bottom:3px}
-.rev-def{font-size:.8rem;color:#78350f;margin-bottom:8px;line-height:1.4}
-/* Overlay */
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:72px}
+body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
+/* header */
+.hdr{background:var(--hdr);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.hdr-l h1{color:#fff;font-size:.95rem;font-weight:900;line-height:1.2} .hdr-l p{color:rgba(255,255,255,.75);font-size:.74rem}
+.hdr-r{display:flex;gap:8px;align-items:center}
+.hdr-char{font-size:1.6rem}
+.voice-pill{font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:20px;background:rgba(255,255,255,.2);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.3);white-space:nowrap}
+.voice-pill.natural{background:rgba(34,197,94,.3);color:#fff;border-color:rgba(34,197,94,.5)}
+.settings-btn{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:5px 10px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+/* rules card */
+.rw{padding:10px 14px 0}
+.rules-card{background:#1e293b;border:2px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden}
+.rules-hdr{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rules-title{color:#f1f5f9;font-size:.85rem;font-weight:900} .rules-arrow{color:#64748b;font-size:.75rem}
+.rules-body{padding:8px 14px 4px}
+.tip-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;color:#94a3b8;font-size:.82rem;line-height:1.45}
+.tip-code{background:rgba(249,115,22,.2);color:#fb923c;border-radius:6px;padding:1px 7px;font-weight:800;font-size:.72rem;flex-shrink:0;margin-top:1px}
+.rules-confirm{width:100%;margin-top:10px;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:10px;padding:11px;font-weight:900;font-family:'Nunito',sans-serif;font-size:.88rem;cursor:pointer;margin-bottom:8px}
+/* sections */
+.ex-wrap{padding:10px 14px;display:flex;flex-direction:column;gap:12px}
+.section-card{border-radius:14px;padding:14px}
+.section-label{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.8);margin-bottom:10px}
+.vocab-card{background:var(--vocab)} .english-card{background:#0077B6} .maths-card{background:#2D9E2D} .writing-card{background:#166534}
+/* questions */
+.qc{background:rgba(255,255,255,.13);border-radius:10px;padding:11px;margin-bottom:9px;border-left:4px solid transparent}
+.qc.right{border-left-color:#22c55e} .qc.wrong{border-left-color:#ef4444}
+.q-text{color:#fff;font-size:.88rem;font-weight:700;line-height:1.5;margin-bottom:9px} .q-star{color:#fbbf24}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.opt{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:7px 9px;color:#fff;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;text-align:left;display:flex;gap:5px;align-items:flex-start;min-height:44px;-webkit-tap-highlight-color:transparent}
+.opt:active{transform:scale(.97)}
+.opt.sc{background:#22c55e!important;color:#fff!important;border-color:#22c55e!important}
+.opt.sw{background:#ef4444!important;color:#fff!important;border-color:#ef4444!important}
+.opt.rc2{outline:3px solid #22c55e} .opt.dis{pointer-events:none;opacity:.55}
+.ok{font-size:.68rem;background:rgba(0,0,0,.2);border-radius:4px;padding:1px 5px;flex-shrink:0;margin-top:1px}
+/* writing */
+.writing-prompt{background:rgba(255,255,255,.12);border-radius:10px;padding:11px;margin-bottom:9px}
+.mission-id{font-size:.7rem;font-weight:800;color:rgba(255,255,255,.65);margin-bottom:3px}
+.mission-title{font-size:.95rem;font-weight:900;color:#fff;margin-bottom:5px}
+.mission-codes{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.code-tag{background:rgba(255,255,255,.2);color:#fff;border-radius:6px;padding:2px 7px;font-size:.7rem;font-weight:800}
+.mission-prompt{font-size:.84rem;color:rgba(255,255,255,.9);line-height:1.5}
+.writing-ta{width:100%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;padding:9px;resize:none;min-height:90px;margin-top:8px;font-size:.86rem}
+.writing-ta::placeholder{color:rgba(255,255,255,.4)}
+.writing-send-btn{width:100%;margin-top:8px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;padding:10px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;font-size:.88rem}
+.writing-fb{background:rgba(255,255,255,.12);border-radius:10px;padding:10px;margin-top:8px;color:#fff;font-size:.84rem;line-height:1.5;display:none}
+/* submit bar */
+.sub-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid rgba(0,0,0,.1);padding:9px 14px;display:flex;align-items:center;gap:10px;z-index:50}
+.pts-display{font-size:.8rem;font-weight:800;color:var(--acc);flex:1}
+.sub-btn{background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:10px;padding:10px 22px;font-weight:900;font-family:'Nunito',sans-serif;font-size:.9rem;cursor:pointer}
+.sub-btn:disabled{opacity:.4;cursor:default}
+/* remediation */
+.rem-banner{background:#1e293b;border-top:3px solid var(--acc);padding:10px 14px;text-align:center}
+.rem-banner p{color:#f1f5f9;font-size:.86rem;font-weight:700}
+/* overlay — full screen v3.14 */
 .overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:100;flex-direction:column}
 .overlay.open{display:flex}
-.qstrip{background:rgba(255,255,255,.05);padding:11px 14px;font-size:.8rem;color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,.07);line-height:1.5}
-.wpill{display:inline-block;background:#ef4444;color:#fff;border-radius:20px;padding:2px 9px;font-size:.72rem;font-weight:700;margin-left:5px}
-.crow{display:flex;align-items:center;gap:9px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
-.cemoji{font-size:2.1rem}.cname{font-size:.88rem;font-weight:800;color:#f1f5f9}
-.mbadge{font-size:.68rem;background:var(--lite);color:var(--hi);border:1px solid var(--bd);border-radius:20px;padding:2px 8px;font-weight:700}
-.tdots{display:flex;gap:4px;margin-left:auto}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)}.dot.d{background:var(--hi)}
-.skip-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#94a3b8;border-radius:8px;padding:4px 9px;font-size:.72rem;cursor:pointer;font-family:'Nunito',sans-serif}
-.chat{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px}
-.bub{max-width:83%;padding:10px 13px;border-radius:14px;font-size:.86rem;line-height:1.55}
-.bub.e{align-self:flex-start;background:var(--lite);border:1px solid var(--bd);color:#f1f5f9}
-.bub.c{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700;font-style:italic}
-.typing{display:flex;gap:5px;align-items:center;padding:8px 12px}
-.typing span{width:8px;height:8px;border-radius:50%;background:var(--hi);animation:bop .8s infinite}
-.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
-@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
-.tbot{padding:10px 14px;border-top:1px solid rgba(255,255,255,.07)}
-.git-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--hi),color-mix(in srgb,var(--hi) 72%,#000));color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:7px}
-.sarea{display:flex;gap:7px;margin-bottom:5px}
-.stxt{flex:1;padding:8px 10px;border-radius:9px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.83rem;resize:none}
-.ssend{padding:8px 13px;background:var(--hi);color:#fff;border:none;border-radius:9px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.82rem;white-space:nowrap}
-.mrow{display:flex;align-items:center;gap:7px}
-.mstat{font-size:.72rem;color:#94a3b8;flex:1}
-.mbtn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#f1f5f9;border-radius:8px;padding:6px 11px;font-size:.78rem;cursor:pointer;font-family:'Nunito',sans-serif}
-.mbtn.listening{background:rgba(239,68,68,.18);border-color:#ef4444;color:#fca5a5}
-.setup{display:none;position:fixed;inset:0;background:rgba(15,15,30,.98);z-index:200;align-items:center;justify-content:center;flex-direction:column;padding:24px}
-.setup.show{display:flex}
-.scard{background:#1e293b;border-radius:18px;padding:22px;max-width:340px;width:100%;text-align:center}
-.scard h2{color:#f1f5f9;font-size:1rem;margin-bottom:6px}
-.scard p{color:#94a3b8;font-size:.8rem;margin-bottom:14px;line-height:1.5}
-.kinput{width:100%;padding:9px;border-radius:9px;border:1.5px solid #334155;background:#0f172a;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.83rem;margin-bottom:8px}
-.ksave{width:100%;padding:11px;background:linear-gradient(135deg,#FF6B35,#E85D04);color:#fff;border:none;border-radius:9px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
-.kerr{color:#f87171;font-size:.78rem;margin-top:5px;display:none}
+.ov-header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.ov-char{font-size:1.8rem} .ov-title{flex:1;color:#f1f5f9;font-size:.86rem;font-weight:800}
+.skip-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:5px 11px;font-size:.76rem;cursor:pointer;font-family:'Nunito',sans-serif}
+.dots{display:flex;gap:4px;padding:8px 14px 0;flex-shrink:0}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)} .dot.used{background:rgba(249,115,22,.7)}
+.ov-bubbles{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
+.bub{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.88rem;line-height:1.6}
+.bub.echo{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:#f1f5f9}
+.bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
+.typing{display:flex;gap:5px;align-items:center;padding:10px 12px;background:rgba(255,255,255,.08);border-radius:12px;align-self:flex-start}
+.typing span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:bop .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
+@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.ov-input{padding:10px 14px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;background:rgba(0,0,0,.25)}
+.mstat{font-size:.73rem;color:#64748b;margin-bottom:5px}
+.speech-ta{width:100%;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.14);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.86rem;padding:8px 11px;resize:none;min-height:65px}
+.speech-ta::placeholder{color:#475569}
+.ov-btns{display:flex;gap:7px;margin-top:7px}
+.mic-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:8px 13px;font-size:.95rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mic-btn.listening{background:rgba(239,68,68,.3);border-color:#ef4444;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+.send-btn{flex:1;background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#86efac;border-radius:8px;padding:8px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
+.gotit-btn{background:rgba(249,115,22,.2);border:1px solid rgba(249,115,22,.35);color:#fb923c;border-radius:8px;padding:8px 13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
+/* result */
+.result-screen{padding:28px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.res-emoji{font-size:3.2rem} .res-score{font-size:1.8rem;font-weight:900;color:#1e293b}
+.res-msg{font-size:.92rem;color:#475569;max-width:280px;line-height:1.6}
+.res-pts{font-size:.95rem;font-weight:800;color:var(--acc)}
+/* dictionary */
+.dict-wrap{background:#C77800;border-radius:14px;padding:14px;margin:10px 0;width:100%}
+.dict-word{font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:3px}
+.dict-def{font-size:.86rem;color:rgba(255,255,255,.9);margin-bottom:5px;line-height:1.5}
+.dict-eg{font-size:.8rem;color:rgba(255,255,255,.75);font-style:italic;margin-bottom:10px}
+.dict-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:9px 14px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;width:100%;display:block;text-align:center;margin-bottom:7px}
+.rev-block{background:rgba(0,0,0,.15);border-radius:10px;padding:10px 11px;margin-top:6px}
+.rev-word{font-size:.84rem;font-weight:800;color:#fff;margin-bottom:2px} .rev-def{font-size:.79rem;color:rgba(255,255,255,.8)}
+/* settings overlay */
+.key-card{background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:22px;max-width:360px;width:100%}
+.key-title{color:#f1f5f9;font-size:.95rem;font-weight:900;margin-bottom:14px}
+.key-label{display:block;color:#94a3b8;font-size:.78rem;font-weight:700;margin-bottom:5px}
+.key-req{color:#fb923c;font-weight:400} .key-opt{color:#475569;font-weight:400}
+.key-input{width:100%;padding:9px 11px;background:#1e293b;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#f1f5f9;font-size:.83rem;font-family:'Nunito',sans-serif;margin-bottom:12px}
+.key-note{color:#475569;font-size:.73rem;margin-bottom:14px;line-height:1.4}
+.key-btns{display:flex;gap:8px}
+.key-save{flex:1;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:8px;padding:10px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif}
+.key-close{background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;cursor:pointer;font-family:'Nunito',sans-serif}
 </style>
 </head>
 <body>
-<div class="setup" id="setup"><div class="scard"><h2>Echo needs your key</h2><p>Ask a parent to enter the Anthropic API key once.</p><input class="kinput" id="kinput" type="password" placeholder="sk-ant-..."><button class="ksave" onclick="saveKey()">Save and start</button><div class="kerr" id="kerr">That key looks wrong. Try again.</div></div></div>
-<div class="overlay" id="overlay">
-  <div class="qstrip" id="qstrip"></div>
-  <div class="crow"><span class="cemoji" id="cemoji"></span><span class="cname" id="cname"></span><span class="mbadge" id="mbadge">📖 Make a sentence!</span><div class="tdots" id="tdots"></div><button class="skip-btn" onclick="parentSkip()">✓ Skip</button></div>
-  <div class="chat" id="chat"></div>
-  <div class="tbot"><button class="git-btn" onclick="gotIt()">Got it! ✓</button><div class="sarea"><textarea class="stxt" id="speech-text" placeholder="Speak or type your answer here…" rows="2"></textarea><button class="ssend" onclick="submitSpeech()">Send ➤</button></div><div class="mrow"><div class="mstat" id="mstat">Tap 🎤 Speak, wait 2 secs…</div><button class="mbtn" id="mbtn" onclick="toggleMic()">🎤 Speak</button></div></div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-l"><h1 id="hdr-title">CL Exercises</h1><p id="hdr-sub">Week 0</p></div>
+  <div class="hdr-r">
+    <span id="voice-pill" class="voice-pill">🔊 Device</span>
+    <span id="hdr-char" class="hdr-char">?</span>
+    <button class="settings-btn" onclick="openSettings()">⚙</button>
+  </div>
 </div>
-<div class="mini-overlay" id="mini-overlay"></div>
-<div class="hdr"><div><h1>Monday — Full Session</h1><p>Week 21 · CL · Vocab + English + Maths + Writing</p></div><div class="hdr-r"><div class="pts" id="pts-badge">… pts</div><span class="char-av" id="char-av">🐍</span><button class="key-btn" onclick="clearKey()">⚙ Key</button></div></div>
+
+<!-- RULES CARD -->
 <div class="rw">
-  <div class="rc">
-    <div class="rh" onclick="toggleRules()"><h2>⚡ TODAY'S WEAPONS</h2><span id="rh-arrow">▼ tap to read</span></div>
-    <div class="rb" id="rb">
-      <div class="rtip"><strong>E5.4 Author's Purpose:</strong> Ask — WHY did the writer choose THIS exact word? What effect were they going for? Always look for the reason behind the choice.</div>
-      <div class="rtip"><strong>M2.6 Decimal to Percentage:</strong> Multiply by 100. So 0.35 becomes 35 percent, and 0.2 becomes 20 percent. That's all it is!</div>
-      <button class="rgo" onclick="markRulesRead()">I've read this — let's go! 🚀</button>
+  <div class="rules-card">
+    <div class="rules-hdr" onclick="toggleRules()">
+      <span class="rules-title" id="rh-title">⚡ TODAY'S WEAPONS — tap to read</span>
+      <span class="rules-arrow" id="rh-arrow">▼</span>
+    </div>
+    <div class="rules-body" id="rb" style="display:none">
+      <div id="rules-tips"></div>
+      <button class="rules-confirm" onclick="markRulesRead()">I'm ready — let's go! 🚀</button>
     </div>
   </div>
 </div>
-<div class="remed-banner" id="remed-banner"></div>
+
+<!-- MAIN CONTENT (locked until rules read — v3.14) -->
 <div id="main-content" style="pointer-events:none;opacity:.45">
-  <!-- Vocab -->
-  <div class="sec-card sec-vocab"><div class="sec-hdr"><h3>📖 Vocab Warm-up</h3><span class="sec-code">4 questions · E4</span></div><div class="sec-body" id="qs-vocab"></div></div>
-  <!-- English -->
-  <div class="sec-card sec-english"><div class="sec-hdr"><h3>✍️ English</h3><span class="sec-code">5 questions · E5</span></div><div class="sec-body" id="qs-english"></div></div>
-  <!-- Maths -->
-  <div class="sec-card sec-maths"><div class="sec-hdr"><h3>🔢 Maths</h3><span class="sec-code">5 questions · M</span></div><div class="sec-body" id="qs-maths"></div></div>
-  <!-- Writing M-A -->
-  <div class="writing-sec">
-    <div class="writing-hdr">
-      <div class="wtag">🚀 MISSION M-A — THE ACTION SCENE</div>
-      <div class="wtitle">Open Response Writing</div>
-      <div class="wcodes">W1.5 Camera Zoom · W3.1 Punch Sentence · W4.1 Action Verbs</div>
-      <div class="wgoal">Goal: zoom in on one second, use a short punch sentence, upgrade every verb.</div>
-    </div>
-    <div class="writing-body">
-      <div class="wprompt">"The alarm started screaming. Write the next three sentences — make the reader's heart pound."</div>
-      <div class="w-chat" id="w-chat"></div>
-      <div class="w-input-area" id="w-input-area">
-        <textarea class="w-textarea" id="w-textarea" placeholder="Write your three sentences here…" rows="3"></textarea>
-        <button class="w-send" onclick="sendWriting()">Send to Echo ➤</button>
-      </div>
-      <div class="w-attempts" id="w-attempts">Attempt 1 of 3</div>
-      <div class="w-done-badge" id="w-done-badge">✅ +1 pt — brilliant writing! Mission M-A complete.</div>
+  <div id="ex-wrap" class="ex-wrap">
+    <div id="vocab-section"></div>
+    <div id="english-section"></div>
+    <div id="maths-section"></div>
+    <div id="writing-section" style="display:none"></div>
+  </div>
+</div>
+
+<!-- DICTIONARY — Section 5, always visible -->
+<div id="dict-section" style="padding:0 14px 14px"></div>
+
+<!-- SUBMIT BAR -->
+<div id="sub-bar" class="sub-bar">
+  <div id="pts-display" class="pts-display">⭐ 0 pts — 0/16 answered</div>
+  <button id="sub-btn" class="sub-btn" onclick="handleSubmit()" disabled>Submit ✓</button>
+</div>
+
+<!-- REMEDIATION BANNER -->
+<div id="remed-banner" style="display:none" class="rem-banner"><p id="rem-msg"></p></div>
+
+<!-- ECHO OVERLAY (full screen — v3.14) -->
+<div id="overlay" class="overlay">
+  <div class="ov-header">
+    <span id="ov-char" class="ov-char">?</span>
+    <div id="ov-title" class="ov-title">Echo is thinking…</div>
+    <button class="skip-btn" onclick="parentSkip()">Skip ⏭</button>
+  </div>
+  <div id="dots" class="dots"></div>
+  <div id="ov-bubbles" class="ov-bubbles"></div>
+  <div class="ov-input">
+    <div id="mstat" class="mstat">Tap 🎤 to speak, or type below</div>
+    <textarea id="speech-text" class="speech-ta" placeholder="Type or speak your answer…" rows="3"></textarea>
+    <div class="ov-btns">
+      <button id="mbtn" class="mic-btn" onclick="toggleMic()">🎤</button>
+      <button class="send-btn" onclick="submitSpeech()">Send ➤</button>
+      <button class="gotit-btn" onclick="gotIt()">Got it ✓</button>
     </div>
   </div>
 </div>
-<div class="sub-bar"><button class="sub-btn" id="sub-btn" onclick="handleSubmit()" disabled>Submit my answers ✓</button></div>
-<div class="result" id="result"><div class="res-emoji" id="res-emoji">🌟</div><div class="res-score" id="res-score"></div><div class="res-msg" id="res-msg"></div><div class="vid-block" id="vid-block" style="display:none"><h4 id="vid-intro"></h4><div id="vid-links"></div></div></div>
-<div class="dict-section" id="dict-section">
-  <div class="dict-card">
-    <div class="dword">resilient</div>
-    <div class="ddef">Adjective — able to recover quickly from difficult situations; bouncing back from setbacks.</div>
-    <div class="deg">"Despite everything that went wrong, she remained resilient and kept going every single day."</div>
-    <button class="echo-btn" id="echo-dict-btn" onclick="openDictOverlay()">Ask Echo about this word 🐍</button>
-    <div id="rev-block" class="rev-block"></div>
+
+<!-- RESULT SCREEN -->
+<div id="result" style="display:none" class="result-screen">
+  <div id="res-emoji" class="res-emoji"></div>
+  <div id="res-score" class="res-score"></div>
+  <div id="res-msg" class="res-msg"></div>
+  <div id="res-pts" class="res-pts"></div>
+</div>
+
+<!-- SETTINGS OVERLAY -->
+<div id="key-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;align-items:center;justify-content:center;padding:20px">
+  <div class="key-card">
+    <div class="key-title">⚙ Settings</div>
+    <label class="key-label">Claude API Key <span class="key-req">(required)</span></label>
+    <input id="api-key-input" type="password" class="key-input" placeholder="sk-ant-…">
+    <label class="key-label">OpenAI Key — natural voice <span class="key-opt">(optional)</span></label>
+    <input id="oai-key-input" type="password" class="key-input" placeholder="sk-… leave blank for device voice">
+    <p class="key-note">Echo works fully with just the Claude key. OpenAI adds natural voice — enter once, works on all pages.</p>
+    <div class="key-btns">
+      <button onclick="saveKey()" class="key-save">Save</button>
+      <button onclick="document.getElementById('key-overlay').style.display='none'" class="key-close">Close</button>
+    </div>
   </div>
 </div>
+
 <script>
-const CHILD='CL',DAY='Monday',WEEK=21;
-const WEBHOOK='https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-const PTS_KEY='pts_CL',BASE_PTS=630,TOTAL_QS=14,PASS_SCORE=12;
-const DICT_WORD='resilient',DICT_DEF='Adjective — able to recover quickly from difficult situations.',DICT_EG='Despite everything that went wrong, she remained resilient and kept going every single day.';
-
-const QUESTIONS={
-  // VOCAB (0-3)
-  0:{section:'Vocab',code:'E4.3',correct:'B',star:false,vocabWord:'trudged',
-    text:'Which word means to walk slowly and heavily, as if exhausted?',
-    opts:{A:'sprinted',B:'trudged',C:'darted',D:'glided'}},
-  1:{section:'Vocab',code:'E4.6',correct:'C',star:false,vocabWord:'melancholy',
-    text:'What does the word "melancholy" mean?',
-    opts:{A:'Very happy and cheerful',B:'Slightly unwell',C:'Feeling deep sadness and thoughtfulness',D:'Angry and restless'}},
-  2:{section:'Vocab',code:'E4.4',correct:'C',star:false,vocabWord:'composed',
-    text:'Which word describes someone who stays calm and unworried even when things go wrong?',
-    opts:{A:'frantic',B:'gloomy',C:'composed',D:'bewildered'}},
-  3:{section:'Vocab',code:'E4.1',correct:'D',star:true,vocabWord:'tenacious',
-    text:'Which phrase is closest in meaning to "tenacious"?',
-    opts:{A:'easily frightened',B:'extremely talented',C:'clearly transparent',D:'determined and refusing to give up'}},
-  // ENGLISH (4-8)
-  4:{section:'English',code:'E5.4',correct:'B',star:false,
-    text:'An author writes: "The old fence leaned against the wind, as if tired of standing." What technique is this and what effect does it create?',
-    opts:{A:'Simile — makes the fence sound colourful and bright',B:'Personification — makes the fence seem exhausted and creates a sense of neglect',C:'Hyperbole — makes the fence sound impossibly ancient',D:'Alliteration — makes the sentence pleasant to read'}},
-  5:{section:'English',code:'E5.2',correct:'C',star:false,
-    text:'A story says: "She did not look up when he walked in." What does this tell us about how she feels?',
-    opts:{A:'She was asleep',B:'She was too busy reading',C:'She was upset with him or deliberately avoiding him',D:'She had not heard him come in'}},
-  6:{section:'English',code:'E5.1',correct:'B',star:false,
-    text:'An explorer left London in 1847. He was away for exactly four years. In what year did he return?',
-    opts:{A:'1850',B:'1851',C:'1843',D:'1852'}},
-  7:{section:'English',code:'E5.8',correct:'C',star:false,
-    text:'Which mood does this sentence create? "The empty playground swings creaked in the cold wind, and somewhere a gate banged twice — then silence."',
-    opts:{A:'Cheerful and bright',B:'Angry and frustrated',C:'Eerie and unsettling',D:'Funny and warm'}},
-  8:{section:'English',code:'E5.9',correct:'C',star:false,
-    text:'A writer ends a chapter with: "He stepped through the door. It locked behind him." What effect does this create?',
-    opts:{A:'A happy ending that satisfies the reader',B:'A detailed description of a door',C:'Suspense — the reader worries he is trapped and cannot get out',D:'A gentle hint that more characters will arrive'}},
-  // MATHS (9-13)
-  9:{section:'Maths',code:'M2.6',correct:'C',star:false,mathConcept:'decimal to percentage',
-    text:'Convert 0.35 to a percentage.',
-    opts:{A:'3.5 percent',B:'350 percent',C:'35 percent',D:'0.35 percent'}},
-  10:{section:'Maths',code:'M2.6',correct:'D',star:false,mathConcept:'decimal to percentage',
-    text:'A sale sign shows a discount of 0.2. What percentage discount is this?',
-    opts:{A:'2 percent',B:'0.2 percent',C:'200 percent',D:'20 percent'}},
-  11:{section:'Maths',code:'M1.4',correct:'B',star:false,mathConcept:'long multiplication',
-    text:'What is 34 multiplied by 16?',
-    opts:{A:'504',B:'544',C:'524',D:'516'}},
-  12:{section:'Maths',code:'M1.4',correct:'B',star:false,mathConcept:'long multiplication',
-    text:'A school has 27 classes with 24 pupils in each class. How many pupils are there altogether?',
-    opts:{A:'638',B:'648',C:'658',D:'628'}},
-  13:{section:'Maths',code:'M2.7',correct:'B',star:false,mathConcept:'percentage of quantity',
-    text:'What is 25 percent of 360?',
-    opts:{A:'80',B:'90',C:'75',D:'70'}},
+/* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
+const CHILD    = 'CL';
+const DAY      = 'Monday';
+const WEEK     = 21;
+const PTS_KEY  = 'pts_CL';
+const BASE_PTS = 950;
+const DICT_WORD = 'astute';
+const DICT_DEF  = 'Adjective — having a clever ability to notice and understand things quickly.';
+const DICT_EG   = 'The astute detective spotted the clue that everyone else had completely missed.';
+const RULES_TIPS = [
+  'E5.2: Inference — find the exact line in the passage that supports your answer before you choose.',
+  'M2.1: Adding fractions? Get a common denominator first — never add the tops and bottoms separately.',
+  'E5.4: Purpose questions — ask yourself why the writer chose THAT word, not just what it means.',
+];
+const MISSION_PACK = {
+  id:'M-A', title:'The Action Scene', codes:['W1.5','W3.1','W4.1'],
+  prompt:'Write 3 to 5 sentences of an action scene. Use body language to show emotion, a simile or metaphor to make it vivid, and end with one short punch sentence.',
 };
+const QUESTIONS = {
+  0:{ section:'Vocab', code:'E4.1', correct:'B', star:false,
+      text:'What does "abundant" mean?',
+      opts:{A:'Very rare and hard to find',B:'Present in very large quantities',C:'Extremely dangerous',D:'Moving very quickly'},
+      vocabWord:'abundant' },
+  1:{ section:'Vocab', code:'E4.2', correct:'C', star:false,
+      text:'Which word means clever in a slightly sneaky or deceptive way?',
+      opts:{A:'Timid',B:'Generous',C:'Cunning',D:'Reckless'},
+      vocabWord:'cunning' },
+  2:{ section:'Vocab', code:'E4.3', correct:'A', star:false,
+      text:'What does "tranquil" mean?',
+      opts:{A:'Calm and free from disturbance',B:'Extremely noisy and busy',C:'Full of anger',D:'Moving in a hurried rush'},
+      vocabWord:'tranquil' },
+  3:{ section:'Vocab', code:'E4.4', correct:'D', star:true,
+      text:'★ STAR — The spy gave a furtive glance over his shoulder. What does "furtive" mean?',
+      opts:{A:'Very proud and confident',B:'Slow and careless',C:'Loud and obvious',D:'Trying to avoid being noticed; secretive'},
+      vocabWord:'furtive' },
+  4:{ section:'English', code:'E5.2', correct:'B', star:false,
+      text:'A passage says: "She kept glancing at the clock and her foot would not stop tapping." What can the reader infer?',
+      opts:{A:'She is bored with nothing to do',B:'She is anxious and waiting for something important',C:'She is listening carefully to music',D:'She is angry at someone in the room'} },
+  5:{ section:'English', code:'E3.1', correct:'A', star:false,
+      text:'Which sentence correctly places a comma after an introductory phrase?',
+      opts:{A:'By the time the storm arrived, the tent had collapsed.',B:'By the time, the storm arrived the tent had collapsed.',C:'By the time the storm, arrived the tent had collapsed.',D:'By the time the storm arrived the tent, had collapsed.'} },
+  6:{ section:'English', code:'E1.7', correct:'C', star:false,
+      text:'Which spelling is correct?',
+      opts:{A:'Accomodate',B:'Acommodate',C:'Accommodate',D:'Acomodate'} },
+  7:{ section:'English', code:'E5.4', correct:'D', star:false,
+      text:'A writer describes a crowd as "a sea of faces". What effect does this create?',
+      opts:{A:'It tells the reader the crowd is near the ocean',B:'It suggests the crowd is calm and peaceful',C:'It shows the crowd is noisy and dangerous',D:'It creates an image of something vast and shifting, hard to see across'} },
+  8:{ section:'English', code:'E2.7', correct:'A', star:false,
+      text:'Which sentence contains a subordinate clause?',
+      opts:{A:'Although it was raining, they continued the match.',B:'The rain fell and the match continued.',C:'They continued the match in the rain.',D:'It rained heavily that afternoon.'} },
+  9:{ section:'English', code:'E3.2', correct:'C', star:false,
+      text:'Which sentence uses an apostrophe correctly to show possession?',
+      opts:{A:"The explorers map was old and torn.",B:"The explorers' map was old and torn. (used for one explorer)",C:"The explorer's map was old and torn.",D:"The explorers map's was old and torn."} },
+  10:{ section:'Maths', code:'M2.1', correct:'D', star:false,
+       text:'What is two fifths plus one third?',
+       opts:{A:'Three eighths',B:'Two fifteenths',C:'Ten fifteenths',D:'Eleven fifteenths'}, mathConcept:'fractions' },
+  11:{ section:'Maths', code:'M2.1', correct:'B', star:false,
+       text:'What is five sixths minus one quarter?',
+       opts:{A:'Four twelfths',B:'Seven twelfths',C:'Nine twelfths',D:'Four sixths'}, mathConcept:'fractions' },
+  12:{ section:'Maths', code:'M1.7', correct:'A', star:false,
+       text:'Round 8 point 251 to one decimal place.',
+       opts:{A:'8 point 3',B:'8 point 2',C:'8 point 25',D:'8 point 0'}, mathConcept:'rounding' },
+  13:{ section:'Maths', code:'M3.1', correct:'C', star:false,
+       text:'Share 48 in the ratio 3 to 5. What is the larger share?',
+       opts:{A:'18',B:'24',C:'30',D:'36'}, mathConcept:'ratio' },
+  14:{ section:'Maths', code:'M5.2', correct:'B', star:false,
+       text:'What is the area of a triangle with base 12 centimetres and height 8 centimetres?',
+       opts:{A:'40 square centimetres',B:'48 square centimetres',C:'96 square centimetres',D:'20 square centimetres'}, mathConcept:'area' },
+  15:{ section:'Maths', code:'M6.1', correct:'D', star:false,
+       text:'A sequence goes: 3, 7, 11, 15 — what are the next two terms?',
+       opts:{A:'18 and 21',B:'20 and 24',C:'18 and 22',D:'19 and 23'}, mathConcept:'sequences' },
+};
+/* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
-const CHARS={
+// ─── PERMANENT ZONE — do not edit below ──────────────────────────────────────
+
+const TOTAL_QS   = 16;
+const PASS_SCORE = 13;
+const WEBHOOK    = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
+const WRITING_DAYS  = ['Monday','Wednesday','Friday'];
+const RULE_STYLES   = {Monday:'weapons',Tuesday:'watchout',Wednesday:'protips',Thursday:'memory',Friday:'weapons'};
+const RULE_HEADERS  = {weapons:"⚡ TODAY'S WEAPONS",watchout:'⚠️ WATCH OUT FOR THESE',protips:'🏆 PRO TIPS FOR TODAY',memory:'🧠 QUICK MEMORY TRICKS'};
+const CHILD_AGE     = CHILD==='IL' ? 7 : 9;
+const MAX_WORDS     = CHILD==='IL' ? 70 : 90;
+
+const CHARS = {
   snake:{key:'snake',name:'Ssssam',emoji:'🐍',gotIt:"Sssuper! That's ssso good — onto the next one!",
-    pers:'You are Ssssam the Snake. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.',
-    pers_il:'You are Ssssam the Snake. Warm, encouraging. Simple words only. Occasional sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only. Max 70 words.'},
-  shark:{key:'shark',name:'Finn',emoji:'🦈',gotIt:"Fin-tastic! Finn is doing a victory lap — next question!",
-    pers:'You are Finn the Shark. Energetic and celebratory. Say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.',
-    pers_il:'You are Finn the Shark. Energetic, celebratory. Say Splashing great, Fin-tastic. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only. Max 70 words.'},
+    pers:`You are Ssssam the Snake, an 11+ tutor for a ${CHILD_AGE}-year-old. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
+  shark:{key:'shark',name:'Finn',emoji:'🦈',gotIt:'Fin-tastic! Finn is doing a victory lap — next question!',
+    pers:`You are Finn the Shark, an 11+ tutor for a ${CHILD_AGE}-year-old. Energetic and celebratory. Say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
 };
-let CHAR=CHARS.snake;
-let answers={},firstAttempt=null,overlayOpen=false,currentQIdx=-1,currentTurn=0,convHistory=[],tutorTurns={},strugglingQs=new Set(),rulesRead=false;
-let remWrong=[],remIdx=0,remMode=false,remDone=[],miniAnswers={};
-let ANTHROPIC_KEY='',_cachedVoice=null,recognition=null,micActive=false;
-let dictConvHistory=[],dictTurn=0,writingAttempt=0,writingDone=false;
 
+let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={};
+let rulesRead=false, overlayOpen=false, micActive=false;
+let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1;
+let recognition=null, CHAR, writingDone=false;
+let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
+let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
+let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
+let _cachedVoice=null, _audioWarmed=false;
+
+// Day-lock character
+(()=>{const td=new Date().toISOString().slice(0,10);let ck=localStorage.getItem('char_date')===td?localStorage.getItem('char_key'):null;if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',td);}CHAR=CHARS[ck];document.body.classList.add(ck);})();
+
+// ── TTS ───────────────────────────────────────────────────────────────────────
+function cleanForSpeech(t){return t.replace(/_{3,}/g,'blank').replace(/_{1,2}/g,'').replace(/\*\*/g,'').replace(/\*/g,'').replace(/#{1,6}\s/g,'').replace(/\b(\d+)\s*%/g,'$1 percent').replace(/¾/g,'three quarters').replace(/½/g,'half').replace(/¼/g,'one quarter').trim();}
 const _PREF=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha'];
 window.speechSynthesis.onvoiceschanged=()=>{const vs=window.speechSynthesis.getVoices();for(const n of _PREF){const v=vs.find(x=>x.name.startsWith(n)&&x.lang.startsWith('en'));if(v){_cachedVoice=v;break;}}if(!_cachedVoice)_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||null;};
 function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
-function speak(text){if(!text)return;try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const u=new SpeechSynthesisUtterance(text);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?0.92:0.98;u.pitch=CHAR.key==='snake'?0.95:1.02;u.volume=1;u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};window.speechSynthesis.speak(u);},120);}
+function speakWebSpeech(text){try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const u=new SpeechSynthesisUtterance(text);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;u.volume=1;u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};window.speechSynthesis.speak(u);},120);}
+async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
+async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
+function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
+document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});
+document.addEventListener('click',_warmAudio,{once:true});
+function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPENAI_KEY){p.textContent='🔊 Natural';p.className='voice-pill natural';}else{p.textContent='🔊 Device';p.className='voice-pill';}}
 
-function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;document.getElementById('speech-text').focus();};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — type below':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
-function submitSpeech(){const t=document.getElementById('speech-text').value.trim();if(!t)return;document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';if(currentQIdx===-1){sendDictReply(t);}else{sendTutorReply(t);}}
-
-function buildSystemPrompt(qi,turn){
-  const q=QUESTIONS[qi];const wrongKey=answers[qi]||'?';const wrongText=q.opts[wrongKey]||'?';const correctText=q.opts[q.correct];
-  const modeInstructions={
-    Vocab:`VOCAB MODE — word: "${q.vocabWord}". Give 2 vivid example sentences. Ask child to make their own sentence. Evaluate grammar AND word use. When child demonstrates understanding: BEAT 1 celebrate + request ONE expansion (name alias and pillar with spoken example). BEAT 2 child attempts. BEAT 3 give polished grammatically correct model + one enrichment + Tap Got it. Grammar must be right before Beat 3 fires.`,
-    English:`ENGLISH COMPREHENSION MODE. Question: "${q.text}". Options: A) ${q.opts.A} · B) ${q.opts.B} · C) ${q.opts.C} · D) ${q.opts.D}. Correct: ${q.correct}) "${correctText}". Child chose: "${wrongText}". Use ONE Socratic question. Do NOT reveal answer for first 2 turns. Guide with real-life analogies.`,
-    Maths:`MATHS MODE — concept: "${q.mathConcept}". Question: "${q.text}". Correct: ${q.correct}. Child chose: "${wrongText}". Teach with a DIFFERENT simpler example first. Give memory tip. Then re-ask: "${q.text}" — Options A B C D, what do you pick now? Child MUST attempt the original question again.`,
-  };
-  return `${CHAR.pers}
-
-ABSOLUTE RULE — FIRST REPLY:
-Open with ONE short funny joke about ${q.section==='Vocab'?`"${q.vocabWord}" or its meaning`:q.section==='Maths'?q.mathConcept:'comprehension or inference or reading'}.
-JOKE FORMATS (rotate, never same twice): Pun · What do you call · What did X say to Y · Did you hear · One-liner.
-Straight to teaching after. No greeting. No transition.
-Plain English. No emoji. No asterisks. No markdown. Max 90 words.
-NEVER say: wrong, incorrect, failed, mistake, silly, dumb.
-★ ADVANCE each turn — completely different angle every time.
-★ Respond to what child ACTUALLY said.
-[Turn ${turn+1} of up to ${q.section==='Maths'?7:6}]
-
-${modeInstructions[q.section]}`;
+// ── HARD STOP v3.15 — kills OpenAI Audio + AbortController + Web Speech ──────
+function hardStop(){
+  if(_oaiController){_oaiController.abort();_oaiController=null;}
+  if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}
+  if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}
+  try{window.speechSynthesis.pause();}catch(e){}
+  try{window.speechSynthesis.cancel();}catch(e){}
 }
 
-function buildWritingPrompt(attempt,childText){
-  return `${CHAR.pers}
+// ── MIC (v3.14) ───────────────────────────────────────────────────────────────
+function toggleMic(){
+  _iosWarm();
+  if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}
+  recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;
+  recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;};
+  recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};
+  recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};
+  micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';
+  recognition.start();
+  setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);
+}
+function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
-A 9-year-old is practising creative writing for 11+ Stage 2.
-MISSION: M-A — The Action Scene
-Target techniques:
-  W1.5 Camera Zoom (🚀 P1) — slow time to describe ONE second in huge detail
-  W3.1 The Punch Sentence (⚡ P3) — short sentence after long one for shock
-  W4.1 Action Verbs (💎 P4) — precise verbs, never walked/ran/went/said
-Prompt given: "The alarm started screaming. Write the next three sentences — make the reader's heart pound."
-Child's writing (attempt ${attempt} of 3): "${childText}"
+// ── OVERLAY ───────────────────────────────────────────────────────────────────
+function charTurns(sec){return CHILD==='IL'?5:(sec==='Vocab'||sec==='Dictionary'?6:7);}
+function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(QUESTIONS[qi]?.section),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
+function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;d.textContent=text;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function removeTyping(){document.getElementById('typing-ind')?.remove();}
 
-RULES: Max 90 words. Plain English. No markdown. No emoji.
-NEVER say: wrong, mistake, bad, poor.
-Celebrate any genuine attempt. Reference techniques by their ALIAS name.
-
-Attempt 1-2 — if strong: celebrate + name ONE technique used well + request ONE expansion from this bank (pick what fits best):
-  Body Language Secret · Camera Zoom · The Punch Sentence · Action Verbs · The Waiting Dots
-Attempt 1-2 — if thin: praise idea + "Can you add one more sentence that zooms into one single moment?"
-Attempt 3 (final): celebrate regardless. Model one ideal version. "Brilliant effort — you're done!"
-
-SIGNAL DONE with: "Brilliant!" "Yes!" "Well done!" "Spot on!" "Exactly!" (code checks for these)`;
+function openOverlay(qi){
+  _iosWarm();currentQIdx=qi;overlayOpen=true;
+  document.getElementById('ov-bubbles').innerHTML='';
+  document.getElementById('speech-text').value='';
+  document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';
+  document.getElementById('ov-title').textContent=`${CHAR.name} — ${QUESTIONS[qi].section}`;
+  renderDots(qi);
+  document.getElementById('ex-wrap').style.visibility='hidden';
+  document.getElementById('overlay').classList.add('open');
+  callAI(qi);
+}
+function closeOverlay(){
+  hardStop();overlayOpen=false;currentQIdx=-1;
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('ex-wrap').style.visibility='visible';
+  const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';
+}
+function gotIt(){
+  hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;
+  document.getElementById('speech-text').value='';
+  closeOverlay();
+  if(remMode)setTimeout(()=>advanceRemediation(),200);
+  setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);
+}
+function parentSkip(){
+  hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;
+  document.getElementById('speech-text').value='';
+  closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),100);
 }
 
-const SSNAKE=['Ssslick answer!','Ssspot on!','That\'s ssso right!','Sssuper!','Sssmashing it!'];
-const SSHARK=['Fin-tastic!','Splashing great!','Making waves!','Finn does a lap!','Right on!'];
-function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SSNAKE[Math.floor(Math.random()*5)]:SSHARK[Math.floor(Math.random()*5)]);}
-
-function renderSection(startIdx,count,containerId){
-  const c=document.getElementById(containerId);c.innerHTML='';
-  for(let i=startIdx;i<startIdx+count;i++){
-    const q=QUESTIONS[i];const div=document.createElement('div');div.className='qcard';div.id=`qc-${i}`;
-    const badge=q.section==='Vocab'?`📖 ${q.vocabWord||''}`:q.section==='Maths'?`🔢 ${q.mathConcept||''}`:q.code;
-    div.innerHTML=`<div class="qn">Q${i+1}${q.star?' ⭐':''} · ${badge}</div><div class="qt">${q.text}</div><div class="opts">${Object.entries(q.opts).map(([k,v])=>`<button class="opt" id="opt-${i}-${k}" onclick="answer(${i},'${k}')">${k}) ${v}</button>`).join('')}</div>`;
-    c.appendChild(div);
-  }
+// ── AI TUTORING ───────────────────────────────────────────────────────────────
+async function callAI(qi){
+  if(!API_KEY){addBubble('Add your Claude API key in ⚙ Settings to unlock Echo!','echo');return;}
+  const q=QUESTIONS[qi],history=tutorHistory[qi]||[],turn=(tutorTurns[qi]||0)+1,cap=charTurns(q.section);
+  const strict=`ABSOLUTE RULE — FIRST REPLY ONLY:\nOpen with ONE short funny joke about the topic.\nAfter the joke: straight to teaching. No greeting.\nPlain spoken English. No emoji. No asterisks. No markdown.\nMax ${MAX_WORDS} words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb.\n★ ADVANCE each turn — never repeat. Every turn: different angle.\n[Turn ${turn} of up to ${cap}.]`;
+  const msgs=[...history];
+  if(!msgs.length)msgs.push({role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`});
+  showTyping();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
+    removeTyping();if(!r.ok){addBubble('Connection error — check API key in ⚙ Settings.','echo');return;}
+    const text=r.ok?(await r.json()).content[0].text:'Error';
+    addBubble(text,'echo');speak(text);
+    const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;
+    tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);
+  }catch(e){removeTyping();addBubble('Something went wrong — try again.','echo');}
 }
+function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi);}
+
+// ── ANSWER (v3.14) ────────────────────────────────────────────────────────────
+const SC=['Ssslick!','Ssspot on!','Sssuper!','High tail!'],SH=['Fin-tastic!','Splashing great!','Making waves!','Dorsal bump!'];
+function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SC[Math.floor(Math.random()*SC.length)]:SH[Math.floor(Math.random()*SH.length)]);}
 
 function answer(qi,choice){
-  _iosWarm();if(answers[qi]!==undefined||!rulesRead)return;
-  answers[qi]=choice;const q=QUESTIONS[qi];const isRight=choice===q.correct;
+  _iosWarm();
+  if(answers[qi]!==undefined||!rulesRead)return;  // v3.14 gate
+  answers[qi]=choice;
+  const q=QUESTIONS[qi],isRight=choice===q.correct;
   'ABCD'.split('').forEach(k=>document.getElementById(`opt-${qi}-${k}`)?.classList.add('dis'));
   document.getElementById(`opt-${qi}-${choice}`)?.classList.add(isRight?'sc':'sw');
   document.getElementById(`qc-${qi}`)?.classList.add(isRight?'right':'wrong');
   if(!isRight)document.getElementById(`opt-${qi}-${q.correct}`)?.classList.add('rc2');
   tutorTurns[qi]=0;
   if(isRight){onCorrectAnswer();}else{openOverlay(qi);}
-  if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)captureFirstAttempt();
+  if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)firstAttempt={...answers};
   updateSubmit();
 }
-function captureFirstAttempt(){if(firstAttempt)return;firstAttempt={answers:{...answers},struggling:new Set(strugglingQs)};}
-function updateSubmit(){document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;}
-
-function openOverlay(qi){
-  currentQIdx=qi;currentTurn=0;convHistory=[];overlayOpen=true;
-  const q=QUESTIONS[qi];const wk=answers[qi]||'?';
-  document.getElementById('qstrip').innerHTML=`<strong>Q${qi+1} ${q.section}:</strong> ${q.text}<span class="wpill">You chose: ${wk}) ${q.opts[wk]||'?'}</span>`;
-  document.getElementById('cemoji').textContent=CHAR.emoji;document.getElementById('cname').textContent=CHAR.name;
-  document.getElementById('mbadge').textContent=q.section==='Vocab'?'📖 Make a sentence!':q.section==='Maths'?'🔢 Concept first':'✍️ Think it through!';
-  renderDots(0);document.getElementById('chat').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 Speak, wait 2 secs…';
-  document.getElementById('overlay').classList.add('open');callAI(qi);
-}
-function renderDots(t){const el=document.getElementById('tdots');el.innerHTML='';for(let i=0;i<7;i++){const d=document.createElement('div');d.className='dot'+(i<t?' d':'');el.appendChild(d);}}
-async function callAI(qi){
-  _iosWarm();showTyping();
-  const sys=buildSystemPrompt(qi,currentTurn);
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:220,system:sys,messages:convHistory.length?convHistory:[{role:'user',content:'Start teaching!'}]})});
-    if(r.status===401){showKeyError();return;}
-    const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
-    hideTyping();addBubble(txt,'e');speak(txt);convHistory.push({role:'assistant',content:txt});
-    currentTurn++;renderDots(currentTurn);tutorTurns[qi]=(tutorTurns[qi]||0)+1;
-    if(tutorTurns[qi]>=5)strugglingQs.add(QUESTIONS[qi].code);
-  }catch(e){hideTyping();addBubble('Let\'s think through this together!','e');}
-}
-function sendTutorReply(text){_iosWarm();addBubble(text,'c');convHistory.push({role:'user',content:text});currentTurn++;renderDots(currentTurn);const cap=QUESTIONS[currentQIdx]?.section==='Maths'?7:6;if(currentTurn>=cap){addBubble('That was a tough one — you gave it a real go. Tap Got it!','e');speak('That was a tough one — tap Got it!');return;}callAI(currentQIdx);}
-function addBubble(txt,cls){const d=document.createElement('div');d.className=`bub ${cls}`;d.textContent=txt;document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=9999;}
-function showTyping(){const d=document.createElement('div');d.className='typing';d.id='typing';d.innerHTML='<span></span><span></span><span></span>';document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=9999;}
-function hideTyping(){document.getElementById('typing')?.remove();}
-function gotIt(){try{window.speechSynthesis.cancel();}catch(e){}if(recognition){try{recognition.stop();}catch(e){}micActive=false;}document.getElementById('speech-text').value='';const u=new SpeechSynthesisUtterance(CHAR.gotIt);u.onend=()=>{closeOverlay();if(remMode)advanceRemediation();};u.onerror=()=>{closeOverlay();if(remMode)advanceRemediation();};if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?0.92:0.98;u.pitch=CHAR.key==='snake'?0.95:1.02;window.speechSynthesis.speak(u);}
-function parentSkip(){try{window.speechSynthesis.cancel();}catch(e){}if(recognition){try{recognition.stop();}catch(e){}micActive=false;}document.getElementById('speech-text').value='';closeOverlay();if(remMode)advanceRemediation();}
-function closeOverlay(){try{window.speechSynthesis.cancel();}catch(e){}overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');}
-
-// Writing section
-async function sendWriting(){
-  const ta=document.getElementById('w-textarea');const text=ta.value.trim();
-  if(!text||text.length<10)return;if(writingDone)return;
-  writingAttempt++;ta.disabled=true;
-  addWritingBubble(text,'c');
-  addWritingBubble('…','e');
-  const sys=buildWritingPrompt(writingAttempt,text);
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:220,system:sys,messages:[{role:'user',content:text}]})});
-    const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
-    updateWritingBubble(txt);speak(txt);
-    const done=/Brilliant!|Yes!|Well done!|Spot on!|Exactly!/i.test(txt);
-    if(done||writingAttempt>=3){completeWriting();}
-    else{ta.disabled=false;ta.value='';document.getElementById('w-attempts').textContent=`Attempt ${writingAttempt+1} of 3`;}
-  }catch(e){updateWritingBubble('Great effort! Keep going!');ta.disabled=false;}
-}
-function addWritingBubble(txt,cls){const c=document.getElementById('w-chat');const d=document.createElement('div');d.className=`w-bub ${cls}`;d.textContent=txt;d.id=cls==='e'?'w-echo-last':'';c.appendChild(d);c.scrollTop=9999;}
-function updateWritingBubble(txt){const el=document.getElementById('w-echo-last');if(el){el.textContent=txt;el.id='';}else{addWritingBubble(txt,'e');}}
-function completeWriting(){
-  writingDone=true;document.getElementById('w-input-area').style.display='none';document.getElementById('w-attempts').style.display='none';document.getElementById('w-done-badge').style.display='block';
-  const stored=parseInt(localStorage.getItem(PTS_KEY)||'0');localStorage.setItem(PTS_KEY,stored+1);document.getElementById('pts-badge').textContent=`${stored+1} pts`;
+function updateSubmit(){
+  const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
+  document.getElementById('pts-display').textContent=`⭐ ${pts} pts — ${Object.keys(answers).length}/${TOTAL_QS} answered`;
+  document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;
 }
 
+// ── SUBMIT & REMEDIATION ──────────────────────────────────────────────────────
 function handleSubmit(){
-  if(Object.keys(answers).length<TOTAL_QS)return;if(!firstAttempt)captureFirstAttempt();
-  let correct=0;for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;}
-  if(correct>=PASS_SCORE){showResult(correct);return;}
-  const wq=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]!==QUESTIONS[i].correct)wq.push(i);}startRemediation(wq);
+  let correct=0;const wrong=[];
+  for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}
+  if(wrong.length&&!remMode){startRemediation(wrong);return;}
+  let pts=correct>=PASS_SCORE?3:0;
+  for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}
+  if(writingDone)pts+=1;
+  showResult(correct,pts);
 }
-function startRemediation(wq){remWrong=wq;remIdx=0;remMode=true;remDone=[];miniAnswers={};const b=document.getElementById('remed-banner');b.style.display='block';b.innerHTML=`${CHAR.emoji} Let's fix these together — ${wq.length} to review!`;document.getElementById('sub-btn').style.display='none';setTimeout(()=>{remMode=true;openOverlay(wq[0]);},700);}
-function advanceRemediation(){const qi=remWrong[remIdx];const card=document.getElementById(`qc-${qi}`);if(card){card.classList.add('reviewed');card.querySelector('.opts').innerHTML+=`<div class="rev-badge">✓ Reviewed with ${CHAR.name}</div>`;}remDone.push(qi);remIdx++;if(remIdx<remWrong.length){setTimeout(()=>{remMode=true;openOverlay(remWrong[remIdx]);},500);}else{remMode=false;setTimeout(()=>startMiniRetest(),600);}}
-function startMiniRetest(){const mo=document.getElementById('mini-overlay');let html=`<div style="color:#94a3b8;font-size:.8rem;text-align:center;padding:10px 0 16px">${CHAR.emoji} One more try on each question!</div>`;remWrong.forEach(qi=>{const q=QUESTIONS[qi];html+=`<div class="mini-card"><div class="mini-hdr">Q${qi+1} · ${q.section} · ${q.code}</div><div class="mini-q-text">${q.text}</div><div class="mini-opts">${Object.entries(q.opts).map(([k,v])=>`<button class="mini-opt" id="mo-${qi}-${k}" onclick="miniAnswer(${qi},'${k}')">${k}) ${v}</button>`).join('')}</div></div>`;});html+=`<button class="mini-submit" id="mini-sub" onclick="submitMiniRetest()">Submit answers</button>`;mo.innerHTML=html;mo.classList.add('open');}
-function miniAnswer(qi,choice){if(miniAnswers[qi]!==undefined)return;miniAnswers[qi]=choice;'ABCD'.split('').forEach(k=>{const b=document.getElementById(`mo-${qi}-${k}`);if(b){b.classList.add('mdis');b.onclick=null;}});document.getElementById(`mo-${qi}-${choice}`)?.classList.add(choice===QUESTIONS[qi].correct?'msc':'msw');if(choice!==QUESTIONS[qi].correct)document.getElementById(`mo-${qi}-${QUESTIONS[qi].correct}`)?.classList.add('msc');if(Object.keys(miniAnswers).length===remWrong.length)document.getElementById('mini-sub').style.display='block';}
-function submitMiniRetest(){remWrong.forEach(qi=>{if(miniAnswers[qi])answers[qi]=miniAnswers[qi];});document.getElementById('mini-overlay').classList.remove('open');let c=0;for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)c++;}showResult(c);}
-
-const VIDEOS={'E5.4':{title:"Author's purpose",url:'https://www.youtube.com/results?search_query=author+purpose+viewpoint+KS2+comprehension+11+plus'},'E5.2':{title:'Inference skills',url:'https://www.youtube.com/results?search_query=inference+skills+KS2+reading+11+plus'},'E5.8':{title:'Tone and mood',url:'https://www.youtube.com/results?search_query=tone+mood+atmosphere+KS2+comprehension'},'E5.9':{title:"Writer's craft",url:'https://www.youtube.com/results?search_query=writer+craft+language+techniques+KS2'},'M2.6':{title:'Converting decimals to percentages',url:'https://www.youtube.com/results?search_query=fractions+decimals+percentages+converting+KS2'},'M1.4':{title:'Long multiplication',url:'https://www.youtube.com/results?search_query=long+multiplication+KS2+primary+maths'},'M2.7':{title:'Percentage of a quantity',url:'https://www.youtube.com/results?search_query=percentage+quantity+KS2+primary+maths'}};
-
-function showResult(correct){
-  document.getElementById('main-content').style.display='none';document.getElementById('sub-bar').style.display='none';document.getElementById('remed-banner').style.display='none';
-  const pct=Math.round(correct/TOTAL_QS*100);const passed=correct>=PASS_SCORE;
-  document.getElementById('res-emoji').textContent=passed?'🌟':'💪';
-  document.getElementById('res-score').textContent=`${correct} / ${TOTAL_QS} correct`;
-  document.getElementById('res-msg').textContent=passed?`${pct}% — brilliant session! ${CHAR.name} is proud!`:`${pct}% — keep going, you're getting stronger!`;
-  let base=passed?3:1;if(Object.values(QUESTIONS).some((q,i)=>q.star&&answers[i]===q.correct))base+=2;
-  const stored=parseInt(localStorage.getItem(PTS_KEY)||'0');localStorage.setItem(PTS_KEY,stored+base);document.getElementById('pts-badge').textContent=`${stored+base} pts`;
-  const fa=firstAttempt||{answers:{...answers},struggling:new Set()};
-  if((fa.struggling||new Set()).size>0){const vl=document.getElementById('vid-links');vl.innerHTML='';[...(fa.struggling||[])].forEach(c=>{if(VIDEOS[c])vl.innerHTML+=`<a class="vid-link" href="${VIDEOS[c].url}" target="_blank">▶ ${VIDEOS[c].title}</a>`;});if(vl.innerHTML){document.getElementById('vid-block').style.display='block';document.getElementById('vid-intro').textContent=CHAR.key==='snake'?'Ssss, these videos might help!':'These videos can really help!';}}
-  document.getElementById('result').style.display='block';
-  sendWebhook(correct,base);setTimeout(()=>{document.getElementById('dict-section').style.display='block';initDict();},800);
+function startRemediation(wrong){
+  remMode=true;wrongQs=wrong;remIdx=0;
+  document.getElementById('sub-bar').style.display='none';
+  document.getElementById('remed-banner').style.display='block';
+  document.getElementById('rem-msg').textContent=`${CHAR.name} wants to help with ${wrong.length} question${wrong.length>1?'s':''}!`;
+  setTimeout(()=>openOverlay(wrongQs[0]),600);
 }
-function sendWebhook(correct,pts){
-  const fa=firstAttempt||{answers:{...answers},struggling:new Set()};let fac=0;for(let i=0;i<TOTAL_QS;i++){if(fa.answers[i]===QUESTIONS[i].correct)fac++;}
-  const bySection=(s)=>Object.entries(QUESTIONS).filter(([,q])=>q.section===s);
-  const score=(s)=>`${s}:${bySection(s).filter(([i,q])=>answers[i]===q.correct).length}/${bySection(s).length}`;
-  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'exercise_result',child:CHILD,date:new Date().toISOString().slice(0,10),week:WEEK,day:DAY,total_correct:correct,total_questions:TOTAL_QS,points_earned:pts,score_summary:`${score('Vocab')} ${score('English')} ${score('Maths')}`,subject_focus:'Mixed',attempt_number:1,first_attempt_pct:Math.round(fac/TOTAL_QS*100),struggling_codes:[...(fa.struggling||new Set())],mission_pack:'M-A',writing_completed:writingDone,questions:Object.entries(QUESTIONS).map(([i,q])=>({q_number:parseInt(i)+1,code:q.code,section:q.section,correct:answers[i]===q.correct,answer_chosen:answers[i]||'',correct_answer:q.correct,wrong_answer_chosen:answers[i]!==q.correct?answers[i]:null,tutor_used:(tutorTurns[i]||0)>0,tutor_turns:tutorTurns[i]||0}))})}).catch(()=>{});}
+function advanceRemediation(){remIdx++;if(remIdx<wrongQs.length){setTimeout(()=>openOverlay(wrongQs[remIdx]),300);}else{startMiniRetest();}}
+function startMiniRetest(){
+  remMode=false;
+  document.getElementById('remed-banner').style.display='none';
+  document.getElementById('sub-bar').style.display='flex';
+  wrongQs.forEach(qi=>{
+    answers[qi]=undefined;
+    'ABCD'.split('').forEach(k=>{document.getElementById(`opt-${qi}-${k}`)?.classList.remove('sc','sw','rc2','dis');});
+    document.getElementById(`qc-${qi}`)?.classList.remove('right','wrong');
+  });
+  speak('Your turn — try those questions again!');updateSubmit();
+}
 
-function pickRevisionWord(){try{const h=JSON.parse(localStorage.getItem('dict_history')||'[]');const today=new Date().toISOString().slice(0,10);const el=h.filter(w=>w.date!==today&&w.word!==DICT_WORD);if(!el.length)return null;const now=Date.now();el.forEach(w=>{const d=(now-new Date(w.date).getTime())/86400000;const c=w.confidence==='low'?3:w.confidence==='medium'?2:1;w._s=c+(d<2?-10:Math.min(d/7,3));});return el.sort((a,b)=>b._s-a._s)[0];}catch(e){return null;}}
-function initDict(){const rev=pickRevisionWord();if(rev){const rb=document.getElementById('rev-block');rb.innerHTML=`<div class="rev-word">🔄 Past word: ${rev.word}</div><div class="rev-def">${rev.def}</div><button class="echo-btn" style="margin-bottom:0" onclick="openRevOverlay('${rev.word.replace(/'/g,"\\'")}','${rev.def.replace(/'/g,"\\'")}')">Ask Echo to test me!</button>`;rb.style.display='block';}}
-async function openDictOverlay(){document.getElementById('echo-dict-btn').disabled=true;dictConvHistory=[];dictTurn=0;openDictChat();const sys=`${CHAR.pers}\nDICTIONARY MODE — word: "${DICT_WORD}". Def: "${DICT_DEF}". Eg: "${DICT_EG}". ONE short joke. 2 vivid examples. Ask child to make own sentence. Evaluate grammar AND word use. 3-beat wrap-up: celebrate → expansion alias+pillar+spoken example → model polished version + enrichment → Tap Got it. Max 90 words. No emoji.`;showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:220,system:sys,messages:[{role:'user',content:'Start!'}]})});const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});}catch(e){hideTyping();addBubble(`Let's explore ${DICT_WORD}! Can you make your own sentence?`,'e');}}
-function openDictChat(){overlayOpen=true;currentQIdx=-1;document.getElementById('overlay').classList.add('open');document.getElementById('cemoji').textContent=CHAR.emoji;document.getElementById('cname').textContent=CHAR.name;document.getElementById('qstrip').innerHTML=`📖 <strong>Word Builder:</strong> ${DICT_WORD} — ${DICT_DEF}`;document.getElementById('mbadge').textContent='📖 Word Builder';document.getElementById('chat').innerHTML='';document.getElementById('speech-text').value='';}
-function sendDictReply(text){addBubble(text,'c');dictConvHistory.push({role:'user',content:text});dictTurn++;if(dictTurn>=6){addBubble('Brilliant effort! Tap Got it!','e');speak('Brilliant effort! Tap Got it!');saveDictHistory('high');return;}callDictAI();}
-async function callDictAI(){showTyping();const sys=`${CHAR.pers}\nWord: "${DICT_WORD}". Evaluate grammar AND word use. If both correct: celebrate, name ONE expansion (alias+pillar+spoken example), after attempt: model + enrichment + Tap Got it. If grammar wrong: model corrected version + ask to retry — grammar must be correct before wrap-up fires. Max 90 words. No emoji. [Turn ${dictTurn+1}]`;try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:220,system:sys,messages:dictConvHistory})});const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});if(/Brilliant!|Yes!|Well done!|Spot on!|Exactly!/i.test(txt))saveDictHistory('high');}catch(e){hideTyping();addBubble('Great effort! Tap Got it!','e');}}
-function saveDictHistory(conf){try{const h=JSON.parse(localStorage.getItem('dict_history')||'[]');const today=new Date().toISOString().slice(0,10);if(!h.find(w=>w.word===DICT_WORD&&w.date===today)){h.push({word:DICT_WORD,def:DICT_DEF,date:today,confidence:conf||'medium'});localStorage.setItem('dict_history',JSON.stringify(h.slice(-60)));}dictDone=true;}catch(e){}}
-async function openRevOverlay(word,def){dictConvHistory=[];dictTurn=0;openDictChat();document.getElementById('qstrip').innerHTML=`🔄 <strong>Past word:</strong> ${word} — ${def}`;document.getElementById('mbadge').textContent='🔄 Past word check';const sys=`${CHAR.pers}\nREVISION — word: "${word}". Def: "${def}". No joke. Warmth only. Ask child to use word in new sentence. Evaluate grammar+use. Max 60 words. No emoji.`;showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:180,system:sys,messages:[{role:'user',content:'Start!'}]})});const d=await r.json();const txt=(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();addBubble(txt,'e');speak(txt);dictConvHistory.push({role:'assistant',content:txt});}catch(e){hideTyping();addBubble(`Can you use the word ${word} in a sentence?`,'e');}}
+// ── RESULT ────────────────────────────────────────────────────────────────────
+function showResult(correct,pts){
+  document.getElementById('ex-wrap').style.display='none';
+  document.getElementById('sub-bar').style.display='none';
+  document.getElementById('remed-banner').style.display='none';
+  document.getElementById('rw').style.display='none';
+  const pct=Math.round(correct/TOTAL_QS*100),pass=correct>=PASS_SCORE;
+  document.getElementById('res-emoji').textContent=pass?'🎉':'💪';
+  document.getElementById('res-score').textContent=`${correct}/${TOTAL_QS} — ${pct}%`;
+  document.getElementById('res-msg').textContent=pass?`${CHAR.name} is proud — brilliant work today!`:`Good effort! ${CHAR.name} helped you review — you are getting stronger!`;
+  const stored=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS),newPts=stored+pts;
+  localStorage.setItem(PTS_KEY,newPts);
+  document.getElementById('res-pts').textContent=pts>0?`+${pts} pts today — total: ${newPts} ⭐`:`Total: ${newPts} ⭐`;
+  document.getElementById('result').style.display='flex';
+  window.scrollTo(0,0);sendWebhook(correct,pts);
+}
+async function sendWebhook(correct,pts){
+  const fa=firstAttempt||answers;let fp=0;for(let j=0;j<TOTAL_QS;j++){if(fa[j]===QUESTIONS[j]?.correct)fp++;}
+  try{await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'exercise_result',child:CHILD,day:DAY,week:WEEK,date:new Date().toISOString().slice(0,10),score:Math.round(correct/TOTAL_QS*100),firstAttemptScore:Math.round(fp/TOTAL_QS*100),pointsEarned:pts,questions:Object.entries(QUESTIONS).map(([i,q])=>({code:q.code,section:q.section,correct:answers[+i]===q.correct}))})});}catch(e){}
+}
 
-function toggleRules(){const rb=document.getElementById('rb');const open=rb.style.display==='block';rb.style.display=open?'none':'block';document.getElementById('rh-arrow').textContent=open?'▼ tap to read':'▲ close';}
-function markRulesRead(){_iosWarm();rulesRead=true;document.getElementById('rb').style.display='none';document.getElementById('rh-arrow').textContent='▼ tap to read';document.getElementById('main-content').style.opacity='1';document.getElementById('main-content').style.pointerEvents='auto';speak(`${CHAR.name} says: vocab first, then English, then maths, then the Mission M-A writing challenge. Good luck!`);}
-function saveKey(){const v=document.getElementById('kinput').value.trim();if(!v.startsWith('sk-')||v.length<20){document.getElementById('kerr').style.display='block';return;}ANTHROPIC_KEY=v;localStorage.setItem('anthropic_key_v1',v);document.getElementById('setup').classList.remove('show');}
-function clearKey(){ANTHROPIC_KEY='';localStorage.removeItem('anthropic_key_v1');document.getElementById('kinput').value='';document.getElementById('kerr').style.display='none';document.getElementById('setup').classList.add('show');}
-function showKeyError(){document.getElementById('overlay').classList.remove('open');overlayOpen=false;clearKey();}
+// ── DICTIONARY ────────────────────────────────────────────────────────────────
+function pickRevisionWord(){try{const h=JSON.parse(localStorage.getItem('dict_history')||'[]'),today=new Date().toISOString().slice(0,10),el=h.filter(w=>w.date!==today&&w.word!==DICT_WORD);if(!el.length)return null;const now=Date.now();el.forEach(w=>{const d=(now-new Date(w.date).getTime())/86400000,c=w.confidence==='low'?3:w.confidence==='medium'?2:1;w._s=c+(d<2?-10:Math.min(d/7,3));});return el.sort((a,b)=>b._s-a._s)[0];}catch(e){return null;}}
+function initDict(){
+  const ds=document.getElementById('dict-section'),rev=pickRevisionWord(),esc=s=>(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  ds.innerHTML=`<div class="dict-wrap"><div class="section-label" style="color:rgba(255,255,255,.8)">📖 Dictionary</div><div class="dict-word">${DICT_WORD}</div><div class="dict-def">${DICT_DEF}</div><div class="dict-eg">"${DICT_EG}"</div><button class="dict-btn" onclick="openDictOverlay('${esc(DICT_WORD)}','${esc(DICT_DEF)}','${esc(DICT_EG)}')">Ask ${CHAR.name} about this word</button>${rev?`<div class="rev-block"><div class="rev-word">🔄 Past word: ${rev.word}</div><div class="rev-def">${rev.def||''}</div><button class="dict-btn" style="margin-top:8px" onclick="openDictOverlay('${esc(rev.word)}','${esc(rev.def||'')}','')">Ask ${CHAR.name} to test me!</button></div>`:''}</div>`;
+  const h=JSON.parse(localStorage.getItem('dict_history')||'[]');if(!h.find(w=>w.word===DICT_WORD)){h.push({word:DICT_WORD,def:DICT_DEF,date:new Date().toISOString().slice(0,10),confidence:'medium'});localStorage.setItem('dict_history',JSON.stringify(h));}
+}
+let dictHistory=[];
+async function openDictOverlay(word,def,eg){
+  dictHistory=[];currentQIdx=-2;overlayOpen=true;
+  document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';
+  document.getElementById('ov-title').textContent=`${CHAR.name} — Dictionary`;
+  document.getElementById('dots').innerHTML='';
+  const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='hidden';
+  document.getElementById('overlay').classList.add('open');
+  dictHistory.push({role:'user',content:`Word: ${word}\nDefinition: ${def}${eg?'\nExample: '+eg:''}\nTeach this word in a fun, memorable way.`});
+  showTyping();
+  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:250,system:CHAR.pers+'\nOpen with a funny joke about the word. Then explain simply. Max 80 words. No emoji. No markdown.',messages:dictHistory})});removeTyping();if(!res.ok)return;const text=(await res.json()).content[0].text;addBubble(text,'echo');speak(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}
+}
+async function sendDictReply(text){addBubble(text,'user');dictHistory.push({role:'user',content:text});showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+'\nNo emoji. No markdown. Max 70 words. Always advance — never repeat.',messages:dictHistory})});removeTyping();if(!r.ok)return;const text=(await r.json()).content[0].text;addBubble(text,'echo');speak(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
 
-window.onload=function(){
-  ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';if(!ANTHROPIC_KEY)document.getElementById('setup').classList.add('show');
-  const today=new Date().toISOString().slice(0,10);let ck=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
-  if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',today);}
-  CHAR=CHARS[ck];document.body.classList.add(ck);document.getElementById('char-av').textContent=CHAR.emoji;
-  document.getElementById('pts-badge').textContent=`${parseInt(localStorage.getItem(PTS_KEY)||'0')+BASE_PTS} pts`;
-  renderSection(0,4,'qs-vocab');renderSection(4,5,'qs-english');renderSection(9,5,'qs-maths');
-  document.getElementById('rb').style.display='block';document.getElementById('rh-arrow').textContent='▲ close';
+// ── WRITING (Mon/Wed/Fri) ─────────────────────────────────────────────────────
+async function sendWriting(){
+  if(!API_KEY){alert('Add your Claude API key in ⚙ Settings');return;}
+  const ta=document.getElementById('writing-ta'),text=(ta?.value||'').trim();
+  if(text.length<10){alert('Write at least a sentence first!');return;}
+  const btn=document.querySelector('.writing-send-btn'),fb=document.getElementById('writing-feedback');
+  if(btn)btn.disabled=true;if(fb){fb.style.display='block';fb.textContent=`${CHAR.name} is reading your writing…`;}
+  const codes=typeof MISSION_PACK!=='undefined'?MISSION_PACK.codes.join(', '):'writing techniques';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+`\nGive warm, specific feedback on a ${CHILD_AGE}-year-old's creative writing. They used: ${codes}. Celebrate what they did well. Give ONE specific improvement. Max ${MAX_WORDS} words. No emoji. No markdown.`,messages:[{role:'user',content:text}]})});
+    if(!r.ok){if(fb)fb.textContent='Connection error — try again.';if(btn)btn.disabled=false;return;}
+    const reply=(await r.json()).content[0].text;
+    if(fb)fb.textContent=reply;speak(reply);writingDone=true;if(btn)btn.textContent='✓ Sent to Echo';
+    try{await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'writing_response',child:CHILD,week:WEEK,missionPack:typeof MISSION_PACK!=='undefined'?MISSION_PACK.id:'',response:text})});}catch(e){}
+  }catch(e){if(fb)fb.textContent='Something went wrong.';if(btn)btn.disabled=false;}
+}
+
+// ── RULES (v3.14) ─────────────────────────────────────────────────────────────
+function toggleRules(){const rb=document.getElementById('rb'),arr=document.getElementById('rh-arrow');const open=rb.style.display!=='block';rb.style.display=open?'block':'none';arr.textContent=open?'▲':'▼';}
+function markRulesRead(){
+  _iosWarm();rulesRead=true;
+  document.getElementById('rb').style.display='none';
+  document.getElementById('rh-arrow').textContent='▼ tap to read';
+  document.getElementById('main-content').style.opacity='1';
+  document.getElementById('main-content').style.pointerEvents='auto';
+  speak(`${CHAR.name} says: let's go! Good luck today!`);
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+function openSettings(){document.getElementById('api-key-input').value=localStorage.getItem('anthropic_key_v1')||'';document.getElementById('oai-key-input').value=localStorage.getItem('openai_key_v1')||'';document.getElementById('key-overlay').style.display='flex';}
+function saveKey(){const k=(document.getElementById('api-key-input').value||'').trim(),ok=(document.getElementById('oai-key-input').value||'').trim();if(k.startsWith('sk-ant-')&&k.length>20){localStorage.setItem('anthropic_key_v1',k);API_KEY=k;}if(ok.startsWith('sk-')&&ok.length>20){localStorage.setItem('openai_key_v1',ok);OPENAI_KEY=ok;}else if(ok===''){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;}updateVoicePill();document.getElementById('key-overlay').style.display='none';}
+function clearKey(){localStorage.removeItem('anthropic_key_v1');localStorage.removeItem('openai_key_v1');API_KEY=null;OPENAI_KEY=null;updateVoicePill();document.getElementById('key-overlay').style.display='none';}
+
+// ── BUILD SECTIONS ────────────────────────────────────────────────────────────
+function buildSections(){
+  const cfg={Vocab:{id:'vocab-section',label:'📚 Vocab',cls:'vocab-card'},English:{id:'english-section',label:'✏️ English',cls:'english-card'},Maths:{id:'maths-section',label:'🔢 Maths',cls:'maths-card'}};
+  Object.entries(cfg).forEach(([sec,c])=>{
+    const qs=Object.entries(QUESTIONS).filter(([,q])=>q.section===sec);
+    document.getElementById(c.id).innerHTML=`<div class="section-card ${c.cls}"><div class="section-label">${c.label}</div>${qs.map(([i,q])=>`<div class="qc" id="qc-${i}"><div class="q-text">${q.star?'<span class="q-star">★ </span>':''}${q.text}</div><div class="opts">${['A','B','C','D'].map(k=>`<button class="opt" id="opt-${i}-${k}" onclick="answer(${i},'${k}')"><span class="ok">${k}</span>${q.opts[k]}</button>`).join('')}</div></div>`).join('')}</div>`;
+  });
+  if(typeof MISSION_PACK!=='undefined'&&WRITING_DAYS.includes(DAY)){
+    const ws=document.getElementById('writing-section');ws.style.display='block';
+    ws.innerHTML=`<div class="section-card writing-card"><div class="section-label">✍️ Writing Challenge</div><div class="writing-prompt"><div class="mission-id">${MISSION_PACK.id}</div><div class="mission-title">${MISSION_PACK.title}</div><div class="mission-codes">${MISSION_PACK.codes.map(c=>`<span class="code-tag">${c}</span>`).join('')}</div><div class="mission-prompt">${MISSION_PACK.prompt}</div></div><textarea class="writing-ta" id="writing-ta" rows="5" placeholder="Write your response here… aim for 3–5 sentences!"></textarea><button class="writing-send-btn" onclick="sendWriting()">Send to Echo ➤</button><div id="writing-feedback" class="writing-fb"></div></div>`;
+  }
+}
+function buildRulesCard(){const style=RULE_STYLES[DAY]||'weapons';document.getElementById('rh-title').textContent=(RULE_HEADERS[style]||"⚡ TODAY'S WEAPONS")+' — tap to read';document.getElementById('rules-tips').innerHTML=RULES_TIPS.map(tip=>{const m=tip.match(/^([\w.]+):\s*(.*)/);return m?`<div class="tip-row"><span class="tip-code">${m[1]}</span><span>${m[2]}</span></div>`:`<div class="tip-row">${tip}</div>`;}).join('');}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+window.onload=()=>{
+  document.getElementById('hdr-title').textContent=`${CHILD} — ${DAY}`;
+  document.getElementById('hdr-sub').textContent=`Week ${WEEK}`;
+  document.getElementById('hdr-char').textContent=CHAR.emoji;
+  document.getElementById('ov-char').textContent=CHAR.emoji;
+  document.title=`${CHILD} — ${DAY} · Week ${WEEK}`;
+  updateVoicePill();buildRulesCard();buildSections();updateSubmit();initDict();
 };
 </script>
 </body>
