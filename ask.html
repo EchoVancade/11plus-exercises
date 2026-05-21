@@ -691,6 +691,8 @@ async function loadStep(si,st){
 async function sendAnswer(){
   _warmAudio();
   const ans=collectAnswers();if(!ans.trim())return;
+  // Bug 2 fix: check key before making API call — avoids misleading "something went wrong"
+  if(!ANTHROPIC_KEY){document.getElementById('setup').classList.add('show');return;}
   addBubble('user',ans);
   document.getElementById('send-btn').disabled=true;
   S.history[sk(S.curStage,S.curStep)].push({role:'user',content:ans});
@@ -707,7 +709,7 @@ async function sendAnswer(){
     S.history[sk(si,st)].push({role:'assistant',content:fb});
     document.getElementById('send-btn').disabled=false;
     clearInputBoxes();S.awaitFeedback=true;updateNextBtn(si,st);showNext();
-  }catch(e){hideTyping();addBubble('sys','Something went wrong — try again.');document.getElementById('send-btn').disabled=false;}
+  }catch(e){hideTyping();addBubble('sys',e.message==='401'?'API key rejected — check Settings ⚙':'Network error — check your connection and try again.');document.getElementById('send-btn').disabled=false;}
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -853,6 +855,9 @@ function newQuestion(){
 // ═══════════════════════════════════════════════════════════
 window.onload=function(){
   ANTHROPIC_KEY=localStorage.getItem('anthropic_key_v1')||'';
+  // Bug 5 fix: kill all audio when navigating away or backgrounding the page
+  window.addEventListener('pagehide', hardStop);
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) hardStop(); });
   OPENAI_KEY=localStorage.getItem('openai_key_v1')||'';
   if(!ANTHROPIC_KEY)document.getElementById('setup').classList.add('show');
   const today=new Date().toISOString().slice(0,10);
