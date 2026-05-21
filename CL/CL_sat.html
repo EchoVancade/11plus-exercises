@@ -205,53 +205,35 @@ const DAY      = 'Saturday';
 const WEEK     = 21;
 const PTS_KEY  = 'pts_CL';
 const BASE_PTS = 950;
-const DICT_WORD = 'deduce';
-const DICT_DEF  = 'Verb — to reach a conclusion by reasoning carefully from evidence or clues.';
-const DICT_EG   = 'From the muddy footprints, the detective was able to deduce that someone had entered through the back gate.';
+const DICT_WORD = 'audacious';
+const DICT_DEF  = 'Adjective — showing willingness to take bold or daring risks.';
+const DICT_EG   = 'The audacious explorer climbed the cliff face without any safety equipment.';
 const RULES_TIPS = [
-  'E5.2: Inference — find the exact words in the passage that support your answer before you choose.',
-  'E5.4: Word-choice questions — ask why the writer used THAT word and what effect it creates.',
-  'E5.5: Vocabulary questions — use the surrounding sentence to work out what the word means in context.',
+  'E5.1 Retrieval: Read the question first, then go back to the passage to find the answer.',
+  'E5.3 Inference: The answer is never written directly — look for what is hinted at.',
+  'E5.5 Vocabulary: Use the sentence around the tricky word to work out its meaning.',
 ];
-const PASSAGE_TITLE = 'The Message in a Bottle';
-const PASSAGE_TEXT  = `Twelve-year-old Maya had combed this stretch of shore every Saturday for as long as she could remember, looking for anything the tide might have brought in. Mostly she found the ordinary things — smooth pebbles, tangled seaweed, the broken handles of plastic buckets — but today something caught the light differently.
+const PASSAGE_TITLE = 'The Last Lighthouse Keeper';
+const PASSAGE_TEXT  = "The old lighthouse stood on a rocky island far out to sea. For forty years, a man called Albert had lived there alone, keeping the light turning so that ships could find their way safely through the dark.
 
-Half-buried in the wet sand was a dark green bottle with a cork pressed firmly in its neck. She crouched beside it, brushed away the sand and saw there was something rolled inside — paper, yellowed and curling at the edges. Her heart beat a little faster as she worked the cork free with a slow twist.
+Albert's great-niece, Mia, found his logbook in a dusty trunk after he died. The pages were filled with careful handwriting and tiny sketches of seabirds and storms. 'No job more important than this,' he had written on the very first page.
 
-The paper inside was a letter, written in tiny, careful handwriting. It was dated more than sixty years ago and came from a boy called Samuel, who had thrown the bottle from the deck of a passenger ship crossing the Atlantic. He had been nine years old. He had written only a few lines: that the sea was enormous and he was frightened and excited in equal measure, and that he hoped whoever found the letter might write back, though he knew that was impossible.
+Every evening at dusk, Albert would climb the spiral staircase to the lamp room. He would check the oil, clean the glass, and wind the clockwork mechanism that kept the beam turning. In all his years there, he never once let the light go out.
 
-Maya sat on the cold sand and read the letter three times. She felt a strange closeness to this boy she would never meet — someone who had pressed his words into a bottle and trusted the ocean to carry them forward. She folded the letter carefully and tucked it into her jacket pocket, already thinking about what she might say back.`;
+One January night, a fierce storm blew across the island. The sea smashed against the rocks like thunder. Albert's logbook described how he had gripped the railing at the top of the lighthouse, watching a cargo ship inch its way around the headland. 'She saw the light,' he wrote, 'and turned just in time.'
+
+When Mia closed the logbook, she understood why Albert had never wanted to leave. The lighthouse was not just a building — it was a promise, kept every single night.";
 const QUESTIONS = {
-  0:{ code:'E5.1', correct:'B', star:false,
-      text:'What is Maya doing at the start of the passage?',
-      opts:{A:'Swimming along the coastline',B:'Walking the beach and looking for objects the tide has washed in',C:'Collecting plastic to take home and recycle',D:'Searching for a bottle she had already heard about'} },
-  1:{ code:'E5.2', correct:'A', star:false,
-      text:'What can the reader infer from the phrase "caught the light differently"?',
-      opts:{A:'The bottle was made of glass and reflected the sunlight',B:'The bottle was bright orange and easy to spot',C:'Maya was carrying a torch to search the sand',D:'The sun was just beginning to set over the water'} },
-  2:{ code:'E5.3', correct:'C', star:false,
-      text:'Why does Maya\'s heart beat "a little faster" when she finds the paper?',
-      opts:{A:'She is frightened by the old bottle',B:'She has been running hard along the beach',C:'She is excited and curious about what might be inside',D:'She is cold from the wind coming off the sea'} },
-  3:{ code:'E5.4', correct:'D', star:false,
-      text:'The letter was written in "tiny, careful handwriting." What does this detail suggest about Samuel?',
-      opts:{A:'He was in a hurry to throw the bottle into the sea',B:'He had not yet learned to write very well',C:'He wanted to fit a very long story into a small space',D:'He took his time and cared about what he was writing'} },
-  4:{ code:'E5.5', correct:'A', star:false,
-      text:'The word "enormous" is used to describe the sea. Which word is closest in meaning to "enormous"?',
-      opts:{A:'Vast',B:'Choppy',C:'Dangerous',D:'Dark'} },
-  5:{ code:'E5.2', correct:'B', star:false,
-      text:'What can the reader infer about how Samuel felt when he wrote the letter?',
-      opts:{A:'He felt bored and hoped the journey would end soon',B:'He felt a mixture of fear and excitement',C:'He was completely calm and confident about the voyage',D:'He was angry and upset about having to leave home'} },
-  6:{ code:'E5.6', correct:'C', star:false,
-      text:'Why does the writer say Samuel "trusted the ocean to carry them forward"? What effect does this create?',
-      opts:{A:'It shows that Samuel was a very strong and confident swimmer',B:'It explains why the glass bottle survived so long at sea',C:'It creates a sense of Samuel placing hope in something entirely beyond his control',D:'It suggests the ocean always finds a way to return lost things to shore'} },
-  7:{ code:'E5.3', correct:'D', star:false,
-      text:'How does Maya feel after reading the letter three times?',
-      opts:{A:'Disappointed that the letter contained so little information',B:'Confused because she cannot read the old handwriting clearly',C:'Frightened because the letter is from someone long dead',D:'Connected to Samuel despite having never met him'} },
-  8:{ code:'E5.3', correct:'A', star:true,
-      text:'★ STAR — What does "already thinking about what she might say back" reveal about Maya at the end of the passage?',
-      opts:{A:'She wants to continue the connection Samuel began, even if only in her imagination',B:'She has found Samuel\'s home address written elsewhere in the letter',C:'She intends to throw a new bottle into the sea that same afternoon',D:'She believes Samuel might still be alive somewhere and reading messages'} },
-  9:{ code:'E5.7', correct:'B', star:false,
-      text:'Which of the following best describes the overall mood of the passage?',
-      opts:{A:'Tense and frightening throughout',B:'Quiet, thoughtful, and touching',C:'Fast-paced and action-packed',D:'Humorous and light-hearted'} },
+  0:{ code:'E5.1', correct:'C', star:false, text:'What is the main idea of this passage?', opts:{A:'Albert spent forty years exploring the sea by boat.',B:'Mia found her great-uncle Albert living alone on an island.',C:'Albert kept a lighthouse light burning to keep ships safe for forty years.',D:'Mia learned that lighthouses are no longer needed today.'} },
+  1:{ code:'E5.2', correct:'B', star:false, text:'How did Mia discover what Albert did with his life?', opts:{A:'She visited Albert in the lighthouse while he was still alive.',B:'She found his logbook in a dusty trunk after he died.',C:'She read about Albert in a book about lighthouses.',D:'She spoke to sailors who had known Albert.'} },
+  2:{ code:'E5.3', correct:'A', star:false, text:'How long did Albert live and work in the lighthouse?', opts:{A:'Forty years.',B:'Thirty years.',C:'Twenty years.',D:'Fifty years.'} },
+  3:{ code:'E5.4', correct:'C', star:false, text:'What is the overall tone of this passage?', opts:{A:'Frightened and anxious.',B:'Funny and playful.',C:'Admiring and respectful.',D:'Sad and hopeless.'} },
+  4:{ code:'E5.1', correct:'D', star:false, text:'What did Albert do every evening in the lamp room? Choose the most complete answer.', opts:{A:'He drew sketches of seabirds.',B:'He watched ships passing.',C:'He wrote in his logbook.',D:'He checked the oil, cleaned the glass, and wound the mechanism.'} },
+  5:{ code:'E5.5', correct:'B', star:false, text:'In the phrase "the clockwork mechanism that kept the beam turning", what does "mechanism" most likely mean?', opts:{A:'A heavy stone wheel used to grind grain.',B:'A device with moving parts designed to make something work.',C:'A type of oil used to fuel old lamps.',D:'A spiral staircase inside a lighthouse.'} },
+  6:{ code:'E5.2', correct:'A', star:false, text:'What does Albert writing "No job more important than this" on his first page suggest about him?', opts:{A:'He felt a deep sense of responsibility and purpose.',B:'He was trying to convince himself to stay on the island.',C:'He was proud of being paid a good wage.',D:'He was writing notes to himself about safety rules.'} },
+  7:{ code:'E5.6', correct:'D', star:false, text:'Why does the writer include the January storm section?', opts:{A:'To explain how lighthouse buildings are constructed.',B:'To show that Albert was in danger and nearly lost his life.',C:'To describe the kind of weather typical to the island.',D:"To show the moment when Albert's work truly mattered — saving a ship."} },
+  8:{ code:'E5.3', correct:'A', star:true,  text:'★ STAR — "She saw the light, and turned just in time." What does this tell us about the situation?', opts:{A:'The ship was in danger of hitting the rocks, and the lighthouse light saved it.',B:'The captain had a torch and used it to navigate.',C:'The cargo ship had already passed the lighthouse safely.',D:'A passenger on the ship spotted land and warned the captain.'} },
+  9:{ code:'E5.7', correct:'B', star:false, text:'Why does the writer end with "it was a promise, kept every single night"?', opts:{A:'To explain the legal contract Albert signed when he took the job.',B:"To show that Albert's work was not just a duty — it was a commitment to protect lives.",C:'To suggest that Albert was not allowed to ever leave the island.',D:'To make the reader feel sorry that Albert was alone for so long.'} },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -295,7 +277,7 @@ function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPEN
 
 function hardStop(){if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
 
-function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
+function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
 function charTurns(){return CHILD==='IL'?5:6;}
