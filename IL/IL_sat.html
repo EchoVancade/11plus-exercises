@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>IL Saturday</title>
+<title>CL Saturday</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--hdr:linear-gradient(135deg,#7c3aed,#5b21b6);--bg:#fdf6ff;--acc:#7c3aed;--acc2:#8b5cf6}
@@ -23,7 +23,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .rules-title{color:#f1f5f9;font-size:.82rem;font-weight:900} .rules-arrow{color:#64748b;font-size:.72rem}
 .rules-body{padding:6px 14px 4px}
 .tip-row{display:flex;gap:7px;align-items:flex-start;margin-bottom:7px;color:#94a3b8;font-size:.8rem;line-height:1.4}
-.tip-code{background:rgba(249,115,22,.2);color:#fb923c;border-radius:5px;padding:1px 6px;font-weight:800;font-size:.7rem;flex-shrink:0;margin-top:1px}
+.tip-code{background:rgba(139,92,246,.2);color:#c4b5fd;border-radius:5px;padding:1px 6px;font-weight:800;font-size:.7rem;flex-shrink:0;margin-top:1px}
 .rules-confirm{width:100%;margin:8px 0;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:9px;padding:10px;font-weight:900;font-family:'Nunito',sans-serif;font-size:.86rem;cursor:pointer}
 /* TWO-COLUMN LAYOUT — v3.11 both independently scrollable */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 14px;height:calc(100vh - 56px - 52px);overflow:hidden}
@@ -62,7 +62,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .ov-char{font-size:1.8rem} .ov-title{flex:1;color:#f1f5f9;font-size:.85rem;font-weight:800}
 .skip-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:5px 10px;font-size:.75rem;cursor:pointer;font-family:'Nunito',sans-serif}
 .dots{display:flex;gap:4px;padding:8px 14px 0;flex-shrink:0}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)} .dot.used{background:rgba(249,115,22,.7)}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)} .dot.used{background:rgba(139,92,246,.7)}
 .ov-bubbles{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
 .bub{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.88rem;line-height:1.6}
 .bub.echo{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:#f1f5f9}
@@ -205,52 +205,33 @@ const DAY      = 'Saturday';
 const WEEK     = 21;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'patient';
-const DICT_DEF  = 'Adjective — able to wait calmly without getting cross or upset.';
-const DICT_EG   = 'The kind nurse was patient with every child, even when they were scared.';
+const DICT_WORD = 'adventure';
+const DICT_DEF  = 'Noun — an exciting or unusual experience.';
+const DICT_EG   = 'The camping trip in the forest turned into a real adventure.';
 const RULES_TIPS = [
-  'E5.1: Read the question first — it tells you what to look for in the passage.',
-  'E5.3: If you are not sure, go back and re-read that part of the passage again.',
-  'E5.5: Use the words around a tricky word to work out what it means.',
+  'E5.1 Retrieval: Read the question first, then find the answer in the passage.',
+  'E5.3 Inference: The answer is not always written — look for clues.',
+  'E5.5 Word meaning: Use the words around a tricky word to work out what it means.',
 ];
-const PASSAGE_TITLE = 'The Rescue';
-const PASSAGE_TEXT  = `One rainy afternoon, Mia found a small bird sitting very still under a bush in the garden. It had beautiful blue feathers, but one of its wings was drooping down in a way that did not look right. The bird looked up at Mia with shiny, frightened eyes.
+const PASSAGE_TITLE = 'The Last Lighthouse Keeper';
+const PASSAGE_TEXT  = "Albert lived alone in a tall lighthouse by the sea. Every night, he climbed the stairs and turned on the big, bright light. The light spun round and round to help ships see where they were going.
 
-Mia fetched a cardboard box and lined it carefully with an old towel. She used two fingers to gently lift the bird and placed it inside. Then she asked her dad to call the animal rescue centre.
+One stormy night, the rain lashed against the windows and the waves crashed loudly. Albert climbed the stairs anyway. He lit the lamp and watched it spin.
 
-The lady at the centre told them to keep the bird warm and quiet until the rescue team could come. Mia sat beside the box all afternoon, speaking softly so the bird would not be scared. By the time the rescue team arrived, the bird was calm and still.
+A little ship was out in the storm. Its captain saw the light flash through the dark. 'There!' said the captain. 'We are safe now.' The ship turned away from the rocks.
 
-The rescue lady smiled at Mia. "You may have saved this little one," she said.`;
-// ── MCQ questions (0–6): 7 × E5.x comprehension ──────────────────────────────
-// ── Writing questions (7–9): type:'writing', sequential unlock ────────────────
+Albert wrote in his logbook: 'The light worked again tonight.' He smiled and went to bed.";
 const QUESTIONS = {
-  0:{ type:'mcq', code:'E5.1', correct:'B', star:false,
-      text:'What is the passage mainly about?',
-      opts:{A:'A girl who likes watching birds in her garden',B:'A girl who finds a hurt bird and helps to look after it',C:'A dad who calls the animal rescue centre',D:'A rescue team who visit a house in the rain'} },
-  1:{ type:'mcq', code:'E5.3', correct:'A', star:false,
-      text:'How did Mia know the bird might be hurt?',
-      opts:{A:'One of its wings was drooping down',B:'It was sitting inside the house',C:'It had lost all its feathers',D:'It was crying very loudly'} },
-  2:{ type:'mcq', code:'E5.2', correct:'C', star:false,
-      text:'What can you tell about how the bird was feeling when Mia found it?',
-      opts:{A:'It was happy and wanted to play',B:'It was hungry and looking for food',C:'It was frightened',D:'It was too hot and needed water'} },
-  3:{ type:'mcq', code:'E5.5', correct:'D', star:false,
-      text:'The passage says the bird\'s wing was "drooping". What does "drooping" mean?',
-      opts:{A:'Moving up and down very fast',B:'Pointing straight up in the air',C:'Folded neatly against the body',D:'Hanging down instead of being held up properly'} },
-  4:{ type:'mcq', code:'E5.1', correct:'A', star:false,
-      text:'What did Mia do to make the bird feel safe before the rescue team arrived?',
-      opts:{A:'She sat beside the box and spoke softly to it',B:'She gave it lots of food and water',C:'She took it to the animal centre herself',D:'She let it walk around the living room'} },
-  5:{ type:'mcq', code:'E5.4', correct:'B', star:false,
-      text:'Why does the writer say Mia placed the bird inside "carefully"?',
-      opts:{A:'To show that Mia was in a hurry',B:'To show that Mia was gentle and wanted to avoid hurting the bird more',C:'To show that the box was very small',D:'To show that the bird was very heavy'} },
-  6:{ type:'mcq', code:'E5.2', correct:'C', star:true,
-      text:'★ STAR — The rescue lady said "You may have saved this little one." What does this tell you about what Mia did?',
-      opts:{A:'Mia made the bird worse by touching it',B:'The rescue team did not need to come because of Mia',C:'Mia\'s kind actions were very important and may have helped the bird survive',D:'The rescue lady thought Mia should have called sooner'} },
-  7:{ type:'writing', code:'E5.8', star:false,
-      prompt:'Write one sentence about how you think Mia felt when she found the hurt bird, and why.' },
-  8:{ type:'writing', code:'E5.9', star:false,
-      prompt:'Write one or two sentences about what you think happened to the bird after the rescue team took it away.' },
-  9:{ type:'writing', code:'E5.10', star:false,
-      prompt:'Write one sentence using the word "patient" — can you use it to describe Mia or someone else in your life?' },
+  0:{ type:'mcq', code:'E5.1', correct:'A', star:false, text:'What did Albert do every night?', opts:{A:'He climbed the stairs and turned on the big light.',B:'He went for a walk on the beach.',C:'He cooked dinner and went to bed.',D:'He painted pictures of the sea.'} },
+  1:{ type:'mcq', code:'E5.4', correct:'B', star:false, text:'What was the storm like?', opts:{A:'Sunny and warm.',B:'Loud, rainy and windy.',C:'Cold but quiet.',D:'Short and gentle.'} },
+  2:{ type:'mcq', code:'E5.1', correct:'C', star:false, text:'Who saw the light from the lighthouse?', opts:{A:'A man on the beach.',B:'Albert himself.',C:'The captain of the ship.',D:'A passing bird.'} },
+  3:{ type:'mcq', code:'E5.2', correct:'D', star:false, text:'Why was the lighthouse light so important?', opts:{A:'It kept Albert warm at night.',B:'It helped Albert to read his logbook.',C:'It was pretty to look at.',D:'It helped ships know where to go safely.'} },
+  4:{ type:'mcq', code:'E5.4', correct:'A', star:false, text:'How do you think Albert felt when he smiled and went to bed?', opts:{A:'Happy and proud.',B:'Tired and bored.',C:'Sad and lonely.',D:'Worried and scared.'} },
+  5:{ type:'mcq', code:'E5.5', correct:'B', star:false, text:'What does "lashed" mean in "the rain lashed against the windows"?', opts:{A:'Tapped gently.',B:'Hit hard.',C:'Melted slowly.',D:'Dripped quietly.'} },
+  6:{ type:'mcq', code:'E5.2', correct:'C', star:true,  text:'★ STAR — Why do you think Albert smiled when he went to bed?', opts:{A:'He was happy the storm was over.',B:'He was pleased to have a warm bed.',C:'He knew the light had helped the ship stay safe.',D:'He was glad the captain came to visit.'} },
+  7:{ type:'writing', code:'E5.8', star:false, prompt:'Write one sentence about how the captain of the ship felt when he saw the lighthouse light.' },
+  8:{ type:'writing', code:'E5.9', star:false, prompt:'Write one or two sentences about what you think Albert dreamed about that night.' },
+  9:{ type:'writing', code:'E5.10', star:false, prompt:'Write one sentence using one of these words from the passage in your own words: storm, lighthouse, captain.' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -294,7 +275,7 @@ function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPEN
 
 function hardStop(){if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
 
-function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';document.getElementById('speech-text').value=e.results[0][0].transcript;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
+function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
 function charTurns(){return CHILD==='IL'?5:6;}
@@ -323,7 +304,7 @@ const SC=['Ssslick!','Ssspot on!','Sssuper!'],SH=['Fin-tastic!','Splashing great
 function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SC[Math.floor(Math.random()*SC.length)]:SH[Math.floor(Math.random()*SH.length)]);}
 
 function answer(qi,choice){
-  _iosWarm();if(answers[qi]!==undefined||!rulesRead||QUESTIONS[qi].type!=='mcq')return;
+  _iosWarm();if(answers[qi]!==undefined||!rulesRead||QUESTIONS[qi].type==='writing')return;
   answers[qi]=choice;const q=QUESTIONS[qi],isRight=choice===q.correct;
   'ABCD'.split('').forEach(k=>document.getElementById(`opt-${qi}-${k}`)?.classList.add('dis'));
   document.getElementById(`opt-${qi}-${choice}`)?.classList.add(isRight?'sc':'sw');
@@ -333,7 +314,7 @@ function answer(qi,choice){
   if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)firstAttempt={...answers};
   updateSubmit();
 }
-function updateSubmit(){const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);document.getElementById('pts-display').textContent=`⭐ ${pts} pts — ${Object.keys(answers).length}/${TOTAL_QS} answered`;const allAnswered=Object.keys(answers).length>=TOTAL_QS&&Object.values(answers).every(v=>v!==undefined);document.getElementById('sub-btn').disabled=!allAnswered||!rulesRead;}
+function updateSubmit(){const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);document.getElementById('pts-display').textContent=`⭐ ${pts} pts — ${Object.keys(answers).length}/${TOTAL_QS} answered`;document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;}
 
 function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!remMode){startRemediation(wrong);return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
 function startRemediation(wrong){remMode=true;wrongQs=wrong;remIdx=0;document.getElementById('sub-bar').style.display='none';document.getElementById('remed-banner').style.display='block';document.getElementById('rem-msg').textContent=`${CHAR.name} wants to help with ${wrong.length} question${wrong.length>1?'s':''}!`;setTimeout(()=>openOverlay(wrongQs[0]),600);}
@@ -369,35 +350,31 @@ function buildPassage(){
   document.getElementById('passage-text').innerHTML=PASSAGE_TEXT.split(/\n\n+/).map(p=>`<p style="margin-bottom:10px">${p.trim()}</p>`).join('');
 }
 function buildQuestions(){
-  const col=document.getElementById('qs-col');
-  col.innerHTML='';
+  const col=document.getElementById('qs-col');col.innerHTML='';
   Object.entries(QUESTIONS).forEach(([i,q])=>{
     const div=document.createElement('div');div.className='qc';div.id=`qc-${i}`;
-    if(q.type==='mcq'){
+    if(!q.type||q.type==='mcq'){
       div.innerHTML=`<div class="q-num">Q${+i+1}</div><div class="q-text">${q.star?'<span style="color:#fbbf24">★ </span>':''}${q.text}</div><div class="opts">${['A','B','C','D'].map(k=>`<button class="opt" id="opt-${i}-${k}" onclick="answer(${i},'${k}')"><span class="ok">${k}</span>${q.opts[k]}</button>`).join('')}</div>`;
     } else {
-      // Writing question — locked until previous answered
       const locked=+i>0&&answers[+i-1]===undefined;
       div.style.opacity=locked?'.35':'1';div.style.pointerEvents=locked?'none':'auto';
-      div.innerHTML=`<div class="q-num" style="color:#8b5cf6">Writing Q${+i-6}</div><div class="q-text" style="color:#e2e8f0">${q.prompt}</div><textarea id="wta-${i}" rows="2" placeholder="Write your answer here…" style="width:100%;margin-top:7px;padding:8px;background:rgba(139,92,246,.15);border:1.5px solid rgba(139,92,246,.3);border-radius:8px;color:#f1f5f9;font-family:Nunito,sans-serif;font-size:.82rem;resize:none"></textarea><button onclick="submitWritingQ(${i})" style="margin-top:6px;width:100%;background:rgba(139,92,246,.3);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;border-radius:8px;padding:8px;font-weight:800;font-family:Nunito,sans-serif;cursor:pointer">Send to Echo ➤</button><div id="wfb-${i}" style="display:none;margin-top:7px;font-size:.82rem;color:#c4b5fd;line-height:1.5;background:rgba(139,92,246,.1);border-radius:8px;padding:9px"></div>`;
+      div.innerHTML=`<div class="q-num" style="color:#8b5cf6">Writing Q${+i-6}</div><div class="q-text" style="color:#e2e8f0">${q.prompt}</div><textarea id="wta-${i}" rows="2" placeholder="Write your answer here…" style="width:100%;margin-top:7px;padding:8px;background:rgba(139,92,246,.15);border:1.5px solid rgba(139,92,246,.3);border-radius:8px;color:#f1f5f9;font-family:Nunito,sans-serif;font-size:.82rem;resize:none"></textarea><button onclick="submitWritingQ(${i})" style="margin-top:6px;width:100%;background:rgba(139,92,246,.3);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;border-radius:8px;padding:8px;font-weight:800;font-family:Nunito,sans-serif;cursor:pointer">Send to Echo ➞</button><div id="wfb-${i}" style="display:none;margin-top:7px;font-size:.82rem;color:#c4b5fd;line-height:1.5;background:rgba(139,92,246,.1);border-radius:8px;padding:9px"></div>`;
     }
     col.appendChild(div);
   });
-  // Dictionary at bottom of right column — always visible, populated by initDict()
-  const dictDiv=document.createElement('div');dictDiv.id='dict-section';dictDiv.style.cssText='padding:8px 0 20px';col.appendChild(dictDiv);
+  const dd=document.createElement('div');dd.id='dict-section';dd.style.cssText='padding:8px 0 20px';col.appendChild(dd);
 }
 async function submitWritingQ(qi){
   if(!API_KEY){alert('Add your Claude API key in ⚙ Settings');return;}
   const ta=document.getElementById(`wta-${qi}`),text=(ta?.value||'').trim();
   if(text.length<5){alert('Write a bit more first!');return;}
-  const btn=ta?.nextElementSibling;const fb=document.getElementById(`wfb-${qi}`);
+  const btn=ta?.nextElementSibling,fb=document.getElementById(`wfb-${qi}`);
   if(btn)btn.disabled=true;if(fb){fb.style.display='block';fb.textContent=`${CHAR.name} is reading…`;}
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:150,system:CHAR.pers+`\nGive short warm feedback on a 7-year-old's written response. Max 50 words. Celebrate what is good. Give ONE tip. No emoji. No markdown.`,messages:[{role:'user',content:text}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:150,system:CHAR.pers+'\nGive short warm feedback on a 7-year-old\'s written response. Max 50 words. Celebrate what is good. Give ONE tip. No emoji. No markdown.',messages:[{role:'user',content:text}]})});
     if(!r.ok){if(fb)fb.textContent='Try again.';if(btn)btn.disabled=false;return;}
     const reply=(await r.json()).content[0].text;if(fb)fb.textContent=reply;speak(reply);
     answers[qi]=text;
-    // Unlock next writing question
     const next=document.getElementById(`qc-${qi+1}`);
     if(next){next.style.opacity='1';next.style.pointerEvents='auto';}
     if(btn)btn.textContent='✓ Sent';updateSubmit();
