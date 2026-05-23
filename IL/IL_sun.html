@@ -187,30 +187,60 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'IL';
 const DAY      = 'Sunday';
-const WEEK     = 21;
+const WEEK     = 23;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'magnificent';
-const DICT_DEF  = 'Adjective — impressively beautiful, elaborate or extravagant.';
-const DICT_EG   = 'The magnificent castle towered over the valley below.';
+const DICT_WORD = 'gentle';
+const DICT_DEF  = 'Adjective — soft and kind, not rough or harsh.';
+const DICT_EG   = 'The gentle breeze made the flowers dance without bending them at all.';
 const RULES_TIPS = [
-  "W1.1 Show not tell: Show feelings through actions — not 'she was happy' but 'she jumped up and clapped'.",
-  'W2.6 Specific detail: One real exact detail makes a place feel much more alive.',
-  'W4.2 Comparing words: A simile uses "like" or "as" to compare two things in an interesting way.',
+  'W1: Show how a character feels inside — a quick thought or a wobbly tummy is better than just saying "scared"!',
+  'W2: Use one seeing or hearing or smelling detail to help the reader picture the place.',
+  'W3: Try ending with one short, punchy sentence — it makes a big impact!',
 ];
-const PACK_1 = {id:'IL-A',title:'The Feeling Scene',codes:['W1.1','W4.1'],technique:'Show feelings through actions, not telling. Use describing words to paint the character.'};
-const PACK_2 = {id:'IL-B',title:'The Place',codes:['W2.6','W4.2'],technique:'Use a specific real detail. Add a comparing word (simile or metaphor) to describe the place.'};
+// Two Mission Packs — 5 questions each.
+// PACK_1 covers Q0–Q4, PACK_2 covers Q5–Q9
+const PACK_1 = {
+  id:'IL-C', title:'The Exciting Bit',
+  codes:['W1.7','W3.1'],
+  technique:'Show a quick burst of feeling inside the character, then end with a short punch sentence.',
+};
+const PACK_2 = {
+  id:'IL-D', title:'The Description',
+  codes:['W2.3','W4.4'],
+  technique:'Use one thing you can see or hear or smell to describe a place, and one detail that shows what the character is like.',
+};
 const QUESTIONS = {
-  0:{ pack:1, code:'W1.1', correct:'B', star:false, text:'"Lily jumped up and down, clapping her hands." What does this show?', opts:{A:'Lily is angry.',B:'Lily is excited — we can see it from what she does.',C:'Lily is bored.',D:'Lily is tired.'} },
-  1:{ pack:1, code:'W4.1', correct:'A', star:false, text:'Which sentence uses the best describing words to show a character?', opts:{A:'The tiny, trembling puppy pressed against the wall.',B:'The puppy was there.',C:'It was a dog.',D:'A puppy sat.'} },
-  2:{ pack:1, code:'W1.1', correct:'C', star:false, text:'"Tom stared at the floor. He spoke very quietly." What does this show about Tom?', opts:{A:'Tom is happy.',B:'Tom is hungry.',C:'Tom is upset or embarrassed.',D:'Tom is sleepy.'} },
-  3:{ pack:1, code:'W4.1', correct:'D', star:false, text:'Which pair of describing words best creates a happy, warm feeling?', opts:{A:'dark, cold',B:'gloomy, heavy',C:'grey, damp',D:'warm, golden'} },
-  4:{ pack:1, code:'W1.1', correct:'B', star:true,  text:'★ STAR — "She did not smile or look up when he walked in." What does this show?', opts:{A:'She did not see him come in.',B:'She is unhappy or trying to ignore someone.',C:'She is very busy reading.',D:'She is about to say something.'} },
-  5:{ pack:2, code:'W2.6', correct:'A', star:false, text:'"The kitchen smelled of burnt toast and orange peel." Why is this detail good?', opts:{A:'It makes you feel like you are really in that kitchen.',B:'It tells you what was cooked for breakfast.',C:'It is a long sentence.',D:'It has lots of big words.'} },
-  6:{ pack:2, code:'W4.2', correct:'C', star:false, text:'Which sentence uses a comparing word (a simile)?', opts:{A:'The swimming pool was very cold.',B:'She jumped in the pool.',C:'The swimming pool was as cold as ice.',D:'The pool had blue water.'} },
-  7:{ pack:2, code:'W2.6', correct:'B', star:false, text:'A writer says "three red roses grew near the gate". Why does the number "three" make the description better?', opts:{A:'Three is a lucky number.',B:'Exact details make the place feel real.',C:'More roses are always better in a story.',D:'It tells us the season.'} },
-  8:{ pack:2, code:'W4.2', correct:'D', star:false, text:'"The moon was a silver coin in the dark sky." What does this comparing phrase tell us?', opts:{A:'The moon was made of metal.',B:'The moon was very far away.',C:'The moon was hidden by clouds.',D:'The moon was round, small and bright.'} },
-  9:{ pack:2, code:'W2.6', correct:'A', star:true,  text:'★ STAR — Which detail best makes a bedroom feel real?', opts:{A:'A single football boot sat under the radiator.',B:'The room was nice.',C:'It was a big room.',D:'There was a bed in the room.'} },
+  0:{ pack:1, code:'W1.7', correct:'B', star:false,
+      text:'Which sentence shows how excited a character feels, without using the word "excited"?',
+      opts:{A:'She was excited about the party.',B:'Her heart was bouncing like a ball inside her chest.',C:'She really wanted to go to the party very much.',D:'She felt happy because the party was about to start.'} },
+  1:{ pack:1, code:'W3.1', correct:'C', star:false,
+      text:'Which is the best short punch sentence to end a paragraph about scoring a goal?',
+      opts:{A:'It was a really great goal and everyone cheered very loudly.',B:'She kicked the ball very hard into the net and everyone was happy.',C:'She had scored.',D:'The ball went in and everyone started cheering for her.'} },
+  2:{ pack:1, code:'W1.7', correct:'A', star:false,
+      text:'Which sentence best shows a character is scared, without saying "scared"?',
+      opts:{A:'Her legs turned to jelly.',B:'She was scared of the dark room.',C:'The dark room was making her feel frightened.',D:'She did not want to go into the dark room.'} },
+  3:{ pack:1, code:'W3.1', correct:'D', star:false,
+      text:'Which ending sentence hits the hardest?',
+      opts:{A:'It was the best day she had ever had in her whole life.',B:'She was very happy when the day finally ended.',C:'The whole day had been really fun and exciting.',D:'She never forgot that day.'} },
+  4:{ pack:1, code:'W1.7', correct:'B', star:true,
+      text:'★ STAR — What does "her heart skipped a beat" tell us about how the character feels?',
+      opts:{A:'The character is very tired and needs to sit down.',B:'The character is surprised or excited — their heart reacted to something.',C:'The character is feeling very sad and lonely.',D:'The character is really good at jumping.'} },
+  5:{ pack:2, code:'W2.3', correct:'C', star:false,
+      text:'Which sentence gives the best detail about a place that you can see?',
+      opts:{A:'The garden was really nice.',B:'The garden was big and had lots of green in it.',C:'Bright red roses climbed all the way up the old wooden fence.',D:'She walked through the garden and looked at the flowers.'} },
+  6:{ pack:2, code:'W4.4', correct:'A', star:false,
+      text:'A writer wants to show a character is messy. Which is the best detail?',
+      opts:{A:'Her shoes were on the wrong feet and her jumper was inside out.',B:'She was a really messy person who never tidied up.',C:'Everyone said she was the messiest person they knew.',D:'She did not like tidying and her room was quite messy.'} },
+  7:{ pack:2, code:'W2.3', correct:'D', star:false,
+      text:'Which sentence lets the reader hear something in the description?',
+      opts:{A:'The kitchen was warm and cosy.',B:'Something smelled really nice in the kitchen.',C:'There was a big table in the middle of the kitchen.',D:'The kettle hissed and the floorboards creaked under her feet.'} },
+  8:{ pack:2, code:'W4.4', correct:'B', star:false,
+      text:'Which detail best shows a character is brave, without using the word "brave"?',
+      opts:{A:'She was a brave girl who was not afraid of anything.',B:'She walked straight up to the biggest dog and held out her hand.',C:'Everyone thought she was the bravest person they had ever seen.',D:'Being brave was something she was really good at.'} },
+  9:{ pack:2, code:'W2.3', correct:'C', star:false,
+      text:'Which sentence uses smell to describe a place?',
+      opts:{A:'The bakery was very busy with lots of customers.',B:'The bakery had lots of bread in the big window.',C:'Warm bread and cinnamon filled the air the moment she pushed open the door.',D:'She liked going to the bakery because it was a nice place.'} },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -236,6 +266,7 @@ let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
 let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
 let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
 let _cachedVoice=null, _audioWarmed=false;
+let _currentUtt=null, _speechGen=0;            // ghost-kill: generation counter + active utterance ref
 
 (()=>{const td=new Date().toISOString().slice(0,10);let ck=localStorage.getItem('char_date')===td?localStorage.getItem('char_key'):null;if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',td);}CHAR=CHARS[ck];document.body.classList.add(ck);})();
 
@@ -243,13 +274,37 @@ function cleanForSpeech(t){return t.replace(/_{3,}/g,'blank').replace(/_{1,2}/g,
 const _PREF=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha'];
 window.speechSynthesis.onvoiceschanged=()=>{const vs=window.speechSynthesis.getVoices();for(const n of _PREF){const v=vs.find(x=>x.name.startsWith(n)&&x.lang.startsWith('en'));if(v){_cachedVoice=v;break;}}if(!_cachedVoice)_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||null;};
 function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
-function speakWebSpeech(text){try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const u=new SpeechSynthesisUtterance(text);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;u.volume=1;u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};window.speechSynthesis.speak(u);},120);}
+function speakWebSpeech(text){
+  try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
+  window.speechSynthesis.cancel();
+  const myGen=++_speechGen;                         // generation stamp for this utterance
+  setTimeout(()=>{
+    if(myGen!==_speechGen)return;                   // hardStop() fired during 120ms — bail
+    const u=new SpeechSynthesisUtterance(text);
+    _currentUtt=u;
+    if(_cachedVoice)u.voice=_cachedVoice;
+    u.rate=CHAR.key==='snake'?.92:.98;
+    u.pitch=CHAR.key==='snake'?.95:1.02;
+    u.volume=1;
+    u.onend=()=>{
+      if(myGen!==_speechGen)return;                 // stale — another speak() took over
+      _currentUtt=null;
+      try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}
+    };
+    u.onerror=(ev)=>{
+      if(myGen!==_speechGen)return;                 // cancelled by hardStop — NEVER retry
+      if(ev?.error==='canceled'||ev?.error==='interrupted')return; // explicit cancel — ignore
+      // genuine hardware error — fail silently, do not re-queue
+    };
+    window.speechSynthesis.speak(u);
+  },120);
+}
 async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});document.addEventListener('click',_warmAudio,{once:true});
 function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPENAI_KEY){p.textContent='🔊 Natural';p.className='voice-pill natural';}else{p.textContent='🔊 Device';p.className='voice-pill';}}
-function hardStop(){if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
+function hardStop(){_speechGen++;if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;}if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
 function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
@@ -259,19 +314,23 @@ function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=do
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function removeTyping(){document.getElementById('typing-ind')?.remove();}
 
-function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';const pack=QUESTIONS[qi].pack===1?PACK_1:PACK_2;document.getElementById('ov-title').textContent=`${CHAR.name} — ${pack.title}`;renderDots(qi);document.getElementById('ex-wrap').style.visibility='hidden';document.getElementById('overlay').classList.add('open');callAI(qi);}
+function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';const pack=QUESTIONS[qi].pack===1?PACK_1:PACK_2;document.getElementById('ov-title').textContent=`${CHAR.name} — ${pack.title}`;renderDots(qi);document.getElementById('ex-wrap').style.visibility='hidden';document.getElementById('overlay').classList.add('open');callAI(qi);}
 function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
 function gotIt(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),200);setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);}
 function parentSkip(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),100);}
 
 async function callAI(qi){
-  if(!API_KEY){addBubble('Add your Claude API key in ⚙ Settings to unlock Echo!','echo');return;}
+  if(!API_KEY){addBubble('Tap ⚙ Settings and add your Claude API key to unlock Echo!','echo');return;}
   const q=QUESTIONS[qi],pack=q.pack===1?PACK_1:PACK_2,history=tutorHistory[qi]||[],turn=(tutorTurns[qi]||0)+1,cap=charTurns();
-  const strict=`ABSOLUTE RULE — FIRST REPLY ONLY:\nOpen with ONE short funny joke about the writing technique.\nAfter the joke: straight to teaching. No greeting.\nPlain spoken English. No emoji. No asterisks. No markdown.\nMax ${MAX_WORDS} words. NEVER say: wrong, incorrect, failed, mistake.\n★ ADVANCE each turn — never repeat. Every turn: different angle.\n[Turn ${turn} of up to ${cap}.]`;
+  const jFmts=['Why','What do you call','Knock knock','What is the difference between','Did you hear about','What do you get when','Imagine if','You know what is funny about'];
+  const jFmt=jFmts[Math.floor(Math.random()*jFmts.length)];
+  const strict=turn===1
+    ?`TURN 1 — YOUR RULES:\n1. Open with a short funny joke. Use this format: "${jFmt}..." — stick to this format, do not switch to a different one.\n2. Show ONE clear concrete example of this writing technique.\n3. End with ONE direct question for the child to answer.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`
+    :`TURN ${turn} — YOUR RULES:\n1. One warm sentence acknowledging what they said.\n2. If their answer shows understanding: celebrate! Say: You have got it — tap Got it when you are ready!\n3. If not quite right: reteach with a completely different example. End with ONE clear question.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
   const msgs=[...history];
-  if(!msgs.length)msgs.push({role:'user',content:`Writing technique question — Mission Pack: ${pack.title}\nCodes: ${pack.codes.join(', ')}\nQuestion: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode tested: ${q.code}. Child answered incorrectly. Teach this writing technique now.`});
+  if(!msgs.length){const im={role:'user',content:`Writing technique question — Mission Pack: ${pack.title}\nCodes: ${pack.codes.join(', ')}\nQuestion: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode tested: ${q.code}. Child answered incorrectly. Teach this writing technique now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){addBubble('Connection error — check API key.','echo');return;}const text=(await r.json()).content[0].text;addBubble(text,'echo');speak(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — try again.','echo');}
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;addBubble(text,'echo');speak(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
 }
 function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi);}
 
