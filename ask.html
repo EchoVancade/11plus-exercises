@@ -68,6 +68,9 @@ body{font-family:'Nunito',sans-serif;background:#0a0f1e;color:#e2e8f0;min-height
 .bub{max-width:87%;padding:12px 15px;border-radius:14px;font-size:1rem;line-height:1.65}
 .bub.echo{align-self:flex-start;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.22);color:#e2e8f0}
 .bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
+.bub.echo ul.bul{margin:6px 0 4px 16px;padding-left:0;list-style:disc}
+.bub.echo ul.bul li{margin-bottom:4px;line-height:1.55}
+.bub.echo strong{font-weight:900;color:#fff}
 .bub.sys{align-self:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:#64748b;font-size:.84rem;padding:7px 14px;border-radius:20px;text-align:center}
 .typing{display:flex;gap:5px;align-items:center;padding:10px 14px;align-self:flex-start;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.18);border-radius:12px}
 .typing span{width:8px;height:8px;border-radius:50%;background:#06b6d4;animation:bop .8s infinite}
@@ -279,9 +282,9 @@ body{font-family:'Nunito',sans-serif;background:#0a0f1e;color:#e2e8f0;min-height
 // ═══════════════════════════════════════════════════════════
 const CHARS={
   snake:{key:'snake',name:'Ssssam',emoji:'🐍',
-    pers:'You are Ssssam the Snake, a warm clever 11+ tutor. Occasional soft sss sounds. NEVER use emoji. No markdown. No asterisks. No bullet points. Plain spoken English only.'},
+    pers:'You are Ssssam the Snake, a warm clever 11+ tutor. Occasional soft sss sounds. NEVER use emoji. You MAY use **bold** for key terms and subtitles, and - bullet points when listing items or steps. Otherwise, plain clear English. Be direct, structured, and smart.'},
   shark:{key:'shark',name:'Finn',emoji:'🦈',
-    pers:'You are Finn the Shark, an energetic encouraging 11+ tutor. Say Fin-tastic, Splashing great occasionally. NEVER use emoji. No markdown. No asterisks. No bullet points. Plain spoken English only.'}
+    pers:'You are Finn the Shark, an energetic encouraging 11+ tutor. Say Fin-tastic, Splashing great occasionally. NEVER use emoji. You MAY use **bold** for key terms and subtitles, and - bullet points when listing items or steps. Otherwise, plain clear English. Be direct, structured, and smart.'}
 };
 // OpenAI voice per character: fable = warm storyteller (Ssssam), echo = clear energetic male (Finn)
 const CHAR_VOICE={snake:'fable',shark:'echo'};
@@ -342,6 +345,8 @@ let _oaiAudio=null;          // current HTMLAudioElement
 let _oaiObjectUrl=null;      // blob URL to revoke on stop
 let _oaiController=null;     // AbortController for in-flight fetch
 let _oaiFetching=false;      // true while awaiting OpenAI response
+let _currentUtt=null;        // ghost-kill: ref to active Web Speech utterance
+let _speechGen=0;            // ghost-kill: generation counter — incremented on every hardStop/speak
 
 // Web Speech state
 let _cachedVoice=null;
@@ -353,8 +358,12 @@ window.speechSynthesis.onvoiceschanged=()=>{
 };
 function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
 
-// hardStop — kills BOTH OpenAI audio AND Web Speech immediately
+// hardStop — kills ALL audio: OpenAI fetch + audio element + Web Speech (ghost-kill v3.21)
 function hardStop(){
+  // 0. Increment generation counter — invalidates all pending speakWebSpeech callbacks instantly
+  _speechGen++;
+  // 0b. Null utterance handlers BEFORE cancel (cancel fires onerror — handlers must be dead first)
+  if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;}
   // 1. Abort any in-flight OpenAI TTS fetch
   if(_oaiController){try{_oaiController.abort();}catch(e){}_oaiController=null;_oaiFetching=false;}
   // 2. Stop and destroy current OpenAI audio element
@@ -364,7 +373,7 @@ function hardStop(){
   }
   // 3. Revoke blob URL
   if(_oaiObjectUrl){try{URL.revokeObjectURL(_oaiObjectUrl);}catch(e){}_oaiObjectUrl=null;}
-  // 4. Stop Web Speech API
+  // 4. Stop Web Speech API — safe because handlers are already nulled
   try{window.speechSynthesis.pause();}catch(e){}
   try{window.speechSynthesis.cancel();}catch(e){}
 }
@@ -428,15 +437,28 @@ async function speakOpenAI(clean){
   }
 }
 
-// speakWebSpeech — device voice fallback (original implementation)
+// speakWebSpeech — device voice fallback (ghost-kill v3.21)
 function speakWebSpeech(clean){
   _iosWarm();
+  try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
+  window.speechSynthesis.cancel();
+  const myGen=++_speechGen;                         // generation stamp for this utterance
   setTimeout(()=>{
+    if(myGen!==_speechGen)return;                   // hardStop() fired during 120ms — bail
     const u=new SpeechSynthesisUtterance(clean);
+    _currentUtt=u;
     if(_cachedVoice)u.voice=_cachedVoice;
     u.rate=CHAR.key==='snake'?0.91:0.97;u.pitch=CHAR.key==='snake'?0.94:1.02;u.volume=1;
-    u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};
-    u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};
+    u.onend=()=>{
+      if(myGen!==_speechGen)return;                 // stale — another speak() took over
+      _currentUtt=null;
+      try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}
+    };
+    u.onerror=(ev)=>{
+      if(myGen!==_speechGen)return;                 // cancelled by hardStop — NEVER retry
+      if(ev?.error==='canceled'||ev?.error==='interrupted')return; // explicit cancel — ignore
+      // genuine hardware error — fail silently, no re-queue
+    };
     window.speechSynthesis.speak(u);
   },120);
 }
@@ -669,9 +691,9 @@ async function loadStep(si,st){
   const stage=S.stages[si];
   const redoTag=''; // not a redo
   const prompts={
-    ido:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}\nSTEP: I-DO — You demonstrate, student watches.\n\nShow ONE clear worked example. Be concrete. Use real numbers or real sentences.\nEnd with: "Did you follow that? Tap Next when you are ready!"\nMax 140 words. Plain English. No markdown. No emoji.`,
-    wedo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}\nSTEP: WE-DO — New example WITH hint, student completes it.\n\nShow a DIFFERENT example from I-do. Include a clear scaffold or gap to fill.${QFMT}\nMax 120 words. Plain English. No emoji.`,
-    youdo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}"\nSTEP: YOU-DO — Student works alone. NO hints.\n\nShow a third DIFFERENT example. Give no scaffold.\nEnd: "Your turn! Show me what you have got."\nMax 100 words. Plain English. No emoji.`
+    ido:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}\nSTEP: I-DO — You demonstrate, student watches.\n\nShow ONE clear worked example. Be concrete. Use real numbers or real sentences.\nFormat smartly: use **bold** for key terms, and - bullet points when listing steps or items.\nEnd with: "Did you follow that? Tap Next when you are ready!"\nMax 140 words. No emoji.`,
+    wedo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}\nSTEP: WE-DO — New example WITH hint, student completes it.\n\nShow a DIFFERENT example from I-do. Include a clear scaffold or gap to fill.\nUse **bold** for key terms. Use - bullet points if listing steps.${QFMT}\nMax 120 words. No emoji.`,
+    youdo:`${CHAR.pers}\n\nTeaching: "${S.question}"\nStage ${si+1} of ${S.numStages}: "${stage.title}"\nSTEP: YOU-DO — Student works alone. NO hints.\n\nShow a third DIFFERENT example. Give no scaffold.\nEnd: "Your turn! Show me what you have got."\nMax 100 words. No emoji.`
   };
 
   showTyping();
@@ -831,7 +853,27 @@ function hideInput(){document.getElementById('input-area').classList.remove('sho
 function showNext(){document.getElementById('next-wrap').classList.add('show');}
 function hideNext(){document.getElementById('next-wrap').classList.remove('show');}
 function clearChat(){const a=document.getElementById('chat-area');[...a.children].filter(el=>el.classList.contains('bub')||el.classList.contains('typing')).forEach(el=>el.remove());}
-function addBubble(type,text){const a=document.getElementById('chat-area');const d=document.createElement('div');d.className=`bub ${type}`;d.textContent=text;a.appendChild(d);scrollChat();}
+function mdToHtml(txt){
+  // Convert **bold** and - bullet lists to HTML for echo bubbles
+  const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const b=s=>s.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  const lines=txt.split('\n');
+  let html='',ul=false;
+  for(const raw of lines){
+    const isBullet=/^[•\-]\s/.test(raw);
+    if(isBullet){
+      if(!ul){if(html&&!html.endsWith('<br>'))html+='<br>';html+='<ul class="bul">';ul=true;}
+      html+='<li>'+b(e(raw.replace(/^[•\-]\s+/,'')))+'</li>';
+    }else{
+      if(ul){html+='</ul>';ul=false;}
+      if(raw===''){html+='<br>';}
+      else{if(html&&!html.endsWith('<br>')&&!html.endsWith('</ul>'))html+='<br>';html+=b(e(raw));}
+    }
+  }
+  if(ul)html+='</ul>';
+  return html;
+}
+function addBubble(type,text){const a=document.getElementById('chat-area');const d=document.createElement('div');d.className=`bub ${type}`;if(type==='echo'){d.innerHTML=mdToHtml(text);}else{d.textContent=text;}a.appendChild(d);scrollChat();}
 function showTyping(){const a=document.getElementById('chat-area');const t=document.createElement('div');t.className='typing';t.id='typing';t.innerHTML='<span></span><span></span><span></span>';a.appendChild(t);scrollChat();}
 function hideTyping(){document.getElementById('typing')?.remove();}
 function scrollChat(){const a=document.getElementById('chat-area');a.scrollTop=a.scrollHeight;}
