@@ -210,35 +210,74 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'CL';
 const DAY      = 'Wednesday';
-const WEEK     = 22;
+const WEEK     = 23;
 const PTS_KEY  = 'pts_CL';
 const BASE_PTS = 950;
-const DICT_WORD = 'resilient';
-const DICT_DEF  = 'Adjective — able to recover quickly from difficulty or hardship.';
-const DICT_EG   = 'Despite setbacks, he remained resilient and kept working towards his goal.';
+const DICT_WORD = 'meticulous';
+const DICT_DEF  = 'Adjective — showing great attention to detail; very careful and precise.';
+const DICT_EG   = 'She was meticulous in her research, checking every fact twice before writing a single word.';
 const RULES_TIPS = [
-  'E5.2 Inference: Pro tip — wrong answers are usually too obvious or too extreme. Find the subtle one.',
-  'M2.1 Percentages: Pro tip — to find 15 percent, find 10 percent then add half of that.',
-  'E3.1 Commas: Pro tip — read aloud. Your voice dips after the opening phrase — that is where the comma goes.',
+  'E5.2 Inference: Ask yourself — why does the character do this? Actions always hint at feelings or motives.',
+  'E5.4 Word meaning: If you cannot work out the word, look at the whole paragraph — not just the sentence.',
+  'E3.1 Commas: Commas in a list go after each item except the last, before "and" or "or".',
 ];
-const MISSION_PACK = {id:'M-E',title:'The Argument',codes:['W5.1','W3.6','W3.2'],prompt:'Write 3 to 5 sentences presenting two sides of an argument, then give your final view. Include a rhetorical question (W3.6), present both sides fairly (W5.1), and end with a strong decisive final sentence (W3.2).'};
+const MISSION_PACK = {
+  id:'M-B', title:'The Quiet Setting', codes:['W2.6','W4.2','W1.2'],
+  prompt:'Write 3 to 5 sentences describing a still, quiet place. Include one sensory detail, one metaphor, and slow the pace down so the reader can really feel the atmosphere.',
+};
 const QUESTIONS = {
-  0:{section:'Vocab',code:'E4.4',correct:'B',star:false,text:'"Portable" contains the Latin root "port" meaning to carry. Which word has the same root?',opts:{A:'Portrait',B:'Transport',C:'Portion',D:'Porch'},vocabWord:'portable'},
-  1:{section:'Vocab',code:'E4.2',correct:'C',star:false,text:'Which word is the best antonym of "hostile"?',opts:{A:'Angry',B:'Distant',C:'Welcoming',D:'Quiet'},vocabWord:'hostile'},
-  2:{section:'Vocab',code:'E4.1',correct:'D',star:false,text:'"The landscape was desolate — not a tree or building in sight." What does "desolate" mean?',opts:{A:'Busy and crowded',B:'Green and beautiful',C:'Very cold and windy',D:'Empty, bare, and lonely'},vocabWord:'desolate'},
-  3:{section:'Vocab',code:'E4.1',correct:'A',star:true,text:'★ STAR — Which sentence uses "resilient" correctly?',opts:{A:'Despite failing her first test, she was resilient and practised until she passed.',B:'The resilient ice cream melted in the sun.',C:'He was resilient — he gave up as soon as the task became difficult.',D:'She felt resilient and scared at the same time.'},vocabWord:'resilient'},
-  4:{section:'English',code:'E5.2',correct:'C',star:false,text:"Read this: 'The dog pressed itself into the corner when it heard the fireworks.' What can you infer?",opts:{A:'The dog is hungry',B:'The dog wants to play',C:'The dog is frightened',D:'The dog is asleep'}},
-  5:{section:'English',code:'E1.7',correct:'D',star:false,text:'Which of these is spelled correctly?',opts:{A:'Millenium',B:'Milennium',C:'Millennium',D:'Millenneum'}},
-  6:{section:'English',code:'E3.1',correct:'A',star:false,text:'Which version is punctuated correctly?',opts:{A:'By the time we arrived, all the food had been eaten.',B:'By the time, we arrived all the food had been eaten.',C:'By the time we arrived all the, food had been eaten.',D:'By the time we arrived all the food had been, eaten.'}},
-  7:{section:'English',code:'E5.4',correct:'B',star:false,text:"A passage describes a seaside holiday using 'sparkling', 'fizzing waves', 'warm sand', and 'laughter'. What is the tone?",opts:{A:'Eerie and mysterious',B:'Joyful and carefree',C:'Sad and nostalgic',D:'Tense and dramatic'}},
-  8:{section:'English',code:'E2.4',correct:'C',star:false,text:'Which word is a determiner in "Every child should try their best"?',opts:{A:'child',B:'should',C:'Every',D:'best'}},
-  9:{section:'English',code:'E4.4',correct:'A',star:false,text:'"Bicycle", "biology", and "binocular" all contain the prefix "bi-". What does "bi-" mean?',opts:{A:'Two',B:'Fast',C:'Large',D:'Half'}},
-  10:{section:'Maths',code:'M2.1',correct:'D',star:false,text:'What is 15 percent of 200?',opts:{A:'20',B:'25',C:'28',D:'30'},mathConcept:'percentages'},
-  11:{section:'Maths',code:'M1.6',correct:'B',star:false,text:'What is 11 multiplied by 12?',opts:{A:'121',B:'132',C:'143',D:'112'},mathConcept:'multiplication'},
-  12:{section:'Maths',code:'M3.3',correct:'C',star:false,text:'A rectangle has perimeter 36 cm. Its width is 8 cm. What is its length?',opts:{A:'8 cm',B:'9 cm',C:'10 cm',D:'12 cm'},mathConcept:'perimeter'},
-  13:{section:'Maths',code:'M5.3',correct:'A',star:false,text:'A bar chart shows sales of 240 on Monday and 180 on Tuesday. What is the difference?',opts:{A:'60',B:'40',C:'80',D:'30'},mathConcept:'data reading'},
-  14:{section:'Maths',code:'M2.4',correct:'B',star:false,text:'Change 17 fifths into a mixed number.',opts:{A:'3 and one fifth',B:'3 and two fifths',C:'4 and one fifth',D:'2 and three fifths'},mathConcept:'improper fractions'},
-  15:{section:'Maths',code:'M1.5',correct:'D',star:false,text:'What are the next two numbers in the sequence: 3, 6, 12, 24, ___?',opts:{A:'36, 48',B:'40, 56',C:'46, 68',D:'48, 96'},mathConcept:'sequences'},
+  0:{ section:'Vocab', code:'E4.1', correct:'C', star:false,
+      text:'What does "tentative" mean?',
+      opts:{A:'Moving very quickly and with confidence',B:'Speaking in a very loud, clear voice',C:'Done carefully and with some hesitation, not fully sure',D:'Showing great excitement about something'},
+      vocabWord:'tentative' },
+  1:{ section:'Vocab', code:'E4.2', correct:'A', star:false,
+      text:'What does "sombre" mean?',
+      opts:{A:'Dark, gloomy, or serious in mood',B:'Very bright and full of colour',C:'Light-hearted and playful',D:'Extremely energetic and lively'},
+      vocabWord:'sombre' },
+  2:{ section:'Vocab', code:'E4.3', correct:'D', star:false,
+      text:'What does "agile" mean?',
+      opts:{A:'Slow-moving and heavy',B:'Very tall and powerful',C:'Quiet and thoughtful',D:'Able to move quickly and easily'},
+      vocabWord:'agile' },
+  3:{ section:'Vocab', code:'E4.4', correct:'B', star:true,
+      text:'★ STAR — "Despite every setback, she chose to persevere." What does persevere mean?',
+      opts:{A:'To give up when things become too difficult',B:'To keep going even when it is hard',C:'To argue strongly in favour of something',D:'To succeed without any effort at all'},
+      vocabWord:'persevere' },
+  4:{ section:'English', code:'E5.2', correct:'A', star:false,
+      text:'She returned the book to the library three weeks late and did not meet the librarian\'s eyes. What does this suggest?',
+      opts:{A:'She felt guilty and embarrassed about the late return',B:'She had forgotten she ever borrowed the book',C:'She was angry at the librarian for the late fine',D:'She was too busy to notice anyone around her'} },
+  5:{ section:'English', code:'E5.4', correct:'C', star:false,
+      text:'"The committee\'s decision was met with unanimous approval." What does unanimous mean?',
+      opts:{A:'Very slow and carefully thought through',B:'Strongly opposed by several members',C:'Agreed upon by everyone without exception',D:'Made in secret without public discussion'} },
+  6:{ section:'English', code:'E3.1', correct:'D', star:false,
+      text:'Which sentence punctuates the list correctly?',
+      opts:{A:'For the trip she needed: a tent sleeping bag, torch, and a map.',B:'For the trip she needed a tent, sleeping bag torch, and a map.',C:'For the trip she needed, a tent, a sleeping bag, a torch and a map.',D:'For the trip she needed a tent, a sleeping bag, a torch and a map.'} },
+  7:{ section:'English', code:'E1.7', correct:'B', star:false,
+      text:'Which spelling is correct?',
+      opts:{A:'Occurence',B:'Occurrence',C:'Occurrance',D:'Occurance'} },
+  8:{ section:'English', code:'E2.2', correct:'C', star:false,
+      text:'Which sentence is a complex sentence?',
+      opts:{A:'She ran and she jumped.',B:'The tall oak stood in the field.',C:'Although she was tired, she kept reading until midnight.',D:'She was tired but she kept going.'} },
+  9:{ section:'English', code:'E2.12', correct:'A', star:false,
+      text:'Which sentence uses a fronted adverbial correctly?',
+      opts:{A:'Before the bell rang, she had already packed her bag.',B:'She had already packed her bag, before the bell rang.',C:'Before the bell rang she, had already packed her bag.',D:'She had, before the bell rang, already packed her bag.'} },
+  10:{ section:'Maths', code:'M2.1', correct:'D', star:false,
+       text:'A jacket costs 40 pounds. Its price increases by 20 percent. What is the new price?',
+       opts:{A:'42 pounds',B:'44 pounds',C:'46 pounds',D:'48 pounds'}, mathConcept:'percentages' },
+  11:{ section:'Maths', code:'M2.2', correct:'B', star:false,
+       text:'What is five eighths of 64?',
+       opts:{A:'35',B:'40',C:'45',D:'48'}, mathConcept:'fractions' },
+  12:{ section:'Maths', code:'M1.2', correct:'C', star:false,
+       text:'Which number is closest to 5,000?',
+       opts:{A:'4,390',B:'5,610',C:'4,870',D:'5,720'}, mathConcept:'number sense' },
+  13:{ section:'Maths', code:'M4.2', correct:'A', star:false,
+       text:'The mean of five numbers is 9. Four of the numbers are 6, 8, 11, and 12. What is the fifth number?',
+       opts:{A:'8',B:'9',C:'10',D:'7'}, mathConcept:'mean' },
+  14:{ section:'Maths', code:'M7.1', correct:'C', star:false,
+       text:'Three pencils cost 45p each. A rubber costs 30p. What is the total cost?',
+       opts:{A:'1 pound 45 pence',B:'1 pound 50 pence',C:'1 pound 65 pence',D:'1 pound 60 pence'}, mathConcept:'money' },
+  15:{ section:'Maths', code:'M3.1', correct:'D', star:false,
+       text:'Simplify the ratio 18 to 24.',
+       opts:{A:'6 to 8',B:'9 to 12',C:'4 to 6',D:'3 to 4'}, mathConcept:'ratio' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -268,6 +307,7 @@ let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
 let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
 let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
 let _cachedVoice=null, _audioWarmed=false;
+let _currentUtt=null, _speechGen=0;            // ghost-kill: generation counter + active utterance ref
 
 // Day-lock character
 (()=>{const td=new Date().toISOString().slice(0,10);let ck=localStorage.getItem('char_date')===td?localStorage.getItem('char_key'):null;if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',td);}CHAR=CHARS[ck];document.body.classList.add(ck);})();
@@ -277,7 +317,31 @@ function cleanForSpeech(t){return t.replace(/_{3,}/g,'blank').replace(/_{1,2}/g,
 const _PREF=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha'];
 window.speechSynthesis.onvoiceschanged=()=>{const vs=window.speechSynthesis.getVoices();for(const n of _PREF){const v=vs.find(x=>x.name.startsWith(n)&&x.lang.startsWith('en'));if(v){_cachedVoice=v;break;}}if(!_cachedVoice)_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||null;};
 function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
-function speakWebSpeech(text){try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}window.speechSynthesis.cancel();setTimeout(()=>{const u=new SpeechSynthesisUtterance(text);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;u.volume=1;u.onend=()=>{try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}};u.onerror=()=>{setTimeout(()=>window.speechSynthesis.speak(u),250);};window.speechSynthesis.speak(u);},120);}
+function speakWebSpeech(text){
+  try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
+  window.speechSynthesis.cancel();
+  const myGen=++_speechGen;                         // generation stamp for this utterance
+  setTimeout(()=>{
+    if(myGen!==_speechGen)return;                   // hardStop() fired during 120ms — bail
+    const u=new SpeechSynthesisUtterance(text);
+    _currentUtt=u;
+    if(_cachedVoice)u.voice=_cachedVoice;
+    u.rate=CHAR.key==='snake'?.92:.98;
+    u.pitch=CHAR.key==='snake'?.95:1.02;
+    u.volume=1;
+    u.onend=()=>{
+      if(myGen!==_speechGen)return;                 // stale — another speak() took over
+      _currentUtt=null;
+      try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}
+    };
+    u.onerror=(ev)=>{
+      if(myGen!==_speechGen)return;                 // cancelled by hardStop — NEVER retry
+      if(ev?.error==='canceled'||ev?.error==='interrupted')return; // explicit cancel — ignore
+      // genuine hardware error — fail silently, do not re-queue
+    };
+    window.speechSynthesis.speak(u);
+  },120);
+}
 async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
@@ -287,6 +351,8 @@ function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPEN
 
 // ── HARD STOP v3.15 — kills OpenAI Audio + AbortController + Web Speech ──────
 function hardStop(){
+  _speechGen++;                                     // invalidate all pending speakWebSpeech callbacks
+  if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;} // null handlers before cancel
   if(_oaiController){_oaiController.abort();_oaiController=null;}
   if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}
   if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}
@@ -319,6 +385,7 @@ function removeTyping(){document.getElementById('typing-ind')?.remove();}
 
 function openOverlay(qi){
   _iosWarm();currentQIdx=qi;overlayOpen=true;
+  tutorHistory[qi]=[];tutorTurns[qi]=0;  // fresh each open — prevents alternating-message API error
   document.getElementById('ov-bubbles').innerHTML='';
   document.getElementById('speech-text').value='';
   document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';
@@ -349,20 +416,27 @@ function parentSkip(){
 
 // ── AI TUTORING ───────────────────────────────────────────────────────────────
 async function callAI(qi){
-  if(!API_KEY){addBubble('Add your Claude API key in ⚙ Settings to unlock Echo!','echo');return;}
+  if(!API_KEY){addBubble('Tap ⚙ Settings and add your Claude API key to unlock Echo!','echo');return;}
   const q=QUESTIONS[qi],history=tutorHistory[qi]||[],turn=(tutorTurns[qi]||0)+1,cap=charTurns(q.section);
-  const strict=`ABSOLUTE RULE — FIRST REPLY ONLY:\nOpen with ONE short funny joke about the topic.\nAfter the joke: straight to teaching. No greeting.\nPlain spoken English. No emoji. No asterisks. No markdown.\nMax ${MAX_WORDS} words. NEVER say: wrong, incorrect, failed, mistake, silly, dumb.\n★ ADVANCE each turn — never repeat. Every turn: different angle.\n[Turn ${turn} of up to ${cap}.]`;
+  const isV=q.section==='Vocab';
+  const jFmts=['Why','What do you call','Knock knock','What is the difference between','Did you hear about','What do you get when','Imagine if','You know what is funny about'];
+  const jFmt=jFmts[Math.floor(Math.random()*jFmts.length)];
+  const vocabExit=isV&&q.vocabWord?'Give the grammar rule for "'+q.vocabWord+'" in one sentence. Then ask: Now use '+q.vocabWord+' in your own sentence!':'Say: Great work — tap Got it when you are ready!';
+  const strict=turn===1
+    ?`TURN 1 — YOUR RULES:\n1. Open with a short funny joke. Use this format: "${jFmt}..." — stick to this format, do not switch to a different one.\n2. Show ONE clear concrete example of the correct concept.\n3. End with ONE direct question for the child to answer.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`
+    :`TURN ${turn} — YOUR RULES:\n1. One warm sentence acknowledging what they said.\n2. If their answer shows understanding: celebrate! ${vocabExit}\n3. If not quite right: reteach with a completely different example. End with ONE clear question.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
   const msgs=[...history];
-  if(!msgs.length)msgs.push({role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`});
+  if(!msgs.length){const im={role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
-    removeTyping();if(!r.ok){addBubble('Connection error — check API key in ⚙ Settings.','echo');return;}
-    const text=r.ok?(await r.json()).content[0].text:'Error';
+    removeTyping();
+    if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
+    const text=(await r.json()).content[0].text;
     addBubble(text,'echo');speak(text);
     const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;
     tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);
-  }catch(e){removeTyping();addBubble('Something went wrong — try again.','echo');}
+  }catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
 }
 function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi);}
 
