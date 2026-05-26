@@ -2,207 +2,244 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>IL Exercises</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>IL — Tuesday — Week 29</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ── CL THEME ── orange */
-:root{--hdr:linear-gradient(135deg,#7c3aed,#5b21b6);--bg:#fdf6ff;--acc:#7c3aed;--acc2:#8b5cf6;--vocab:#5b21b6}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:72px}
-body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
-/* header */
-.hdr{background:var(--hdr);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
-.hdr-l h1{color:#fff;font-size:.95rem;font-weight:900;line-height:1.2} .hdr-l p{color:rgba(255,255,255,.75);font-size:.74rem}
-.hdr-r{display:flex;gap:8px;align-items:center}
-.hdr-char{font-size:1.6rem}
-.voice-pill{font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:20px;background:rgba(255,255,255,.2);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.3);white-space:nowrap}
-.voice-pill.natural{background:rgba(34,197,94,.3);color:#fff;border-color:rgba(34,197,94,.5)}
-.settings-btn{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:5px 10px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
-/* rules card */
-.rw{padding:10px 14px 0}
-.rules-card{background:#1e293b;border:2px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden}
-.rules-hdr{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.rules-title{color:#f1f5f9;font-size:.85rem;font-weight:900} .rules-arrow{color:#64748b;font-size:.75rem}
-.rules-body{padding:8px 14px 4px}
-.tip-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;color:#94a3b8;font-size:.82rem;line-height:1.45}
-.tip-code{background:rgba(249,115,22,.2);color:#fb923c;border-radius:6px;padding:1px 7px;font-weight:800;font-size:.72rem;flex-shrink:0;margin-top:1px}
-.rules-confirm{width:100%;margin-top:10px;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:10px;padding:11px;font-weight:900;font-family:'Nunito',sans-serif;font-size:.88rem;cursor:pointer;margin-bottom:8px}
-/* sections */
-.ex-wrap{padding:10px 14px;display:flex;flex-direction:column;gap:12px}
-.section-card{border-radius:14px;padding:14px}
-.section-label{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.8);margin-bottom:10px}
-.vocab-card{background:var(--vocab)} .english-card{background:#0077B6} .maths-card{background:#2D9E2D} .writing-card{background:#166534}
-/* questions */
-.qc{background:rgba(255,255,255,.13);border-radius:10px;padding:11px;margin-bottom:9px;border-left:4px solid transparent}
-.qc.right{border-left-color:#22c55e} .qc.wrong{border-left-color:#ef4444}
-.q-text{color:#fff;font-size:.88rem;font-weight:700;line-height:1.5;margin-bottom:9px} .q-star{color:#fbbf24}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.opt{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:7px 9px;color:#fff;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;text-align:left;display:flex;gap:5px;align-items:flex-start;min-height:44px;-webkit-tap-highlight-color:transparent}
-.opt:active{transform:scale(.97)}
-.opt.sc{background:#22c55e!important;color:#fff!important;border-color:#22c55e!important}
-.opt.sw{background:#ef4444!important;color:#fff!important;border-color:#ef4444!important}
-.opt.rc2{outline:3px solid #22c55e} .opt.dis{pointer-events:none;opacity:.55}
-.ok{font-size:.68rem;background:rgba(0,0,0,.2);border-radius:4px;padding:1px 5px;flex-shrink:0;margin-top:1px}
-/* writing */
-.writing-prompt{background:rgba(255,255,255,.12);border-radius:10px;padding:11px;margin-bottom:9px}
-.mission-id{font-size:.7rem;font-weight:800;color:rgba(255,255,255,.65);margin-bottom:3px}
-.mission-title{font-size:.95rem;font-weight:900;color:#fff;margin-bottom:5px}
-.mission-codes{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
-.code-tag{background:rgba(255,255,255,.2);color:#fff;border-radius:6px;padding:2px 7px;font-size:.7rem;font-weight:800}
-.mission-prompt{font-size:.84rem;color:rgba(255,255,255,.9);line-height:1.5}
-.writing-ta{width:100%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;padding:9px;resize:none;min-height:90px;margin-top:8px;font-size:.86rem}
-.writing-ta::placeholder{color:rgba(255,255,255,.4)}
-.writing-send-btn{width:100%;margin-top:8px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;padding:10px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;font-size:.88rem}
-.writing-fb{background:rgba(255,255,255,.12);border-radius:10px;padding:10px;margin-top:8px;color:#fff;font-size:.84rem;line-height:1.5;display:none}
-/* submit bar */
-.sub-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid rgba(0,0,0,.1);padding:9px 14px;display:flex;align-items:center;gap:10px;z-index:50}
-.pts-display{font-size:.8rem;font-weight:800;color:var(--acc);flex:1}
-.sub-btn{background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:10px;padding:10px 22px;font-weight:900;font-family:'Nunito',sans-serif;font-size:.9rem;cursor:pointer}
-.sub-btn:disabled{opacity:.4;cursor:default}
-/* remediation */
-.rem-banner{background:#1e293b;border-top:3px solid var(--acc);padding:10px 14px;text-align:center}
-.rem-banner p{color:#f1f5f9;font-size:.86rem;font-weight:700}
-/* overlay — full screen v3.14 */
-.overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:100;flex-direction:column}
-.overlay.open{display:flex}
-.ov-header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
-.ov-char{font-size:1.8rem} .ov-title{flex:1;color:#f1f5f9;font-size:.86rem;font-weight:800}
-.skip-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#94a3b8;border-radius:8px;padding:5px 11px;font-size:.76rem;cursor:pointer;font-family:'Nunito',sans-serif}
-.dots{display:flex;gap:4px;padding:8px 14px 0;flex-shrink:0}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)} .dot.used{background:rgba(249,115,22,.7)}
-.ov-bubbles{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
-.bub{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.88rem;line-height:1.6}
-.bub.echo{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:#f1f5f9}
-.bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
-.typing{display:flex;gap:5px;align-items:center;padding:10px 12px;background:rgba(255,255,255,.08);border-radius:12px;align-self:flex-start}
-.typing span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:bop .8s infinite}
-.typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
-@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-.ov-input{padding:10px 14px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;background:rgba(0,0,0,.25)}
-.mstat{font-size:.73rem;color:#64748b;margin-bottom:5px}
-.speech-ta{width:100%;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.14);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:.86rem;padding:8px 11px;resize:none;min-height:65px}
-.speech-ta::placeholder{color:#475569}
-.ov-btns{display:flex;gap:7px;margin-top:7px}
-.mic-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:8px 13px;font-size:.95rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.mic-btn.listening{background:rgba(239,68,68,.3);border-color:#ef4444;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
-.send-btn{flex:1;background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.4);color:#86efac;border-radius:8px;padding:8px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-.gotit-btn{background:rgba(249,115,22,.2);border:1px solid rgba(249,115,22,.35);color:#fb923c;border-radius:8px;padding:8px 13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer}
-/* result */
-.result-screen{padding:28px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
-.res-emoji{font-size:3.2rem} .res-score{font-size:1.8rem;font-weight:900;color:#1e293b}
-.res-msg{font-size:.92rem;color:#475569;max-width:280px;line-height:1.6}
-.res-pts{font-size:.95rem;font-weight:800;color:var(--acc)}
-/* dictionary */
-.dict-wrap{background:#C77800;border-radius:14px;padding:14px;margin:10px 0;width:100%}
-.dict-word{font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:3px}
-.dict-def{font-size:.86rem;color:rgba(255,255,255,.9);margin-bottom:5px;line-height:1.5}
-.dict-eg{font-size:.8rem;color:rgba(255,255,255,.75);font-style:italic;margin-bottom:10px}
-.dict-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:9px 14px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;width:100%;display:block;text-align:center;margin-bottom:7px}
-.rev-block{background:rgba(0,0,0,.15);border-radius:10px;padding:10px 11px;margin-top:6px}
-.rev-word{font-size:.84rem;font-weight:800;color:#fff;margin-bottom:2px} .rev-def{font-size:.79rem;color:rgba(255,255,255,.8)}
-/* settings overlay */
-.key-card{background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:22px;max-width:360px;width:100%}
-.key-title{color:#f1f5f9;font-size:.95rem;font-weight:900;margin-bottom:14px}
-.key-label{display:block;color:#94a3b8;font-size:.78rem;font-weight:700;margin-bottom:5px}
-.key-req{color:#fb923c;font-weight:400} .key-opt{color:#475569;font-weight:400}
-.key-input{width:100%;padding:9px 11px;background:#1e293b;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#f1f5f9;font-size:.83rem;font-family:'Nunito',sans-serif;margin-bottom:12px}
-.key-note{color:#475569;font-size:.73rem;margin-bottom:14px;line-height:1.4}
-.key-btns{display:flex;gap:8px}
-.key-save{flex:1;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:8px;padding:10px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif}
-.key-close{background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;cursor:pointer;font-family:'Nunito',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',sans-serif;background:#fdf6ff;color:#1a1a2e;overflow:hidden;}
+#page-wrap{display:flex;flex-direction:column;height:100vh;}
+header{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.hdr-left{display:flex;align-items:center;gap:10px;}
+.hdr-title{font-size:17px;font-weight:900;}
+.hdr-sub{font-size:12px;opacity:.85;}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.voice-pill{background:rgba(255,255,255,.22);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;}
+.voice-pill.natural{background:rgba(255,255,255,.38);}
+.settings-btn{background:rgba(255,255,255,.18);border:none;color:#fff;font-size:18px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+#rules-wrap{background:#fff;border-bottom:3px solid #7c3aed;flex-shrink:0;}
+.rules-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;font-weight:900;font-size:14px;}
+#rh-arrow{font-size:12px;color:#FF6B35;}
+#rb{padding:0 16px 12px;display:flex;flex-direction:column;gap:6px;}
+.rule-chip{background:#f5f0ff;border-left:4px solid #7c3aed;padding:8px 12px;border-radius:6px;font-size:13px;line-height:1.4;}
+.rules-done-btn{margin:4px 0 8px;padding:10px;background:#FF6B35;color:#fff;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;cursor:pointer;width:100%;}
+#main-content{flex:1;overflow-y:auto;padding:12px 16px 80px;}
+.section-card{border-radius:14px;padding:14px;margin-bottom:12px;}
+.section-card.vocab{background:#5b21b6;color:#fff;}
+.section-card.english{background:#0077B6;color:#fff;}
+.section-card.maths{background:#2D9E2D;color:#fff;}
+.section-card.writing{background:#166534;color:#fff;}
+.section-card.dict{background:#C77800;color:#fff;}
+.section-label{font-size:11px;font-weight:900;letter-spacing:.08em;opacity:.8;text-transform:uppercase;margin-bottom:8px;}
+.q-block{background:rgba(255,255,255,.12);border-radius:10px;padding:12px;margin-bottom:8px;}
+.q-text{font-size:14px;font-weight:700;line-height:1.4;margin-bottom:10px;}
+.opts{display:flex;flex-direction:column;gap:6px;}
+.opt-btn{background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.3);border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;padding:10px 14px;text-align:left;cursor:pointer;min-height:44px;line-height:1.3;transition:background .15s;}
+.opt-btn.selected{background:rgba(255,255,255,.38);border-color:#fff;}
+.opt-btn.correct{background:#16a34a;border-color:#bbf7d0;}
+.opt-btn.wrong{background:#dc2626;border-color:#fca5a5;}
+.star-badge{display:inline-block;background:#FFD700;color:#7B2D8B;border-radius:6px;font-size:10px;font-weight:900;padding:2px 6px;margin-bottom:4px;}
+#submit-bar{position:fixed;bottom:0;left:0;right:0;padding:12px 16px;background:#fdf6ff;border-top:2px solid #e5e7eb;z-index:50;}
+#submit-btn{width:100%;padding:14px;background:#FF6B35;color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;}
+#submit-btn:disabled{background:#d1d5db;color:#9ca3af;}
+#result-screen{display:none;position:fixed;inset:0;background:#fdf6ff;z-index:200;overflow-y:auto;padding:24px 16px;}
+.result-card{background:#fff;border-radius:20px;padding:24px;text-align:center;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.result-emoji{font-size:56px;margin-bottom:12px;}
+.result-title{font-size:24px;font-weight:900;color:#FF6B35;margin-bottom:6px;}
+.result-score{font-size:40px;font-weight:900;color:#1a1a2e;margin:8px 0;}
+.result-pts{font-size:20px;font-weight:800;color:#16a34a;}
+.result-breakdown{background:#f8fafc;border-radius:12px;padding:14px;text-align:left;margin-top:12px;}
+.rb-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #e5e7eb;font-size:13px;}
+.rb-row:last-child{border-bottom:none;}
+#overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:100;flex-direction:column;}
+#overlay.open{display:flex;}
+#ov-header{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+#ov-char{font-size:28px;}
+#ov-char-name{font-size:13px;font-weight:900;color:#f1f5f9;}
+#dots{display:flex;gap:6px;padding:0 16px 8px;flex-shrink:0;}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);}
+.dot.active{background:#FF6B35;}
+#q-ctx{display:none;margin:0 16px 8px;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;flex-shrink:0;}
+.q-ctx-text{font-size:12px;color:#94a3b8;margin-bottom:8px;line-height:1.4;}
+.q-ctx-row{display:flex;gap:6px;flex-wrap:wrap;}
+.q-ctx-opt{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;}
+.q-ctx-opt.wrong-opt{background:rgba(239,68,68,.25);color:#fca5a5;}
+.q-ctx-opt.right-opt{background:rgba(34,197,94,.25);color:#86efac;}
+#ov-bubbles{flex:1;overflow-y:auto;padding:0 16px 12px;display:flex;flex-direction:column;gap:8px;}
+.bubble{border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.5;max-width:90%;}
+.bubble.echo{background:rgba(255,255,255,.12);color:#f1f5f9;align-self:flex-start;}
+.bubble.child{background:#FF6B35;color:#fff;align-self:flex-end;}
+#ov-input{flex-shrink:0;padding:8px 16px;border-top:1px solid rgba(255,255,255,.1);}
+#mstat{font-size:11px;color:#94a3b8;margin-bottom:6px;text-align:center;}
+#speech-text{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:14px;padding:10px;min-height:70px;resize:none;}
+#ov-btns{display:flex;gap:8px;margin-top:8px;}
+#mbtn{flex:1;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:10px;cursor:pointer;min-height:44px;}
+#mbtn.listening{background:rgba(239,68,68,.3);border-color:#f87171;}
+#send-btn{flex:1;background:#7c3aed;border:none;border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;padding:10px;cursor:pointer;min-height:44px;}
+#ov-footer{display:flex;gap:8px;padding:8px 16px 12px;flex-shrink:0;}
+#gotit-btn{flex:2;background:#16a34a;border:none;border-radius:12px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;padding:12px;cursor:pointer;min-height:44px;}
+#skip-btn{flex:1;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;color:#94a3b8;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:12px;cursor:pointer;min-height:44px;}
+.rem-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;}
+.rem-q{font-size:14px;font-weight:700;margin-bottom:10px;color:#1a1a2e;}
+.rem-opts{display:flex;flex-direction:column;gap:6px;}
+.rem-opt{background:#f1f5f9;border:2px solid #e2e8f0;border-radius:10px;color:#1a1a2e;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 14px;text-align:left;cursor:pointer;min-height:44px;}
+.rem-opt.correct{background:#dcfce7;border-color:#16a34a;color:#166534;}
+.rem-opt.wrong{background:#fee2e2;border-color:#dc2626;color:#991b1b;}
+.dict-card{background:#C77800;border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;}
+.dict-word{font-size:22px;font-weight:900;margin-bottom:4px;}
+.dict-def{font-size:13px;opacity:.9;margin-bottom:8px;line-height:1.4;}
+.dict-eg{font-size:12px;font-style:italic;opacity:.8;margin-bottom:12px;line-height:1.4;}
+.dict-btn{background:rgba(255,255,255,.22);border:none;border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:10px 18px;cursor:pointer;min-height:44px;}
+#rev-block{display:none;background:rgba(0,0,0,.15);border-radius:10px;padding:12px;margin-bottom:12px;}
+#rev-word{font-size:16px;font-weight:900;}
+#rev-def{font-size:12px;opacity:.85;margin-top:4px;}
+#dict-overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:110;flex-direction:column;}
+#dict-overlay.open{display:flex;}
+#dict-ov-header{padding:16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+#dict-ov-bubbles{flex:1;overflow-y:auto;padding:0 16px 12px;display:flex;flex-direction:column;gap:8px;}
+#dict-ov-input{flex-shrink:0;padding:8px 16px;}
+#dict-mstat{font-size:11px;color:#94a3b8;margin-bottom:6px;text-align:center;}
+#dict-speech-text{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:14px;padding:10px;min-height:70px;resize:none;}
+#dict-ov-btns{display:flex;gap:8px;margin-top:8px;}
+#dict-mbtn{flex:1;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:10px;cursor:pointer;min-height:44px;}
+#dict-send-btn{flex:1;background:#C77800;border:none;border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;padding:10px;cursor:pointer;min-height:44px;}
+#dict-close-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;color:#94a3b8;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 18px;cursor:pointer;margin:8px 16px 12px;}
+#key-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;align-items:center;justify-content:center;padding:20px;}
+.key-save{flex:1;background:#7c3aed;border:none;border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;padding:10px;cursor:pointer;}
+.key-close{flex:1;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;color:#94a3b8;font-family:'Nunito',sans-serif;font-size:14px;padding:10px;cursor:pointer;}
+.writing-prompt{background:rgba(255,255,255,.12);border-radius:10px;padding:12px;margin-bottom:10px;font-size:13px;line-height:1.5;}
+.writing-techniques{background:rgba(255,255,255,.08);border-radius:8px;padding:10px;margin-bottom:10px;font-size:12px;line-height:1.5;opacity:.9;}
+#writing-text{width:100%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.3);border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;padding:10px;min-height:100px;resize:none;}
+#writing-chars{font-size:11px;opacity:.7;margin-top:4px;}
+.writing-mic-row{display:flex;gap:8px;margin-top:8px;}
+#writing-mbtn{flex:1;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px;cursor:pointer;min-height:44px;}
+#writing-mbtn.listening{background:rgba(239,68,68,.3);border-color:#f87171;}
+#writing-mstat{font-size:11px;opacity:.7;margin-top:4px;text-align:center;}
+#writing-send-btn{flex:1;background:#fff;color:#166534;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;padding:10px;cursor:pointer;min-height:44px;}
+#writing-overlay{display:none;position:fixed;inset:0;background:rgba(15,15,30,.97);z-index:105;flex-direction:column;}
+#writing-overlay.open{display:flex;}
+#writing-ov-header{padding:16px;flex-shrink:0;color:#f1f5f9;}
+#writing-ov-bubbles{flex:1;overflow-y:auto;padding:0 16px 12px;display:flex;flex-direction:column;gap:8px;}
+#writing-ov-input{flex-shrink:0;padding:8px 16px;}
+#writing-mstat2{font-size:11px;color:#94a3b8;margin-bottom:6px;text-align:center;}
+#writing-speech2{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:14px;padding:10px;min-height:70px;resize:none;}
+#writing-ov-btns{display:flex;gap:8px;margin-top:8px;}
+#writing-mic2{flex:1;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);border-radius:10px;color:#f1f5f9;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:10px;cursor:pointer;min-height:44px;}
+#writing-send2{flex:1;background:#166534;border:none;border-radius:10px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;padding:10px;cursor:pointer;min-height:44px;}
+#writing-close-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;color:#94a3b8;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 18px;cursor:pointer;margin:8px 16px 12px;}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
-<div class="hdr">
-  <div class="hdr-l"><h1 id="hdr-title">IL Exercises</h1><p id="hdr-sub">Week 0</p></div>
-  <div class="hdr-r">
-    <span id="voice-pill" class="voice-pill">🔊 Device</span>
-    <span id="hdr-char" class="hdr-char">?</span>
+<div id="page-wrap">
+<header>
+  <div class="hdr-left">
+    <div>
+      <div class="hdr-title">🟣 IL — Tuesday</div>
+      <div class="hdr-sub">Week 29 · 16 questions</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <span class="voice-pill" id="voice-pill">🔊 Device</span>
     <button class="settings-btn" onclick="openSettings()">⚙</button>
   </div>
+</header>
+
+<div id="rules-wrap">
+  <div class="rules-hdr" onclick="toggleRules()">
+    <span>⚡ TODAY'S WEAPONS</span>
+    <span id="rh-arrow">▶ tap to read</span>
+  </div>
+  <div id="rb" style="display:none">
+    <div class="rule-chip" id="rc0"></div>
+    <div class="rule-chip" id="rc1"></div>
+    <div class="rule-chip" id="rc2"></div>
+    <button class="rules-done-btn" onclick="markRulesRead()">✅ Got it — let's go!</button>
+  </div>
 </div>
 
-<!-- RULES CARD -->
-<div class="rw">
-  <div class="rules-card">
-    <div class="rules-hdr" onclick="toggleRules()">
-      <span class="rules-title" id="rh-title">⚡ TODAY'S WEAPONS — tap to read</span>
-      <span class="rules-arrow" id="rh-arrow">▼</span>
+<div id="main-content">
+  <div id="ex-wrap"></div>
+  <div id="rem-wrap" style="display:none"></div>
+  <div id="dict-section"></div>
+</div>
+</div>
+
+<div id="submit-bar">
+  <button id="submit-btn" onclick="handleSubmit()" disabled>Submit answers</button>
+</div>
+
+<div id="result-screen"></div>
+
+<div id="overlay">
+  <div id="ov-header">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span id="ov-char"></span>
+      <span id="ov-char-name"></span>
     </div>
-    <div class="rules-body" id="rb" style="display:none">
-      <div id="rules-tips"></div>
-      <button class="rules-confirm" onclick="markRulesRead()">I'm ready — let's go! 🚀</button>
-    </div>
+    <button id="ov-pts-display" style="background:none;border:none;color:#94a3b8;font-size:12px;"></button>
   </div>
-</div>
-
-<!-- MAIN CONTENT (locked until rules read — v3.14) -->
-<div id="main-content" style="pointer-events:none;opacity:.45">
-  <div id="ex-wrap" class="ex-wrap">
-    <div id="vocab-section"></div>
-    <div id="english-section"></div>
-    <div id="maths-section"></div>
-    <div id="writing-section" style="display:none"></div>
-  </div>
-</div>
-
-<!-- DICTIONARY — Section 5, always visible -->
-<div id="dict-section" style="padding:0 14px 14px"></div>
-
-<!-- SUBMIT BAR -->
-<div id="sub-bar" class="sub-bar">
-  <div id="pts-display" class="pts-display">⭐ 0 pts — 0/16 answered</div>
-  <button id="sub-btn" class="sub-btn" onclick="handleSubmit()" disabled>Submit ✓</button>
-</div>
-
-<!-- REMEDIATION BANNER -->
-<div id="remed-banner" style="display:none" class="rem-banner"><p id="rem-msg"></p></div>
-
-<!-- ECHO OVERLAY (full screen — v3.14) -->
-<div id="overlay" class="overlay">
-  <div class="ov-header">
-    <span id="ov-char" class="ov-char">?</span>
-    <div id="ov-title" class="ov-title">Echo is thinking…</div>
-    <button class="skip-btn" onclick="parentSkip()">Skip ⏭</button>
-  </div>
-  <div id="dots" class="dots"></div>
-  <div id="ov-bubbles" class="ov-bubbles"></div>
-  <div class="ov-input">
-    <div id="mstat" class="mstat">Tap 🎤 to speak, or type below</div>
-    <textarea id="speech-text" class="speech-ta" placeholder="Type or speak your answer…" rows="3"></textarea>
-    <div class="ov-btns">
-      <button id="mbtn" class="mic-btn" onclick="toggleMic()">🎤</button>
-      <button class="send-btn" onclick="submitSpeech()">Send ➤</button>
-      <button class="gotit-btn" onclick="gotIt()">Got it ✓</button>
+  <div id="dots"></div>
+  <div id="q-ctx"></div>
+  <div id="ov-bubbles"></div>
+  <div id="ov-input">
+    <div id="mstat">Tap 🎤 to speak, or type below</div>
+    <textarea id="speech-text" placeholder="Type your answer here…"></textarea>
+    <div id="ov-btns">
+      <button id="mbtn" onclick="toggleMic()">🎤 Speak</button>
+      <button id="send-btn" onclick="submitSpeech()">Send ➤</button>
     </div>
   </div>
+  <div id="ov-footer">
+    <button id="gotit-btn" onclick="gotIt()">✅ Got it!</button>
+    <button id="skip-btn" onclick="parentSkip()">Skip ›</button>
+  </div>
 </div>
 
-<!-- RESULT SCREEN -->
-<div id="result" style="display:none" class="result-screen">
-  <div id="res-emoji" class="res-emoji"></div>
-  <div id="res-score" class="res-score"></div>
-  <div id="res-msg" class="res-msg"></div>
-  <div id="res-pts" class="res-pts"></div>
+<div id="dict-overlay">
+  <div id="dict-ov-header">
+    <div style="color:#f1f5f9;font-size:16px;font-weight:900;">📖 Dictionary — Ask Echo</div>
+    <button onclick="closeDictOverlay()" style="background:none;border:none;color:#94a3b8;font-size:20px;cursor:pointer;">✕</button>
+  </div>
+  <div id="dict-ov-bubbles"></div>
+  <div id="dict-ov-input">
+    <div id="dict-mstat">Tap 🎤 to speak, or type below</div>
+    <textarea id="dict-speech-text" placeholder="Ask Echo about this word…"></textarea>
+    <div id="dict-ov-btns">
+      <button id="dict-mbtn" onclick="toggleDictMic()">🎤 Speak</button>
+      <button id="dict-send-btn" onclick="sendDictReply()">Send ➤</button>
+    </div>
+  </div>
+  <button id="dict-close-btn" onclick="closeDictOverlay()">Close dictionary</button>
 </div>
 
-<!-- SETTINGS OVERLAY -->
-<div id="key-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;align-items:center;justify-content:center;padding:20px">
-  <div class="key-card">
-    <div class="key-title">⚙ Settings</div>
-    <label class="key-label">Claude API Key <span class="key-req">(required)</span></label>
-    <input id="api-key-input" type="password" class="key-input" placeholder="sk-ant-…">
-    <label class="key-label">OpenAI Key — natural voice <span class="key-opt">(optional)</span></label>
-    <input id="oai-key-input" type="password" class="key-input" placeholder="sk-… leave blank for device voice">
-    <p class="key-note">Echo works fully with just the Claude key. OpenAI adds natural voice — enter once, works on all pages.</p>
-    <div class="key-btns">
+<div id="writing-overlay">
+  <div id="writing-ov-header">
+    <div style="font-size:16px;font-weight:900;">✍️ Echo Writing Coach</div>
+    <button onclick="closeWritingOverlay()" style="background:none;border:none;color:#94a3b8;font-size:20px;cursor:pointer;">✕</button>
+  </div>
+  <div id="writing-ov-bubbles"></div>
+  <div id="writing-ov-input">
+    <div id="writing-mstat2">Tap 🎤 to speak, or type below</div>
+    <textarea id="writing-speech2" placeholder="Type your response…"></textarea>
+    <div id="writing-ov-btns">
+      <button id="writing-mic2" onclick="toggleWritingMic2()">🎤 Speak</button>
+      <button id="writing-send2" onclick="sendWritingReply()">Send ➤</button>
+    </div>
+  </div>
+  <button id="writing-close-btn" onclick="closeWritingOverlay()">Close</button>
+</div>
+
+<div id="key-overlay">
+  <div style="background:#1e293b;border-radius:16px;padding:24px;width:100%;max-width:360px">
+    <h3 style="font-size:16px;font-weight:900;color:#f1f5f9;margin-bottom:8px">⚙ Settings</h3>
+    <p style="font-size:12px;color:#94a3b8;margin-bottom:14px;line-height:1.5">Claude key (required). OpenAI adds natural voice — enter once, works on all pages.</p>
+    <input id="api-key-input" type="text" placeholder="sk-ant-…" autocomplete="off" autocorrect="off" autocapitalize="none" style="width:100%;background:#0f172a;border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:10px;color:#f1f5f9;font-size:14px;margin-bottom:10px">
+    <input id="oai-key-input" type="text" placeholder="sk-… (OpenAI, optional)" autocomplete="off" autocorrect="off" autocapitalize="none" style="width:100%;background:#0f172a;border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:10px;color:#f1f5f9;font-size:14px;margin-bottom:14px">
+    <div style="display:flex;gap:8px">
       <button onclick="saveKey()" class="key-save">Save</button>
       <button onclick="document.getElementById('key-overlay').style.display='none'" class="key-close">Close</button>
     </div>
+    <button onclick="clearKey()" style="width:100%;margin-top:8px;background:none;border:none;color:#64748b;font-size:12px;cursor:pointer">Clear all keys</button>
   </div>
 </div>
 
@@ -210,145 +247,173 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'IL';
 const DAY      = 'Tuesday';
-const WEEK     = 23;
+const WEEK     = 30;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'patient';
-const DICT_DEF  = 'Adjective — able to wait calmly without getting upset or cross.';
-const DICT_EG   = 'The patient teacher waited quietly while the children finished writing their sentences.';
+const DICT_WORD = 'scruffy';
+const DICT_DEF  = 'Describing word — messy and untidy in appearance.';
+const DICT_EG   = 'The scruffy dog ran through every muddy puddle in the park.';
 const RULES_TIPS = [
-  'E5.1: Read the question first so you know exactly what to look for in the passage.',
-  'E1.1: If you are not sure how to spell a word, break it into smaller sounds and write each one.',
-  'Maths: For a number sentence, start from one end and work across step by step.',
+  'Spelling watch out: After writing a word, look at each part — does every letter look right?',
+  'Number sentences watch out: Take away and add are different — 10 take away 3 is 7, but 10 add 3 is 13.',
+  'Capital letters watch out: Capital letters only go at the START of a name or sentence, never in the middle.',
 ];
 const QUESTIONS = {
-  0:{ section:'Vocab', code:'E4.1', correct:'C', star:false,
-      text:'What does "cosy" mean?',
-      opts:{A:'Very loud and busy',B:'Very cold and draughty',C:'Warm, comfortable, and snug',D:'Very big and open'},
-      vocabWord:'cosy' },
-  1:{ section:'Vocab', code:'E4.2', correct:'A', star:false,
-      text:'What does "wander" mean?',
-      opts:{A:'To walk slowly without a plan',B:'To run very fast',C:'To shout loudly',D:'To sleep for a long time'},
-      vocabWord:'wander' },
-  2:{ section:'Vocab', code:'E4.3', correct:'D', star:false,
-      text:'What does "brave" mean?',
-      opts:{A:'Very careful and slow',B:'Very hungry all the time',C:'Very loud and busy',D:'Not afraid, even when things are scary'},
-      vocabWord:'brave' },
-  3:{ section:'Vocab', code:'E4.4', correct:'B', star:true,
-      text:'★ STAR — "She was curious about the box and could not stop thinking about what was inside." What does curious mean here?',
-      opts:{A:'Very cross and upset',B:'Wanting very much to find out or know something',C:'Very tired and ready for sleep',D:'Completely sure about something'},
-      vocabWord:'curious' },
-  4:{ section:'English', code:'E1.1', correct:'A', star:false,
-      text:'Which spelling is correct?',
-      opts:{A:'Jumped',B:'Jumpt',C:'Jumpped',D:'Jummped'} },
-  5:{ section:'English', code:'E3.2', correct:'D', star:false,
-      text:'Which sentence uses an apostrophe correctly?',
-      opts:{A:'The birds nest was very high up.',B:'The birds\' nest was very high up.',C:'The Birds nest was very high up.',D:"The bird's nest was very high up."} },
-  6:{ section:'English', code:'E2.1', correct:'B', star:false,
-      text:'Which sentence is written correctly?',
-      opts:{A:'my friend lives next door to me.',B:'My friend lives next door to me.',C:'My Friend lives next door to me.',D:'my Friend lives next door to me.'} },
-  7:{ section:'English', code:'E3.1', correct:'C', star:false,
-      text:'Which sentence has the commas in the right place?',
-      opts:{A:'She had a red coat, blue boots, and a, yellow hat.',B:'She had a red coat blue boots, and a yellow hat.',C:'She had a red coat, blue boots and a yellow hat.',D:'She had a red, coat, blue, boots and a yellow hat.'} },
-  8:{ section:'English', code:'E5.2', correct:'A', star:false,
-      text:'Sam saw the present on the table and his eyes went wide. How is he probably feeling?',
-      opts:{A:'Very surprised and excited',B:'Very sad and disappointed',C:'Confused and not sure what to do',D:'Tired and ready for bed'} },
-  9:{ section:'English', code:'E4.2', correct:'C', star:false,
-      text:'Which word means something that shines with lots of colours, like a rainbow?',
-      opts:{A:'Dark',B:'Dull',C:'Glittery',D:'Flat'} },
-  10:{ section:'Maths', code:'M1.1', correct:'D', star:false,
-       text:'What is 63 plus 28?',
-       opts:{A:'81',B:'88',C:'89',D:'91'}, mathConcept:'addition' },
-  11:{ section:'Maths', code:'M1.2', correct:'B', star:false,
-       text:'What is 150 minus 74?',
-       opts:{A:'66',B:'76',C:'86',D:'84'}, mathConcept:'subtraction' },
-  12:{ section:'Maths', code:'M1.5', correct:'C', star:false,
-       text:'What is 9 times 6?',
-       opts:{A:'48',B:'52',C:'54',D:'56'}, mathConcept:'multiplication' },
-  13:{ section:'Maths', code:'M1.6', correct:'A', star:false,
-       text:'What is 63 divided by 7?',
-       opts:{A:'9',B:'8',C:'7',D:'6'}, mathConcept:'division' },
-  14:{ section:'Maths', code:'M2.1', correct:'B', star:false,
-       text:'What is one quarter of 20?',
-       opts:{A:'4',B:'5',C:'6',D:'8'}, mathConcept:'fractions' },
-  15:{ section:'Maths', code:'M7.1', correct:'D', star:false,
-       text:'A book costs 1 pound 50 pence. Sam has 2 pounds. How much change does he get?',
-       opts:{A:'40 pence',B:'45 pence',C:'55 pence',D:'50 pence'}, mathConcept:'money' },
+  0:{section:'Vocab',code:'E4.1',correct:'A',star:false,text:'The word "cheerful" means —',opts:{A:'happy and positive',B:'quiet and shy',C:'tired and bored',D:'angry and upset'},vocabWord:'cheerful'},
+  1:{section:'Vocab',code:'E4.2',correct:'C',star:false,text:'Which sentence uses "shiny" correctly?',opts:{A:'The shiny noise echoed around the room.',B:'The shiny rainstorm lasted all afternoon.',C:'The shiny coin caught the light and sparkled.',D:'The shiny wind blew the hat off her head.'},vocabWord:'shiny'},
+  2:{section:'Vocab',code:'E4.3',correct:'B',star:false,text:'"Exhausted" means —',opts:{A:'very excited',B:'very tired',C:'very confused',D:'very hungry'},vocabWord:'exhausted'},
+  3:{section:'Vocab',code:'E4.1',correct:'D',star:true,text:'STAR — "Scruffy" means —',opts:{A:'very clean and smart',B:'very fast and busy',C:'very tall and strong',D:'messy and untidy'},vocabWord:'scruffy'},
+  4:{section:'English',code:'E1.1',correct:'C',star:false,text:'Which sentence has the correct capital letters?',opts:{A:'I went to see my aunt Sarah on saturday.',B:'i went to see my Aunt sarah on Saturday.',C:'I went to see my aunt Sarah on Saturday.',D:'I went to see my Aunt sarah on saturday.'}},
+  5:{section:'English',code:'E1.2',correct:'B',star:false,text:'Which word is spelled correctly?',opts:{A:'freind',B:'friend',C:'frend',D:'friand'}},
+  6:{section:'English',code:'E2.1',correct:'D',star:false,text:'Which sentence is correct?',opts:{A:'She runned all the way to school.',B:'She run all the way to school.',C:'She running all the way to school.',D:'She ran all the way to school.'}},
+  7:{section:'English',code:'E3.1',correct:'A',star:false,text:'Which sentence has the correct punctuation?',opts:{A:'The dog sat quietly by the fire.',B:'The dog sat quietly by the fire?',C:'The dog sat quietly by the fire!',D:'The dog sat quietly by the fire,'}},
+  8:{section:'English',code:'E2.2',correct:'B',star:false,text:'Which sentence joins two ideas correctly?',opts:{A:'I like pizza, I also like pasta, too much.',B:'I like pizza and I also like pasta.',C:'I like pizza and also, pasta I like.',D:'I like pizza. And also I like pasta.'}},
+  9:{section:'English',code:'E1.3',correct:'C',star:false,text:'What is the correct plural of "leaf"?',opts:{A:'leafs',B:'leafes',C:'leaves',D:'leavies'}},
+  10:{section:'Maths',code:'M1.1',correct:'B',star:false,text:'What number is missing? 3, 6, 9, —, 15.',opts:{A:'11',B:'12',C:'13',D:'14'}},
+  11:{section:'Maths',code:'M1.2',correct:'A',star:false,text:'What is 58 plus 24?',opts:{A:'82',B:'72',C:'84',D:'62'}},
+  12:{section:'Maths',code:'M1.3',correct:'D',star:false,text:'What is 71 take away 46?',opts:{A:'34',B:'33',C:'26',D:'25'}},
+  13:{section:'Maths',code:'M1.4',correct:'C',star:false,text:'What is 8 times 3?',opts:{A:'11',B:'18',C:'24',D:'28'}},
+  14:{section:'Maths',code:'M1.5',correct:'B',star:false,text:'24 apples are shared equally between 4 children. How many apples does each child get?',opts:{A:'5',B:'6',C:'7',D:'8'}},
+  15:{section:'Maths',code:'M2.1',correct:'C',star:false,text:'What is one quarter of 20?',opts:{A:'4',B:'10',C:'5',D:'8'}},
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
-// ─── PERMANENT ZONE — do not edit below ──────────────────────────────────────
-
+/* ── PERMANENT ZONE ── */
+const WEBHOOK    = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
 const TOTAL_QS   = 16;
 const PASS_SCORE = 13;
-const WEBHOOK    = 'https://hook.eu1.make.com/tp5602e5nihsmd7ee47wuoqur97y2rkx';
-const WRITING_DAYS  = ['Monday','Wednesday','Friday'];
-const RULE_STYLES   = {Monday:'weapons',Tuesday:'watchout',Wednesday:'protips',Thursday:'memory',Friday:'weapons'};
-const RULE_HEADERS  = {weapons:"⚡ TODAY'S WEAPONS",watchout:'⚠️ WATCH OUT FOR THESE',protips:'🏆 PRO TIPS FOR TODAY',memory:'🧠 QUICK MEMORY TRICKS'};
-const CHILD_AGE     = CHILD==='IL' ? 7 : 9;
-const MAX_WORDS     = CHILD==='IL' ? 70 : 90;
+const CHILD_AGE  = 7;
+const MAX_WORDS  = 120;
+const CHARS_LIMIT = 600;
+const WRITING_DAYS = ['Monday','Wednesday','Friday'];
+const RULE_STYLES = {Monday:'weapons',Tuesday:'watchout',Wednesday:'protips',Thursday:'memory',Friday:'weapons'};
 
 const CHARS = {
-  snake:{key:'snake',name:'Ssssam',emoji:'🐍',gotIt:"Sssuper! That's ssso good — onto the next one!",
-    pers:`You are Ssssam the Snake, an 11+ tutor for a ${CHILD_AGE}-year-old. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
-  shark:{key:'shark',name:'Finn',emoji:'🦈',gotIt:'Fin-tastic! Finn is doing a victory lap — next question!',
-    pers:`You are Finn the Shark, an 11+ tutor for a ${CHILD_AGE}-year-old. Energetic and celebratory. Say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
+  snake:{key:'snake',name:'Ssssam',emoji:'🐍',
+    gotIt:"Sssuper! That's ssso good — onto the next one!",
+    pers:'You are Ssssam the Snake. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.'},
+  shark:{key:'shark',name:'Finn',emoji:'🦈',
+    gotIt:"Fin-tastic! Finn is doing a victory lap — next question!",
+    pers:'You are Finn the Shark. Energetic and celebratory. Say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.'},
 };
 
-let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={};
-let rulesRead=false, overlayOpen=false, micActive=false;
-let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1;
-let recognition=null, CHAR, writingDone=false;
-let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
-let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
-let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
-let _cachedVoice=null, _audioWarmed=false;
-let _currentUtt=null, _speechGen=0;            // ghost-kill: generation counter + active utterance ref
+let answers = {}, firstAttempt = {answers:{}}, wrongQs = [], remMode = false, remIdx = 0;
+let overlayOpen = false, currentQIdx = -1, rulesRead = false;
+let tutorHistory = {}, tutorTurns = {};
+let lastEchoText = '', micActive = false, recognition = null;
+let writingMicActive = false, writingRecognition = null;
+let dictMicActive = false, dictRecognition = null;
+let writingHistory = [], writingTurns = 0, writingDone = false;
+let API_KEY = localStorage.getItem('anthropic_key_v1') || null;
+let OPENAI_KEY = localStorage.getItem('openai_key_v1') || null;
+let _oaiController = null, _oaiAudio = null, _oaiObjectUrl = null;
+let _audioWarmed = false, _cachedVoice = null;
+let _speechGen = 0, _currentUtt = null;
+let CHAR;
 
-// Day-lock character
-(()=>{const td=new Date().toISOString().slice(0,10);let ck=localStorage.getItem('char_date')===td?localStorage.getItem('char_key'):null;if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',td);}CHAR=CHARS[ck];document.body.classList.add(ck);})();
+const jFmts = [
+  'Tell a pun about the topic word.',
+  'Start with "What do you call..."',
+  'Start with "What did X say to Y..."',
+  'Start with "Did you hear about..."',
+  'One unexpected one-liner.',
+  'A "Why did the..." joke.',
+  'A "Knock knock" joke about the topic.',
+  'A "How do you..." joke.',
+];
 
-// ── TTS ───────────────────────────────────────────────────────────────────────
-function cleanForSpeech(t){return t.replace(/_{3,}/g,'blank').replace(/_{1,2}/g,'').replace(/\*\*/g,'').replace(/\*/g,'').replace(/#{1,6}\s/g,'').replace(/\b(\d+)\s*%/g,'$1 percent').replace(/¾/g,'three quarters').replace(/½/g,'half').replace(/¼/g,'one quarter').trim();}
-const _PREF=['Daniel','Serena','Moira','Rishi','Oliver','Karen','Samantha'];
-window.speechSynthesis.onvoiceschanged=()=>{const vs=window.speechSynthesis.getVoices();for(const n of _PREF){const v=vs.find(x=>x.name.startsWith(n)&&x.lang.startsWith('en'));if(v){_cachedVoice=v;break;}}if(!_cachedVoice)_cachedVoice=vs.find(v=>v.lang.startsWith('en-GB'))||vs.find(v=>v.lang.startsWith('en'))||null;};
-function _iosWarm(){try{if(window.speechSynthesis.speaking)return;const w=new SpeechSynthesisUtterance('\u00A0');w.volume=0.01;w.rate=16;window.speechSynthesis.speak(w);}catch(e){}}
-function speakWebSpeech(text){
-  try{if(window.speechSynthesis.paused)window.speechSynthesis.resume();}catch(e){}
-  window.speechSynthesis.cancel();
-  const myGen=++_speechGen;                         // generation stamp for this utterance
-  setTimeout(()=>{
-    if(myGen!==_speechGen)return;                   // hardStop() fired during 120ms — bail
-    const u=new SpeechSynthesisUtterance(text);
-    _currentUtt=u;
-    if(_cachedVoice)u.voice=_cachedVoice;
-    u.rate=CHAR.key==='snake'?.92:.98;
-    u.pitch=CHAR.key==='snake'?.95:1.02;
-    u.volume=1;
-    u.onend=()=>{
-      if(myGen!==_speechGen)return;                 // stale — another speak() took over
-      _currentUtt=null;
-      try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}
-    };
-    u.onerror=(ev)=>{
-      if(myGen!==_speechGen)return;                 // cancelled by hardStop — NEVER retry
-      if(ev?.error==='canceled'||ev?.error==='interrupted')return; // explicit cancel — ignore
-      // genuine hardware error — fail silently, do not re-queue
-    };
-    window.speechSynthesis.speak(u);
-  },120);
+/* ── TTS ── */
+const _PREF = {rate:1, pitch:1};
+window.speechSynthesis.onvoiceschanged = ()=>{
+  const vs = window.speechSynthesis.getVoices();
+  _cachedVoice = vs.find(v=>v.lang==='en-GB'&&v.name.includes('Daniel'))
+    || vs.find(v=>v.lang==='en-GB')
+    || vs.find(v=>v.lang.startsWith('en'))
+    || null;
+};
+
+function _iosWarm(){
+  try{const u=new SpeechSynthesisUtterance('\u00A0');u.volume=0.01;u.rate=16;window.speechSynthesis.speak(u);}catch(e){}
 }
-async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
-async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
-function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
+
+function cleanForSpeech(text){
+  return text
+    .replace(/_{3,}/g,'blank').replace(/_{1,2}/g,'')
+    .replace(/\*\*/g,'').replace(/\*/g,'')
+    .replace(/#{1,6}\s/g,'')
+    .replace(/\b(\d+)\s*%/g,'$1 percent')
+    .replace(/¾/g,'three quarters').replace(/½/g,'half').replace(/¼/g,'one quarter')
+    .replace(/[★☆]/g,'star').replace(/\bQ(\d+)\b/g,'question $1')
+    .replace(/\bMCQ\b/g,'multiple choice');
+}
+
+function speakWebSpeech(text){
+  const myGen = ++_speechGen;
+  _iosWarm();
+  setTimeout(()=>{
+    if(myGen !== _speechGen) return;
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    const u = new SpeechSynthesisUtterance(text);
+    _currentUtt = u;
+    if(_cachedVoice) u.voice = _cachedVoice;
+    u.rate = CHAR.key==='snake'?0.92:0.98;
+    u.pitch = CHAR.key==='snake'?0.95:1.02;
+    u.volume = 1;
+    u.onend = ()=>{ if(myGen===_speechGen){ _currentUtt=null; } };
+    u.onerror = (e)=>{ if(e.error==='canceled'||e.error==='interrupted') return; };
+    window.speechSynthesis.speak(u);
+    const keepalive = setInterval(()=>{
+      if(myGen!==_speechGen){clearInterval(keepalive);return;}
+      if(!window.speechSynthesis.speaking) clearInterval(keepalive);
+      else{ window.speechSynthesis.pause(); window.speechSynthesis.resume(); }
+    }, 10000);
+  }, 120);
+}
+
+async function speakOpenAI(text){
+  try{
+    _oaiController = new AbortController();
+    const resp = await fetch('https://api.openai.com/v1/audio/speech',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},
+      signal:_oaiController.signal,
+      body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})
+    });
+    if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}
+    if(!resp.ok){speakWebSpeech(text);return;}
+    const blob = await resp.blob();
+    _oaiObjectUrl = URL.createObjectURL(blob);
+    _oaiAudio = new Audio(_oaiObjectUrl);
+    _oaiAudio.onended = ()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};
+    await _oaiAudio.play();
+  }catch(e){ if(e.name!=='AbortError') speakWebSpeech(text); }
+}
+
+function speak(text){
+  const t = cleanForSpeech(text);
+  if(OPENAI_KEY) speakOpenAI(t); else speakWebSpeech(t);
+}
+
+function _warmAudio(){
+  if(_audioWarmed) return;
+  try{
+    const a = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+    a.volume=0; a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});
+  }catch(e){_audioWarmed=true;}
+}
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});
 document.addEventListener('click',_warmAudio,{once:true});
-function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPENAI_KEY){p.textContent='🔊 Natural';p.className='voice-pill natural';}else{p.textContent='🔊 Device';p.className='voice-pill';}}
 
-// ── HARD STOP v3.15 — kills OpenAI Audio + AbortController + Web Speech ──────
+function updateVoicePill(){
+  const p = document.getElementById('voice-pill');
+  if(OPENAI_KEY){p.textContent='🔊 Natural';p.className='voice-pill natural';}
+  else{p.textContent='🔊 Device';p.className='voice-pill';}
+}
+
+/* ── HARDSTOP v3.21 ── */
 function hardStop(){
-  _speechGen++;                                     // invalidate all pending speakWebSpeech callbacks
-  if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;} // null handlers before cancel
+  _speechGen++;
+  if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;}
   if(_oaiController){_oaiController.abort();_oaiController=null;}
   if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}
   if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}
@@ -356,201 +421,465 @@ function hardStop(){
   try{window.speechSynthesis.cancel();}catch(e){}
 }
 
-// ── MIC (v3.14) ───────────────────────────────────────────────────────────────
+/* ── MIC ── */
 function toggleMic(){
   _iosWarm();
   if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}
   recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
   recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;
-  recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};
+  recognition.onresult=(e)=>{
+    micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';
+    const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');
+    _ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;
+  };
   recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};
   recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};
-  micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';
+  micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… speak now!';
   recognition.start();
-  setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);
+  setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening…';},1500);
 }
-function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
-// ── OVERLAY ───────────────────────────────────────────────────────────────────
-function charTurns(sec){return CHILD==='IL'?5:(sec==='Vocab'||sec==='Dictionary'?6:7);}
-function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(QUESTIONS[qi]?.section),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
-function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;d.textContent=text;b.appendChild(d);b.scrollTop=b.scrollHeight;}
-function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
-function removeTyping(){document.getElementById('typing-ind')?.remove();}
+function submitSpeech(){
+  const txt = document.getElementById('speech-text').value.trim();
+  if(!txt) return;
+  if(!API_KEY){document.getElementById('key-overlay').style.display='flex';return;}
+  document.getElementById('speech-text').value='';
+  sendTutorReply(txt);
+}
+
+/* ── OVERLAY ── */
+function renderDots(qi){
+  const d=document.getElementById('dots');d.innerHTML='';
+  const h=tutorHistory[qi]||[];
+  const turns=tutorTurns[qi]||0;
+  const cap=QUESTIONS[qi]&&QUESTIONS[qi].section==='Vocab'?6:7;
+  for(let i=0;i<cap;i++){const dot=document.createElement('div');dot.className='dot'+(i<turns?' active':'');d.appendChild(dot);}
+}
 
 function openOverlay(qi){
-  _iosWarm();currentQIdx=qi;overlayOpen=true;
-  tutorHistory[qi]=[];tutorTurns[qi]=0;  // fresh each open — prevents alternating-message API error
+  tutorHistory[qi]=[];tutorTurns[qi]=0;
+  overlayOpen=true;currentQIdx=qi;
+  const ov=document.getElementById('overlay');ov.classList.add('open');
+  document.getElementById('ex-wrap').style.visibility='hidden';
+  document.getElementById('ov-char').textContent=CHAR.emoji;
+  document.getElementById('ov-char-name').textContent=CHAR.name;
   document.getElementById('ov-bubbles').innerHTML='';
   document.getElementById('speech-text').value='';
   document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';
-  document.getElementById('ov-title').textContent=`${CHAR.name} — ${QUESTIONS[qi].section}`;
   renderDots(qi);
-  document.getElementById('ex-wrap').style.visibility='hidden';
-  document.getElementById('overlay').classList.add('open');
+  // v3.22 q-ctx
+  const q=QUESTIONS[qi];const _ctx=document.getElementById('q-ctx');
+  if(q&&q.opts){
+    _ctx.style.display='block';
+    _ctx.innerHTML=`<div class="q-ctx-text">${q.text}</div><div class="q-ctx-row"><span class="q-ctx-opt wrong-opt">✗ ${answers[qi]}: ${q.opts[answers[qi]]||''}</span><span class="q-ctx-opt right-opt">✓ ${q.correct}: ${q.opts[q.correct]||''}</span></div>`;
+  } else { _ctx.style.display='none'; }
   callAI(qi);
 }
-function closeOverlay(){
-  hardStop();overlayOpen=false;currentQIdx=-1;
-  document.getElementById('overlay').classList.remove('open');
-  document.getElementById('ex-wrap').style.visibility='visible';
-  const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';
+
+async function callAI(qi){
+  const q=QUESTIONS[qi];
+  const cap=q.section==='Vocab'?6:7;
+  const turn=tutorTurns[qi]||0;
+  const jFmt=jFmts[Math.floor(Math.random()*jFmts.length)];
+  let sysPrompt,userMsg;
+  if(turn===0){
+    const topic=q.vocabWord||q.code;
+    sysPrompt=`${CHAR.pers}\nYou are tutoring a ${CHILD_AGE}-year-old on ${topic} (code ${q.code}).\nABSOLUTE RULE — FIRST REPLY ONLY:\nJoke format: ${jFmt} — make it about "${topic}".\nAfter the joke: give one clear example, then ask ONE question to check understanding.\nBanned openers: name, Hello, Today our word is, restating the question, definition as first line.\nPlain spoken English only. No emoji. No asterisks. No bold. No bullet points.\nMax 90 words. Say "percent" not %. NEVER say: wrong, incorrect, failed, mistake, silly, dumb.\n[Turn 1 of up to ${cap}.]`;
+    userMsg=`The child answered "${answers[qi]}" but the correct answer is "${q.correct}": ${q.opts[q.correct]}. Question was: ${q.text}`;
+    tutorHistory[qi]=[{role:'user',content:userMsg}];
+  } else {
+    sysPrompt=`${CHAR.pers}\nYou are tutoring a ${CHILD_AGE}-year-old.\nTurn ${turn+1}: acknowledge what the child said, evaluate it, give a direct cue forward.\nNEVER repeat an explanation already given. Respond to what the child ACTUALLY said.\nPlain spoken English only. No emoji. No asterisks. Max 90 words.\n[Turn ${turn+1} of up to ${cap}.]`;
+    userMsg=document.getElementById('speech-text').value||'';
+  }
+  const msgs=[...( tutorHistory[qi]||[] )];
+  if(turn>0) msgs.push({role:'user',content:userMsg});
+  const bubble=document.createElement('div');bubble.className='bubble echo';bubble.textContent='…';
+  document.getElementById('ov-bubbles').appendChild(bubble);
+  document.getElementById('ov-bubbles').scrollTop=999999;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:sysPrompt,messages:msgs})
+    });
+    const d=await r.json();
+    const reply=(d.content&&d.content[0]&&d.content[0].text)||'Let me think about that…';
+    bubble.textContent=reply;lastEchoText=reply;
+    tutorHistory[qi].push({role:'assistant',content:reply});
+    tutorTurns[qi]=(tutorTurns[qi]||0)+1;
+    renderDots(qi);
+    speak(reply);
+    document.getElementById('ov-bubbles').scrollTop=999999;
+  }catch(e){bubble.textContent='Something went wrong — check connection and try again.';}
 }
+
+async function sendTutorReply(text){
+  if(!overlayOpen) return;
+  const qi=currentQIdx;
+  const childBubble=document.createElement('div');childBubble.className='bubble child';childBubble.textContent=text;
+  document.getElementById('ov-bubbles').appendChild(childBubble);
+  document.getElementById('ov-bubbles').scrollTop=999999;
+  tutorHistory[qi].push({role:'user',content:text});
+  const cap=QUESTIONS[qi]&&QUESTIONS[qi].section==='Vocab'?6:7;
+  if((tutorTurns[qi]||0)>=cap){
+    const wrap=document.createElement('div');wrap.className='bubble echo';wrap.textContent='You have worked really hard on this — great effort! Tap Got it to move on.';
+    document.getElementById('ov-bubbles').appendChild(wrap);speak(wrap.textContent);return;
+  }
+  await callAI(qi);
+}
+
+/* ── GOTIT / PARENTSKIP / CLOSEOVERLAY ── */
 function gotIt(){
-  hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;
+  hardStop();
+  if(recognition){try{recognition.stop();}catch(e){}micActive=false;}
   document.getElementById('speech-text').value='';
   closeOverlay();
-  if(remMode)setTimeout(()=>advanceRemediation(),200);
-  setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);
+  if(remMode) setTimeout(()=>advanceRemediation(),200);
+  setTimeout(()=>{
+    try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?0.92:0.98;u.pitch=CHAR.key==='snake'?0.95:1.02;window.speechSynthesis.speak(u);}catch(e){}
+  },100);
 }
+
 function parentSkip(){
-  hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;
+  hardStop();
+  if(recognition){try{recognition.stop();}catch(e){}micActive=false;}
   document.getElementById('speech-text').value='';
-  closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),100);
+  closeOverlay();
+  if(remMode) setTimeout(()=>advanceRemediation(),100);
 }
 
-// ── AI TUTORING ───────────────────────────────────────────────────────────────
-async function callAI(qi){
-  if(!API_KEY){addBubble('Tap ⚙ Settings and add your Claude API key to unlock Echo!','echo');return;}
-  const q=QUESTIONS[qi],history=tutorHistory[qi]||[],turn=(tutorTurns[qi]||0)+1,cap=charTurns(q.section);
-  const isV=q.section==='Vocab';
-  const jFmts=['Why','What do you call','Knock knock','What is the difference between','Did you hear about','What do you get when','Imagine if','You know what is funny about'];
-  const jFmt=jFmts[Math.floor(Math.random()*jFmts.length)];
-  const vocabExit=isV&&q.vocabWord?'Give the grammar rule for "'+q.vocabWord+'" in one sentence. Then ask: Now use '+q.vocabWord+' in your own sentence!':'Say: Great work — tap Got it when you are ready!';
-  const strict=turn===1
-    ?`TURN 1 — YOUR RULES:\n1. Open with a short funny joke. Use this format: "${jFmt}..." — stick to this format, do not switch to a different one.\n2. Show ONE clear concrete example of the correct concept.\n3. End with ONE direct question for the child to answer.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`
-    :`TURN ${turn} — YOUR RULES:\n1. One warm sentence acknowledging what they said.\n2. If their answer shows understanding: celebrate! ${vocabExit}\n3. If not quite right: reteach with a completely different example. End with ONE clear question.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
-  const msgs=[...history];
-  if(!msgs.length){const im={role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`};msgs.push(im);tutorHistory[qi]=[im];}
-  showTyping();
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
-    removeTyping();
-    if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
-    const text=(await r.json()).content[0].text;
-    addBubble(text,'echo');speak(text);
-    const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;
-    tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);
-  }catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
+function closeOverlay(){
+  hardStop();
+  overlayOpen=false;currentQIdx=-1;
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('ex-wrap').style.visibility='visible';
+  const _ctx=document.getElementById('q-ctx');_ctx.style.display='none';
 }
-function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi);}
 
-// ── ANSWER (v3.14) ────────────────────────────────────────────────────────────
-const SC=['Ssslick!','Ssspot on!','Sssuper!','High tail!'],SH=['Fin-tastic!','Splashing great!','Making waves!','Dorsal bump!'];
-function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SC[Math.floor(Math.random()*SC.length)]:SH[Math.floor(Math.random()*SH.length)]);}
-
-function answer(qi,choice){
-  _iosWarm();
-  if(answers[qi]!==undefined||!rulesRead)return;  // v3.14 gate
-  answers[qi]=choice;
-  const q=QUESTIONS[qi],isRight=choice===q.correct;
-  'ABCD'.split('').forEach(k=>document.getElementById(`opt-${qi}-${k}`)?.classList.add('dis'));
-  document.getElementById(`opt-${qi}-${choice}`)?.classList.add(isRight?'sc':'sw');
-  document.getElementById(`qc-${qi}`)?.classList.add(isRight?'right':'wrong');
-  if(!isRight)document.getElementById(`opt-${qi}-${q.correct}`)?.classList.add('rc2');
-  tutorTurns[qi]=0;
-  if(isRight){onCorrectAnswer();}else{openOverlay(qi);}
-  if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)firstAttempt={...answers};
+/* ── ANSWER ── */
+function answer(qi,opt){
+  if(!rulesRead) return;
+  answers[qi]=opt;
+  document.querySelectorAll(`.opt-${qi}`).forEach(b=>{b.classList.remove('selected','correct','wrong');});
+  const btn=document.getElementById(`opt-${qi}-${opt}`);
+  if(btn) btn.classList.add('selected');
+  if(opt!==QUESTIONS[qi].correct){
+    openOverlay(qi);
+  } else {
+    onCorrectAnswer(qi);
+  }
   updateSubmit();
 }
-function updateSubmit(){
-  const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
-  document.getElementById('pts-display').textContent=`⭐ ${pts} pts — ${Object.keys(answers).length}/${TOTAL_QS} answered`;
-  document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;
+
+function onCorrectAnswer(qi){
+  document.querySelectorAll(`.opt-${qi}`).forEach(b=>b.classList.remove('selected'));
+  const cb=document.getElementById(`opt-${qi}-${QUESTIONS[qi].correct}`);
+  if(cb) cb.classList.add('correct');
+  try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Correct!');if(_cachedVoice)u.voice=_cachedVoice;u.rate=1.1;window.speechSynthesis.speak(u);}catch(e){}
 }
 
-// ── SUBMIT & REMEDIATION ──────────────────────────────────────────────────────
+function updateSubmit(){
+  const n=Object.keys(answers).filter(k=>parseInt(k)<TOTAL_QS).length;
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=(n<TOTAL_QS);
+  btn.textContent=n<TOTAL_QS?`Submit answers (${n}/${TOTAL_QS} done)`:'Submit answers ✓';
+}
+
+/* ── HANDLESUBMIT ── */
 function handleSubmit(){
-  let correct=0;const wrong=[];
-  for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}
-  if(wrong.length&&!remMode){startRemediation(wrong);return;}
-  let pts=correct>=PASS_SCORE?3:0;
-  for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}
-  if(writingDone)pts+=1;
-  showResult(correct,pts);
+  firstAttempt={answers:{...answers}};
+  let score=0;
+  for(let i=0;i<TOTAL_QS;i++){
+    if(answers[i]===QUESTIONS[i].correct) score++;
+  }
+  if(score<PASS_SCORE){
+    wrongQs=[];
+    for(let i=0;i<TOTAL_QS;i++){if(answers[i]!==QUESTIONS[i].correct)wrongQs.push(i);}
+    startRemediation();
+  } else {
+    showResult(score);
+  }
 }
-function startRemediation(wrong){
-  remMode=true;wrongQs=wrong;remIdx=0;
-  document.getElementById('sub-bar').style.display='none';
-  document.getElementById('remed-banner').style.display='block';
-  document.getElementById('rem-msg').textContent=`${CHAR.name} wants to help with ${wrong.length} question${wrong.length>1?'s':''}!`;
-  setTimeout(()=>openOverlay(wrongQs[0]),600);
+
+function startRemediation(){
+  remMode=true;remIdx=0;
+  document.getElementById('submit-bar').style.display='none';
+  document.getElementById('ex-wrap').style.display='none';
+  const rw=document.getElementById('rem-wrap');rw.style.display='block';
+  const charBanner=document.createElement('div');
+  charBanner.style.cssText='background:#1e293b;color:#f1f5f9;border-radius:14px;padding:16px;margin-bottom:12px;text-align:center;font-size:15px;font-weight:700;';
+  charBanner.textContent=`${CHAR.emoji} ${CHAR.name} says: Let\'s review the ones we missed — you\'ve got this!`;
+  rw.appendChild(charBanner);
+  advanceRemediation();
 }
-function advanceRemediation(){remIdx++;if(remIdx<wrongQs.length){setTimeout(()=>openOverlay(wrongQs[remIdx]),300);}else{startMiniRetest();}}
+
+function advanceRemediation(){
+  if(remIdx>=wrongQs.length){startMiniRetest();return;}
+  const qi=wrongQs[remIdx++];openOverlay(qi);
+}
+
 function startMiniRetest(){
   remMode=false;
-  document.getElementById('remed-banner').style.display='none';
-  document.getElementById('sub-bar').style.display='flex';
+  const rw=document.getElementById('rem-wrap');
+  const retest=document.createElement('div');
+  retest.innerHTML='<div style="font-size:15px;font-weight:900;color:#1a1a2e;margin-bottom:12px;">One more try on the tricky ones:</div>';
   wrongQs.forEach(qi=>{
-    answers[qi]=undefined;
-    'ABCD'.split('').forEach(k=>{document.getElementById(`opt-${qi}-${k}`)?.classList.remove('sc','sw','rc2','dis');});
-    document.getElementById(`qc-${qi}`)?.classList.remove('right','wrong');
+    const q=QUESTIONS[qi];
+    const card=document.createElement('div');card.className='rem-card';
+    card.innerHTML=`<div class="rem-q">${q.text}</div><div class="rem-opts">${Object.entries(q.opts).map(([k,v])=>`<button class="rem-opt" id="ropt-${qi}-${k}" onclick="remAnswer(${qi},'${k}')">${k}: ${v}</button>`).join('')}</div>`;
+    retest.appendChild(card);
   });
-  speak('Your turn — try those questions again!');updateSubmit();
+  const sb=document.createElement('button');sb.style.cssText='width:100%;padding:14px;background:#7c3aed;color:#fff;border:none;border-radius:14px;font-family:Nunito,sans-serif;font-size:16px;font-weight:900;cursor:pointer;margin-top:12px;';sb.textContent='Finish!';sb.onclick=finalSubmit;
+  retest.appendChild(sb);
+  rw.appendChild(retest);
 }
 
-// ── RESULT ────────────────────────────────────────────────────────────────────
-function showResult(correct,pts){
-  document.getElementById('ex-wrap').style.display='none';
-  document.getElementById('sub-bar').style.display='none';
-  document.getElementById('remed-banner').style.display='none';
-  document.getElementById('rw').style.display='none';
-  const pct=Math.round(correct/TOTAL_QS*100),pass=correct>=PASS_SCORE;
-  document.getElementById('res-emoji').textContent=pass?'🎉':'💪';
-  document.getElementById('res-score').textContent=`${correct}/${TOTAL_QS} — ${pct}%`;
-  document.getElementById('res-msg').textContent=pass?`${CHAR.name} is proud — brilliant work today!`:`Good effort! ${CHAR.name} helped you review — you are getting stronger!`;
-  const stored=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS),newPts=stored+pts;
+function remAnswer(qi,opt){
+  answers[qi]=opt;
+  document.querySelectorAll(`[id^="ropt-${qi}-"]`).forEach(b=>b.classList.remove('correct','wrong'));
+  const btn=document.getElementById(`ropt-${qi}-${opt}`);
+  if(opt===QUESTIONS[qi].correct){if(btn)btn.classList.add('correct');}
+  else{if(btn)btn.classList.add('wrong');const cb=document.getElementById(`ropt-${qi}-${QUESTIONS[qi].correct}`);if(cb)cb.classList.add('correct');}
+}
+
+function finalSubmit(){
+  let score=0;
+  for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)score++;}
+  showResult(score);
+}
+
+/* ── SHOW RESULT ── */
+function showResult(score){
+  window.scrollTo(0,0);
+  document.getElementById('submit-bar').style.display='none';
+  document.getElementById('rules-wrap').style.display='none';
+  const rs=document.getElementById('result-screen');rs.style.display='block';
+  const pct=Math.round(score/TOTAL_QS*100);
+  const pass=score>=PASS_SCORE;
+  let pts=0;
+  if(pass) pts+=3;
+  const starQ=Object.values(QUESTIONS).find(q=>q.star);
+  const starIdx=Object.keys(QUESTIONS).find(k=>QUESTIONS[k].star);
+  if(starIdx&&firstAttempt.answers[parseInt(starIdx)]===QUESTIONS[parseInt(starIdx)].correct) pts+=2;
+  const prevPts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);
+  const newPts=prevPts+pts;
   localStorage.setItem(PTS_KEY,newPts);
-  document.getElementById('res-pts').textContent=pts>0?`+${pts} pts today — total: ${newPts} ⭐`:`Total: ${newPts} ⭐`;
-  document.getElementById('result').style.display='flex';
-  window.scrollTo(0,0);sendWebhook(correct,pts);
-}
-async function sendWebhook(correct,pts){
-  const fa=firstAttempt||answers;let fp=0;for(let j=0;j<TOTAL_QS;j++){if(fa[j]===QUESTIONS[j]?.correct)fp++;}
-  try{await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'exercise_result',child:CHILD,day:DAY,week:WEEK,date:new Date().toISOString().slice(0,10),score:Math.round(correct/TOTAL_QS*100),firstAttemptScore:Math.round(fp/TOTAL_QS*100),pointsEarned:pts,questions:Object.entries(QUESTIONS).map(([i,q])=>({code:q.code,section:q.section,correct:answers[+i]===q.correct}))})});}catch(e){}
+  let _fa=0;
+  for(let _j=0;_j<TOTAL_QS;_j++){if(firstAttempt.answers[_j]===QUESTIONS[_j].correct)_fa++;}
+  const firstPct=Math.round(_fa/TOTAL_QS*100);
+  rs.innerHTML=`<div class="result-card"><div class="result-emoji">${pass?'🏆':'💪'}</div><div class="result-title">${pass?'Brilliant work!':'Keep going!'}</div><div class="result-score">${score}/${TOTAL_QS}</div><div style="font-size:15px;color:#64748b;margin-bottom:8px;">${pct}% correct</div><div class="result-pts">+${pts} points → ${newPts} total</div><div class="result-breakdown"><div class="rb-row"><span>First-attempt score</span><span>${firstPct}%</span></div><div class="rb-row"><span>Week</span><span>${WEEK}</span></div><div class="rb-row"><span>Day</span><span>${DAY}</span></div></div></div>`;
+  sendWebhook(score,pts,firstPct);
+  setTimeout(()=>initDict(),300);
 }
 
-// ── DICTIONARY ────────────────────────────────────────────────────────────────
-function pickRevisionWord(){try{const h=JSON.parse(localStorage.getItem('dict_history')||'[]'),today=new Date().toISOString().slice(0,10),el=h.filter(w=>w.date!==today&&w.word!==DICT_WORD);if(!el.length)return null;const now=Date.now();el.forEach(w=>{const d=(now-new Date(w.date).getTime())/86400000,c=w.confidence==='low'?3:w.confidence==='medium'?2:1;w._s=c+(d<2?-10:Math.min(d/7,3));});return el.sort((a,b)=>b._s-a._s)[0];}catch(e){return null;}}
-function initDict(){
-  const ds=document.getElementById('dict-section'),rev=pickRevisionWord(),esc=s=>(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  ds.innerHTML=`<div class="dict-wrap"><div class="section-label" style="color:rgba(255,255,255,.8)">📖 Dictionary</div><div class="dict-word">${DICT_WORD}</div><div class="dict-def">${DICT_DEF}</div><div class="dict-eg">"${DICT_EG}"</div><button class="dict-btn" onclick="openDictOverlay('${esc(DICT_WORD)}','${esc(DICT_DEF)}','${esc(DICT_EG)}')">Ask ${CHAR.name} about this word</button>${rev?`<div class="rev-block"><div class="rev-word">🔄 Past word: ${rev.word}</div><div class="rev-def">${rev.def||''}</div><button class="dict-btn" style="margin-top:8px" onclick="openDictOverlay('${esc(rev.word)}','${esc(rev.def||'')}','')">Ask ${CHAR.name} to test me!</button></div>`:''}</div>`;
-  const h=JSON.parse(localStorage.getItem('dict_history')||'[]');if(!h.find(w=>w.word===DICT_WORD)){h.push({word:DICT_WORD,def:DICT_DEF,date:new Date().toISOString().slice(0,10),confidence:'medium'});localStorage.setItem('dict_history',JSON.stringify(h));}
+function sendWebhook(score,pts,firstPct){
+  const qs=Object.keys(QUESTIONS).map(k=>{const q=QUESTIONS[k];return{index:parseInt(k),code:q.code,section:q.section,answered:answers[parseInt(k)]||null,correct:q.correct,isCorrect:answers[parseInt(k)]===q.correct};});
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'exercise_result',child:CHILD,day:DAY,week:WEEK,date:new Date().toISOString().slice(0,10),score,total:TOTAL_QS,pct:Math.round(score/TOTAL_QS*100),firstPct,pts,questions:qs})}).catch(()=>{});
 }
-let dictHistory=[];
-async function openDictOverlay(word,def,eg){
-  dictHistory=[];currentQIdx=-2;overlayOpen=true;
-  document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';
-  document.getElementById('ov-title').textContent=`${CHAR.name} — Dictionary`;
-  document.getElementById('dots').innerHTML='';
-  const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='hidden';
-  document.getElementById('overlay').classList.add('open');
-  dictHistory.push({role:'user',content:`Word: ${word}\nDefinition: ${def}${eg?'\nExample: '+eg:''}\nTeach this word in a fun, memorable way.`});
-  showTyping();
-  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:250,system:CHAR.pers+'\nOpen with a funny joke about the word. Then explain simply. Max 80 words. No emoji. No markdown.',messages:dictHistory})});removeTyping();if(!res.ok)return;const text=(await res.json()).content[0].text;addBubble(text,'echo');speak(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}
-}
-async function sendDictReply(text){addBubble(text,'user');dictHistory.push({role:'user',content:text});showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+'\nNo emoji. No markdown. Max 70 words. Always advance — never repeat.',messages:dictHistory})});removeTyping();if(!r.ok)return;const text=(await r.json()).content[0].text;addBubble(text,'echo');speak(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
 
-// ── WRITING (Mon/Wed/Fri) ─────────────────────────────────────────────────────
-async function sendWriting(){
-  if(!API_KEY){alert('Add your Claude API key in ⚙ Settings');return;}
-  const ta=document.getElementById('writing-ta'),text=(ta?.value||'').trim();
-  if(text.length<10){alert('Write at least a sentence first!');return;}
-  const btn=document.querySelector('.writing-send-btn'),fb=document.getElementById('writing-feedback');
-  if(btn)btn.disabled=true;if(fb){fb.style.display='block';fb.textContent=`${CHAR.name} is reading your writing…`;}
-  const codes=typeof MISSION_PACK!=='undefined'?MISSION_PACK.codes.join(', '):'writing techniques';
+/* ── DICTIONARY ── */
+function pickRevisionWord(){
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+`\nGive warm, specific feedback on a ${CHILD_AGE}-year-old's creative writing. They used: ${codes}. Celebrate what they did well. Give ONE specific improvement. Max ${MAX_WORDS} words. No emoji. No markdown.`,messages:[{role:'user',content:text}]})});
-    if(!r.ok){if(fb)fb.textContent='Connection error — try again.';if(btn)btn.disabled=false;return;}
-    const reply=(await r.json()).content[0].text;
-    if(fb)fb.textContent=reply;speak(reply);writingDone=true;if(btn)btn.textContent='✓ Sent to Echo';
-    try{await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'writing_response',child:CHILD,week:WEEK,missionPack:typeof MISSION_PACK!=='undefined'?MISSION_PACK.id:'',response:text})});}catch(e){}
-  }catch(e){if(fb)fb.textContent='Something went wrong.';if(btn)btn.disabled=false;}
+    const h=JSON.parse(localStorage.getItem('dict_history')||'[]');
+    const today=new Date().toISOString().slice(0,10);
+    const el=h.filter(w=>w.date!==today&&w.word!==DICT_WORD);
+    if(!el.length) return null;
+    const now=Date.now();
+    el.forEach(w=>{const d=(now-new Date(w.date).getTime())/86400000;const c=w.confidence==='low'?3:w.confidence==='medium'?2:1;w._s=c+(d<2?-10:Math.min(d/7,3));});
+    return el.sort((a,b)=>b._s-a._s)[0];
+  }catch(e){return null;}
 }
 
-// ── RULES (v3.14) ─────────────────────────────────────────────────────────────
-function toggleRules(){const rb=document.getElementById('rb'),arr=document.getElementById('rh-arrow');const open=rb.style.display!=='block';rb.style.display=open?'block':'none';arr.textContent=open?'▲':'▼';}
+function initDict(){
+  const ds=document.getElementById('dict-section');
+  if(!ds) return;
+  const rev=pickRevisionWord();
+  const revHtml=rev?`<div id="rev-block" style="display:block;background:rgba(0,0,0,.15);border-radius:10px;padding:12px;margin-bottom:12px;"><div style="font-size:13px;opacity:.7;margin-bottom:4px;">📚 Revision word</div><div id="rev-word" style="font-size:16px;font-weight:900;">${rev.word}</div><div id="rev-def" style="font-size:12px;opacity:.85;margin-top:4px;">${rev.def}</div></div>`:`<div id="rev-block" style="display:none"></div>`;
+  ds.innerHTML=`<div class="dict-card"><div class="section-label">Dictionary</div>${revHtml}<div class="dict-word">${DICT_WORD}</div><div class="dict-def">${DICT_DEF}</div><div class="dict-eg">"${DICT_EG}"</div><button class="dict-btn" onclick="openDictOverlay()">🐍 Ask Echo about this word</button></div>`;
+  const h=JSON.parse(localStorage.getItem('dict_history')||'[]');
+  if(!h.find(w=>w.word===DICT_WORD)){h.push({word:DICT_WORD,def:DICT_DEF,date:new Date().toISOString().slice(0,10),confidence:'medium'});localStorage.setItem('dict_history',JSON.stringify(h));}
+}
+
+let dictHistory=[];
+function openDictOverlay(){
+  dictHistory=[];
+  const ov=document.getElementById('dict-overlay');ov.classList.add('open');
+  document.getElementById('dict-ov-bubbles').innerHTML='';
+  document.getElementById('dict-speech-text').value='';
+  sendDictAI(`Tell me something interesting and funny about the word "${DICT_WORD}" — definition: ${DICT_DEF}. Keep it under 80 words, plain English, no emoji.`,'init');
+}
+
+function closeDictOverlay(){
+  hardStop();document.getElementById('dict-overlay').classList.remove('open');
+}
+
+async function sendDictAI(userMsg){
+  if(!API_KEY){document.getElementById('key-overlay').style.display='flex';return;}
+  dictHistory.push({role:'user',content:userMsg});
+  const bubble=document.createElement('div');bubble.className='bubble echo';bubble.textContent='…';
+  document.getElementById('dict-ov-bubbles').appendChild(bubble);
+  document.getElementById('dict-ov-bubbles').scrollTop=999999;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:`${CHAR.pers} You are helping a ${CHILD_AGE}-year-old learn vocabulary. Plain English only. No emoji. No markdown. Max 80 words.`,messages:dictHistory})
+    });
+    const d=await r.json();
+    const reply=(d.content&&d.content[0]&&d.content[0].text)||'Let me think…';
+    bubble.textContent=reply;dictHistory.push({role:'assistant',content:reply});speak(reply);
+    document.getElementById('dict-ov-bubbles').scrollTop=999999;
+  }catch(e){bubble.textContent='Something went wrong — check connection.';}
+}
+
+function toggleDictMic(){
+  _iosWarm();
+  if(dictMicActive){dictRecognition?.stop();dictMicActive=false;document.getElementById('dict-mbtn').classList.remove('listening');document.getElementById('dict-mstat').textContent='Tap 🎤 to speak, or type below';return;}
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('dict-speech-text').placeholder='Type here';return;}
+  dictRecognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  dictRecognition.lang='en-GB';dictRecognition.interimResults=false;dictRecognition.continuous=false;
+  dictRecognition.onresult=(e)=>{
+    dictMicActive=false;document.getElementById('dict-mbtn').classList.remove('listening');document.getElementById('dict-mstat').textContent='✏️ Edit if needed, then tap Send!';
+    const _t=e.results[0][0].transcript;const _ta=document.getElementById('dict-speech-text');
+    _ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;
+  };
+  dictRecognition.onerror=(e)=>{dictMicActive=false;document.getElementById('dict-mbtn').classList.remove('listening');document.getElementById('dict-mstat').textContent='Could not hear — type below';};
+  dictRecognition.onend=()=>{if(dictMicActive){dictMicActive=false;document.getElementById('dict-mbtn').classList.remove('listening');}};
+  dictMicActive=true;document.getElementById('dict-mbtn').classList.add('listening');document.getElementById('dict-mstat').textContent='⏳ Get ready… speak now!';
+  dictRecognition.start();
+}
+
+function sendDictReply(){
+  const txt=document.getElementById('dict-speech-text').value.trim();
+  if(!txt) return;
+  if(!API_KEY){document.getElementById('key-overlay').style.display='flex';return;}
+  const cb=document.createElement('div');cb.className='bubble child';cb.textContent=txt;
+  document.getElementById('dict-ov-bubbles').appendChild(cb);
+  document.getElementById('dict-speech-text').value='';
+  sendDictAI(txt);
+}
+
+/* ── WRITING ── */
+let writingMicActive2=false,writingRecognition2=null;
+
+function initWriting(){
+  if(!MISSION_PACK) return;
+  const ws=document.createElement('div');ws.className='section-card writing';
+  ws.innerHTML=`<div class="section-label">Mission ${MISSION_PACK.id} — ${MISSION_PACK.title}</div>
+<div class="writing-prompt">${MISSION_PACK.prompt}</div>
+<div class="writing-techniques">✍️ Try to include: body language · a comparison · powerful verbs</div>
+<textarea id="writing-text" placeholder="Write your action scene here…" oninput="updateWritingChars()"></textarea>
+<div id="writing-chars">0 / ${MAX_WORDS} words</div>
+<div class="writing-mic-row">
+  <button id="writing-mbtn" onclick="toggleWritingMic()">🎤 Speak it</button>
+  <button id="writing-send-btn" onclick="submitWritingQ()">Send to Echo ➤</button>
+</div>
+<div id="writing-mstat"></div>`;
+  document.getElementById('ex-wrap').appendChild(ws);
+}
+
+function updateWritingChars(){
+  const ta=document.getElementById('writing-text');if(!ta)return;
+  const words=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;
+  const c=document.getElementById('writing-chars');if(c)c.textContent=`${words} / ${MAX_WORDS} words`;
+}
+
+function toggleWritingMic(){
+  _iosWarm();
+  if(writingMicActive){writingRecognition?.stop();writingMicActive=false;document.getElementById('writing-mbtn').classList.remove('listening');document.getElementById('writing-mstat').textContent='';return;}
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('writing-text').placeholder='Type your scene here';return;}
+  writingRecognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  writingRecognition.lang='en-GB';writingRecognition.interimResults=false;writingRecognition.continuous=false;
+  writingRecognition.onresult=(e)=>{
+    writingMicActive=false;document.getElementById('writing-mbtn').classList.remove('listening');document.getElementById('writing-mstat').textContent='✏️ Edit if needed, then tap Send!';
+    const _t=e.results[0][0].transcript;const _ta=document.getElementById('writing-text');
+    _ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;updateWritingChars();
+  };
+  writingRecognition.onerror=(e)=>{writingMicActive=false;document.getElementById('writing-mbtn').classList.remove('listening');document.getElementById('writing-mstat').textContent='Could not hear — type instead';};
+  writingRecognition.onend=()=>{if(writingMicActive){writingMicActive=false;document.getElementById('writing-mbtn').classList.remove('listening');}};
+  writingMicActive=true;document.getElementById('writing-mbtn').classList.add('listening');document.getElementById('writing-mstat').textContent='⏳ Get ready… speak now!';
+  writingRecognition.start();
+}
+
+async function submitWritingQ(){
+  const txt=document.getElementById('writing-text')?.value?.trim();
+  if(!txt||txt.length<10) return;
+  if(!API_KEY){document.getElementById('key-overlay').style.display='flex';return;}
+  writingHistory=[];writingTurns=0;
+  const ov=document.getElementById('writing-overlay');ov.classList.add('open');
+  document.getElementById('writing-ov-bubbles').innerHTML='';
+  document.getElementById('writing-speech2').value='';
+  const initMsg=`The child wrote this action scene for Mission ${MISSION_PACK.id} "${MISSION_PACK.title}":\n"${txt}"\nTarget codes: ${MISSION_PACK.codes.join(', ')}.`;
+  writingHistory.push({role:'user',content:initMsg});
+  const bubble=document.createElement('div');bubble.className='bubble echo';bubble.textContent='…';
+  document.getElementById('writing-ov-bubbles').appendChild(bubble);
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,
+        system:`${CHAR.pers}\nYou are a writing coach for a ${CHILD_AGE}-year-old. Celebrate one strong thing. Then give ONE specific technique to try. Use the 3-beat method: celebrate → teach technique → invite attempt. Max 80 words. Plain English. No emoji. No markdown.`,
+        messages:writingHistory})
+    });
+    const d=await r.json();
+    const reply=(d.content&&d.content[0]&&d.content[0].text)||'Great start!';
+    bubble.textContent=reply;writingHistory.push({role:'assistant',content:reply});writingTurns++;speak(reply);
+  }catch(e){bubble.textContent='Something went wrong.';}
+}
+
+function closeWritingOverlay(){hardStop();document.getElementById('writing-overlay').classList.remove('open');}
+
+function toggleWritingMic2(){
+  _iosWarm();
+  if(writingMicActive2){writingRecognition2?.stop();writingMicActive2=false;document.getElementById('writing-mic2').classList.remove('listening');document.getElementById('writing-mstat2').textContent='Tap 🎤 to speak, or type below';return;}
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition) return;
+  writingRecognition2=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  writingRecognition2.lang='en-GB';writingRecognition2.interimResults=false;writingRecognition2.continuous=false;
+  writingRecognition2.onresult=(e)=>{
+    writingMicActive2=false;document.getElementById('writing-mic2').classList.remove('listening');
+    const _t=e.results[0][0].transcript;const _ta=document.getElementById('writing-speech2');
+    _ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;
+  };
+  writingRecognition2.onerror=()=>{writingMicActive2=false;document.getElementById('writing-mic2').classList.remove('listening');};
+  writingRecognition2.onend=()=>{if(writingMicActive2){writingMicActive2=false;document.getElementById('writing-mic2').classList.remove('listening');}};
+  writingMicActive2=true;document.getElementById('writing-mic2').classList.add('listening');document.getElementById('writing-mstat2').textContent='⏳ Get ready… speak now!';
+  writingRecognition2.start();
+}
+
+async function sendWritingReply(){
+  const txt=document.getElementById('writing-speech2').value.trim();
+  if(!txt) return;
+  if(!API_KEY){document.getElementById('key-overlay').style.display='flex';return;}
+  document.getElementById('writing-speech2').value='';
+  const cb=document.createElement('div');cb.className='bubble child';cb.textContent=txt;
+  document.getElementById('writing-ov-bubbles').appendChild(cb);
+  writingHistory.push({role:'user',content:txt});
+  writingTurns++;
+  if(writingTurns>=4){const done=document.createElement('div');done.className='bubble echo';done.textContent='Brilliant effort today — that writing is really coming together! Tap close when you are ready.';document.getElementById('writing-ov-bubbles').appendChild(done);speak(done.textContent);return;}
+  const bubble=document.createElement('div');bubble.className='bubble echo';bubble.textContent='…';
+  document.getElementById('writing-ov-bubbles').appendChild(bubble);
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,
+        system:`${CHAR.pers} Writing coach for a ${CHILD_AGE}-year-old. Acknowledge what child said, evaluate it, give a direct cue. If this is turn 3, give a polished model of their idea plus one enrichment. Max 80 words. Plain English only.`,
+        messages:writingHistory})
+    });
+    const d=await r.json();
+    const reply=(d.content&&d.content[0]&&d.content[0].text)||'Keep going!';
+    bubble.textContent=reply;writingHistory.push({role:'assistant',content:reply});speak(reply);
+  }catch(e){bubble.textContent='Something went wrong.';}
+}
+
+/* ── RULES ── */
+function toggleRules(){
+  const rb=document.getElementById('rb');const open=rb.style.display!=='none';
+  rb.style.display=open?'none':'block';
+  document.getElementById('rh-arrow').textContent=open?'▶ tap to read':'▼ tap to close';
+}
+
 function markRulesRead(){
   _iosWarm();rulesRead=true;
   document.getElementById('rb').style.display='none';
@@ -560,33 +889,61 @@ function markRulesRead(){
   speak(`${CHAR.name} says: let's go! Good luck today!`);
 }
 
-// ── SETTINGS ──────────────────────────────────────────────────────────────────
-function openSettings(){document.getElementById('api-key-input').value=localStorage.getItem('anthropic_key_v1')||'';document.getElementById('oai-key-input').value=localStorage.getItem('openai_key_v1')||'';document.getElementById('key-overlay').style.display='flex';}
-function saveKey(){const k=(document.getElementById('api-key-input').value||'').trim(),ok=(document.getElementById('oai-key-input').value||'').trim();if(k.startsWith('sk-ant-')&&k.length>20){localStorage.setItem('anthropic_key_v1',k);API_KEY=k;}if(ok.startsWith('sk-')&&ok.length>20){localStorage.setItem('openai_key_v1',ok);OPENAI_KEY=ok;}else if(ok===''){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;}updateVoicePill();document.getElementById('key-overlay').style.display='none';}
-function clearKey(){localStorage.removeItem('anthropic_key_v1');localStorage.removeItem('openai_key_v1');API_KEY=null;OPENAI_KEY=null;updateVoicePill();document.getElementById('key-overlay').style.display='none';}
-
-// ── BUILD SECTIONS ────────────────────────────────────────────────────────────
-function buildSections(){
-  const cfg={Vocab:{id:'vocab-section',label:'📚 Vocab',cls:'vocab-card'},English:{id:'english-section',label:'✏️ English',cls:'english-card'},Maths:{id:'maths-section',label:'🔢 Maths',cls:'maths-card'}};
-  Object.entries(cfg).forEach(([sec,c])=>{
-    const qs=Object.entries(QUESTIONS).filter(([,q])=>q.section===sec);
-    document.getElementById(c.id).innerHTML=`<div class="section-card ${c.cls}"><div class="section-label">${c.label}</div>${qs.map(([i,q])=>`<div class="qc" id="qc-${i}"><div class="q-text">${q.star?'<span class="q-star">★ </span>':''}${q.text}</div><div class="opts">${['A','B','C','D'].map(k=>`<button class="opt" id="opt-${i}-${k}" onclick="answer(${i},'${k}')"><span class="ok">${k}</span>${q.opts[k]}</button>`).join('')}</div></div>`).join('')}</div>`;
-  });
-  if(typeof MISSION_PACK!=='undefined'&&WRITING_DAYS.includes(DAY)){
-    const ws=document.getElementById('writing-section');ws.style.display='block';
-    ws.innerHTML=`<div class="section-card writing-card"><div class="section-label">✍️ Writing Challenge</div><div class="writing-prompt"><div class="mission-id">${MISSION_PACK.id}</div><div class="mission-title">${MISSION_PACK.title}</div><div class="mission-codes">${MISSION_PACK.codes.map(c=>`<span class="code-tag">${c}</span>`).join('')}</div><div class="mission-prompt">${MISSION_PACK.prompt}</div></div><textarea class="writing-ta" id="writing-ta" rows="5" placeholder="Write your response here… aim for 3–5 sentences!"></textarea><button class="writing-send-btn" onclick="sendWriting()">Send to Echo ➤</button><div id="writing-feedback" class="writing-fb"></div></div>`;
-  }
+/* ── SETTINGS ── */
+function openSettings(){
+  document.getElementById('api-key-input').value=localStorage.getItem('anthropic_key_v1')||'';
+  document.getElementById('oai-key-input').value=localStorage.getItem('openai_key_v1')||'';
+  document.getElementById('key-overlay').style.display='flex';
 }
-function buildRulesCard(){const style=RULE_STYLES[DAY]||'weapons';document.getElementById('rh-title').textContent=(RULE_HEADERS[style]||"⚡ TODAY'S WEAPONS")+' — tap to read';document.getElementById('rules-tips').innerHTML=RULES_TIPS.map(tip=>{const m=tip.match(/^([\w.]+):\s*(.*)/);return m?`<div class="tip-row"><span class="tip-code">${m[1]}</span><span>${m[2]}</span></div>`:`<div class="tip-row">${tip}</div>`;}).join('');}
+function saveKey(){
+  const k=(document.getElementById('api-key-input').value||'').trim();
+  const ok=(document.getElementById('oai-key-input').value||'').trim();
+  if(k.startsWith('sk-ant-')&&k.length>20){localStorage.setItem('anthropic_key_v1',k);API_KEY=k;}
+  if(ok.startsWith('sk-')&&ok.length>20){localStorage.setItem('openai_key_v1',ok);OPENAI_KEY=ok;}
+  else if(ok===''){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;}
+  updateVoicePill();document.getElementById('key-overlay').style.display='none';
+}
+function clearKey(){
+  localStorage.removeItem('anthropic_key_v1');localStorage.removeItem('openai_key_v1');
+  API_KEY=null;OPENAI_KEY=null;updateVoicePill();
+  document.getElementById('key-overlay').style.display='none';
+}
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+/* ── BUILD UI ── */
+function buildUI(){
+  const ew=document.getElementById('ex-wrap');ew.innerHTML='';
+  const sections={Vocab:{label:'Vocab',cls:'vocab',qs:[]},English:{label:'English',cls:'english',qs:[]},Maths:{label:'Maths',cls:'maths',qs:[]}};
+  for(let i=0;i<TOTAL_QS;i++){const q=QUESTIONS[i];if(q&&sections[q.section])sections[q.section].qs.push({idx:i,q});}
+  Object.values(sections).forEach(sec=>{
+    if(!sec.qs.length) return;
+    const card=document.createElement('div');card.className=`section-card ${sec.cls}`;
+    card.innerHTML=`<div class="section-label">${sec.label}</div>`;
+    sec.qs.forEach(({idx,q})=>{
+      const qb=document.createElement('div');qb.className='q-block';
+      const starBadge=q.star?'<div class="star-badge">⭐ STAR +2 pts</div>':'';
+      const optsHtml=Object.entries(q.opts).map(([k,v])=>`<button class="opt-btn opt-${idx}" id="opt-${idx}-${k}" onclick="answer(${idx},'${k}')">${k}: ${v}</button>`).join('');
+      qb.innerHTML=`${starBadge}<div class="q-text">Q${idx+1}. ${q.text}</div><div class="opts">${optsHtml}</div>`;
+      card.appendChild(qb);
+    });
+    ew.appendChild(card);
+  });
+  if(WRITING_DAYS.includes(DAY)) initWriting();
+  document.getElementById('main-content').style.opacity='0.35';
+  document.getElementById('main-content').style.pointerEvents='none';
+}
+
+/* ── INIT ── */
 window.onload=()=>{
-  document.getElementById('hdr-title').textContent=`${CHILD} — ${DAY}`;
-  document.getElementById('hdr-sub').textContent=`Week ${WEEK}`;
-  document.getElementById('hdr-char').textContent=CHAR.emoji;
+  const today=new Date().toISOString().slice(0,10);
+  let ck=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
+  if(!ck||!CHARS[ck]){ck=Math.random()>.5?'snake':'shark';localStorage.setItem('char_key',ck);localStorage.setItem('char_date',today);}
+  CHAR=CHARS[ck];
   document.getElementById('ov-char').textContent=CHAR.emoji;
-  document.title=`${CHILD} — ${DAY} · Week ${WEEK}`;
-  updateVoicePill();buildRulesCard();buildSections();updateSubmit();initDict();
+  document.getElementById('ov-char-name').textContent=CHAR.name;
+  RULES_TIPS.forEach((t,i)=>{const el=document.getElementById(`rc${i}`);if(el)el.textContent=t;});
+  updateVoicePill();
+  buildUI();
+  updateSubmit();
 };
 </script>
 </body>
