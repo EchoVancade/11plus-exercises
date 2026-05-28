@@ -675,7 +675,8 @@ function showResult(score){
   const firstPct=Math.round(_fa/TOTAL_QS*100);
   rs.innerHTML=`<div class="result-card"><div class="result-emoji">${pass?'🏆':'💪'}</div><div class="result-title">${pass?'Brilliant work!':'Keep going!'}</div><div class="result-score">${score}/${TOTAL_QS}</div><div style="font-size:15px;color:#64748b;margin-bottom:8px;">${pct}% correct</div><div class="result-pts">+${pts} points → ${newPts} total</div><div class="result-breakdown"><div class="rb-row"><span>First-attempt score</span><span>${firstPct}%</span></div><div class="rb-row"><span>Week</span><span>${WEEK}</span></div><div class="rb-row"><span>Day</span><span>${DAY}</span></div></div></div>`;
   sendWebhook(score,pts,firstPct);
-  setTimeout(()=>initDict(),300);
+  const _ds=document.getElementById('dict-section');
+  if(_ds&&_ds.innerHTML){rs.insertAdjacentHTML('beforeend',_ds.innerHTML);}
 }
 
 function sendWebhook(score,pts,firstPct){
@@ -949,6 +950,7 @@ window.onload=()=>{
   updateVoicePill();
   buildUI();
   updateSubmit();
+  initDict();
 };
 </script>
 </body>
