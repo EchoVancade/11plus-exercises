@@ -30,6 +30,19 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 @media(max-width:700px){.two-col{grid-template-columns:1fr;height:auto;overflow:visible}}
 .passage-col,.qs-col{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
 @media(max-width:700px){.passage-col,.qs-col{height:auto;overflow-y:visible}}
+/* Bug 2 fix — allow body & page-wrap to scroll on mobile portrait */
+@media(max-width:700px){
+  body{height:auto;overflow-y:auto}
+  #page-wrap{height:auto;min-height:100vh}
+  .two-col{padding-bottom:70px}
+}
+/* Bug 1 fix — question context card inside Echo overlay */
+.q-ctx{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;margin:0 14px;padding:10px 12px;flex-shrink:0;display:none}
+.q-ctx-text{font-size:.79rem;color:#94a3b8;line-height:1.45;margin-bottom:7px}
+.q-ctx-row{display:flex;gap:6px;flex-wrap:wrap}
+.q-ctx-opt{font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:6px}
+.q-ctx-opt.wrong-opt{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
+.q-ctx-opt.right-opt{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(34,197,94,.35)}
 /* passage */
 .passage-card{background:#0f172a;border:2px solid rgba(249,115,22,.3);border-radius:14px;padding:16px;margin-bottom:12px}
 .passage-label{font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:rgba(249,115,22,.8);margin-bottom:10px}
@@ -64,6 +77,11 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .dots{display:flex;gap:4px;padding:8px 14px 0;flex-shrink:0}
 .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)} .dot.used{background:rgba(139,92,246,.7)}
 .ov-bubbles{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
+/* Phase 2 — voice-text coupling */
+.skip-pill{display:inline-block;margin-left:6px;padding:2px 9px;background:rgba(255,255,255,.1);color:#cbd5e1;border-radius:11px;font-size:.72rem;cursor:pointer;border:1px solid rgba(255,255,255,.18);font-weight:500;user-select:none;-webkit-tap-highlight-color:transparent}
+.skip-pill:active{transform:scale(.94);background:rgba(255,255,255,.2)}
+.speech-ta:disabled{opacity:.45;cursor:not-allowed;background:rgba(255,255,255,.04)}
+.send-btn.disabled,.mic-btn.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
 .bub{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.88rem;line-height:1.6}
 .bub.echo{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:#f1f5f9}
 .bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
@@ -104,7 +122,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 </style>
 </head>
 <body>
-<div style="display:flex;flex-direction:column;height:100vh">
+<div id="page-wrap" style="display:flex;flex-direction:column;height:100vh">
 
 <!-- HEADER -->
 <div class="hdr">
@@ -162,6 +180,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
     <button class="skip-btn" onclick="parentSkip()">Skip ⏭</button>
   </div>
   <div id="dots" class="dots"></div>
+  <div id="q-ctx" class="q-ctx"></div>
   <div id="ov-bubbles" class="ov-bubbles"></div>
   <div class="ov-input">
     <div id="mstat" class="mstat">Tap 🎤 to speak, or type below</div>
@@ -202,59 +221,51 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'IL';
 const DAY      = 'Saturday';
-const WEEK     = 23;
+const WEEK     = 22;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
 const DICT_WORD = 'curious';
-const DICT_DEF  = 'Adjective — wanting to find out about something or someone.';
-const DICT_EG   = 'The curious little cat peeped around the corner to see what was making the noise.';
-const RULE_STYLE = 'watchout';
+const DICT_DEF  = 'Adjective — wanting very much to know about something.';
+const DICT_EG   = 'The curious cat poked its nose into every corner of the new room.';
 const RULES_TIPS = [
-  'E5.1: Read the question first, then look for the answer in the passage.',
-  'E5.3: If you are not sure, go back and re-read that part of the story again.',
-  'E5.5: Use the words around a tricky word to help you work out what it means.',
+  'Read the passage slowly — the answers are hiding in the words!',
+  'For tricky questions, go back and find the right part of the passage.',
+  'For writing, try to use a word from the passage in your answer.',
 ];
-const PASSAGE_TITLE = 'The Butterfly and the Raindrop';
-const PASSAGE_TEXT = `A small orange butterfly rested on a leaf at the edge of the pond. Its wings opened and closed slowly, like someone thinking quietly.
+const PASSAGE_TITLE = 'Penguins on Parade';
+const PASSAGE_TEXT = `Penguins are birds, but they cannot fly. Instead, they use their wings as flippers to swim very fast through the cold ocean. Emperor penguins live in Antarctica, the coldest place on Earth, where temperatures can drop far below zero.
 
-A raindrop fell from the sky and landed right next to the butterfly with a tiny splash. The butterfly jumped back, startled.
+Every winter, emperor penguins walk many miles across the ice to reach their nesting ground. The father penguin keeps the egg warm by balancing it on his feet and covering it with a warm flap of skin called a brood pouch. He stands in the freezing wind for weeks, not eating, until the chick hatches.
 
-"What are you?" the butterfly asked, looking at the round, silvery drop of water.
-
-"I am a raindrop," it said. "I came from a cloud high above you."
-
-The butterfly leaned closer. In the raindrop, it could see a tiny reflection of itself — orange wings and all.
-
-"You look like a tiny mirror," said the butterfly.
-
-The raindrop smiled, if a raindrop can smile. "I carry pieces of the sky wherever I go," it said. Then the ground soaked it up, and it was gone.
-
-The butterfly sat very still, thinking about clouds and mirrors and faraway skies.`;
+When the chick is born, it makes a loud cheeping sound so its parents can always find it in the crowd. Penguin chicks have fluffy grey feathers to keep them warm, but they cannot swim until they grow their adult feathers. Then one day they waddle to the sea and discover they are brilliant swimmers after all.`;
 const QUESTIONS = {
-  0:{ type:'mcq', code:'E5.1', correct:'A', star:false,
-      text:'Where was the butterfly resting at the start of the story?',
-      opts:{A:'On a leaf at the edge of the pond',B:'On a flower in the middle of a field',C:'On a branch high up in a tree',D:'On the ground next to a puddle'} },
-  1:{ type:'mcq', code:'E5.2', correct:'C', star:false,
-      text:'Why did the butterfly jump back?',
-      opts:{A:'The leaf was too wet to hold on to',B:'Another butterfly scared it',C:'A raindrop landed next to it with a splash',D:'A frog leapt up from the pond'} },
-  2:{ type:'mcq', code:'E5.1', correct:'B', star:false,
-      text:'Where did the raindrop say it came from?',
-      opts:{A:'A river far away',B:'A cloud high above',C:'The pond below',D:'The ground underneath'} },
+  0:{ type:'mcq', code:'E5.1', correct:'C', star:false,
+      text:'What do penguins use their wings for?',
+      opts:{A:'To fly high above the ocean.',B:'To keep their eggs warm on the ice.',C:'To swim quickly through the cold water.',D:'To signal to other penguins far away.'} },
+  1:{ type:'mcq', code:'E5.1', correct:'A', star:false,
+      text:'Where do emperor penguins live?',
+      opts:{A:'In Antarctica, the coldest place on Earth.',B:'In the Arctic, near the North Pole.',C:'In cold oceans near Australia.',D:'On icy mountains in Canada.'} },
+  2:{ type:'mcq', code:'E5.2', correct:'B', star:false,
+      text:'Why does the father penguin stand in the freezing wind without eating?',
+      opts:{A:'He is waiting for the mother penguin to bring him fish.',B:'He is keeping the egg warm until the chick hatches.',C:'He is protecting the nest from polar bears.',D:'He is practising standing still in the cold.'} },
   3:{ type:'mcq', code:'E5.4', correct:'D', star:false,
-      text:'The butterfly\'s wings opened and closed "like someone thinking quietly." What does this tell you?',
-      opts:{A:'The butterfly was tired and ready to sleep',B:'The butterfly was frightened of the water',C:'The butterfly was getting ready to fly away',D:'The butterfly was calm and resting peacefully'} },
-  4:{ type:'mcq', code:'E5.5', correct:'A', star:false,
-      text:'The raindrop is described as "silvery." What do you think silvery means here?',
-      opts:{A:'Shiny and pale, like silver',B:'Very cold and icy to touch',C:'Making a loud splashing sound',D:'Shaped exactly like a silver coin'} },
+      text:'What does the word "brood pouch" mean in the passage?',
+      opts:{A:'A special bag the penguin uses to carry food.',B:'A hole in the ice where the egg is hidden.',C:'A loud sound the chick makes when it hatches.',D:'A warm flap of skin that protects the egg from the cold.'} },
+  4:{ type:'mcq', code:'E5.3', correct:'A', star:false,
+      text:'Why does the chick make a loud cheeping sound?',
+      opts:{A:'So its parents can find it in the crowd of penguins.',B:'Because it is hungry and wants food right away.',C:'To scare away other animals that come too close.',D:'Because it is practising for when it learns to swim.'} },
   5:{ type:'mcq', code:'E5.3', correct:'C', star:false,
-      text:'The butterfly said the raindrop looked like a tiny mirror. What was in the mirror?',
-      opts:{A:'A reflection of the pond',B:'A reflection of the sky above',C:'A reflection of the butterfly itself',D:'A reflection of the leaf'} },
+      text:'Why cannot penguin chicks swim straight away?',
+      opts:{A:'They are too small and would get lost in the big ocean.',B:'The ocean is far too cold for baby penguins.',C:'They need to grow their adult feathers before they can swim.',D:'Their mothers have not shown them how to swim yet.'} },
   6:{ type:'mcq', code:'E5.2', correct:'B', star:true,
-      text:'★ STAR — At the end, the butterfly sits very still thinking. What is it probably thinking about?',
-      opts:{A:'How to find more raindrops to talk to',B:'The wonderful things the raindrop told it',C:'Where to find food for the rest of the day',D:'How to get back across the pond safely'} },
-  7:{ type:'writing', code:'E5.8', star:false, prompt:'Write one sentence about how the butterfly felt when it first saw the raindrop, and why.' },
-  8:{ type:'writing', code:'E5.9', star:false, prompt:'Write one or two sentences about what you think the butterfly does next, after the raindrop is gone.' },
-  9:{ type:'writing', code:'E5.10', star:false, prompt:'The raindrop says it carries "pieces of the sky." Write one sentence using the word "carry" in your own sentence about something different.' },
+      text:'★ STAR — What does the passage suggest about emperor penguins?',
+      opts:{A:'They prefer warm weather and only visit Antarctica in winter.',B:'They are amazing animals that can survive very harsh conditions to raise their young.',C:'Father penguins do all the work because mother penguins are busy fishing.',D:'Penguin chicks are better swimmers than their parents from a very young age.'} },
+  7:{ type:'writing', code:'E5.8', star:false,
+      prompt:'How do you think the father penguin feels after standing in the cold for weeks? Write one sentence.' },
+  8:{ type:'writing', code:'E5.9', star:false,
+      prompt:'What do you think happens on the day the chick first reaches the sea? Write one or two sentences.' },
+  9:{ type:'writing', code:'E5.10', star:false,
+      prompt:'Write one sentence using the word "curious" to describe a penguin chick exploring the ocean.' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -273,7 +284,7 @@ const CHARS = {
     pers:`You are Finn the Shark, an 11+ tutor for a ${CHILD_AGE}-year-old. Energetic and celebratory. Say Splashing great, Fin-tastic. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
 };
 
-let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={};
+let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={}, disengagedCount={};
 let rulesRead=false, overlayOpen=false, micActive=false;
 let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1;
 let recognition=null, CHAR;
@@ -321,7 +332,61 @@ function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/w
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});document.addEventListener('click',_warmAudio,{once:true});
 function updateVoicePill(){const p=document.getElementById('voice-pill');if(OPENAI_KEY){p.textContent='🔊 Natural';p.className='voice-pill natural';}else{p.textContent='🔊 Device';p.className='voice-pill';}}
 
-function hardStop(){_speechGen++;if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;}if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
+let _streamCancel=null;
+function setInputDisabled(disabled){
+  const ta=document.getElementById('speech-text');
+  const send=document.querySelector('.send-btn');
+  const mic=document.getElementById('mbtn');
+  if(ta){ta.disabled=disabled;}
+  if(send){send.classList.toggle('disabled',disabled);}
+  if(mic){mic.classList.toggle('disabled',disabled);}
+}
+function streamEchoBubble(text){
+  const b=document.getElementById('ov-bubbles');
+  const d=document.createElement('div');
+  d.className='bub echo';
+  const textNode=document.createTextNode('');
+  d.appendChild(textNode);
+  b.appendChild(d);
+  b.scrollTop=b.scrollHeight;
+  speak(text);
+  setInputDisabled(true);
+  const tokens=text.match(/\S+|\s+/g)||[text];
+  const wordCount=tokens.filter(t=>!/^\s+$/.test(t)).length||1;
+  const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
+  const msPerToken=(60000/baseWpm*wordCount)/tokens.length;
+  let i=0,timeoutId=null,pillTimer=null;
+  function complete(){
+    if(timeoutId)clearTimeout(timeoutId);
+    if(pillTimer)clearTimeout(pillTimer);
+    textNode.data=text;
+    d.querySelector('.skip-pill')?.remove();
+    setInputDisabled(false);
+    _streamCancel=null;
+    b.scrollTop=b.scrollHeight;
+  }
+  _streamCancel=complete;
+  function step(){
+    if(_streamCancel!==complete)return;
+    if(i>=tokens.length){complete();return;}
+    textNode.data+=tokens[i];
+    i++;
+    b.scrollTop=b.scrollHeight;
+    timeoutId=setTimeout(step,msPerToken);
+  }
+  pillTimer=setTimeout(()=>{
+    if(_streamCancel===complete && i<tokens.length){
+      const pill=document.createElement('span');
+      pill.className='skip-pill';
+      pill.textContent=' Skip ⏭';
+      pill.onclick=(e)=>{e.stopPropagation();if(_streamCancel===complete)complete();};
+      d.appendChild(pill);
+      b.scrollTop=b.scrollHeight;
+    }
+  },2000);
+  step();
+}
+function hardStop(){if(_streamCancel){const fn=_streamCancel;_streamCancel=null;fn();}_speechGen++;if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;}if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
 
 function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
@@ -332,25 +397,48 @@ function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=do
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function removeTyping(){document.getElementById('typing-ind')?.remove();}
 
-function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';document.getElementById('ov-title').textContent=`${CHAR.name} — Comprehension Q${qi+1}`;renderDots(qi);document.getElementById('ex-wrap').style.visibility='hidden';document.getElementById('overlay').classList.add('open');callAI(qi);}
-function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
+function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';document.getElementById('ov-title').textContent=`${CHAR.name} — Comprehension Q${qi+1}`;renderDots(qi);
+  // Bug 1 fix — show question + answer context so child can see what Echo is teaching
+  const q=QUESTIONS[qi],ctx=document.getElementById('q-ctx');
+  if(ctx&&q&&q.type!=='writing'){const wa=answers[qi],ca=q.correct;ctx.innerHTML=`<div class="q-ctx-text">${q.text}</div>${wa?`<div class="q-ctx-row"><span class="q-ctx-opt wrong-opt">✗ ${wa}: ${q.opts[wa]||''}</span><span class="q-ctx-opt right-opt">✓ ${ca}: ${q.opts[ca]||''}</span></div>`:''}`; ctx.style.display='block';}else if(ctx){ctx.style.display='none';}
+  document.getElementById('ex-wrap').style.visibility='hidden';document.getElementById('overlay').classList.add('open');callAI(qi);}
+function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');const ctx=document.getElementById('q-ctx');if(ctx)ctx.style.display='none';document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
 function gotIt(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),200);setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);}
 function parentSkip(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),100);}
 
-async function callAI(qi){
+function classifyEngagement(text){
+  const t=(text||'').trim().toLowerCase();
+  if(!t)return 'disengaged';
+  const tokens=t.split(/\s+/);
+  if(/^(idk|dunno|dk|no\s*idea|don'?t\s*know|i\s*don'?t\s*know|i\s*dunno|nope|nah|na)$/.test(t))return 'disengaged';
+  if(tokens.length===1 && /^(yes|no|ok|okay|sure|maybe|huh|what|um|hmm|err|uh)$/.test(t))return 'disengaged';
+  return 'normal';
+}
+async function callAI(qi,lastAns){
   if(!API_KEY){addBubble('Tap ⚙ Settings and add your Claude API key to unlock Echo!','echo');return;}
   const q=QUESTIONS[qi],history=tutorHistory[qi]||[],turn=(tutorTurns[qi]||0)+1,cap=charTurns();
   const jFmts=['Why','What do you call','Knock knock','What is the difference between','Did you hear about','What do you get when','Imagine if','You know what is funny about'];
   const jFmt=jFmts[Math.floor(Math.random()*jFmts.length)];
-  const strict=turn===1
-    ?`TURN 1 — YOUR RULES:\n1. Open with a short funny joke. Use this format: "${jFmt}..." — stick to this format, do not switch to a different one.\n2. Show ONE clear concrete example of this comprehension skill in action.\n3. End with ONE direct question for the child to answer.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`
-    :`TURN ${turn} — YOUR RULES:\n1. One warm sentence acknowledging what they said.\n2. If their answer shows understanding: celebrate! Say: You have got it — tap Got it when you are ready!\n3. If not quite right: reteach with a completely different approach. End with ONE clear question.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+  const engagement=turn===1?'first':classifyEngagement(lastAns||'');
+  if(engagement==='disengaged')disengagedCount[qi]=(disengagedCount[qi]||0)+1;
+  else if(turn>1)disengagedCount[qi]=0;
+  const dc=disengagedCount[qi]||0;
+  let strict;
+  if(turn===1){
+    strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer outright):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT show a worked example. Do NOT explain the concept. Do NOT name the answer.\n3. Ask ONE small question that points at ONE specific word, number, or part of the original question or passage. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`;
+  } else if(engagement==='disengaged' && dc<3){
+    strict=`TURN ${turn} — STUDENT IS DISENGAGED (they said "${lastAns}").\nThey are not engaging — said "idk" or a one-word non-answer.\n\nDO NOT re-teach. DO NOT explain. DO NOT give the answer. DO NOT name the answer.\nYour ONLY move: ask a SMALLER, EASIER question.\n- Point at ONE specific word, number, or letter in the original question or the passage.\n- Ask what they notice about THAT thing only.\n- Make the question so small they can answer in one word.\n- Be warm: "It is okay — let us go smaller."\nMax 50 words. No emoji. No asterisks.`;
+  } else if(engagement==='disengaged' && dc>=3){
+    strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never give the full answer.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess instead of an open question: "Just guess — do you think it is more like A or more like B?"\n3. Make one option clearly closer to right but do not say which.\nMax 40 words. No emoji. No asterisks.`;
+  } else {
+    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT or shows real understanding: celebrate specifically — name what they did well. Say: You have got it — tap Got it when you are ready!\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the question or the passage.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+  }
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Passage context: "${PASSAGE_TITLE}"\nQuestion: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach comprehension skill now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;addBubble(text,'echo');speak(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoBubble(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
 }
-function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi);}
+function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi,text);}
 
 const SC=['Ssslick!','Ssspot on!','Sssuper!'],SH=['Fin-tastic!','Splashing great!','Making waves!'];
 function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SC[Math.floor(Math.random()*SC.length)]:SH[Math.floor(Math.random()*SH.length)]);}
@@ -362,11 +450,13 @@ function answer(qi,choice){
   document.getElementById(`opt-${qi}-${choice}`)?.classList.add(isRight?'sc':'sw');
   document.getElementById(`qc-${qi}`)?.classList.add(isRight?'right':'wrong');
   if(!isRight)document.getElementById(`opt-${qi}-${q.correct}`)?.classList.add('rc2');
-  tutorTurns[qi]=0;if(isRight){onCorrectAnswer();}else{openOverlay(qi);}
+  tutorTurns[qi]=0;disengagedCount[qi]=0;if(isRight){onCorrectAnswer();}else{openOverlay(qi);}
   if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)firstAttempt={...answers};
-  updateSubmit();
+  updateSubmit();refreshWritingLocks();
 }
 function updateSubmit(){const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);document.getElementById('pts-display').textContent=`⭐ ${pts} pts — ${Object.keys(answers).length}/${TOTAL_QS} answered`;document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;}
+// Bug 3 fix — re-evaluate writing Q lock state after every MCQ answer
+function refreshWritingLocks(){Object.entries(QUESTIONS).forEach(([idx,q])=>{if(q.type==='writing'){const el=document.getElementById(`qc-${idx}`);if(!el)return;const ok=+idx===0||answers[+idx-1]!==undefined;el.style.opacity=ok?'1':'.35';el.style.pointerEvents=ok?'auto':'none';}});}
 
 function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!remMode){startRemediation(wrong);return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
 function startRemediation(wrong){remMode=true;wrongQs=wrong;remIdx=0;document.getElementById('sub-bar').style.display='none';document.getElementById('remed-banner').style.display='block';document.getElementById('rem-msg').textContent=`${CHAR.name} wants to help with ${wrong.length} question${wrong.length>1?'s':''}!`;setTimeout(()=>openOverlay(wrongQs[0]),600);}
@@ -387,8 +477,8 @@ async function sendWebhook(correct,pts){const fa=firstAttempt||answers;let fp=0;
 function pickRevisionWord(){try{const h=JSON.parse(localStorage.getItem('dict_history')||'[]'),today=new Date().toISOString().slice(0,10),el=h.filter(w=>w.date!==today&&w.word!==DICT_WORD);if(!el.length)return null;const now=Date.now();el.forEach(w=>{const d=(now-new Date(w.date).getTime())/86400000,c=w.confidence==='low'?3:w.confidence==='medium'?2:1;w._s=c+(d<2?-10:Math.min(d/7,3));});return el.sort((a,b)=>b._s-a._s)[0];}catch(e){return null;}}
 function initDict(){const ds=document.getElementById('dict-section'),rev=pickRevisionWord(),esc=s=>(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");ds.innerHTML=`<div class="dict-wrap"><div style="font-size:.72rem;font-weight:900;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:10px;letter-spacing:.06em">📖 Dictionary</div><div class="dict-word">${DICT_WORD}</div><div class="dict-def">${DICT_DEF}</div><div class="dict-eg">"${DICT_EG}"</div><button class="dict-btn" onclick="openDictOverlay('${esc(DICT_WORD)}','${esc(DICT_DEF)}','${esc(DICT_EG)}')">Ask ${CHAR.name} about this word</button>${rev?`<div class="rev-block"><div class="rev-word">🔄 Past word: ${rev.word}</div><div class="rev-def">${rev.def||''}</div><button class="dict-btn" style="margin-top:8px" onclick="openDictOverlay('${esc(rev.word)}','${esc(rev.def||'')}','')">Ask ${CHAR.name} to test me!</button></div>`:''}</div>`;const h=JSON.parse(localStorage.getItem('dict_history')||'[]');if(!h.find(w=>w.word===DICT_WORD)){h.push({word:DICT_WORD,def:DICT_DEF,date:new Date().toISOString().slice(0,10),confidence:'medium'});localStorage.setItem('dict_history',JSON.stringify(h));}}
 let dictHistory=[];
-async function openDictOverlay(word,def,eg){dictHistory=[];currentQIdx=-2;overlayOpen=true;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('ov-title').textContent=`${CHAR.name} — Dictionary`;document.getElementById('dots').innerHTML='';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='hidden';document.getElementById('overlay').classList.add('open');dictHistory.push({role:'user',content:`Word: ${word}\nDefinition: ${def}${eg?'\nExample: '+eg:''}\nTeach this word in a fun, memorable way.`});showTyping();try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:250,system:CHAR.pers+'\nOpen with a funny joke about the word. Then explain simply. Max 80 words. No emoji. No markdown.',messages:dictHistory})});removeTyping();if(!res.ok)return;const text=(await res.json()).content[0].text;addBubble(text,'echo');speak(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
-async function sendDictReply(text){addBubble(text,'user');dictHistory.push({role:'user',content:text});showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+'\nNo emoji. No markdown. Max 70 words. Always advance.',messages:dictHistory})});removeTyping();if(!r.ok)return;const text=(await r.json()).content[0].text;addBubble(text,'echo');speak(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
+async function openDictOverlay(word,def,eg){dictHistory=[];currentQIdx=-2;overlayOpen=true;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('ov-title').textContent=`${CHAR.name} — Dictionary`;document.getElementById('dots').innerHTML='';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='hidden';document.getElementById('overlay').classList.add('open');dictHistory.push({role:'user',content:`Word: ${word}\nDefinition: ${def}${eg?'\nExample: '+eg:''}\nTeach this word in a fun, memorable way.`});showTyping();try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:250,system:CHAR.pers+'\nOpen with a funny joke about the word. Then explain simply. Max 80 words. No emoji. No markdown.',messages:dictHistory})});removeTyping();if(!res.ok)return;const text=(await res.json()).content[0].text;streamEchoBubble(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
+async function sendDictReply(text){addBubble(text,'user');dictHistory.push({role:'user',content:text});showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+'\nNo emoji. No markdown. Max 70 words. Always advance.',messages:dictHistory})});removeTyping();if(!r.ok)return;const text=(await r.json()).content[0].text;streamEchoBubble(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
 
 function toggleRules(){const rb=document.getElementById('rb'),arr=document.getElementById('rh-arrow'),open=rb.style.display!=='block';rb.style.display=open?'block':'none';arr.textContent=open?'▲':'▼';}
 function markRulesRead(){_iosWarm();rulesRead=true;document.getElementById('rb').style.display='none';document.getElementById('rh-arrow').textContent='▼ tap to read';document.getElementById('main-content').style.opacity='1';document.getElementById('main-content').style.pointerEvents='auto';speak(`${CHAR.name} says: read carefully and find the clues!`);}
@@ -427,8 +517,7 @@ async function submitWritingQ(qi){
     if(!r.ok){if(fb)fb.textContent='Try again.';if(btn)btn.disabled=false;return;}
     const reply=(await r.json()).content[0].text;if(fb)fb.textContent=reply;speak(reply);
     answers[qi]=text;
-    const next=document.getElementById(`qc-${qi+1}`);
-    if(next){next.style.opacity='1';next.style.pointerEvents='auto';}
+    refreshWritingLocks();
     if(btn)btn.textContent='✓ Sent';updateSubmit();
   }catch(e){if(fb)fb.textContent='Something went wrong.';if(btn)btn.disabled=false;}
 }
