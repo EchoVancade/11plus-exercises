@@ -84,6 +84,27 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .skip-pill:active{transform:scale(.94);background:rgba(255,255,255,.2)}
 .speech-ta:disabled{opacity:.45;cursor:not-allowed;background:rgba(255,255,255,.04)}
 .send-btn.disabled,.mic-btn.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.gotit-btn.suppressed{opacity:.28;cursor:not-allowed;pointer-events:none;filter:grayscale(1)}
+/* v3.24 — skip passcode bottom sheet */
+.pass-sheet{display:none;position:fixed;left:0;right:0;bottom:0;z-index:1200;background:#0f172a;border-top:2px solid rgba(249,115,22,.5);border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(0,0,0,.5);animation:sheetUp .22s ease}
+.pass-sheet.open{display:block}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.pass-title{color:#f1f5f9;font-size:.92rem;font-weight:900;text-align:center;margin-bottom:4px}
+.pass-sub{color:#94a3b8;font-size:.74rem;text-align:center;margin-bottom:12px}
+.pass-dots{display:flex;gap:12px;justify-content:center;margin-bottom:14px}
+.pass-dot{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.16);transition:background .12s}
+.pass-dot.filled{background:var(--acc,#f97316)}
+.pass-sheet.shake{animation:pShake .4s}
+@keyframes pShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:300px;margin:0 auto}
+.pad button{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#f1f5f9;font-size:1.25rem;font-weight:800;font-family:'Nunito',sans-serif;border-radius:12px;padding:13px 0;cursor:pointer}
+.pad button:active{background:rgba(249,115,22,.3)}
+.pad button.pad-act{font-size:.84rem;font-weight:700;color:#94a3b8}
+.pass-cancel{display:block;margin:12px auto 0;background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:'Nunito',sans-serif}
+/* settings passcode block */
+.pc-block{margin-top:14px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.pc-block.locked{opacity:.4;pointer-events:none}
+.pc-hint{font-size:.7rem;color:#64748b;margin-top:5px;line-height:1.4}
 .bub{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.88rem;line-height:1.6}
 .bub.echo{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:#f1f5f9}
 .bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
@@ -212,11 +233,30 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
     <label class="key-label">OpenAI Key — natural voice <span class="key-opt">(optional)</span></label>
     <input id="oai-key-input" type="password" class="key-input" placeholder="sk-… leave blank for device voice">
     <p class="key-note">Echo works fully with just the Claude key. OpenAI adds natural voice — enter once, works on all pages.</p>
+    <div id="pc-block" class="pc-block locked">
+      <label class="key-label">Skip Passcode <span class="key-opt">(4 digits)</span></label>
+      <input id="pc-input" type="tel" inputmode="numeric" maxlength="4" class="key-input" placeholder="e.g. 1234">
+      <p class="pc-hint">To set or change the skip passcode you must also enter a valid Claude API key above in the same save. Leave blank and save to remove the passcode.</p>
+    </div>
     <div class="key-btns">
       <button onclick="saveKey()" class="key-save">Save</button>
       <button onclick="document.getElementById('key-overlay').style.display='none'" class="key-close">Close</button>
     </div>
   </div>
+</div>
+
+<!-- v3.24 SKIP PASSCODE BOTTOM SHEET -->
+<div id="pass-sheet" class="pass-sheet">
+  <div class="pass-title">🔒 Grown-up check</div>
+  <div class="pass-sub">Enter the 4-digit passcode to skip this question</div>
+  <div class="pass-dots"><span class="pass-dot" id="pd0"></span><span class="pass-dot" id="pd1"></span><span class="pass-dot" id="pd2"></span><span class="pass-dot" id="pd3"></span></div>
+  <div class="pad">
+    <button onclick="passKey('1')">1</button><button onclick="passKey('2')">2</button><button onclick="passKey('3')">3</button>
+    <button onclick="passKey('4')">4</button><button onclick="passKey('5')">5</button><button onclick="passKey('6')">6</button>
+    <button onclick="passKey('7')">7</button><button onclick="passKey('8')">8</button><button onclick="passKey('9')">9</button>
+    <button class="pad-act" onclick="passClear()">Clear</button><button onclick="passKey('0')">0</button><button class="pad-act" onclick="passDel()">⌫</button>
+  </div>
+  <button class="pass-cancel" onclick="closePassSheet()">Cancel</button>
 </div>
 
 <script>
@@ -226,70 +266,70 @@ const DAY      = 'Tuesday';
 const WEEK     = 22;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'enormous';
-const DICT_DEF  = 'Adjective — very, very big.';
-const DICT_EG   = 'The enormous elephant splashed water over its back with its long trunk.';
+const DICT_WORD = 'patient';
+const DICT_DEF  = 'Adjective — able to wait calmly without getting frustrated or upset.';
+const DICT_EG   = 'The patient librarian waited quietly while the boy searched for the right word.';
 const RULES_TIPS = [
-  'Read the question carefully — look for the key word to help you find the answer.',
-  'For number sentences, try working backwards if you get stuck.',
-  'Vocab — use the other words in the sentence to help you guess a new word.',
+  'E5.3: If you are not sure of an answer, re-read that sentence in the passage slowly.',
+  'M2.1: Fraction number sentences — change to the same bottom number first, then add or take away the top numbers.',
+  'E3.1: A sentence needs a naming word AND a doing word — check before you move on.',
 ];
 const QUESTIONS = {
-  // ── VOCAB (0–3): age-7 language, simple familiar words ──────────────────
-  0:{ section:'Vocab', code:'E4.1', correct:'A', star:false,
-      text:'What does "enormous" mean?',
-      opts:{A:'Very, very big.',B:'Very, very small.',C:'Very fast.',D:'Very loud.'},
-      vocabWord:'enormous' },
-  1:{ section:'Vocab', code:'E4.1', correct:'C', star:false,
-      text:'Which sentence uses the word "gentle" correctly?',
-      opts:{A:'The gentle thunder crashed across the sky.',B:'She gave a gentle scream and ran away.',C:'The baby rabbit had a gentle touch and did not scratch at all.',D:'The enormous wave was gentle and knocked the boat over.'},
-      vocabWord:'gentle' },
-  2:{ section:'Vocab', code:'E4.1', correct:'B', star:false,
-      text:'What does "gleaming" mean?',
-      opts:{A:'Making a very loud noise.',B:'Shining very brightly.',C:'Falling down quickly.',D:'Feeling cold and wet.'},
-      vocabWord:'gleaming' },
+  // ── VOCAB (0–3): age-7 vocabulary, Claude-written ────────────────────────
+  0:{ section:'Vocab', code:'E4.1', correct:'C', star:false,
+      text:'What does "curious" mean?',
+      opts:{A:'Tired and wanting to sleep',B:'Angry and ready to argue',C:'Wanting to find out about something',D:'Fast and difficult to catch'},
+      vocabWord:'curious' },
+  1:{ section:'Vocab', code:'E4.2', correct:'A', star:false,
+      text:'Which sentence uses "delicate" correctly?',
+      opts:{A:'She picked up the delicate butterfly wing very carefully so it would not break.',B:'He ate a delicate portion of chips from the bag.',C:'The delicate thunder made everyone cover their ears.',D:'They ran delicate circles around the playground.'},
+      vocabWord:'delicate' },
+  2:{ section:'Vocab', code:'E4.3', correct:'B', star:false,
+      text:'What does "stumble" mean?',
+      opts:{A:'To sleep deeply for a long time',B:'To trip or nearly fall while walking',C:'To shout loudly at someone',D:'To swim very quickly'},
+      vocabWord:'stumble' },
   3:{ section:'Vocab', code:'E4.1', correct:'D', star:true,
-      text:'★ STAR — The puppy was timid when it met the big dog. What does timid mean?',
-      opts:{A:'Very excited and jumping around.',B:'Friendly and wanting to play.',C:'Hungry and looking for food.',D:'A little bit scared and not sure what to do.'},
-      vocabWord:'timid' },
-  // ── ENGLISH (4–9): age-7 English — simple grammar, punctuation, comprehension ──
-  4:{ section:'English', code:'E1.1', correct:'B', star:false,
-      text:'Which word is a doing word (verb)?',
-      opts:{A:'fluffy',B:'jumped',C:'quickly',D:'the'} },
-  5:{ section:'English', code:'E1.2', correct:'A', star:false,
-      text:'Which sentence ends with the right punctuation mark?',
-      opts:{A:'Where did you put my bag?',B:'Where did you put my bag.',C:'Where did you put my bag!',D:'Where did you put my bag,'} },
-  6:{ section:'English', code:'E1.3', correct:'C', star:false,
+      text:'★ STAR — "She wore a reluctant smile as she agreed to join in." What does reluctant mean?',
+      opts:{A:'Very big and bright',B:'Very happy and full of excitement',C:'Quick and easy to spot',D:'Not really wanting to do something'},
+      vocabWord:'reluctant' },
+  // ── ENGLISH (4–9): age-8 appropriate ─────────────────────────────────────
+  4:{ section:'English', code:'E5.2', correct:'B', star:false,
+      text:'A girl puts her lunch back in her bag without eating it and looks out of the window. What does this action suggest?',
+      opts:{A:'She is not allowed to eat at that time of day.',B:'She is worried or upset about something.',C:'She does not like the food she has been given.',D:'She is waiting until later to eat.'} },
+  5:{ section:'English', code:'E3.1', correct:'C', star:false,
+      text:'Which is a complete sentence?',
+      opts:{A:'Running very fast through the rain.',B:'Because the dog was barking.',C:'The bird landed on the roof.',D:'After a very long and tiring journey.'} },
+  6:{ section:'English', code:'E2.1', correct:'A', star:false,
+      text:'Which sentence has a comma in the correct place?',
+      opts:{A:'When the bell rang, everyone stood up.',B:'When the bell, rang everyone stood up.',C:'When the bell rang everyone, stood up.',D:'When, the bell rang everyone stood up.'} },
+  7:{ section:'English', code:'E1.3', correct:'D', star:false,
       text:'Which word is spelled correctly?',
-      opts:{A:'frend',B:'freind',C:'friend',D:'freiend'} },
-  7:{ section:'English', code:'E2.1', correct:'D', star:false,
-      text:'Which describing word (adjective) best fits this sentence? The __ dragon breathed fire into the dark cave.',
-      opts:{A:'quickly',B:'running',C:'very',D:'fierce'} },
-  8:{ section:'English', code:'E5.1', correct:'A', star:false,
-      text:'Maya loved drawing animals. She drew a lion, a giraffe, and a tiny frog. What is this passage mainly about?',
-      opts:{A:'Maya and the animals she liked to draw.',B:'How to draw a lion and a giraffe.',C:'Why frogs are smaller than giraffes.',D:'The best art classes for children.'} },
-  9:{ section:'English', code:'E5.2', correct:'B', star:false,
-      text:'Ben ran all the way home and slammed his bedroom door. What does this most likely tell us about Ben?',
-      opts:{A:'He was very happy and wanted to celebrate.',B:'He was upset or angry about something.',C:'He was in a hurry because he needed the toilet.',D:'He was practising for a running race.'} },
-  // ── MATHS (10–15): age-7, KS1/early KS2 — number sentences and simple problems ──
-  10:{ section:'Maths', code:'M1.1', correct:'C', star:false,
-       text:'What is 47 plus 35?',
-       opts:{A:'72',B:'81',C:'82',D:'73'}, mathConcept:'addition' },
-  11:{ section:'Maths', code:'M1.2', correct:'A', star:false,
-       text:'What is 93 take away 28?',
-       opts:{A:'65',B:'75',C:'64',D:'55'}, mathConcept:'subtraction' },
+      opts:{A:'Frend',B:'Freind',C:'Freinds',D:'Friend'} },
+  8:{ section:'English', code:'E5.1', correct:'B', star:false,
+      text:'In the bee passage, how long did it take Bella to get home after the rain stopped?',
+      opts:{A:'About ten minutes',B:'About three minutes',C:'About half an hour',D:'She was not sure — she had lost count of time'} },
+  9:{ section:'English', code:'E3.1', correct:'A', star:false,
+      text:'Which sentence starts with a capital letter AND ends with a full stop correctly?',
+      opts:{A:'The snow fell quietly all night long.',B:'the Snow fell quietly all night long.',C:'The snow fell quietly all night long',D:'the snow fell quietly all night long.'} },
+  // ── MATHS (10–15): age-8 appropriate ─────────────────────────────────────
+  10:{ section:'Maths', code:'M2.1', correct:'C', star:false,
+       text:'What is one quarter add one quarter?',
+       opts:{A:'1 over 8',B:'1 over 4',C:'2 over 4',D:'2 over 8'}, mathConcept:'fractions' },
+  11:{ section:'Maths', code:'M2.1', correct:'A', star:false,
+       text:'What is one whole take away one half?',
+       opts:{A:'1 over 2',B:'1 over 4',C:'2 over 2',D:'0'}, mathConcept:'fractions' },
   12:{ section:'Maths', code:'M1.3', correct:'D', star:false,
-       text:'What is 6 multiplied by 7?',
-       opts:{A:'36',B:'48',C:'13',D:'42'}, mathConcept:'multiplication' },
-  13:{ section:'Maths', code:'M1.4', correct:'B', star:false,
-       text:'There are 56 sweets shared equally between 8 children. How many sweets does each child get?',
-       opts:{A:'6',B:'7',C:'8',D:'9'}, mathConcept:'division' },
-  14:{ section:'Maths', code:'M2.1', correct:'C', star:false,
-       text:'What is one half of 48?',
-       opts:{A:'12',B:'20',C:'24',D:'26'}, mathConcept:'fractions' },
+       text:'What is a quarter of 48?',
+       opts:{A:'16',B:'24',C:'10',D:'12'}, mathConcept:'fractions of amounts' },
+  13:{ section:'Maths', code:'M3.1', correct:'B', star:false,
+       text:'Stickers come in packs of red and blue in the ratio 1 to 3. There are 4 red stickers. How many blue?',
+       opts:{A:'8',B:'12',C:'6',D:'16'}, mathConcept:'ratio' },
+  14:{ section:'Maths', code:'M1.9', correct:'C', star:false,
+       text:'Which number appears in both the 4 times table and the 6 times table?',
+       opts:{A:'10',B:'14',C:'24',D:'26'}, mathConcept:'multiples' },
   15:{ section:'Maths', code:'M4.1', correct:'A', star:false,
-       text:'A bag of apples costs 90p. How much do 3 bags cost?',
-       opts:{A:'2 pounds 70p',B:'2 pounds 20p',C:'3 pounds 10p',D:'1 pound 80p'}, mathConcept:'money' },
+       text:'A snail moves 6 centimetres every minute. How far does it move in 5 minutes?',
+       opts:{A:'30 centimetres',B:'25 centimetres',C:'36 centimetres',D:'11 centimetres'}, mathConcept:'distance' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -379,13 +419,16 @@ function streamEchoBubble(text){
   d.appendChild(textNode);
   b.appendChild(d);
   b.scrollTop=b.scrollHeight;
-  speak(text);
+  speak(text);                                   // audio starts (after its own ~120ms warm delay)
   setInputDisabled(true);
   const tokens=text.match(/\S+|\s+/g)||[text];
   const wordCount=tokens.filter(t=>!/^\s+$/.test(t)).length||1;
   const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
-  const msPerToken=(60000/baseWpm*wordCount)/tokens.length;
-  let i=0,timeoutId=null,pillTimer=null;
+  // v3.24 sync — total speak duration in ms, words mapped onto a wall-clock.
+  const SPEAK_DELAY=140;                          // ~ audio onset latency (matches speakWebSpeech 120ms + ramp)
+  const totalMs=(wordCount/baseWpm)*60000;        // expected spoken length
+  const msPerWord=totalMs/wordCount;
+  let i=0,timeoutId=null,pillTimer=null,startAt=0,wordsShown=0;
   function complete(){
     if(timeoutId)clearTimeout(timeoutId);
     if(pillTimer)clearTimeout(pillTimer);
@@ -396,13 +439,23 @@ function streamEchoBubble(text){
     b.scrollTop=b.scrollHeight;
   }
   _streamCancel=complete;
+  // closed-loop tick: each frame, reveal exactly as many words as the
+  // elapsed audio time says we should — eliminates accumulating drift.
   function step(){
     if(_streamCancel!==complete)return;
     if(i>=tokens.length){complete();return;}
-    textNode.data+=tokens[i];
-    i++;
+    const elapsed=performance.now()-startAt;
+    const targetWords=Math.min(wordCount,Math.floor(elapsed/msPerWord)+1);
+    // emit tokens until shown-word-count catches up to the target
+    while(i<tokens.length && wordsShown<targetWords){
+      const tok=tokens[i];
+      textNode.data+=tok;
+      if(!/^\s+$/.test(tok))wordsShown++;
+      i++;
+    }
     b.scrollTop=b.scrollHeight;
-    timeoutId=setTimeout(step,msPerToken);
+    if(i<tokens.length)timeoutId=setTimeout(step,Math.max(40,msPerWord/2));
+    else complete();
   }
   pillTimer=setTimeout(()=>{
     if(_streamCancel===complete && i<tokens.length){
@@ -414,8 +467,12 @@ function streamEchoBubble(text){
       b.scrollTop=b.scrollHeight;
     }
   },2000);
-  step();
+  // start the text reveal aligned to audio onset, not at t=0
+  timeoutId=setTimeout(()=>{ if(_streamCancel!==complete)return; startAt=performance.now(); step(); }, SPEAK_DELAY);
 }
+function resetGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.add('suppressed');g.disabled=true;}}
+function enableGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.remove('suppressed');g.disabled=false;}}
+function maybeEnableGotIt(t){if((t||'').toLowerCase().includes('got it'))enableGotIt();}
 function hardStop(){
   if(_streamCancel){const fn=_streamCancel;_streamCancel=null;fn();}
   _speechGen++;                                     // invalidate all pending speakWebSpeech callbacks
@@ -455,10 +512,11 @@ function openOverlay(qi){
   tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;  // fresh each open — prevents alternating-message API error
   document.getElementById('ov-bubbles').innerHTML='';
   document.getElementById('speech-text').value='';
-  document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';
+  document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}
   document.getElementById('ov-title').textContent=`${CHAR.name} — ${QUESTIONS[qi].section}`;
   renderDots(qi);
   document.getElementById('ex-wrap').style.visibility='hidden';
+  resetGotIt();
   document.getElementById('overlay').classList.add('open');
   callAI(qi);
 }
@@ -476,11 +534,24 @@ function gotIt(){
   if(remMode)setTimeout(()=>advanceRemediation(),200);
   setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);
 }
-function parentSkip(){
-  hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;
-  document.getElementById('speech-text').value='';
-  closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),100);
+function parentSkip(){if(!_skipPass){_doSkip();return;}showPassSheet(()=>_doSkip());}
+// ── v3.24 SKIP PASSCODE ────────────────────────────────────────────────────
+let _skipPass=localStorage.getItem('skip_passcode_v1')||null;  // stored as 4-char string
+let _passBuf='',_passOnOk=null;
+function _hash4(s){return s;}  // stored verbatim (local device only, parent-set, low sensitivity)
+function showPassSheet(onOk){_passBuf='';_passOnOk=onOk;_renderPassDots();document.getElementById('pass-sheet').classList.add('open');}
+function closePassSheet(){document.getElementById('pass-sheet').classList.remove('open');_passBuf='';_passOnOk=null;}
+function _renderPassDots(){for(let i=0;i<4;i++){const el=document.getElementById('pd'+i);if(el)el.classList.toggle('filled',i<_passBuf.length);}}
+function passKey(d){if(_passBuf.length>=4)return;_passBuf+=d;_renderPassDots();if(_passBuf.length===4)setTimeout(_passCheck,120);}
+function passDel(){_passBuf=_passBuf.slice(0,-1);_renderPassDots();}
+function passClear(){_passBuf='';_renderPassDots();}
+function _passCheck(){
+  if(_hash4(_passBuf)===_skipPass){const cb=_passOnOk;closePassSheet();if(cb)cb();}
+  else{const sh=document.getElementById('pass-sheet');sh.classList.add('shake');setTimeout(()=>sh.classList.remove('shake'),420);_passBuf='';_renderPassDots();}
 }
+// parent-facing skip gate: no passcode set = skip freely; otherwise require it.
+function _doSkip(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),100);}
+
 
 // ── AI TUTORING ───────────────────────────────────────────────────────────────
 function classifyEngagement(text){
@@ -520,7 +591,7 @@ async function callAI(qi,lastAns){
     removeTyping();
     if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
     const text=(await r.json()).content[0].text;
-    streamEchoBubble(text);
+    streamEchoBubble(text);maybeEnableGotIt(text);
     const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;
     tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);
   }catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
@@ -616,7 +687,7 @@ async function openDictOverlay(word,def,eg){
   document.getElementById('ov-title').textContent=`${CHAR.name} — Dictionary`;
   document.getElementById('dots').innerHTML='';
   const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='hidden';
-  document.getElementById('overlay').classList.add('open');
+  enableGotIt();document.getElementById('overlay').classList.add('open');
   dictHistory.push({role:'user',content:`Word: ${word}\nDefinition: ${def}${eg?'\nExample: '+eg:''}\nTeach this word in a fun, memorable way.`});
   showTyping();
   try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:250,system:CHAR.pers+'\nOpen with a funny joke about the word. Then explain simply. Max 80 words. No emoji. No markdown.',messages:dictHistory})});removeTyping();if(!res.ok)return;const text=(await res.json()).content[0].text;streamEchoBubble(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}
@@ -652,8 +723,9 @@ function markRulesRead(){
 }
 
 // ── SETTINGS ──────────────────────────────────────────────────────────────────
-function openSettings(){document.getElementById('api-key-input').value=localStorage.getItem('anthropic_key_v1')||'';document.getElementById('oai-key-input').value=localStorage.getItem('openai_key_v1')||'';document.getElementById('key-overlay').style.display='flex';}
-function saveKey(){const k=(document.getElementById('api-key-input').value||'').trim(),ok=(document.getElementById('oai-key-input').value||'').trim();if(k.startsWith('sk-ant-')&&k.length>20){localStorage.setItem('anthropic_key_v1',k);API_KEY=k;}if(ok.startsWith('sk-')&&ok.length>20){localStorage.setItem('openai_key_v1',ok);OPENAI_KEY=ok;}else if(ok===''){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;}updateVoicePill();document.getElementById('key-overlay').style.display='none';}
+function openSettings(){document.getElementById('api-key-input').value=localStorage.getItem('anthropic_key_v1')||'';document.getElementById('oai-key-input').value=localStorage.getItem('openai_key_v1')||'';document.getElementById('pc-input').value='';_syncPcLock();document.getElementById('api-key-input').oninput=_syncPcLock;document.getElementById('key-overlay').style.display='flex';}
+function _syncPcLock(){const k=(document.getElementById('api-key-input').value||'').trim();const valid=k.startsWith('sk-ant-')&&k.length>20;document.getElementById('pc-block').classList.toggle('locked',!valid);}
+function saveKey(){const k=(document.getElementById('api-key-input').value||'').trim(),ok=(document.getElementById('oai-key-input').value||'').trim();const kValid=k.startsWith('sk-ant-')&&k.length>20;if(kValid){localStorage.setItem('anthropic_key_v1',k);API_KEY=k;}if(ok.startsWith('sk-')&&ok.length>20){localStorage.setItem('openai_key_v1',ok);OPENAI_KEY=ok;}else if(ok===''){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;}/* v3.24 passcode: only changeable WITH a valid API key in the same save */if(kValid){const pc=(document.getElementById('pc-input').value||'').trim();if(pc===''){localStorage.removeItem('skip_passcode_v1');_skipPass=null;}else if(/^[0-9]{4}$/.test(pc)){localStorage.setItem('skip_passcode_v1',_hash4(pc));_skipPass=_hash4(pc);}}updateVoicePill();document.getElementById('key-overlay').style.display='none';}
 function clearKey(){localStorage.removeItem('anthropic_key_v1');localStorage.removeItem('openai_key_v1');API_KEY=null;OPENAI_KEY=null;updateVoicePill();document.getElementById('key-overlay').style.display='none';}
 
 // ── BUILD SECTIONS ────────────────────────────────────────────────────────────
