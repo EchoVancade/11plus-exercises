@@ -72,6 +72,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .q-ctx-opt{font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:6px}
 .q-ctx-opt.wrong-opt{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
 .q-ctx-opt.right-opt{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+.q-ctx-opt.neutral-opt{background:rgba(255,255,255,.05);color:#94a3b8;border:1px solid rgba(255,255,255,.12)}
 .ov-bubbles{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
 /* Phase 2 — voice-text coupling */
 .skip-pill{display:inline-block;margin-left:6px;padding:2px 9px;background:rgba(255,255,255,.1);color:#cbd5e1;border-radius:11px;font-size:.72rem;cursor:pointer;border:1px solid rgba(255,255,255,.18);font-weight:500;user-select:none;-webkit-tap-highlight-color:transparent}
@@ -240,62 +241,60 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'CL';
 const DAY      = 'Sunday';
-const WEEK     = 22;
+const WEEK     = 25;
 const PTS_KEY  = 'pts_CL';
 const BASE_PTS = 950;
-const DICT_WORD = 'persistent';
-const DICT_DEF  = 'Adjective — continuing firmly despite obstacles or discouragement.';
-const DICT_EG   = 'Her persistent effort meant she improved every single week.';
+const DICT_WORD = 'vivid';
+const DICT_DEF  = 'Adjective — producing powerful, clear, and lifelike mental images.';
+const DICT_EG   = 'She wrote such vivid descriptions that readers felt they were standing inside the scene.';
 const RULES_TIPS = [
-  'W1: Body Language Secret — a clenched jaw or tapping foot shows MORE than "he was angry".',
-  'W4: The Comparison Trick — a simile or metaphor gives the reader a picture to hold onto.',
-  'W3: The Punch Sentence — one short sentence alone on the page hits harder than any long one.',
+  'W1: Body Language Secret — show feeling through movement, not words.',
+  'W2: Scene Setter — one sharp sensory detail anchors the reader instantly.',
+  'W3: Punch Sentence — end a paragraph with one short, powerful line.',
 ];
-// Two Mission Packs — 5 questions each.
-// PACK_1 covers Q0–Q4, PACK_2 covers Q5–Q9
 const PACK_1 = {
-  id:'M-C', title:'The Character Reveal',
-  codes:['W1.1','W4.4','W2.3'],
-  technique:'Show who someone is through action, not description. An unexpected detail reveals character. Dialogue tone says more than words.',
+  id:'M-F', title:'The Moment of Fear',
+  codes:['W1.3','W3.3','W4.3'],
+  technique:'A physical fear reaction (body language). A short "dread" punch sentence. A simile that makes the threat feel real.',
 };
 const PACK_2 = {
-  id:'M-D', title:'The Tension Builder',
-  codes:['W1.7','W3.8','W3.1'],
-  technique:'Short sentences speed up time. Repetition of a word creates dread. A punch sentence drops the reader off a cliff.',
+  id:'M-G', title:'The Discovery',
+  codes:['W2.4','W1.6','W3.6'],
+  technique:'A sensory surprise detail. A reaction shown through movement. An unexpected short sentence that lands the discovery.',
 };
 const QUESTIONS = {
-  // ── PACK 1 (0–4): M-C The Character Reveal — W1.1, W4.4, W2.3 ─────────────
-  0:{ pack:1, code:'W1.1', correct:'C', star:false,
-      text:'Which sentence best reveals character through action rather than description?',
-      opts:{A:'He was a kind man.',B:'Everyone said he was generous.',C:'He slipped his last coin into the beggar\'s hand without breaking his stride.',D:'He felt generous and wanted to help.'} },
-  1:{ pack:1, code:'W4.4', correct:'A', star:false,
-      text:'Which unexpected detail reveals most about a character\'s personality?',
-      opts:{A:'The police inspector kept a worn-out teddy bear in her desk drawer.',B:'The police inspector was very experienced.',C:'The police inspector solved many difficult cases.',D:'The police inspector had a serious face and a stern voice.'} },
-  2:{ pack:1, code:'W2.3', correct:'D', star:false,
-      text:'Which example of dialogue reveals character most effectively through tone?',
-      opts:{A:'"I am going now," she said.',B:'"Goodbye," she replied quietly.',C:'"See you," she told him, walking out.',D:'"Fine," she said — two letters, a door closed softly, and she was gone.'} },
-  3:{ pack:1, code:'W1.1', correct:'B', star:false,
-      text:'A writer wants to show a character is nervous without stating it. Which is best?',
-      opts:{A:'She was very nervous about the audition.',B:'She kept straightening her music sheets even though they were already straight.',C:'Her nervousness was plain for all to see.',D:'She felt worried and could not stop thinking about it.'} },
-  4:{ pack:1, code:'W4.4', correct:'C', star:true,
-      text:'★ STAR — The boy always checked that his bedroom window was exactly half open before sleeping. Which technique is this, and what does it most reveal?',
-      opts:{A:'Backstory — it explains what happened to him as a child.',B:'Simile — it compares his behaviour to a habit.',C:'Unexpected detail — it suggests a need for control or a hidden anxiety.',D:'Dialogue — it reveals his character through what he says.'} },
-  // ── PACK 2 (5–9): M-D The Tension Builder — W1.7, W3.8, W3.1 ─────────────
-  5:{ pack:2, code:'W1.7', correct:'A', star:false,
-      text:'Which sentence best uses short sentences to create speed and tension?',
-      opts:{A:'He ran. The door was locked. He ran again.',B:'He ran quickly towards the door, which was, unfortunately, locked, so he had to try again.',C:'Running towards the door, which was locked, he tried again.',D:'He found the door was locked after he ran towards it.'} },
-  6:{ pack:2, code:'W3.8', correct:'B', star:false,
-      text:'Which uses word repetition to create a feeling of dread?',
-      opts:{A:'The house was cold and dark and frightening.',B:'It was dark. Darker than before. Darker than she had thought possible.',C:'She felt afraid in the very dark house.',D:'Darkness surrounded her from every direction in the large house.'} },
-  7:{ pack:2, code:'W3.1', correct:'D', star:false,
-      text:'Which punch sentence most effectively ends a tense paragraph?',
-      opts:{A:'She was very scared and did not know what to do next.',B:'The situation was getting more and more frightening as time went on.',C:'She thought about running but was not sure if that was the right thing to do.',D:'Then the lights went out.'} },
-  8:{ pack:2, code:'W1.7', correct:'C', star:false,
-      text:'A writer wants to speed up the pace at a climactic moment. Which is the best technique?',
-      opts:{A:'Use long complex sentences with many subordinate clauses.',B:'Add more descriptive adjectives to each sentence.',C:'Break action into very short sentences — one beat per sentence.',D:'Include more dialogue between characters.'} },
-  9:{ pack:2, code:'W3.8', correct:'A', star:false,
-      text:'Which example of repetition creates the strongest tension?',
-      opts:{A:'"Wait," she said. She always said wait. She would not say it again.',B:'She said wait, and waited, and then said wait once more.',C:'She repeated the word wait several times during the conversation.',D:'Wait was the only word she could think of to say.'} },
+  // ── PACK 1 (0–4): fear / W1.3, W3.3, W4.3 ───────────────────────────────
+  0:{ pack:1, code:'W1.3', correct:'B', star:false,
+      text:'Which sentence best shows fear using body language rather than telling us the character is scared?',
+      opts:{A:'She was terrified of what lay behind the door.',B:'Her knees locked together and she could not make herself move forward.',C:'Fear filled her body from head to toe.',D:'She felt a strong sense of dread wash over her.'} },
+  1:{ pack:1, code:'W3.3', correct:'C', star:false,
+      text:'Which is the best "punch sentence" to end a paragraph that builds dread?',
+      opts:{A:'She was very scared and did not know what to do next in the situation.',B:'The whole situation was quite frightening and made her feel uncomfortable.',C:'Then the door swung open.',D:'There was definitely something on the other side of the door that worried her.'} },
+  2:{ pack:1, code:'W4.3', correct:'A', star:false,
+      text:'Which simile best makes a threat feel powerful and frightening?',
+      opts:{A:'The shadow stretched towards her like a cold hand reaching across the floor.',B:'The shadow was big and dark like a normal shadow on a wall.',C:'The shadow reminded her of something she had seen before in a film.',D:'It was dark, like when the lights are off at night.'} },
+  3:{ pack:1, code:'W1.3', correct:'D', star:false,
+      text:'A writer wants to show a character is hiding fear from others. Which sentence does this best?',
+      opts:{A:'He pretended he was not scared even though he was.',B:'He told everyone he was fine but secretly he was afraid.',C:'He was frightened but did not want anyone to know about it.',D:'He smiled and kept talking, but his fingers had curled silently into fists.'} },
+  4:{ pack:1, code:'W3.3', correct:'B', star:true,
+      text:'★ STAR — Which ending uses BOTH a body language detail AND a punch sentence to close a frightening paragraph?',
+      opts:{A:'She ran away very fast because she was scared of the loud noise coming from inside.',B:'She pressed herself flat against the wall. Silence.',C:'The noise scared her and she hid behind the wall until it stopped.',D:'She was frightened so she stood near the wall and waited to see what would happen.'} },
+  // ── PACK 2 (5–9): discovery / W2.4, W1.6, W3.6 ──────────────────────────
+  5:{ pack:2, code:'W2.4', correct:'C', star:false,
+      text:'Which sentence gives the best unexpected sensory detail to open a discovery scene?',
+      opts:{A:'The room was old and had a funny smell that was hard to describe.',B:'She walked in and noticed immediately that something was different.',C:'The air tasted of burnt paper and something else — something sweet she could not name.',D:'It smelled a bit odd and looked different from what she had expected it to look like.'} },
+  6:{ pack:2, code:'W1.6', correct:'A', star:false,
+      text:'Which sentence shows a character\'s reaction to a discovery through movement rather than a statement?',
+      opts:{A:'Her hand flew to her mouth and she took a step back.',B:'She was completely shocked by what she found inside the old chest.',C:'The discovery filled her with surprise and disbelief.',D:'She could not believe what she was looking at.'} },
+  7:{ pack:2, code:'W3.6', correct:'D', star:false,
+      text:'Which short sentence best "lands" a surprising discovery at the end of a paragraph?',
+      opts:{A:'She had found something that was quite surprising and did not expect to find it there.',B:'The thing she found was very unexpected and changed everything about her plans.',C:'It was a discovery that would change the rest of the story for everyone involved.',D:'It was a map.'} },
+  8:{ pack:2, code:'W2.4', correct:'B', star:false,
+      text:'Which sentence uses MORE THAN ONE sense to create a vivid moment of discovery?',
+      opts:{A:'The old room was dark and had a lot of dust on the shelves and floor.',B:'Dust glittered in the beam of light, and somewhere beneath the silence, the floorboard groaned.',C:'The room had lots of things in it that were interesting to look at carefully.',D:'She could see that the room was old and had not been used for quite a long time.'} },
+  9:{ pack:2, code:'W1.6', correct:'C', star:false,
+      text:'Which sentence shows disbelief through action rather than stating the character is confused?',
+      opts:{A:'She was confused and did not understand what was happening.',B:'She felt very confused because she had not expected to find something like that.',C:'She read the name again, then again, then turned the envelope over as if the back might explain it.',D:'The name confused her and she did not know how to react to seeing it there.'} },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -315,11 +314,12 @@ const CHARS = {
 
 let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={}, disengagedCount={};
 let rulesRead=false, overlayOpen=false, micActive=false;
-let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1;
+let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1; let retestDone=false;
 let recognition=null, CHAR;
 let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
 let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
 let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
+const OAI_TTS_MODEL='gpt-4o-mini-tts'; // newest, most natural, streaming. Flip to 'tts-1' (fastest) or 'tts-1-hd' (previous) if your account rejects it.
 let _cachedVoice=null, _audioWarmed=false;
 let _currentUtt=null, _speechGen=0;            // ghost-kill: generation counter + active utterance ref
 
@@ -354,7 +354,16 @@ function speakWebSpeech(text){
     window.speechSynthesis.speak(u);
   },120);
 }
-async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
+async function speakOpenAI(text){try{_oaiController=new AbortController();const _body={model:OAI_TTS_MODEL,input:text,voice:CHAR.key==='snake'?'fable':'echo',response_format:'mp3'};if(OAI_TTS_MODEL.indexOf('tts-1')===0){_body.speed=CHAR.key==='snake'?.92:.97;}else{_body.instructions='Speak warmly, clearly and a little slowly, like a friendly tutor talking to a young child.';}const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify(_body)});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const MS=window.MediaSource;if(MS&&resp.body&&MS.isTypeSupported&&MS.isTypeSupported('audio/mpeg')){
+  // STREAMED playback (desktop/Android): start audio before full synthesis. iOS lacks standard MediaSource -> blob fallback below.
+  const ms=new MS();_oaiObjectUrl=URL.createObjectURL(ms);_oaiAudio=new Audio();_oaiAudio.src=_oaiObjectUrl;_oaiAudio.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;};
+  await new Promise(res=>ms.addEventListener('sourceopen',res,{once:true}));
+  const sb=ms.addSourceBuffer('audio/mpeg');const reader=resp.body.getReader();let started=false;
+  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});}pump();}catch(e){}};
+  pump();
+}else{
+  const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();
+}}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});document.addEventListener('click',_warmAudio,{once:true});
@@ -385,10 +394,9 @@ function streamEchoBubble(text){
   const SPEAK_DELAY=140;                          // ~ audio onset latency (matches speakWebSpeech 120ms + ramp)
   const totalMs=(wordCount/baseWpm)*60000;        // expected spoken length
   const msPerWord=totalMs/wordCount;
-  let i=0,timeoutId=null,pillTimer=null,startAt=0,wordsShown=0;
+  let i=0,timeoutId=null,startAt=0,wordsShown=0;
   function complete(){
     if(timeoutId)clearTimeout(timeoutId);
-    if(pillTimer)clearTimeout(pillTimer);
     textNode.data=text;
     d.querySelector('.skip-pill')?.remove();
     setInputDisabled(false);
@@ -414,18 +422,34 @@ function streamEchoBubble(text){
     if(i<tokens.length)timeoutId=setTimeout(step,Math.max(40,msPerWord/2));
     else complete();
   }
-  pillTimer=setTimeout(()=>{
-    if(_streamCancel===complete && i<tokens.length){
-      const pill=document.createElement('span');
-      pill.className='skip-pill';
-      pill.textContent=' Skip ⏭';
-      pill.onclick=(e)=>{e.stopPropagation();if(_streamCancel===complete)complete();};
-      d.appendChild(pill);
-      b.scrollTop=b.scrollHeight;
-    }
-  },2000);
   // start the text reveal aligned to audio onset, not at t=0
   timeoutId=setTimeout(()=>{ if(_streamCancel!==complete)return; startAt=performance.now(); step(); }, SPEAK_DELAY);
+}
+function streamEchoGrouped(raw){
+  const b=document.getElementById('ov-bubbles');
+  const lines=(raw||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const groups=[];
+  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp=ln;}if(sp)groups.push({sp:sp,dp:dp||sp});});
+  if(!groups.length)groups.push({sp:raw||'',dp:raw||''});
+  const fullSpoken=groups.map(g=>g.sp).join(' ');
+  speak(fullSpoken);
+  setInputDisabled(true);
+  const wc=g=>((g.sp.match(/\S+/g)||[]).length||1);
+  const totalWords=groups.reduce((a,g)=>a+wc(g),0)||1;
+  const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
+  const totalMs=(totalWords/baseWpm)*60000, SPEAK_DELAY=140;
+  let acc=0; const starts=groups.map(g=>{const s=(acc/totalWords)*totalMs;acc+=wc(g);return s;});
+  let shown=0,timeoutId=null,startAt=0;
+  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;b.scrollTop=b.scrollHeight;}
+  _streamCancel=complete;
+  function step(){
+    if(_streamCancel!==complete)return;
+    const elapsed=performance.now()-startAt;
+    while(shown<groups.length && elapsed>=starts[shown]){addBubble(groups[shown].dp,'echo');shown++;b.scrollTop=b.scrollHeight;}
+    if(shown<groups.length)timeoutId=setTimeout(step,80);
+    else timeoutId=setTimeout(complete,Math.max(0,totalMs-elapsed)+200);
+  }
+  timeoutId=setTimeout(()=>{if(_streamCancel!==complete)return;startAt=performance.now();step();},SPEAK_DELAY);
 }
 function resetGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.add('suppressed');g.disabled=true;}}
 function enableGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.remove('suppressed');g.disabled=false;}}
@@ -434,13 +458,13 @@ function hardStop(){if(_streamCancel){const fn=_streamCancel;_streamCancel=null;
 function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
-function charTurns(){return CHILD==='IL'?5:7;}
+function charTurns(){return 10;}
 function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
 function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;d.textContent=text;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function removeTyping(){document.getElementById('typing-ind')?.remove();}
 
-function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}const pack=QUESTIONS[qi].pack===1?PACK_1:PACK_2;document.getElementById('ov-title').textContent=`${CHAR.name} — ${pack.title}`;renderDots(qi);document.getElementById('ex-wrap').style.visibility='hidden';resetGotIt();document.getElementById('overlay').classList.add('open');callAI(qi);}
+function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}const pack=QUESTIONS[qi].pack===1?PACK_1:PACK_2;document.getElementById('ov-title').textContent=`${CHAR.name} — ${pack.title}`;renderDots(qi);const _q=QUESTIONS[qi],_ctx=document.getElementById('q-ctx');if(_ctx&&_q&&_q.type!=='writing'){let _rows='';if(_q.opts){const _wa=answers[qi],_ca=_q.correct;_rows='<div class="q-ctx-row">'+Object.keys(_q.opts).map(k=>{const _c=k===_ca?'right-opt':(k===_wa?'wrong-opt':'neutral-opt');const _m=k===_ca?'✓':(k===_wa?'✗':'');return `<span class="q-ctx-opt ${_c}">${_m} ${k}: ${_q.opts[k]||''}</span>`;}).join('')+'</div>';}_ctx.innerHTML=`<div class="q-ctx-text">${_q.text}</div>`+_rows;_ctx.style.display='block';}else if(_ctx){_ctx.style.display='none';}document.getElementById('ex-wrap').style.visibility='hidden';resetGotIt();document.getElementById('overlay').classList.add('open');callAI(qi);}
 function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');const _ctx=document.getElementById('q-ctx');if(_ctx)_ctx.style.display='none';document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
 function gotIt(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),200);setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);}
 function parentSkip(){if(!_skipPass){_doSkip();return;}showPassSheet(()=>_doSkip());}
@@ -481,18 +505,34 @@ async function callAI(qi,lastAns){
   const dc=disengagedCount[qi]||0;
   let strict;
   if(turn===1){
-    strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer or rewrite the sentence for them):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT model a finished sentence. Do NOT explain the technique.\n3. Ask ONE small question about ONE word or ONE choice the writer could make. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`;
-  } else if(engagement==='disengaged' && dc<3){
-    strict=`TURN ${turn} — STUDENT IS DISENGAGED (they said "${lastAns}").\nThey are not engaging — said "idk" or a one-word non-answer.\n\nDO NOT re-teach. DO NOT model a sentence. DO NOT give the answer.\nYour ONLY move: ask a SMALLER, EASIER question.\n- Point at ONE word in the question or one tiny choice.\n- "Just one word — what is the character feeling right now?" or "Pick one: angry, sad, or excited?"\n- Be warm: "It is okay — let us go smaller."\nMax 50 words. No emoji. No asterisks.`;
+    strict=`ROUND 1 — HOOK then I DO.
+1. Open with one short funny joke in this format: "${jFmt}..." about this writing idea. One line only. No greeting, no name.
+2. I DO (mostly direct, about 20 percent Socratic): in the same warm tone, take a plain sentence and improve it out loud using the same technique the question is about, choosing each word as you think aloud. Lead them clearly toward the answer, using the wording of the question they missed. Show the thinking — do not hide the method.
+3. End by inviting them in: "Now let us try one together."
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else if(engagement==='disengaged' && dc>=3){
-    strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never write the sentence for them.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess: "Just guess — do you think the character would say A or B?"\n3. Make one option clearly stronger but do not say which.\nMax 40 words. No emoji. No asterisks.`;
+    strict=`ROUND ${turn} — STILL STUCK (they said "${lastAns}"). Stay on the SAME sentence. Be very warm: "You are doing brilliantly to stick with this." Give a TWO-option choice, not an open question: "Which is stronger — A, or B?" Make one clearly closer but do not say which. Keep it to one short group.
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
+  } else if(engagement==='disengaged'){
+    strict=`ROUND ${turn} — NEEDS A SMALLER STEP (they said "${lastAns}"). Stay on the SAME sentence. Do NOT move on and do NOT give the whole answer. Add ONE more hint and ask a smaller question they can answer in a word or two — pick ONE word and ask if there is a stronger one. Be warm: "Let us take one tiny step."
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else {
-    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER write the sentence for them or hand them the technique.\n1. If their answer is RIGHT or shows real understanding: celebrate specifically — name what they did well. Say: You have got it — tap Got it when you are ready!\n2. If wrong or weak: do NOT rewrite for them. Ask ONE smaller question — pick ONE word in their answer and ask if there is a stronger one.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+    strict=`ROUND ${turn} of up to ${cap} — aim to finish around round 3. CHILD SAID: "${lastAns}".
+You are running I DO then WE DO then YOU DO. From the conversation so far, take the next step:
+- WE DO (about 40 percent Socratic, half guided and half theirs): show a NEW sentence like the last, give a clear hint that does part of the work, and ask them to supply the key step.
+- YOU DO (about 80 percent Socratic, almost all theirs): after a good WE DO, show a THIRD sentence closely related to the previous two and ask them to improve it on their own; give NO hint; only nudge with ONE tiny question if they are stuck, never hand them the answer.
+- WRAP UP: after a good YOU DO (or by round ${cap}), name what they have mastered, then end EXACTLY with: "Tap Got it and move on!"
+Start your reply by celebrating, in one short line, what was right in their last answer.
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   }
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Writing technique question — Mission Pack: ${pack.title}\nCodes: ${pack.codes.join(', ')}\nQuestion: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode tested: ${q.code}. Child answered incorrectly. Teach this writing technique now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoBubble(text);maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoGrouped(text);maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
 }
 function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi,text);}
 
@@ -500,7 +540,7 @@ const SC=['Ssslick!','Ssspot on!','Sssuper!'],SH=['Fin-tastic!','Splashing great
 function onCorrectAnswer(){if(overlayOpen)return;speak(CHAR.key==='snake'?SC[Math.floor(Math.random()*SC.length)]:SH[Math.floor(Math.random()*SH.length)]);}
 function answer(qi,choice){_iosWarm();if(answers[qi]!==undefined||!rulesRead)return;answers[qi]=choice;const q=QUESTIONS[qi],isRight=choice===q.correct;'ABCD'.split('').forEach(k=>document.getElementById(`opt-${qi}-${k}`)?.classList.add('dis'));document.getElementById(`opt-${qi}-${choice}`)?.classList.add(isRight?'sc':'sw');document.getElementById(`qc-${qi}`)?.classList.add(isRight?'right':'wrong');if(!isRight)document.getElementById(`opt-${qi}-${q.correct}`)?.classList.add('rc2');tutorTurns[qi]=0;disengagedCount[qi]=0;if(isRight){onCorrectAnswer();}else{openOverlay(qi);}if(!firstAttempt&&Object.keys(answers).length===TOTAL_QS)firstAttempt={...answers};updateSubmit();}
 function updateSubmit(){const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);document.getElementById('pts-display').textContent=`⭐ ${pts} pts — ${Object.keys(answers).length}/${TOTAL_QS} answered`;document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;}
-function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!remMode){startRemediation(wrong);return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
+function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!retestDone){retestDone=true;wrongQs=wrong;startMiniRetest();return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
 function startRemediation(wrong){remMode=true;wrongQs=wrong;remIdx=0;document.getElementById('sub-bar').style.display='none';document.getElementById('remed-banner').style.display='block';document.getElementById('rem-msg').textContent=`${CHAR.name} wants to help with ${wrong.length} question${wrong.length>1?'s':''}!`;setTimeout(()=>openOverlay(wrongQs[0]),600);}
 function advanceRemediation(){remIdx++;if(remIdx<wrongQs.length){setTimeout(()=>openOverlay(wrongQs[remIdx]),300);}else{startMiniRetest();}}
 function startMiniRetest(){remMode=false;document.getElementById('remed-banner').style.display='none';document.getElementById('sub-bar').style.display='flex';wrongQs.forEach(qi=>{answers[qi]=undefined;'ABCD'.split('').forEach(k=>{document.getElementById(`opt-${qi}-${k}`)?.classList.remove('sc','sw','rc2','dis');});document.getElementById(`qc-${qi}`)?.classList.remove('right','wrong');});speak('Your turn — try those questions again!');updateSubmit();}
