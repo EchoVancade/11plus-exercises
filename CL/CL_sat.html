@@ -53,6 +53,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .q-ctx-opt{font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:6px}
 .q-ctx-opt.wrong-opt{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
 .q-ctx-opt.right-opt{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+.q-ctx-opt.neutral-opt{background:rgba(255,255,255,.05);color:#94a3b8;border:1px solid rgba(255,255,255,.12)}
 /* passage */
 .passage-card{background:#0f172a;border:2px solid rgba(249,115,22,.3);border-radius:14px;padding:16px;margin-bottom:12px}
 .passage-label{font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:rgba(249,115,22,.8);margin-bottom:10px}
@@ -281,56 +282,54 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'CL';
 const DAY      = 'Saturday';
-const WEEK     = 22;
+const WEEK     = 25;
 const PTS_KEY  = 'pts_CL';
 const BASE_PTS = 950;
-const DICT_WORD = 'tenacious';
-const DICT_DEF  = 'Adjective — holding firmly to something; not giving up despite difficulty.';
-const DICT_EG   = 'The tenacious climber refused to turn back even as the storm closed in.';
+const DICT_WORD = 'relentless';
+const DICT_DEF  = 'Adjective — continuing without stopping or becoming less severe.';
+const DICT_EG   = 'The relentless rain had turned the roads into rivers by morning.';
 const RULES_TIPS = [
-  'E5.2: Inference — look at what characters do and feel, not just what the text states directly.',
-  'E5.4: Questions about structure — ask yourself why the author chose that word or placed that detail there.',
-  'E5.1: Retrieval — underline the key word in the question, then scan for it in the passage.',
+  'E5.1: Read each question before you look at the passage — know your target.',
+  'E5.3: Inference questions — the answer is hinted at, not stated directly.',
+  'E5.2: Use the surrounding sentences to work out what a word means in context.',
 ];
-const PASSAGE_TITLE = 'The Scientist Who Would Not Stop';
-const PASSAGE_TEXT = `In 1905, a young patent clerk named Albert Einstein published four scientific papers that would change physics forever. He had no laboratory, no professor guiding him, and no university position. He worked alone in his spare hours, scribbling equations on whatever paper he could find. Yet those papers introduced the world to ideas about light, time, and energy that scientists are still building on today.
+const PASSAGE_TITLE = 'The Iron Horse';
+const PASSAGE_TEXT = `When George Stephenson first proposed a steam-powered locomotive to carry coal from the mines of northeast England, most people laughed. Horses had pulled carts along wooden rails for centuries — why would anyone trust a hissing, fire-breathing contraption of iron and steam?
 
-What made Einstein unusual was not merely his intelligence. Many brilliant people had worked on the same problems without success. What set him apart was his willingness to question assumptions that everyone else treated as settled facts. When the established physics of his day produced contradictions, most scientists assumed the measurements were slightly wrong. Einstein assumed the measurements were right — and that the whole framework of physics needed rebuilding.
+Yet Stephenson was not a man who accepted doubt easily. He had taught himself to read as an adult by candlelight after long shifts in the pit, and he brought that same dogged determination to his engineering. His locomotive, the Rocket, was designed not merely to move, but to move faster than anything on land had ever moved before. At the Rainhill Trials of 1829, it reached a speed of nearly 29 miles per hour — a feat that astonished spectators who had never seen a horse gallop so fast, let alone a machine.
 
-This approach carried enormous risk. For years, his ideas were ignored or dismissed. Several leading physicists publicly called his theories impossible. Einstein continued anyway, refining his thinking in quiet persistence. By 1921, he had received the Nobel Prize — not for the theory of relativity, which remained controversial, but for his explanation of the photoelectric effect. Recognition had arrived, though not in the form he might have expected.
-
-His story is sometimes told as a fairy tale of sudden genius. The reality was slower and stranger: a decade of rejection, a series of small breakthroughs, and a refusal to mistake other people's certainty for truth.`;
+What made the Rocket remarkable was not just its speed, but the thinking behind it. Stephenson angled the boiler tubes so that exhaust steam blasted upward through the chimney, drawing in fresh air and intensifying the fire beneath. It was an elegant solution born from close observation, not from expensive equipment or a university education. Critics who had dismissed Stephenson as an unschooled labourer fell silent. Within a decade, railways had spread across Britain, and the age of the horse was drawing quietly to a close.`;
 const QUESTIONS = {
-  0:{ code:'E5.1', correct:'B', star:false,
-      text:'Where did Einstein work when he wrote his famous 1905 papers?',
-      opts:{A:'A university laboratory in Berlin',B:'A patent office in his spare hours',C:'A private research institute in Zurich',D:'A government science department in Vienna'} },
-  1:{ code:'E5.2', correct:'C', star:false,
-      text:'What does the passage suggest was Einstein\'s most important quality as a scientist?',
-      opts:{A:'He had access to better equipment than other scientists.',B:'He was faster at solving mathematical equations.',C:'He was willing to question what others took for granted.',D:'He worked in a famous university with expert colleagues.'} },
+  0:{ code:'E5.1', correct:'C', star:false,
+      text:'What was the main purpose of Stephenson first building a steam locomotive?',
+      opts:{A:'To win a competition against other inventors.',B:'To transport passengers between cities more quickly.',C:'To carry coal from the mines in northeast England.',D:'To prove that steam power was safer than horse power.'} },
+  1:{ code:'E5.2', correct:'B', star:false,
+      text:'In the first paragraph, the word "contraption" most likely means',
+      opts:{A:'A powerful and reliable machine.',B:'An odd or complicated mechanical device.',C:'A vehicle that is dangerous to operate.',D:'A simple tool used in farming.'} },
   2:{ code:'E5.3', correct:'A', star:false,
-      text:'Why did most scientists assume the measurements were slightly wrong when contradictions arose?',
-      opts:{A:'They did not want to abandon the existing framework of physics.',B:'They believed their instruments were faulty.',C:'They had not read the same papers as Einstein.',D:'They were working on different problems at the time.'} },
+      text:'What does the detail about Stephenson teaching himself to read suggest about him?',
+      opts:{A:'He was determined and willing to work hard to improve himself.',B:'He did not have any friends who could help him.',C:'He preferred learning alone rather than in groups.',D:'He was a slow learner who needed extra time to study.'} },
   3:{ code:'E5.4', correct:'D', star:false,
-      text:'The author describes Einstein\'s story as "slower and stranger" than a fairy tale. What does this phrase imply?',
-      opts:{A:'Einstein worked more slowly than other scientists of his era.',B:'His theories were too strange for most people to understand.',C:'Fairy tales are always faster and simpler than real history.',D:'Success came through gradual work and rejection, not sudden triumph.'} },
-  4:{ code:'E5.1', correct:'B', star:false,
-      text:'For which discovery did Einstein receive the 1921 Nobel Prize?',
-      opts:{A:'The special theory of relativity',B:'His explanation of the photoelectric effect',C:'His 1905 papers on the nature of time',D:'The general theory of relativity'} },
-  5:{ code:'E5.5', correct:'C', star:false,
-      text:'In the passage, what does "settled facts" most likely mean?',
-      opts:{A:'Findings that had recently been published in journals',B:'Experiments that had been carried out in laboratories',C:'Ideas that scientists had accepted as definitely true and stopped questioning',D:'Measurements that had been taken by government institutions'} },
+      text:'The author says the Rocket was designed to "move faster than anything on land had ever moved before." What does this most likely tell us about Stephenson?',
+      opts:{A:'He was reckless and did not consider safety.',B:'He wanted to beat competitors at all costs.',C:'He was only interested in setting world records.',D:'He was ambitious and aimed far beyond the original task.'} },
+  4:{ code:'E5.1', correct:'C', star:false,
+      text:'What speed did the Rocket reach at the Rainhill Trials?',
+      opts:{A:'19 miles per hour.',B:'24 miles per hour.',C:'Nearly 29 miles per hour.',D:'35 miles per hour.'} },
+  5:{ code:'E5.5', correct:'B', star:false,
+      text:'How did Stephenson improve the Rocket\'s performance, according to the passage?',
+      opts:{A:'He built a larger firebox to burn more coal at once.',B:'He angled the boiler tubes so exhaust steam drew in fresh air, intensifying the fire.',C:'He hired a team of engineers from a university to redesign the engine.',D:'He replaced the iron wheels with wooden ones to reduce friction.'} },
   6:{ code:'E5.2', correct:'A', star:false,
-      text:'The passage says Einstein\'s approach "carried enormous risk." Why was it risky?',
-      opts:{A:'He could have spent years on ideas that leading scientists dismissed as impossible.',B:'He might have lost his job at the patent office if he published wrong results.',C:'His family depended on his salary and could not afford for him to fail.',D:'The experiments he designed could have been dangerous to carry out.'} },
-  7:{ code:'E5.6', correct:'D', star:false,
-      text:'What is the main purpose of the final paragraph?',
-      opts:{A:'To explain why Einstein\'s Nobel Prize was awarded for the wrong discovery',B:'To argue that Einstein was not as clever as people believe',C:'To list all the setbacks Einstein faced in chronological order',D:'To correct a simplified version of Einstein\'s story with a more accurate one'} },
+      text:'In the final paragraph, "born from close observation" means the solution came from',
+      opts:{A:'Watching carefully and thinking hard about what he saw.',B:'Reading books written by experienced engineers.',C:'Copying a design used by other inventors at the time.',D:'Using expensive scientific instruments to measure results.'} },
+  7:{ code:'E5.3', correct:'D', star:false,
+      text:'Why did critics "fall silent" after the Rainhill Trials?',
+      opts:{A:'They were asked by the judges not to comment on the results.',B:'They realised they had been right all along about steam power.',C:'They were too surprised by the noise of the engine to speak.',D:'They had dismissed Stephenson unfairly and his success proved them wrong.'} },
   8:{ code:'E5.3', correct:'B', star:true,
-      text:'★ STAR — The passage says Einstein "refused to mistake other people\'s certainty for truth." A reader might choose option C as the answer to this question — why is it wrong? Which answer best explains what Einstein\'s approach actually demonstrates?',
-      opts:{A:'Einstein agreed with other scientists but expressed his ideas more clearly.',B:'Confidence from others is not the same as evidence — Einstein tested ideas against logic and data, not opinion.',C:'Einstein simply ignored criticism because he was too stubborn to listen.',D:'Other scientists were less certain than they appeared, which Einstein quickly noticed.'} },
-  9:{ code:'E5.4', correct:'A', star:false,
-      text:'The author mentions that Einstein had "no laboratory, no professor guiding him, and no university position." What effect does this list have?',
-      opts:{A:'It emphasises how remarkable his achievements were given the obstacles he faced.',B:'It criticises the institutions that failed to support him earlier in his career.',C:'It explains why his 1905 papers contained some errors that others later corrected.',D:'It suggests that laboratory work is less important than theoretical thinking.'} },
+      text:'★ STAR — The final sentence says the age of the horse "was drawing quietly to a close." Which two things does the word "quietly" most likely suggest?',
+      opts:{A:'The horses were moving silently and the roads became peaceful.',B:'The change happened gradually, without a dramatic announcement — and with some sadness.',C:'Steam engines were much quieter than horses on cobbled streets.',D:'Nobody noticed the change because they were too busy using the railways.'} },
+  9:{ code:'E5.4', correct:'C', star:false,
+      text:'Which statement best describes the overall message of the passage?',
+      opts:{A:'Speed is more important than safety when developing new technology.',B:'University education is not necessary for becoming a successful engineer.',C:'Determination, careful thinking, and hard work can overcome ridicule and doubt.',D:'Steam power was always going to replace horse power — it was just a matter of time.'} },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -351,11 +350,12 @@ const CHARS = {
 
 let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={}, disengagedCount={};
 let rulesRead=false, overlayOpen=false, micActive=false;
-let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1;
+let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1; let retestDone=false;
 let recognition=null, CHAR;
 let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
 let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
 let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
+const OAI_TTS_MODEL='gpt-4o-mini-tts'; // newest, most natural, streaming. Flip to 'tts-1' (fastest) or 'tts-1-hd' (previous) if your account rejects it.
 let _cachedVoice=null, _audioWarmed=false;
 let _currentUtt=null, _speechGen=0;            // ghost-kill: generation counter + active utterance ref
 
@@ -391,7 +391,16 @@ function speakWebSpeech(text){
     window.speechSynthesis.speak(u);
   },120);
 }
-async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
+async function speakOpenAI(text){try{_oaiController=new AbortController();const _body={model:OAI_TTS_MODEL,input:text,voice:CHAR.key==='snake'?'fable':'echo',response_format:'mp3'};if(OAI_TTS_MODEL.indexOf('tts-1')===0){_body.speed=CHAR.key==='snake'?.92:.97;}else{_body.instructions='Speak warmly, clearly and a little slowly, like a friendly tutor talking to a young child.';}const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify(_body)});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const MS=window.MediaSource;if(MS&&resp.body&&MS.isTypeSupported&&MS.isTypeSupported('audio/mpeg')){
+  // STREAMED playback (desktop/Android): start audio before full synthesis. iOS lacks standard MediaSource -> blob fallback below.
+  const ms=new MS();_oaiObjectUrl=URL.createObjectURL(ms);_oaiAudio=new Audio();_oaiAudio.src=_oaiObjectUrl;_oaiAudio.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;};
+  await new Promise(res=>ms.addEventListener('sourceopen',res,{once:true}));
+  const sb=ms.addSourceBuffer('audio/mpeg');const reader=resp.body.getReader();let started=false;
+  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});}pump();}catch(e){}};
+  pump();
+}else{
+  const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();
+}}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});document.addEventListener('click',_warmAudio,{once:true});
@@ -423,10 +432,9 @@ function streamEchoBubble(text){
   const SPEAK_DELAY=140;                          // ~ audio onset latency (matches speakWebSpeech 120ms + ramp)
   const totalMs=(wordCount/baseWpm)*60000;        // expected spoken length
   const msPerWord=totalMs/wordCount;
-  let i=0,timeoutId=null,pillTimer=null,startAt=0,wordsShown=0;
+  let i=0,timeoutId=null,startAt=0,wordsShown=0;
   function complete(){
     if(timeoutId)clearTimeout(timeoutId);
-    if(pillTimer)clearTimeout(pillTimer);
     textNode.data=text;
     d.querySelector('.skip-pill')?.remove();
     setInputDisabled(false);
@@ -452,18 +460,34 @@ function streamEchoBubble(text){
     if(i<tokens.length)timeoutId=setTimeout(step,Math.max(40,msPerWord/2));
     else complete();
   }
-  pillTimer=setTimeout(()=>{
-    if(_streamCancel===complete && i<tokens.length){
-      const pill=document.createElement('span');
-      pill.className='skip-pill';
-      pill.textContent=' Skip ⏭';
-      pill.onclick=(e)=>{e.stopPropagation();if(_streamCancel===complete)complete();};
-      d.appendChild(pill);
-      b.scrollTop=b.scrollHeight;
-    }
-  },2000);
   // start the text reveal aligned to audio onset, not at t=0
   timeoutId=setTimeout(()=>{ if(_streamCancel!==complete)return; startAt=performance.now(); step(); }, SPEAK_DELAY);
+}
+function streamEchoGrouped(raw){
+  const b=document.getElementById('ov-bubbles');
+  const lines=(raw||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const groups=[];
+  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp=ln;}if(sp)groups.push({sp:sp,dp:dp||sp});});
+  if(!groups.length)groups.push({sp:raw||'',dp:raw||''});
+  const fullSpoken=groups.map(g=>g.sp).join(' ');
+  speak(fullSpoken);
+  setInputDisabled(true);
+  const wc=g=>((g.sp.match(/\S+/g)||[]).length||1);
+  const totalWords=groups.reduce((a,g)=>a+wc(g),0)||1;
+  const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
+  const totalMs=(totalWords/baseWpm)*60000, SPEAK_DELAY=140;
+  let acc=0; const starts=groups.map(g=>{const s=(acc/totalWords)*totalMs;acc+=wc(g);return s;});
+  let shown=0,timeoutId=null,startAt=0;
+  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;b.scrollTop=b.scrollHeight;}
+  _streamCancel=complete;
+  function step(){
+    if(_streamCancel!==complete)return;
+    const elapsed=performance.now()-startAt;
+    while(shown<groups.length && elapsed>=starts[shown]){addBubble(groups[shown].dp,'echo');shown++;b.scrollTop=b.scrollHeight;}
+    if(shown<groups.length)timeoutId=setTimeout(step,80);
+    else timeoutId=setTimeout(complete,Math.max(0,totalMs-elapsed)+200);
+  }
+  timeoutId=setTimeout(()=>{if(_streamCancel!==complete)return;startAt=performance.now();step();},SPEAK_DELAY);
 }
 function resetGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.add('suppressed');g.disabled=true;}}
 function enableGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.remove('suppressed');g.disabled=false;}}
@@ -477,7 +501,7 @@ function hardStop(){if(_streamCancel){const fn=_streamCancel;_streamCancel=null;
 function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
-function charTurns(){return CHILD==='IL'?5:6;}
+function charTurns(){return 10;}
 function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
 function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;d.textContent=text;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
@@ -486,7 +510,7 @@ function removeTyping(){document.getElementById('typing-ind')?.remove();}
 function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}document.getElementById('ov-title').textContent=`${CHAR.name} — Comprehension Q${qi+1}`;renderDots(qi);
   // Bug 1 fix — show question + selected/correct answers in overlay
   const q=QUESTIONS[qi],ctx=document.getElementById('q-ctx');
-  if(ctx&&q){const wa=answers[qi],ca=q.correct;ctx.innerHTML=`<div class="q-ctx-text">${q.text}</div>${wa?`<div class="q-ctx-row"><span class="q-ctx-opt wrong-opt">✗ ${wa}: ${q.opts[wa]||''}</span><span class="q-ctx-opt right-opt">✓ ${ca}: ${q.opts[ca]||''}</span></div>`:''}`; ctx.style.display='block';}
+  if(ctx&&q){const wa=answers[qi],ca=q.correct;let _rows='';if(q.opts){_rows='<div class="q-ctx-row">'+Object.keys(q.opts).map(k=>{const _c=k===ca?'right-opt':(k===wa?'wrong-opt':'neutral-opt');const _m=k===ca?'✓':(k===wa?'✗':'');return `<span class="q-ctx-opt ${_c}">${_m} ${k}: ${q.opts[k]||''}</span>`;}).join('')+'</div>';}ctx.innerHTML=`<div class="q-ctx-text">${q.text}</div>`+_rows;ctx.style.display='block';}
   document.getElementById('ex-wrap').style.visibility='hidden';resetGotIt();document.getElementById('overlay').classList.add('open');callAI(qi);}
 function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');const ctx=document.getElementById('q-ctx');if(ctx)ctx.style.display='none';document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
 function gotIt(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),200);setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);}
@@ -528,18 +552,34 @@ async function callAI(qi,lastAns){
   const dc=disengagedCount[qi]||0;
   let strict;
   if(turn===1){
-    strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer outright):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT show a worked example. Do NOT explain the concept. Do NOT name the answer.\n3. Ask ONE small question that points at ONE specific word, number, or part of the original question or passage. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`;
-  } else if(engagement==='disengaged' && dc<3){
-    strict=`TURN ${turn} — STUDENT IS DISENGAGED (they said "${lastAns}").\nThey are not engaging — said "idk" or a one-word non-answer.\n\nDO NOT re-teach. DO NOT explain. DO NOT give the answer. DO NOT name the answer.\nYour ONLY move: ask a SMALLER, EASIER question.\n- Point at ONE specific word, number, or letter in the original question or the passage.\n- Ask what they notice about THAT thing only.\n- Make the question so small they can answer in one word.\n- Be warm: "It is okay — let us go smaller."\nMax 50 words. No emoji. No asterisks.`;
+    strict=`ROUND 1 — HOOK then I DO.
+1. Open with one short funny joke in this format: "${jFmt}..." about this question's topic. One line only. No greeting, no name.
+2. I DO (mostly direct, about 20 percent Socratic): in the same warm tone, work through ONE example out loud — the same comprehension skill as the question they missed, using the passage but a different detail. Lead them clearly toward the answer, using the wording of the question they missed. Show the thinking — do not hide the method.
+3. End by inviting them in: "Now let us try one together."
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else if(engagement==='disengaged' && dc>=3){
-    strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never give the full answer.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess instead of an open question: "Just guess — do you think it is more like A or more like B?"\n3. Make one option clearly closer to right but do not say which.\nMax 40 words. No emoji. No asterisks.`;
+    strict=`ROUND ${turn} — STILL STUCK (they said "${lastAns}"). Stay on the SAME example. Be very warm: "You are doing brilliantly to stick with this." Give a TWO-option choice, not an open question: "Is it more like A, or more like B?" Make one clearly closer but do not say which. Keep it to one short group.
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
+  } else if(engagement==='disengaged'){
+    strict=`ROUND ${turn} — NEEDS A SMALLER STEP (they said "${lastAns}"). Stay on the SAME example. Do NOT move on and do NOT give the whole answer. Add ONE more hint and ask a smaller question they can answer in a word or two — point at one clue in the passage. Be warm: "Let us take one tiny step."
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else {
-    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT or shows real understanding: celebrate specifically — name what they did well. Say: You have got it — tap Got it when you are ready!\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the question or the passage.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+    strict=`ROUND ${turn} of up to ${cap} — aim to finish around round 3. CHILD SAID: "${lastAns}".
+You are running I DO then WE DO then YOU DO. From the conversation so far, take the next step:
+- WE DO (about 40 percent Socratic, half guided and half theirs): show a NEW example like the last one, give a clear hint that does part of the work, and ask them to supply the key step.
+- YOU DO (about 80 percent Socratic, almost all theirs): after a good WE DO, show a THIRD example closely related to the previous two and ask them to solve it on their own; give NO hint; only nudge with ONE tiny question if they are stuck, never hand them the answer.
+- WRAP UP: after a good YOU DO (or by round ${cap}), name what they have mastered, then end EXACTLY with: "Tap Got it and move on!"
+Start your reply by celebrating, in one short line, what was right in their last answer.
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   }
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Passage context: "${PASSAGE_TITLE}"\nQuestion: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach comprehension skill now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoBubble(text);maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoGrouped(text);maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
 }
 function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi,text);}
 
@@ -559,7 +599,7 @@ function answer(qi,choice){
 }
 function updateSubmit(){const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_PTS);document.getElementById('pts-display').textContent=`⭐ ${pts} pts — ${Object.keys(answers).length}/${TOTAL_QS} answered`;document.getElementById('sub-btn').disabled=Object.keys(answers).length<TOTAL_QS||!rulesRead;}
 
-function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!remMode){startRemediation(wrong);return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
+function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!retestDone){retestDone=true;wrongQs=wrong;startMiniRetest();return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
 function startRemediation(wrong){remMode=true;wrongQs=wrong;remIdx=0;document.getElementById('sub-bar').style.display='none';document.getElementById('remed-banner').style.display='block';document.getElementById('rem-msg').textContent=`${CHAR.name} wants to help with ${wrong.length} question${wrong.length>1?'s':''}!`;setTimeout(()=>openOverlay(wrongQs[0]),600);}
 function advanceRemediation(){remIdx++;if(remIdx<wrongQs.length){setTimeout(()=>openOverlay(wrongQs[remIdx]),300);}else{startMiniRetest();}}
 function startMiniRetest(){remMode=false;document.getElementById('remed-banner').style.display='none';document.getElementById('sub-bar').style.display='flex';wrongQs.forEach(qi=>{answers[qi]=undefined;'ABCD'.split('').forEach(k=>{document.getElementById(`opt-${qi}-${k}`)?.classList.remove('sc','sw','rc2','dis');});document.getElementById(`qc-${qi}`)?.classList.remove('right','wrong');});speak('Your turn — try those questions again!');updateSubmit();}
