@@ -53,6 +53,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .q-ctx-opt{font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:6px}
 .q-ctx-opt.wrong-opt{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
 .q-ctx-opt.right-opt{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+.q-ctx-opt.neutral-opt{background:rgba(255,255,255,.05);color:#94a3b8;border:1px solid rgba(255,255,255,.12)}
 /* passage */
 .passage-card{background:#0f172a;border:2px solid rgba(249,115,22,.3);border-radius:14px;padding:16px;margin-bottom:12px}
 .passage-label{font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:rgba(249,115,22,.8);margin-bottom:10px}
@@ -281,52 +282,56 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'IL';
 const DAY      = 'Saturday';
-const WEEK     = 22;
+const WEEK     = 25;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'curious';
-const DICT_DEF  = 'Adjective — wanting to know or find out about things.';
-const DICT_EG   = 'The curious kitten sniffed at every new thing it found in the garden.';
+const DICT_WORD = 'adventurous';
+const DICT_DEF  = 'Adjective — willing to try new and exciting things.';
+const DICT_EG   = 'The adventurous girl climbed to the very top of the tallest tree.';
 const RULE_STYLE = 'watchout';
 const RULES_TIPS = [
   'E5.1: Read the question first, then look for the answer in the passage.',
-  'E5.3: If you are not sure, re-read that part of the passage again slowly.',
+  'E5.3: If you are not sure, read that part of the story again carefully.',
   'E5.5: Use the words around a tricky word to work out what it means.',
 ];
-const PASSAGE_TITLE = 'The Bee Who Got Lost';
-const PASSAGE_TEXT = `Bella was a honeybee who lived in a busy hive at the bottom of a garden. Every morning, she flew out to find flowers and bring back nectar to make honey. One warm Tuesday, Bella flew further than she had ever gone before. She wanted to find the big patch of lavender her friend had told her about.
+const PASSAGE_TITLE = 'The Snail Race';
+const PASSAGE_TEXT = `Lily loved snails. She had seven of them in a big plastic box in her bedroom, and she knew all their names. Her favourite was called Speedy, even though he was the slowest of all.
 
-Bella found the lavender easily — it smelled wonderful, like summer itself. She was so busy collecting nectar that she did not notice the clouds gathering overhead. When fat raindrops began to fall, she dived under a large leaf and waited. The garden felt very different in the rain. Everything was grey and dripping, and Bella could not smell the flowers any more.
+One Saturday morning, Lily had an idea. She made a race track on the kitchen table using masking tape. She put all seven snails at the start line and waited. Her little brother Max laughed.
 
-When the rain finally stopped, Bella looked up. She could not see the hive. She did not know which way to fly. For a moment, she felt a flash of panic. Then she remembered what the older bees had taught her: follow the sun. She turned until the afternoon sun warmed her left wing, just as it always did when she was flying home. Three minutes later, she was back at the hive, wings damp but heart full.`;
+"Snails cannot race," he said. "They are too slow."
+
+But Lily did not give up. She waited and watched. Speedy moved slowly, but he kept going. One by one, the other snails stopped and went to sleep inside their shells. Speedy did not stop. He crossed the finish line all by himself.
+
+Lily clapped her hands. Max looked surprised. Even slow things can win, she thought, if they just keep going.`;
 const QUESTIONS = {
   0:{ type:'mcq', code:'E5.1', correct:'B', star:false,
-      text:'Why did Bella fly further than usual on Tuesday?',
-      opts:{A:'She was lost from the beginning of the day.',B:'She wanted to reach the lavender patch her friend had told her about.',C:'She had run out of flowers near the hive.',D:'The older bees had sent her to explore.'} },
-  1:{ type:'mcq', code:'E5.3', correct:'A', star:false,
-      text:'Why could Bella not smell the flowers during the rain?',
-      opts:{A:'The rain washed away the scents and the garden smelled different.',B:'Bella had a cold and could not smell anything.',C:'The lavender had stopped flowering because of the clouds.',D:'She was too far away from the flowers.'} },
-  2:{ type:'mcq', code:'E5.1', correct:'C', star:false,
-      text:'What did Bella do while it rained?',
-      opts:{A:'She flew slowly back towards the hive.',B:'She stayed on the lavender and kept collecting nectar.',C:'She sheltered under a large leaf.',D:'She asked another bee to help her find her way home.'} },
-  3:{ type:'mcq', code:'E5.5', correct:'D', star:false,
-      text:'In the passage, "a flash of panic" means Bella felt — ',
-      opts:{A:'cold and shivery.',B:'angry and frustrated.',C:'confused and slow.',D:'suddenly very frightened.'} },
-  4:{ type:'mcq', code:'E5.2', correct:'B', star:false,
-      text:'How did Bella work out which direction to fly home?',
-      opts:{A:'She followed the smell of honey from the hive.',B:'She remembered to use the sun as a guide, just as the older bees had taught her.',C:'She saw the garden from high up and recognised it.',D:'She followed another bee who was also returning to the hive.'} },
-  5:{ type:'mcq', code:'E5.3', correct:'A', star:false,
-      text:'What does "heart full" mean at the end of the passage?',
-      opts:{A:'She felt happy and relieved to be home safely.',B:'She was tired and her heart was beating very fast.',C:'She had eaten so much nectar that she felt very full.',D:'She was proud because she had found more nectar than the other bees.'} },
-  6:{ type:'mcq', code:'E5.2', correct:'C', star:true,
-      text:'★ STAR — "She turned until the afternoon sun warmed her left wing, just as it always did when she was flying home." What does this tell us about Bella?',
-      opts:{A:'She only flew home in the afternoon when the sun was shining.',B:'She had never used the sun to navigate before this moment.',C:'She had learned to use the position of the sun to find her way, and she trusted that knowledge.',D:'She was afraid to fly in the rain and always waited for sunshine.'} },
+      text:'How many snails does Lily have?',
+      opts:{A:'Five',B:'Seven',C:'Six',D:'Eight'} },
+  1:{ type:'mcq', code:'E5.1', correct:'C', star:false,
+      text:'Where did Lily make the race track?',
+      opts:{A:'In the garden.',B:'On the floor.',C:'On the kitchen table.',D:'In her bedroom.'} },
+  2:{ type:'mcq', code:'E5.2', correct:'A', star:false,
+      text:'What did Max think about the snail race?',
+      opts:{A:'He thought it would not work because snails are too slow.',B:'He thought it was a great idea and helped Lily.',C:'He thought Speedy would win easily.',D:'He did not care about the race at all.'} },
+  3:{ type:'mcq', code:'E5.3', correct:'D', star:false,
+      text:'Why did Speedy win the race?',
+      opts:{A:'He was the fastest snail.',B:'The other snails fell off the table.',C:'Lily helped Speedy move faster.',D:'He kept going while the others stopped and hid in their shells.'} },
+  4:{ type:'mcq', code:'E5.4', correct:'B', star:false,
+      text:'Why do you think Lily called her snail "Speedy" even though he was the slowest?',
+      opts:{A:'She made a mistake and forgot his real name.',B:'It was a funny joke because he was so slow.',C:'She hoped the name would make him go faster.',D:'Speedy is the only name she could think of.'} },
+  5:{ type:'mcq', code:'E5.5', correct:'C', star:false,
+      text:'In the passage, what does "she did not give up" mean?',
+      opts:{A:'She went to sleep.',B:'She started a different game.',C:'She kept trying even though it was hard.',D:'She asked Max for help.'} },
+  6:{ type:'mcq', code:'E5.3', correct:'A', star:true,
+      text:'★ STAR — At the end, Lily thinks "even slow things can win, if they just keep going." What is the most important idea here?',
+      opts:{A:'If you keep trying, you can succeed even if you are not the fastest.',B:'Snails are actually very fast animals.',C:'Max was wrong to laugh because snails are clever.',D:'Winning is the most important thing in any race.'} },
   7:{ type:'writing', code:'E5.8', star:false,
-      prompt:'Write one sentence about how Bella felt when she could not see the hive, and why she felt that way.' },
+      prompt:'How do you think Lily felt when Speedy crossed the finish line? Write one sentence.' },
   8:{ type:'writing', code:'E5.9', star:false,
-      prompt:'Write one or two sentences about what you think Bella will do differently next time she goes out to find nectar.' },
+      prompt:'What do you think Max said to Lily after the race? Write one or two sentences.' },
   9:{ type:'writing', code:'E5.10', star:false,
-      prompt:'The passage says the lavender "smelled wonderful, like summer itself." Write your own sentence describing a smell. Use "like" or "as" to make a comparison.' },
+      prompt:'Choose one word from the passage that you liked. Write it and then use it in your own sentence.' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -347,11 +352,12 @@ const CHARS = {
 
 let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={}, disengagedCount={};
 let rulesRead=false, overlayOpen=false, micActive=false;
-let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1;
+let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1; let retestDone=false;
 let recognition=null, CHAR;
 let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
 let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
 let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
+const OAI_TTS_MODEL='gpt-4o-mini-tts'; // newest, most natural, streaming. Flip to 'tts-1' (fastest) or 'tts-1-hd' (previous) if your account rejects it.
 let _cachedVoice=null, _audioWarmed=false;
 let _currentUtt=null, _speechGen=0;            // ghost-kill: generation counter + active utterance ref
 
@@ -387,7 +393,16 @@ function speakWebSpeech(text){
     window.speechSynthesis.speak(u);
   },120);
 }
-async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
+async function speakOpenAI(text){try{_oaiController=new AbortController();const _body={model:OAI_TTS_MODEL,input:text,voice:CHAR.key==='snake'?'fable':'echo',response_format:'mp3'};if(OAI_TTS_MODEL.indexOf('tts-1')===0){_body.speed=CHAR.key==='snake'?.92:.97;}else{_body.instructions='Speak warmly, clearly and a little slowly, like a friendly tutor talking to a young child.';}const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify(_body)});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const MS=window.MediaSource;if(MS&&resp.body&&MS.isTypeSupported&&MS.isTypeSupported('audio/mpeg')){
+  // STREAMED playback (desktop/Android): start audio before full synthesis. iOS lacks standard MediaSource -> blob fallback below.
+  const ms=new MS();_oaiObjectUrl=URL.createObjectURL(ms);_oaiAudio=new Audio();_oaiAudio.src=_oaiObjectUrl;_oaiAudio.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;};
+  await new Promise(res=>ms.addEventListener('sourceopen',res,{once:true}));
+  const sb=ms.addSourceBuffer('audio/mpeg');const reader=resp.body.getReader();let started=false;
+  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});}pump();}catch(e){}};
+  pump();
+}else{
+  const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();
+}}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});document.addEventListener('click',_warmAudio,{once:true});
@@ -419,10 +434,9 @@ function streamEchoBubble(text){
   const SPEAK_DELAY=140;                          // ~ audio onset latency (matches speakWebSpeech 120ms + ramp)
   const totalMs=(wordCount/baseWpm)*60000;        // expected spoken length
   const msPerWord=totalMs/wordCount;
-  let i=0,timeoutId=null,pillTimer=null,startAt=0,wordsShown=0;
+  let i=0,timeoutId=null,startAt=0,wordsShown=0;
   function complete(){
     if(timeoutId)clearTimeout(timeoutId);
-    if(pillTimer)clearTimeout(pillTimer);
     textNode.data=text;
     d.querySelector('.skip-pill')?.remove();
     setInputDisabled(false);
@@ -448,18 +462,34 @@ function streamEchoBubble(text){
     if(i<tokens.length)timeoutId=setTimeout(step,Math.max(40,msPerWord/2));
     else complete();
   }
-  pillTimer=setTimeout(()=>{
-    if(_streamCancel===complete && i<tokens.length){
-      const pill=document.createElement('span');
-      pill.className='skip-pill';
-      pill.textContent=' Skip ⏭';
-      pill.onclick=(e)=>{e.stopPropagation();if(_streamCancel===complete)complete();};
-      d.appendChild(pill);
-      b.scrollTop=b.scrollHeight;
-    }
-  },2000);
   // start the text reveal aligned to audio onset, not at t=0
   timeoutId=setTimeout(()=>{ if(_streamCancel!==complete)return; startAt=performance.now(); step(); }, SPEAK_DELAY);
+}
+function streamEchoGrouped(raw){
+  const b=document.getElementById('ov-bubbles');
+  const lines=(raw||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const groups=[];
+  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp=ln;}if(sp)groups.push({sp:sp,dp:dp||sp});});
+  if(!groups.length)groups.push({sp:raw||'',dp:raw||''});
+  const fullSpoken=groups.map(g=>g.sp).join(' ');
+  speak(fullSpoken);
+  setInputDisabled(true);
+  const wc=g=>((g.sp.match(/\S+/g)||[]).length||1);
+  const totalWords=groups.reduce((a,g)=>a+wc(g),0)||1;
+  const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
+  const totalMs=(totalWords/baseWpm)*60000, SPEAK_DELAY=140;
+  let acc=0; const starts=groups.map(g=>{const s=(acc/totalWords)*totalMs;acc+=wc(g);return s;});
+  let shown=0,timeoutId=null,startAt=0;
+  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;b.scrollTop=b.scrollHeight;}
+  _streamCancel=complete;
+  function step(){
+    if(_streamCancel!==complete)return;
+    const elapsed=performance.now()-startAt;
+    while(shown<groups.length && elapsed>=starts[shown]){addBubble(groups[shown].dp,'echo');shown++;b.scrollTop=b.scrollHeight;}
+    if(shown<groups.length)timeoutId=setTimeout(step,80);
+    else timeoutId=setTimeout(complete,Math.max(0,totalMs-elapsed)+200);
+  }
+  timeoutId=setTimeout(()=>{if(_streamCancel!==complete)return;startAt=performance.now();step();},SPEAK_DELAY);
 }
 function resetGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.add('suppressed');g.disabled=true;}}
 function enableGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.remove('suppressed');g.disabled=false;}}
@@ -473,7 +503,7 @@ function hardStop(){if(_streamCancel){const fn=_streamCancel;_streamCancel=null;
 function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
-function charTurns(){return CHILD==='IL'?5:6;}
+function charTurns(){return 10;}
 function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
 function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;d.textContent=text;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
@@ -482,7 +512,7 @@ function removeTyping(){document.getElementById('typing-ind')?.remove();}
 function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}document.getElementById('ov-title').textContent=`${CHAR.name} — Comprehension Q${qi+1}`;renderDots(qi);
   // Bug 1 fix — show question + answer context so child can see what Echo is teaching
   const q=QUESTIONS[qi],ctx=document.getElementById('q-ctx');
-  if(ctx&&q&&q.type!=='writing'){const wa=answers[qi],ca=q.correct;ctx.innerHTML=`<div class="q-ctx-text">${q.text}</div>${wa?`<div class="q-ctx-row"><span class="q-ctx-opt wrong-opt">✗ ${wa}: ${q.opts[wa]||''}</span><span class="q-ctx-opt right-opt">✓ ${ca}: ${q.opts[ca]||''}</span></div>`:''}`; ctx.style.display='block';}else if(ctx){ctx.style.display='none';}
+  if(ctx&&q&&q.type!=='writing'){const wa=answers[qi],ca=q.correct;let _rows='';if(q.opts){_rows='<div class="q-ctx-row">'+Object.keys(q.opts).map(k=>{const _c=k===ca?'right-opt':(k===wa?'wrong-opt':'neutral-opt');const _m=k===ca?'✓':(k===wa?'✗':'');return `<span class="q-ctx-opt ${_c}">${_m} ${k}: ${q.opts[k]||''}</span>`;}).join('')+'</div>';}ctx.innerHTML=`<div class="q-ctx-text">${q.text}</div>`+_rows;ctx.style.display='block';}else if(ctx){ctx.style.display='none';}
   document.getElementById('ex-wrap').style.visibility='hidden';resetGotIt();document.getElementById('overlay').classList.add('open');callAI(qi);}
 function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');const ctx=document.getElementById('q-ctx');if(ctx)ctx.style.display='none';document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
 function gotIt(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),200);setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);}
@@ -524,18 +554,34 @@ async function callAI(qi,lastAns){
   const dc=disengagedCount[qi]||0;
   let strict;
   if(turn===1){
-    strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer outright):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT show a worked example. Do NOT explain the concept. Do NOT name the answer.\n3. Ask ONE small question that points at ONE specific word, number, or part of the original question or passage. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`;
-  } else if(engagement==='disengaged' && dc<3){
-    strict=`TURN ${turn} — STUDENT IS DISENGAGED (they said "${lastAns}").\nThey are not engaging — said "idk" or a one-word non-answer.\n\nDO NOT re-teach. DO NOT explain. DO NOT give the answer. DO NOT name the answer.\nYour ONLY move: ask a SMALLER, EASIER question.\n- Point at ONE specific word, number, or letter in the original question or the passage.\n- Ask what they notice about THAT thing only.\n- Make the question so small they can answer in one word.\n- Be warm: "It is okay — let us go smaller."\nMax 50 words. No emoji. No asterisks.`;
+    strict=`ROUND 1 — HOOK then I DO.
+1. Open with one short funny joke in this format: "${jFmt}..." about this question's topic. One line only. No greeting, no name.
+2. I DO (mostly direct, about 20 percent Socratic): in the same warm tone, work through ONE example out loud — the same comprehension skill as the question they missed, using the passage but a different detail. Lead them clearly toward the answer, using the wording of the question they missed. Show the thinking — do not hide the method.
+3. End by inviting them in: "Now let us try one together."
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else if(engagement==='disengaged' && dc>=3){
-    strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never give the full answer.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess instead of an open question: "Just guess — do you think it is more like A or more like B?"\n3. Make one option clearly closer to right but do not say which.\nMax 40 words. No emoji. No asterisks.`;
+    strict=`ROUND ${turn} — STILL STUCK (they said "${lastAns}"). Stay on the SAME example. Be very warm: "You are doing brilliantly to stick with this." Give a TWO-option choice, not an open question: "Is it more like A, or more like B?" Make one clearly closer but do not say which. Keep it to one short group.
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
+  } else if(engagement==='disengaged'){
+    strict=`ROUND ${turn} — NEEDS A SMALLER STEP (they said "${lastAns}"). Stay on the SAME example. Do NOT move on and do NOT give the whole answer. Add ONE more hint and ask a smaller question they can answer in a word or two — point at one clue in the passage. Be warm: "Let us take one tiny step."
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else {
-    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT or shows real understanding: celebrate specifically — name what they did well. Say: You have got it — tap Got it when you are ready!\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the question or the passage.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+    strict=`ROUND ${turn} of up to ${cap} — aim to finish around round 3. CHILD SAID: "${lastAns}".
+You are running I DO then WE DO then YOU DO. From the conversation so far, take the next step:
+- WE DO (about 40 percent Socratic, half guided and half theirs): show a NEW example like the last one, give a clear hint that does part of the work, and ask them to supply the key step.
+- YOU DO (about 80 percent Socratic, almost all theirs): after a good WE DO, show a THIRD example closely related to the previous two and ask them to solve it on their own; give NO hint; only nudge with ONE tiny question if they are stuck, never hand them the answer.
+- WRAP UP: after a good YOU DO (or by round ${cap}), name what they have mastered, then end EXACTLY with: "Tap Got it and move on!"
+Start your reply by celebrating, in one short line, what was right in their last answer.
+FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, may be a mini-question, NOT worded the same as the speech). The spoken words are full and natural; the key line is the single idea to show on screen. One group per idea — a joke, an example, a question each become their own group. Example line: Why did the snake skip lunch? It was saving room for a big snack! ||| Why does the snake snack?
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   }
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Passage context: "${PASSAGE_TITLE}"\nQuestion: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach comprehension skill now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoBubble(text);maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoGrouped(text);maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
 }
 function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi,text);}
 
@@ -557,7 +603,7 @@ function updateSubmit(){const pts=parseInt(localStorage.getItem(PTS_KEY)||BASE_P
 // Bug 3 fix — re-evaluate writing Q lock state after every MCQ answer
 function refreshWritingLocks(){Object.entries(QUESTIONS).forEach(([idx,q])=>{if(q.type==='writing'){const el=document.getElementById(`qc-${idx}`);if(!el)return;const ok=+idx===0||answers[+idx-1]!==undefined;el.style.opacity=ok?'1':'.35';el.style.pointerEvents=ok?'auto':'none';}});}
 
-function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!remMode){startRemediation(wrong);return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
+function handleSubmit(){let correct=0;const wrong=[];for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}if(wrong.length&&!retestDone){retestDone=true;wrongQs=wrong;startMiniRetest();return;}let pts=correct>=PASS_SCORE?3:0;for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}showResult(correct,pts);}
 function startRemediation(wrong){remMode=true;wrongQs=wrong;remIdx=0;document.getElementById('sub-bar').style.display='none';document.getElementById('remed-banner').style.display='block';document.getElementById('rem-msg').textContent=`${CHAR.name} wants to help with ${wrong.length} question${wrong.length>1?'s':''}!`;setTimeout(()=>openOverlay(wrongQs[0]),600);}
 function advanceRemediation(){remIdx++;if(remIdx<wrongQs.length){setTimeout(()=>openOverlay(wrongQs[remIdx]),300);}else{startMiniRetest();}}
 function startMiniRetest(){remMode=false;document.getElementById('remed-banner').style.display='none';document.getElementById('sub-bar').style.display='flex';wrongQs.forEach(qi=>{answers[qi]=undefined;'ABCD'.split('').forEach(k=>{document.getElementById(`opt-${qi}-${k}`)?.classList.remove('sc','sw','rc2','dis');});document.getElementById(`qc-${qi}`)?.classList.remove('right','wrong');});speak('Your turn — try those questions again!');updateSubmit();}
