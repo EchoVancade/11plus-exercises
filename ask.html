@@ -113,6 +113,13 @@ body{font-family:'Nunito',sans-serif;background:#0a0f1e;color:#e2e8f0;min-height
 .next-btn{width:100%;padding:13px;background:linear-gradient(135deg,#0e7490,#0f4c5c);color:#fff;border:none;border-radius:11px;font-size:.97rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
 .next-btn.done-btn{background:linear-gradient(135deg,#22c55e,#16a34a)}
 .next-btn.back-btn2{background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.1)}
+/* ECHO WAVEFORM VISUALIZER */
+.echo-viz{display:flex;align-items:center;gap:5px;margin-top:7px;height:24px;opacity:0;transition:opacity .3s}
+.echo-viz.active{opacity:1}
+.echo-viz canvas{display:block;border-radius:4px}
+.echo-viz .viz-orb{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(103,232,249,.9),rgba(6,182,212,.6) 50%,rgba(5,5,20,.9));box-shadow:0 0 6px rgba(6,182,212,.5);flex-shrink:0;transition:box-shadow .1s,transform .1s}
+.echo-viz .viz-orb.pulse{animation:vizOrb .5s ease-in-out infinite alternate}
+@keyframes vizOrb{from{box-shadow:0 0 6px rgba(6,182,212,.5);transform:scale(1)}to{box-shadow:0 0 12px rgba(6,182,212,.9),0 0 20px rgba(56,189,248,.4);transform:scale(1.15)}}
 /* COMPLETION */
 .completion{display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 20px;text-align:center;flex:1}
 .completion.show{display:flex}
@@ -384,6 +391,8 @@ function hardStop(){
   // 4. Stop Web Speech API — safe because handlers are already nulled
   try{window.speechSynthesis.pause();}catch(e){}
   try{window.speechSynthesis.cancel();}catch(e){}
+  // 5. Stop visualizer
+  _vizStop();
 }
 
 // speak — routes to OpenAI or Web Speech based on key availability
@@ -427,14 +436,14 @@ async function speakOpenAI(clean){
       _oaiAudio.onerror=()=>{try{URL.revokeObjectURL(_oaiObjectUrl);}catch(e){}_oaiObjectUrl=null;_oaiAudio=null;};
       await new Promise(res=>ms.addEventListener('sourceopen',res,{once:true}));
       const sb=ms.addSourceBuffer('audio/mpeg');const reader=r.body.getReader();let started=false;
-      const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});}pump();}catch(e){}};
+      const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});_vizStart(_oaiAudio);}pump();}catch(e){}};
       pump();
     }else{
       const blob=await r.blob();const url=URL.createObjectURL(blob);_oaiObjectUrl=url;
       _oaiAudio=new Audio(url);
       _oaiAudio.onended=()=>{try{URL.revokeObjectURL(url);}catch(e){}_oaiAudio=null;_oaiObjectUrl=null;};
       _oaiAudio.onerror=()=>{try{URL.revokeObjectURL(url);}catch(e){}_oaiAudio=null;_oaiObjectUrl=null;speakWebSpeech(clean);};
-      await _oaiAudio.play();
+      await _oaiAudio.play();_vizStart(_oaiAudio);
     }
   }catch(e){
     _oaiFetching=false;
@@ -467,6 +476,8 @@ function speakWebSpeech(clean){
       // genuine hardware error — fail silently, no re-queue
     };
     window.speechSynthesis.speak(u);
+    // show animated idle sine — Web Speech gives no AudioNode to analyse
+    if(_latestViz){const cv=_latestViz.querySelector('canvas');const cx=cv.getContext('2d');_drawIdleViz(_latestViz,cx,cv.width,cv.height,_latestViz.querySelector('.viz-orb'));}
   },120);
 }
 
@@ -961,7 +972,7 @@ function streamEchoGrouped(raw){
   setTimeout(()=>{if(_groupGen!==gen)return;startAt=performance.now();step();},SPEAK_DELAY);
   return fullSpoken;
 }
-function addBubble(type,text){const a=document.getElementById('chat-area');const d=document.createElement('div');d.className=`bub ${type}`;if(type==='echo'){d.innerHTML=mdToHtml(text);}else{d.textContent=text;}a.appendChild(d);scrollChat();}
+function addBubble(type,text){const a=document.getElementById('chat-area');const d=document.createElement('div');d.className=`bub ${type}`;if(type==='echo'){d.innerHTML=mdToHtml(text);const viz=document.createElement('div');viz.className='echo-viz';viz.innerHTML='<div class="viz-orb"></div><canvas width="160" height="24"></canvas>';d.appendChild(viz);_latestViz=viz;}else{d.textContent=text;}a.appendChild(d);scrollChat();}
 function showTyping(){const a=document.getElementById('chat-area');const t=document.createElement('div');t.className='typing';t.id='typing';t.innerHTML='<span></span><span></span><span></span>';a.appendChild(t);scrollChat();}
 function hideTyping(){document.getElementById('typing')?.remove();}
 function scrollChat(){const a=document.getElementById('chat-area');a.scrollTop=a.scrollHeight;}
@@ -978,6 +989,118 @@ function newQuestion(){
   document.getElementById('empty').style.display='flex';document.getElementById('completion').classList.remove('show');
   document.getElementById('ctx-container').innerHTML='';document.getElementById('send-btn').onclick=sendAnswer;
   hideBanners();hideInput();hideNext();clearChat();document.getElementById('q-input').focus();
+}
+
+// ═══════════════════════════════════════════════════════════
+// ECHO WAVEFORM VISUALIZER ENGINE
+// Reuses existing _oaiAudio / Web Speech — no extra API calls
+// ═══════════════════════════════════════════════════════════
+let _latestViz=null;        // the most-recently-added .echo-viz element
+let _vizAF=null;            // requestAnimationFrame handle
+let _vizAudioCtx=null;      // AudioContext shared across calls
+let _vizAnalyser=null;
+let _vizSource=null;
+
+function _vizStop(){
+  if(_vizAF){cancelAnimationFrame(_vizAF);_vizAF=null;}
+  // deactivate all viz widgets
+  document.querySelectorAll('.echo-viz.active').forEach(v=>{
+    v.classList.remove('active');
+    v.querySelector('.viz-orb').classList.remove('pulse');
+  });
+}
+
+function _vizStart(audioEl){
+  _vizStop();
+  const viz=_latestViz;
+  if(!viz)return;
+  viz.classList.add('active');
+  const orb=viz.querySelector('.viz-orb');
+  const cv=viz.querySelector('canvas');
+  const cx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+
+  // build AudioContext + AnalyserNode wired to the Audio element
+  try{
+    if(!_vizAudioCtx||_vizAudioCtx.state==='closed'){
+      _vizAudioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    }
+    if(_vizAudioCtx.state==='suspended'){_vizAudioCtx.resume().catch(()=>{});}
+    // disconnect previous source safely
+    try{if(_vizSource)_vizSource.disconnect();}catch(e){}
+    _vizSource=_vizAudioCtx.createMediaElementSource(audioEl);
+    _vizAnalyser=_vizAudioCtx.createAnalyser();
+    _vizAnalyser.fftSize=256;
+    _vizAnalyser.smoothingTimeConstant=0.82;
+    _vizSource.connect(_vizAnalyser);
+    _vizAnalyser.connect(_vizAudioCtx.destination);
+  }catch(e){
+    // If AudioContext fails (e.g. iOS policy), just show idle sine and bail
+    _drawIdleViz(viz,cx,W,H,orb);
+    return;
+  }
+
+  const buf=new Uint8Array(_vizAnalyser.frequencyBinCount);
+  let stopped=false;
+  audioEl.addEventListener('ended',()=>{stopped=true;_vizStop();},{ once:true });
+
+  orb.classList.add('pulse');
+
+  function frame(){
+    if(stopped){return;}
+    _vizAF=requestAnimationFrame(frame);
+    _vizAnalyser.getByteTimeDomainData(buf);
+
+    cx.clearRect(0,0,W,H);
+
+    // gradient wave
+    const g=cx.createLinearGradient(0,0,W,0);
+    g.addColorStop(0,'rgba(6,182,212,0)');
+    g.addColorStop(0.2,'rgba(6,182,212,.7)');
+    g.addColorStop(0.5,'rgba(56,189,248,.9)');
+    g.addColorStop(0.8,'rgba(6,182,212,.7)');
+    g.addColorStop(1,'rgba(6,182,212,0)');
+    cx.strokeStyle=g;cx.lineWidth=1.8;
+    cx.shadowBlur=5;cx.shadowColor='rgba(6,182,212,.7)';
+    cx.beginPath();
+    const sl=W/buf.length;
+    for(let i=0;i<buf.length;i++){
+      const y=(buf[i]/128)*H/2;
+      i===0?cx.moveTo(0,y):cx.lineTo(i*sl,y);
+    }
+    cx.stroke();
+    cx.shadowBlur=0;
+
+    // amplitude → orb brightness
+    let s=0;for(let i=0;i<buf.length;i++)s+=Math.abs(buf[i]-128);
+    const amp=s/buf.length/128;
+    orb.style.transform=`scale(${1+amp*.25})`;
+    orb.style.boxShadow=`0 0 ${6+amp*14}px rgba(6,182,212,${.5+amp*.4})`;
+  }
+  frame();
+}
+
+// Fallback: idle sine wave for Web Speech (no AudioContext access)
+function _drawIdleViz(viz,cx,W,H,orb){
+  viz.classList.add('active');
+  let t=0;let stopped=false;
+  function frame(){
+    if(stopped)return;
+    _vizAF=requestAnimationFrame(frame);
+    cx.clearRect(0,0,W,H);
+    const g=cx.createLinearGradient(0,0,W,0);
+    g.addColorStop(0,'rgba(6,182,212,0)');g.addColorStop(.5,'rgba(6,182,212,.4)');g.addColorStop(1,'rgba(6,182,212,0)');
+    cx.strokeStyle=g;cx.lineWidth=1.5;
+    cx.beginPath();
+    for(let x=0;x<W;x++){
+      const y=H/2+Math.sin(x/W*Math.PI*5+t)*4*Math.sin(x/W*Math.PI);
+      x===0?cx.moveTo(x,y):cx.lineTo(x,y);
+    }
+    cx.stroke();t+=0.08;
+  }
+  frame();
+  // stop after a generous timeout (web speech duration unknown)
+  setTimeout(()=>{stopped=true;_vizStop();},30000);
 }
 
 // ═══════════════════════════════════════════════════════════
