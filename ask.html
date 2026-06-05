@@ -297,7 +297,7 @@ let CHAR=CHARS.snake;
 // API KEYS
 // ═══════════════════════════════════════════════════════════
 let ANTHROPIC_KEY='';
-let OPENAI_KEY='';
+let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
 
 // ═══════════════════════════════════════════════════════════
 // STATE
@@ -572,7 +572,7 @@ function saveSettings(){
 }
 function showOaiKeyError(){
   // OpenAI key rejected — remove it, fall back to device voice silently
-  OPENAI_KEY='';localStorage.removeItem('openai_key_v1');updateVoicePill();
+  OPENAI_KEY=null;localStorage.removeItem('openai_key_v1');updateVoicePill();
 }
 function updateVoicePill(){
   const pill=document.getElementById('voice-pill');
@@ -604,7 +604,7 @@ async function apiFetch(sys,msgs,maxTok){
   const r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTok||280,system:sys,messages:msgs})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTok||180,system:sys,messages:msgs})
   });
   if(r.status===401){clearKey401();throw new Error('401');}
   return r.json();
@@ -636,7 +636,7 @@ Decide 3 or 5 stages:
 - 5 stages: multi-part concept where each sub-concept needs separate teaching
 Return ONLY valid JSON, no code fences:
 {"numStages":3,"stages":[{"title":"Short title 3-5 words","concept":"One sentence — what this stage teaches"},{"title":"...","concept":"..."},{"title":"...","concept":"..."}]}`;
-  const r=await apiFetch(sys,[{role:'user',content:'Plan the lesson.'}],450);
+  const r=await apiFetch(sys,[{role:'user',content:'Plan the lesson.'}],280);
   const txt=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
   return JSON.parse(txt.replace(/```json|```/g,'').trim());
 }
@@ -696,29 +696,29 @@ Teaching: "${S.question}"
 Stage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}
 STEP: I-DO (about 20 percent Socratic — mostly direct): demonstrate ONE clear worked example. Show your thinking step by step, leading the student to understand fully.
 End with: "Did you follow that? Tap Next when you are ready!"
-FORMAT — reply as 2 to 4 short groups, ONE per line. Each line: spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain, not the same wording). One group per step or idea.
-Example: First we multiply the tens digit. ||| Step 1: multiply tens
+FORMAT — reply as 2 to 4 short groups, ONE per line. Each line: spoken words, then "|||", then a labelled cue — [Watch me] for a demonstration step, [Try: <specific task ≤6 words>] for the invitation. Cue including label ≤10 words. [Watch me] is a step pointer ("Notice the...", "Find where..."), not a question.
+Example: First we multiply the tens digit. ||| [Watch me] multiply the tens digit
 Max 140 spoken words. No emoji.`,
     wedo:`${CHAR.pers}
 
 Teaching: "${S.question}"
 Stage ${si+1} of ${S.numStages}: "${stage.title}" — ${stage.concept}
 STEP: WE-DO (about 40 percent Socratic — half guided): show a DIFFERENT example from I-do. Give a clear hint or scaffold and ask the student to supply the key step.
-FORMAT — reply as 2 to 4 short groups, ONE per line. Each line: spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain). One group per step or question.
+FORMAT — reply as 2 to 4 short groups, ONE per line. Each line: spoken words, then "|||", then a labelled cue — [Watch me] for hints or examples, [Try: <specific task ≤6 words>] for the challenge. Cue ≤10 words.
 Max 120 spoken words. No emoji.`,
     youdo:`${CHAR.pers}
 
 Teaching: "${S.question}"
 Stage ${si+1} of ${S.numStages}: "${stage.title}"
 STEP: YOU-DO (about 80 percent Socratic — mostly theirs): show a third DIFFERENT example. Give NO hints. If the student is clearly stuck give ONE tiny nudge only — never give the answer.
-End: "Your turn! Show me what you have got."
-FORMAT — reply as 2 to 4 short groups, ONE per line. Each line: spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain). One group per step or challenge.
+End with ONE concrete task — name exactly what to solve or find. Never end with a vague "your turn".
+FORMAT — reply as 2 to 4 short groups, ONE per line. Each line: spoken words, then "|||", then a labelled cue — [Watch me] for examples, [Try: <specific task ≤6 words>] for the challenge. Cue ≤10 words.
 Max 100 spoken words. No emoji.`
   };
 
   showTyping();
   try{
-    const r=await apiFetch(prompts[st],[{role:'user',content:'Begin the step.'}],280);
+    const r=await apiFetch(prompts[st],[{role:'user',content:'Begin the step.'}],180);
     const content=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
     hideTyping();const _spoken=streamEchoGrouped(content);
     S.history[sk(si,st)].push({role:'assistant',content:_spoken});
@@ -747,7 +747,7 @@ Student answered: "${ans}"
 
 Evaluate warmly. If correct: celebrate specifically and confirm the approach. If close: name what is right then correct the error. If wrong: reteach with a fresh angle.
 End with: "Tap Next when ready!"
-FORMAT — reply as 2 to 3 short groups, ONE per line: spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain).
+FORMAT — reply as 2 to 3 short groups, ONE per line: spoken words, then "|||", then a labelled cue — [✓] for celebration, [Notice:] for corrections, [Try: <task ≤6 words>] for retry. Cue ≤10 words.
 Max 90 spoken words. No emoji.`,
     youdo:`${CHAR.pers}
 
@@ -756,12 +756,12 @@ Student answered: "${ans}"
 
 Evaluate independently. If correct: celebrate specifically and confirm mastery. If close: name the right part then correct the error. If wrong: give one clear correction.
 End with: "Tap Next Stage when ready!"
-FORMAT — reply as 2 to 3 short groups, ONE per line: spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain).
+FORMAT — reply as 2 to 3 short groups, ONE per line: spoken words, then "|||", then a labelled cue — [✓] for celebration, [Notice:] for corrections, [Try: <task ≤6 words>] for retry. Cue ≤10 words.
 Max 90 spoken words. No emoji.`
   };
   showTyping();
   try{
-    const r=await apiFetch(fbSys[st]||fbSys.youdo,[...hist(si,st)],240);
+    const r=await apiFetch(fbSys[st]||fbSys.youdo,[...hist(si,st)],150);
     const fb=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
     hideTyping();const _spokenFb=streamEchoGrouped(fb);
     S.history[sk(si,st)].push({role:'assistant',content:_spokenFb});
@@ -851,7 +851,7 @@ Max 100 spoken words. No emoji.`
   };
   addBubble('sys',`Generating a fresh ${SLABELS[st]} example for Stage ${si+1}…`);showTyping();
   try{
-    const r=await apiFetch(redoPrompts[st],[{role:'user',content:'Generate fresh example.'}],280);
+    const r=await apiFetch(redoPrompts[st],[{role:'user',content:'Generate fresh example.'}],180);
     const content=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');
     hideTyping();streamEchoGrouped(content);
     if(st==='ido'){
@@ -873,7 +873,7 @@ async function redoSendAnswer(){
   const si=S.redoSI,stage=S.stages[si];
   const sys=`${CHAR.pers}\n\nTeaching "${S.question}", Stage ${si+1} ${SLABELS[S.redoStep]}: "${stage.title}"\nStudent answered (redo practice): "${ans}"\n\nEvaluate warmly. Celebrate understanding. Mention what was right. End: "Tap Done when satisfied!"\nFORMAT — reply as 2 to 3 short groups, ONE per line: spoken words, then "|||", then a SHORT on-screen key line (max 8 words, plain).\nMax 80 spoken words. No emoji.`;
   showTyping();
-  try{const r=await apiFetch(sys,[{role:'user',content:ans}],200);const txt=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();streamEchoGrouped(txt);document.getElementById('send-btn').disabled=false;showNext();}
+  try{const r=await apiFetch(sys,[{role:'user',content:ans}],120);const txt=(r.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('');hideTyping();streamEchoGrouped(txt);document.getElementById('send-btn').disabled=false;showNext();}
   catch(e){hideTyping();addBubble('sys','Try again.');document.getElementById('send-btn').disabled=false;}
 }
 function exitRedo(){
@@ -979,7 +979,7 @@ window.onload=function(){
   // Bug 5 fix: kill all audio when navigating away or backgrounding the page
   window.addEventListener('pagehide', hardStop);
   document.addEventListener('visibilitychange', ()=>{ if(document.hidden) hardStop(); });
-  OPENAI_KEY=localStorage.getItem('openai_key_v1')||'';
+  // OPENAI_KEY already initialised at declaration time
   if(!ANTHROPIC_KEY)document.getElementById('setup').classList.add('show');
   const today=new Date().toISOString().slice(0,10);
   let ck=localStorage.getItem('char_date')===today?localStorage.getItem('char_key'):null;
