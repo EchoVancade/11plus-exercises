@@ -109,6 +109,14 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .bub{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.88rem;line-height:1.6}
 .bub.echo{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:#f1f5f9}
 .bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
+.beat-lbl{display:inline-block;font-size:.66rem;font-weight:800;padding:1px 7px;border-radius:9px;margin-right:4px;vertical-align:middle;line-height:1.7;white-space:nowrap}
+.beat-joke{background:rgba(251,146,60,.2);color:#fb923c;border:1px solid rgba(251,146,60,.4)}
+.beat-watch{background:rgba(6,182,212,.18);color:#67e8f9;border:1px solid rgba(6,182,212,.4)}
+.beat-try{background:rgba(168,85,247,.18);color:#c4b5fd;border:1px solid rgba(168,85,247,.4)}
+.beat-check{background:rgba(34,197,94,.18);color:#86efac;border:1px solid rgba(34,197,94,.4)}
+.beat-notice{background:rgba(234,179,8,.18);color:#fde047;border:1px solid rgba(234,179,8,.4)}
+.beat-probe{background:rgba(251,191,36,.18);color:#fcd34d;border:1px solid rgba(251,191,36,.4)}
+.beat-guess{background:rgba(20,184,166,.18);color:#5eead4;border:1px solid rgba(20,184,166,.4)}
 .typing{display:flex;gap:5px;align-items:center;padding:10px 12px;background:rgba(255,255,255,.08);border-radius:12px;align-self:flex-start}
 .typing span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:bop .8s infinite}
 .typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
@@ -529,7 +537,8 @@ function submitSpeech(){const txt=(document.getElementById('speech-text').value|
 // ── OVERLAY ───────────────────────────────────────────────────────────────────
 function charTurns(sec){return CHILD==='IL'?5:(sec==='Vocab'||sec==='Dictionary'?6:7);}
 function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(QUESTIONS[qi]?.section),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
-function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;d.textContent=text;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function renderBeatLabel(t){if(!t)return '';const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return e(t).replace(/\[Joke\]/g,'<span class="beat-lbl beat-joke">[Joke]</span>').replace(/\[Watch me\]/g,'<span class="beat-lbl beat-watch">[Watch me]</span>').replace(/\[Try:([^\]]*?)\]/g,'<span class="beat-lbl beat-try">[Try:$1]</span>').replace(/\[\u2713\]/g,'<span class="beat-lbl beat-check">[✓]</span>').replace(/\[Notice:([^\]]*?)\]/g,'<span class="beat-lbl beat-notice">[Notice:$1]</span>').replace(/\[Probe:([^\]]*?)\]/g,'<span class="beat-lbl beat-probe">[Probe:$1]</span>').replace(/\[Probe\]/g,'<span class="beat-lbl beat-probe">[Probe]</span>').replace(/\[Guess:([^\]]*?)\]/g,'<span class="beat-lbl beat-guess">[Guess:$1]</span>').replace(/\[Guess\]/g,'<span class="beat-lbl beat-guess">[Guess]</span>');}
+function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;if(role==='echo'){d.innerHTML=renderBeatLabel(text);}else{d.textContent=text;}b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function removeTyping(){document.getElementById('typing-ind')?.remove();}
 
