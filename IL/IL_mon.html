@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>IL Exercises</title>
+<title>CL Exercises</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ── CL THEME ── orange */
-:root{--hdr:linear-gradient(135deg,#7c3aed,#5b21b6);--bg:#fdf6ff;--acc:#7c3aed;--acc2:#8b5cf6;--vocab:#5b21b6}
+:root{--hdr:linear-gradient(135deg,#FF6B35,#E85D04);--bg:#FFF8F0;--acc:#E85D04;--acc2:#FF6B35;--vocab:#7B2D8B}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:72px}
 body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
@@ -78,6 +78,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .q-ctx-opt{font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:6px}
 .q-ctx-opt.wrong-opt{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
 .q-ctx-opt.right-opt{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+.q-ctx-opt.neutral-opt{background:rgba(255,255,255,.05);color:#94a3b8;border:1px solid rgba(255,255,255,.12)}
 .ov-bubbles{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
 /* Phase 2 — voice-text coupling */
 .skip-pill{display:inline-block;margin-left:6px;padding:2px 9px;background:rgba(255,255,255,.1);color:#cbd5e1;border-radius:11px;font-size:.72rem;cursor:pointer;border:1px solid rgba(255,255,255,.18);font-weight:500;user-select:none;-webkit-tap-highlight-color:transparent}
@@ -108,6 +109,21 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .bub{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.88rem;line-height:1.6}
 .bub.echo{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:#f1f5f9}
 .bub.user{align-self:flex-end;background:#fff;color:#1e293b;font-weight:700}
+.beat-lbl{display:inline-block;font-size:.66rem;font-weight:800;padding:1px 7px;border-radius:9px;margin-right:4px;vertical-align:middle;line-height:1.7;white-space:nowrap}
+.beat-joke{background:rgba(251,146,60,.2);color:#fb923c;border:1px solid rgba(251,146,60,.4)}
+.beat-watch{background:rgba(6,182,212,.18);color:#67e8f9;border:1px solid rgba(6,182,212,.4)}
+.beat-try{background:rgba(168,85,247,.18);color:#c4b5fd;border:1px solid rgba(168,85,247,.4)}
+.beat-check{background:rgba(34,197,94,.18);color:#86efac;border:1px solid rgba(34,197,94,.4)}
+.beat-notice{background:rgba(234,179,8,.18);color:#fde047;border:1px solid rgba(234,179,8,.4)}
+.beat-probe{background:rgba(251,191,36,.18);color:#fcd34d;border:1px solid rgba(251,191,36,.4)}
+.beat-guess{background:rgba(20,184,166,.18);color:#5eead4;border:1px solid rgba(20,184,166,.4)}
+.kw{font-weight:800;color:var(--kw,#fff)}
+.echo-viz{display:none;align-items:center;gap:7px;margin-top:5px}
+.echo-viz.active{display:flex}
+.echo-viz canvas{display:block;border-radius:4px}
+.echo-viz .viz-orb{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(103,232,249,.9),rgba(6,182,212,.6) 50%,rgba(5,5,20,.9));box-shadow:0 0 6px rgba(6,182,212,.5);flex-shrink:0;transition:box-shadow .1s,transform .1s}
+.echo-viz .viz-orb.pulse{animation:vizOrb .5s ease-in-out infinite alternate}
+@keyframes vizOrb{from{transform:scale(1)}to{transform:scale(1.12)}}
 .typing{display:flex;gap:5px;align-items:center;padding:10px 12px;background:rgba(255,255,255,.08);border-radius:12px;align-self:flex-start}
 .typing span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:bop .8s infinite}
 .typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
@@ -151,7 +167,7 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 
 <!-- HEADER -->
 <div class="hdr">
-  <div class="hdr-l"><h1 id="hdr-title">IL Exercises</h1><p id="hdr-sub">Week 0</p></div>
+  <div class="hdr-l"><h1 id="hdr-title">CL Exercises</h1><p id="hdr-sub">Week 0</p></div>
   <div class="hdr-r">
     <span id="voice-pill" class="voice-pill">🔊 Device</span>
     <span id="hdr-char" class="hdr-char">?</span>
@@ -261,79 +277,80 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 
 <script>
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
-const CHILD    = 'IL';
-const DAY      = 'Monday';
-const WEEK     = 22;
-const PTS_KEY  = 'pts_IL';
-const BASE_PTS = 240;
-const DICT_WORD = 'anxious';
-const DICT_DEF  = 'Adjective — feeling worried or nervous about something that might happen.';
-const DICT_EG   = 'She felt anxious before the show, but the moment she stepped on stage she forgot her nerves.';
+const CHILD    = 'CL';
+const DAY      = 'Monday';     // replace: 'Monday'|'Tuesday'|'Wednesday'|'Thursday'|'Friday'
+const WEEK     = 0;            // replace: week number e.g. 21
+const PTS_KEY  = 'pts_CL';
+const BASE_PTS = 0;            // replace: CL pts from session_summary POINTS section
+const DICT_WORD = 'resilient';
+const DICT_DEF  = 'Adjective — able to recover quickly from difficult situations.';
+const DICT_EG   = 'Despite everything that went wrong, she remained resilient and kept going.';
 const RULES_TIPS = [
-  'E5.2: Inference — look at what people DO, not just what they say. Actions show feelings.',
-  'M2.1: Number sentences with fractions — find a number that both bottom numbers go into.',
-  'E3.1: A sentence must make sense on its own — it needs a doing word and a naming word.',
+  'E2.1: Replace with top severity code tip from session_summary.',
+  'M1.3: Replace with second severity tip.',
+  'E3.2: Replace with third priority tip.',
 ];
+// MISSION_PACK — include on Mon/Wed/Fri; remove this const entirely on Tue/Thu
 const MISSION_PACK = {
-  id:'IL-A', title:'The Feeling Scene', codes:['W1.1','W4.1'],
-  prompt:'Write 2 to 3 sentences about a character who feels something strongly. Show the feeling with their body — what are they doing? Use "like" or "as" to add a comparing word.',
+  id:'M-A', title:'The Action Scene', codes:['W1.5','W3.1','W4.1'],
+  prompt:'Write 3 to 5 sentences of an action scene. Use body language, a comparison, and a vivid setting detail.',
 };
 const QUESTIONS = {
-  // ── VOCAB (0–3): age-7 vocabulary, Claude-written this week ──────────────
-  0:{ section:'Vocab', code:'E4.1', correct:'B', star:false,
-      text:'What does "gentle" mean?',
-      opts:{A:'Very loud and fast',B:'Soft and careful, not rough',C:'Hot and steamy',D:'Dark and difficult to see'},
-      vocabWord:'gentle' },
-  1:{ section:'Vocab', code:'E4.2', correct:'A', star:false,
-      text:'Which sentence uses "enormous" correctly?',
-      opts:{A:'The enormous elephant could barely fit through the gate.',B:'She took an enormous rest on the small pillow.',C:'The enormous ant lifted the tiny leaf.',D:'He walked in an enormous, careful way.'},
-      vocabWord:'enormous' },
+  // ── VOCAB (0–3): from Vocab Tracker, untested first, Q3 = star ─────────────
+  0:{ section:'Vocab', code:'E4.1', correct:'A', star:false,
+      text:'What does "stroll" mean?',
+      opts:{A:'To walk slowly and in a relaxed way',B:'To run very quickly',C:'To jump over an obstacle',D:'To sit quietly and think'},
+      vocabWord:'stroll' },
+  1:{ section:'Vocab', code:'E4.2', correct:'B', star:false,
+      text:'Which word means very bright and shining?',
+      opts:{A:'Dull',B:'Radiant',C:'Faded',D:'Gloomy'},
+      vocabWord:'radiant' },
   2:{ section:'Vocab', code:'E4.3', correct:'C', star:false,
-      text:'What does "glitter" mean as a doing word?',
-      opts:{A:'To make a loud crashing sound',B:'To move very slowly through water',C:'To shine with lots of tiny flashes of light',D:'To roll something into a ball'},
-      vocabWord:'glitter' },
-  3:{ section:'Vocab', code:'E4.1', correct:'D', star:true,
-      text:'★ STAR — "The puppy was timid when it met new people." What does timid mean?',
-      opts:{A:'Very loud and excited',B:'Hungry and tired',C:'Playful and bouncy',D:'Shy and a little bit frightened'},
-      vocabWord:'timid' },
-  // ── ENGLISH (4–9): age-8, simple E codes ────────────────────────────────────
-  4:{ section:'English', code:'E5.2', correct:'A', star:false,
-      text:'Tom slid his tray along and picked the smallest piece of cake. What does this action tell you about Tom?',
-      opts:{A:'He does not want to seem greedy.',B:'He does not like cake very much.',C:'The big pieces were all taken already.',D:'He is saving space for something else.'} },
-  5:{ section:'English', code:'E3.1', correct:'C', star:false,
-      text:'Which group of words is a proper sentence?',
-      opts:{A:'Running through the rain.',B:'The big red door.',C:'The dog barked loudly.',D:'Because it was cold and dark.'} },
-  6:{ section:'English', code:'E2.1', correct:'B', star:false,
-      text:'Where does the comma go? "After breakfast we went to the park."',
-      opts:{A:'After "went"',B:'After "breakfast"',C:'After "we"',D:'After "the"'} },
+      text:'What does "reluctant" mean?',
+      opts:{A:'Very happy and willing',B:'Completely certain',C:'Not willing to do something',D:'Moving extremely fast'},
+      vocabWord:'reluctant' },
+  3:{ section:'Vocab', code:'E4.4', correct:'D', star:true,
+      text:'★ STAR — The explorer was dauntless despite the danger. What does dauntless mean?',
+      opts:{A:'Easily frightened',B:'Moving with great care',C:'Completely exhausted',D:'Showing no fear whatsoever'},
+      vocabWord:'dauntless' },
+  // ── ENGLISH (4–9): replace with top-severity E codes from session_summary ───
+  4:{ section:'English', code:'E2.1', correct:'A', star:false,
+      text:'Which sentence uses a comma correctly?',
+      opts:{A:'After the rain, the garden smelled fresh.',B:'After, the rain the garden smelled fresh.',C:'After the rain the, garden smelled fresh.',D:'After the rain the garden smelled, fresh.'} },
+  5:{ section:'English', code:'E2.3', correct:'B', star:false,
+      text:'Which word is an adjective: The fierce dragon guarded the old castle.',
+      opts:{A:'Dragon',B:'Fierce',C:'Guarded',D:'Castle'} },
+  6:{ section:'English', code:'E3.2', correct:'C', star:false,
+      text:'Which sentence uses an apostrophe correctly?',
+      opts:{A:'The dogs tail wagged.',B:'The dogs\' tail wagged.',C:"The dog's tail wagged.",D:'The dogs tails wagged.'} },
   7:{ section:'English', code:'E1.3', correct:'D', star:false,
-      text:'Which word is spelled correctly?',
-      opts:{A:'Woud',B:'Coud',C:'Shood',D:'Could'} },
-  8:{ section:'English', code:'E5.3', correct:'A', star:false,
-      text:'The passage says the bee "dived under a large leaf." What does "dived" tell you about how the bee moved?',
-      opts:{A:'It moved quickly and suddenly downwards.',B:'It flew slowly in circles looking for shelter.',C:'It landed carefully and folded its wings.',D:'It swam through the raindrops.'} },
-  9:{ section:'English', code:'E3.1', correct:'C', star:false,
-      text:'Which sentence uses a capital letter correctly at the start?',
-      opts:{A:'the cat sat on the mat.',B:'the cat Sat on the mat.',C:'The cat sat on the mat.',D:'The Cat sat On the mat.'} },
-  // ── MATHS (10–15): age-8 appropriate ────────────────────────────────────────
-  10:{ section:'Maths', code:'M2.1', correct:'B', star:false,
-       text:'What is one half add one quarter?',
-       opts:{A:'2 over 6',B:'3 over 4',C:'2 over 4',D:'1 over 3'}, mathConcept:'fractions' },
-  11:{ section:'Maths', code:'M2.1', correct:'D', star:false,
-       text:'What is three quarters take away one quarter?',
-       opts:{A:'3 over 8',B:'1 over 4',C:'2 over 8',D:'2 over 4'}, mathConcept:'fractions' },
-  12:{ section:'Maths', code:'M1.3', correct:'A', star:false,
-       text:'What is half of 60?',
-       opts:{A:'30',B:'20',C:'40',D:'25'}, mathConcept:'halves' },
-  13:{ section:'Maths', code:'M3.1', correct:'C', star:false,
-       text:'Apples and oranges are in the ratio 2 to 1. There are 8 apples. How many oranges?',
-       opts:{A:'8',B:'6',C:'4',D:'2'}, mathConcept:'ratio' },
-  14:{ section:'Maths', code:'M1.9', correct:'B', star:false,
-       text:'Which number is a multiple of both 3 and 4?',
-       opts:{A:'10',B:'12',C:'9',D:'16'}, mathConcept:'multiples' },
-  15:{ section:'Maths', code:'M4.1', correct:'D', star:false,
-       text:'A toy car travels 20 metres in 4 seconds. How many metres does it travel each second?',
-       opts:{A:'10',B:'8',C:'6',D:'5'}, mathConcept:'speed' },
+      text:'Which spelling is correct?',
+      opts:{A:'Recieve',B:'Beleive',C:'Peice',D:'Achieve'} },
+  8:{ section:'English', code:'E2.5', correct:'A', star:false,
+      text:'Which is a compound sentence?',
+      opts:{A:'I was tired, but I kept going.',B:'Running through the rain.',C:'The tall, old oak tree.',D:'Because the sun was bright.'} },
+  9:{ section:'English', code:'E3.4', correct:'B', star:false,
+      text:'Where should the semicolon go: I love reading __ my sister prefers sport.',
+      opts:{A:'After love',B:'After reading',C:'After sister',D:'After prefers'} },
+  // ── MATHS (10–15): replace with top-severity M codes from session_summary ───
+  10:{ section:'Maths', code:'M1.3', correct:'C', star:false,
+       text:'What is 15 percent of 80?',
+       opts:{A:'10',B:'11',C:'12',D:'13'}, mathConcept:'percentages' },
+  11:{ section:'Maths', code:'M2.4', correct:'D', star:false,
+       text:'Which fraction is equivalent to three quarters?',
+       opts:{A:'6 over 10',B:'9 over 16',C:'4 over 6',D:'9 over 12'}, mathConcept:'fractions' },
+  12:{ section:'Maths', code:'M1.7', correct:'A', star:false,
+       text:'Round 4768 to the nearest hundred.',
+       opts:{A:'4800',B:'4700',C:'5000',D:'4770'}, mathConcept:'rounding' },
+  13:{ section:'Maths', code:'M3.2', correct:'B', star:false,
+       text:'Red to blue ratio is 2 to 5. There are 14 red beads. How many blue?',
+       opts:{A:'28',B:'35',C:'21',D:'40'}, mathConcept:'ratio' },
+  14:{ section:'Maths', code:'M5.3', correct:'C', star:false,
+       text:'Area of a rectangle 8 cm long and 5 cm wide?',
+       opts:{A:'26 square centimetres',B:'30 square centimetres',C:'40 square centimetres',D:'45 square centimetres'}, mathConcept:'area' },
+  15:{ section:'Maths', code:'M2.1', correct:'D', star:false,
+       text:'What is two thirds plus one quarter?',
+       opts:{A:'3 over 7',B:'8 over 12',C:'10 over 12',D:'11 over 12'}, mathConcept:'fractions' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -346,22 +363,23 @@ const WRITING_DAYS  = ['Monday','Wednesday','Friday'];
 const RULE_STYLES   = {Monday:'weapons',Tuesday:'watchout',Wednesday:'protips',Thursday:'memory',Friday:'weapons'};
 const RULE_HEADERS  = {weapons:"⚡ TODAY'S WEAPONS",watchout:'⚠️ WATCH OUT FOR THESE',protips:'🏆 PRO TIPS FOR TODAY',memory:'🧠 QUICK MEMORY TRICKS'};
 const CHILD_AGE     = CHILD==='IL' ? 7 : 9;
-const MAX_WORDS     = CHILD==='IL' ? 70 : 90;
+const MAX_WORDS     = CHILD==='IL' ? 50 : 60;
 
 const CHARS = {
   snake:{key:'snake',name:'Ssssam',emoji:'🐍',gotIt:"Sssuper! That's ssso good — onto the next one!",
-    pers:`You are Ssssam the Snake, an 11+ tutor for a ${CHILD_AGE}-year-old. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
+    pers:`You are Ssssam the Snake, an 11+ tutor for a ${CHILD_AGE}-year-old. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. No markdown.`},
   shark:{key:'shark',name:'Finn',emoji:'🦈',gotIt:'Fin-tastic! Finn is doing a victory lap — next question!',
-    pers:`You are Finn the Shark, an 11+ tutor for a ${CHILD_AGE}-year-old. Energetic and celebratory. Say Splashing great, Fin-tastic, Making waves. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
+    pers:`You are Finn the Shark, an 11+ tutor for a ${CHILD_AGE}-year-old. Energetic and celebratory. Say Splashing great, Fin-tastic, Making waves. NEVER use emoji. No markdown.`},
 };
 
 let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={}, disengagedCount={};
 let rulesRead=false, overlayOpen=false, micActive=false;
-let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1;
+let remMode=false, wrongQs=[], remIdx=0, currentQIdx=-1; let retestDone=false;
 let recognition=null, CHAR, writingDone=false;
 let API_KEY=localStorage.getItem('anthropic_key_v1')||null;
 let OPENAI_KEY=localStorage.getItem('openai_key_v1')||null;
 let _oaiController=null, _oaiAudio=null, _oaiObjectUrl=null;
+const OAI_TTS_MODEL='gpt-4o-mini-tts'; // newest, most natural, streaming. Flip to 'tts-1' (fastest) or 'tts-1-hd' (previous) if your account rejects it.
 let _cachedVoice=null, _audioWarmed=false;
 let _currentUtt=null, _speechGen=0;            // ghost-kill: generation counter + active utterance ref
 
@@ -396,9 +414,46 @@ function speakWebSpeech(text){
       // genuine hardware error — fail silently, do not re-queue
     };
     window.speechSynthesis.speak(u);
+    _fireOnset();
+    if(_latestViz){const cv=_latestViz.querySelector('canvas');if(cv)_drawIdleViz(_latestViz,cv.getContext('2d'),cv.width,cv.height,_latestViz.querySelector('.viz-orb'),_latestViz.dataset.rgb);}
   },120);
 }
-async function speakOpenAI(text){try{_oaiController=new AbortController();const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify({model:'tts-1-hd',input:text,voice:CHAR.key==='snake'?'fable':'echo',speed:CHAR.key==='snake'?.92:.97})});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
+function _oaiBody(text){const b={model:OAI_TTS_MODEL,input:text,voice:CHAR.key==='snake'?'fable':'echo',response_format:'mp3'};if(OAI_TTS_MODEL.indexOf('tts-1')===0){b.speed=CHAR.key==='snake'?.92:.97;}else{b.instructions='Speak warmly, clearly and a little slowly, like a friendly tutor talking to a young child.';}return b;}
+function _oaiFetch(text){return fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify(_oaiBody(text))});}
+function _splitForTTS(t){t=(t||'').trim();const m=t.match(/^[\s\S]{12,160}?[.!?](?=\s)/);if(m)return[m[0].trim(),t.slice(m[0].length).trim()];const w=t.split(/\s+/);if(w.length>20)return[w.slice(0,14).join(' '),w.slice(14).join(' ')];return[t,''];}
+async function speakOpenAI(text){try{_oaiController=new AbortController();
+const MS=window.MediaSource||window.ManagedMediaSource; // ManagedMediaSource = iPhone Safari 17.1+; standard MediaSource = desktop/Android
+if(MS&&MS.isTypeSupported&&MS.isTypeSupported('audio/mpeg')){
+  // STREAMED playback: audio starts on the FIRST mp3 chunk — not after full synthesis.
+  const resp=await _oaiFetch(text);
+  if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}
+  if(!resp.ok||!resp.body){speakWebSpeech(text);return;}
+  const ms=new MS();_oaiAudio=new Audio();if(window.ManagedMediaSource&&MS===window.ManagedMediaSource)_oaiAudio.disableRemotePlayback=true; // mandatory for MMS
+  _oaiObjectUrl=URL.createObjectURL(ms);_oaiAudio.src=_oaiObjectUrl;_oaiAudio.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;};
+  await new Promise(res=>ms.addEventListener('sourceopen',res,{once:true}));
+  const sb=ms.addSourceBuffer('audio/mpeg');const reader=resp.body.getReader();let started=false;
+  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});_fireOnset();_vizStart(_oaiAudio);}pump();}catch(e){}};
+  pump();
+}else{
+  // No MediaSource at all (older iOS): PIPELINE two short requests — sentence 1 plays while the rest synthesises in parallel.
+  const parts=_splitForTTS(text);
+  const r1p=_oaiFetch(parts[0]);
+  const b2p=parts[1]?_oaiFetch(parts[1]).then(r=>r.ok?r.blob():null).catch(()=>null):null;
+  const r1=await r1p;
+  if(r1.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}
+  if(!r1.ok){speakWebSpeech(text);return;}
+  const b1=await r1.blob();
+  _oaiObjectUrl=URL.createObjectURL(b1);_oaiAudio=new Audio(_oaiObjectUrl);const a1=_oaiAudio;
+  a1.onended=async()=>{if(_oaiAudio!==a1)return; // hardStop() took over
+    if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}
+    if(!b2p){_oaiAudio=null;return;}
+    try{const b2=await b2p;if(!b2||_oaiAudio!==a1)return;
+      _oaiObjectUrl=URL.createObjectURL(b2);const a2=new Audio(_oaiObjectUrl);_oaiAudio=a2;
+      a2.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;_vizStop();};
+      await a2.play();_vizStart(a2);
+    }catch(e){}};
+  await a1.play();_fireOnset();_vizStart(a1);
+}}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
 document.addEventListener('touchstart',_warmAudio,{once:true,passive:true});
@@ -432,10 +487,9 @@ function streamEchoBubble(text){
   const SPEAK_DELAY=140;                          // ~ audio onset latency (matches speakWebSpeech 120ms + ramp)
   const totalMs=(wordCount/baseWpm)*60000;        // expected spoken length
   const msPerWord=totalMs/wordCount;
-  let i=0,timeoutId=null,pillTimer=null,startAt=0,wordsShown=0;
+  let i=0,timeoutId=null,startAt=0,wordsShown=0;
   function complete(){
     if(timeoutId)clearTimeout(timeoutId);
-    if(pillTimer)clearTimeout(pillTimer);
     textNode.data=text;
     d.querySelector('.skip-pill')?.remove();
     setInputDisabled(false);
@@ -461,23 +515,39 @@ function streamEchoBubble(text){
     if(i<tokens.length)timeoutId=setTimeout(step,Math.max(40,msPerWord/2));
     else complete();
   }
-  pillTimer=setTimeout(()=>{
-    if(_streamCancel===complete && i<tokens.length){
-      const pill=document.createElement('span');
-      pill.className='skip-pill';
-      pill.textContent=' Skip ⏭';
-      pill.onclick=(e)=>{e.stopPropagation();if(_streamCancel===complete)complete();};
-      d.appendChild(pill);
-      b.scrollTop=b.scrollHeight;
-    }
-  },2000);
   // start the text reveal aligned to audio onset, not at t=0
   timeoutId=setTimeout(()=>{ if(_streamCancel!==complete)return; startAt=performance.now(); step(); }, SPEAK_DELAY);
+}
+function streamEchoGrouped(raw){
+  const b=document.getElementById('ov-bubbles');
+  const lines=(raw||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  let groups=[];
+  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp='';}if(!sp)return;
+    if(!dp){const parts=sp.replace(/[*_`]/g,'').split(/\s+/);dp=parts.slice(0,8).join(' ')+(parts.length>8?'…':'');} // never dump the transcript / never a bare label
+    groups.push({sp:sp,dp:dp});});
+  if(!groups.length){const parts=(raw||'').split(/\s+/);groups.push({sp:raw||'',dp:parts.slice(0,8).join(' ')+(parts.length>8?'…':'')});}
+  groups=groups.filter((g,i)=>i===0||g.dp!==groups[i-1].dp); // drop back-to-back identical cues
+  const fullSpoken=groups.map(g=>g.sp).join(' ').replace(/\*+/g,'');
+  speak(fullSpoken);
+  setInputDisabled(true);
+  const wc=g=>((g.sp.match(/\S+/g)||[]).length||1);
+  const totalWords=groups.reduce((a,g)=>a+wc(g),0)||1;
+  const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
+  const totalMs=(totalWords/baseWpm)*60000;
+  let acc=0;const starts=groups.map(g=>{const s=(acc/totalWords)*totalMs;acc+=wc(g);return s;});
+  let shown=0,timeoutId=null,startAt=0,begun=false;
+  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;_onOnset=null;b.scrollTop=b.scrollHeight;}
+  _streamCancel=complete;
+  function step(){if(_streamCancel!==complete)return;const elapsed=performance.now()-startAt;while(shown<groups.length&&elapsed>=starts[shown]){addBubble(groups[shown].dp,'echo');shown++;b.scrollTop=b.scrollHeight;}if(shown<groups.length)timeoutId=setTimeout(step,80);else timeoutId=setTimeout(complete,Math.max(0,totalMs-elapsed)+200);}
+  function begin(){if(begun||_streamCancel!==complete)return;begun=true;removeTyping();startAt=performance.now();step();}
+  _onOnset=begin;                         // reveal text exactly when audio starts (keeps "thinking…" up until then)
+  timeoutId=setTimeout(begin,3500);       // fail-safe: reveal anyway if audio never fires
 }
 function resetGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.add('suppressed');g.disabled=true;}}
 function enableGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.remove('suppressed');g.disabled=false;}}
 function maybeEnableGotIt(t){if((t||'').toLowerCase().includes('got it'))enableGotIt();}
 function hardStop(){
+  _onOnset=null;try{_vizStop();}catch(e){}
   if(_streamCancel){const fn=_streamCancel;_streamCancel=null;fn();}
   _speechGen++;                                     // invalidate all pending speakWebSpeech callbacks
   if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;} // null handlers before cancel
@@ -505,11 +575,23 @@ function toggleMic(){
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
 // ── OVERLAY ───────────────────────────────────────────────────────────────────
-function charTurns(sec){return CHILD==='IL'?5:(sec==='Vocab'||sec==='Dictionary'?6:7);}
+const TURN_CAPS={IL:{Vocab:5,Dictionary:5,default:5},CL:{Vocab:5,Dictionary:5,default:6}};
+function charTurns(sec){const c=TURN_CAPS[CHILD]||TURN_CAPS.CL;return (sec&&c[sec])||c.default;}
 function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(QUESTIONS[qi]?.section),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
-function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;d.textContent=text;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function renderBeatLabel(t){if(!t)return '';const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return e(t).replace(/\[Joke\]/g,'<span class="beat-lbl beat-joke">[Joke]</span>').replace(/\[Watch me\]/g,'<span class="beat-lbl beat-watch">[Watch me]</span>').replace(/\[Try:([^\]]*?)\]/g,'<span class="beat-lbl beat-try">[Try:$1]</span>').replace(/\[✓\]/g,'<span class="beat-lbl beat-check">[✓]</span>').replace(/\[Notice:([^\]]*?)\]/g,'<span class="beat-lbl beat-notice">[Notice:$1]</span>').replace(/\[Probe:([^\]]*?)\]/g,'<span class="beat-lbl beat-probe">[Probe:$1]</span>').replace(/\[Probe\]/g,'<span class="beat-lbl beat-probe">[Probe]</span>').replace(/\[Guess:([^\]]*?)\]/g,'<span class="beat-lbl beat-guess">[Guess:$1]</span>').replace(/\[Guess\]/g,'<span class="beat-lbl beat-guess">[Guess]</span>').replace(/\*\*([^*]+?)\*\*/g,'<strong class="kw">$1</strong>');}
+function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;if(role==='echo'){const rgb=_cueRGB(text);d.style.setProperty('--kw','rgb('+rgb+')');d.innerHTML=renderBeatLabel(text);const viz=document.createElement('div');viz.className='echo-viz';viz.dataset.rgb=rgb;viz.innerHTML='<div class="viz-orb"></div><canvas width="150" height="22"></canvas>';d.appendChild(viz);_latestViz=viz;}else{d.textContent=text;}b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function removeTyping(){document.getElementById('typing-ind')?.remove();}
+// ── ECHO CUE COLOUR + SPEECH-ONSET PLUMBING ──────────────────────────────────
+const CUE_RGB={joke:'251,146,60',watch:'6,182,212',try:'168,85,247',check:'34,197,94',notice:'234,179,8',probe:'251,191,36',guess:'20,184,166'};
+function _cueRGB(t){t=t||'';if(/\[Joke\]/i.test(t))return CUE_RGB.joke;if(/\[Watch me\]/i.test(t))return CUE_RGB.watch;if(/\[Try:/i.test(t))return CUE_RGB.try;if(/\[Probe/i.test(t))return CUE_RGB.probe;if(/\[Guess/i.test(t))return CUE_RGB.guess;if(/\[✓\]/.test(t))return CUE_RGB.check;if(/\[Notice/i.test(t))return CUE_RGB.notice;return '6,182,212';}
+let _onOnset=null;                                  // fired the instant audio actually begins
+function _fireOnset(){const f=_onOnset;_onOnset=null;if(f){try{f();}catch(e){}}}
+// ── TTS WAVEFORM VISUALIZER (colour matches the cue) ─────────────────────────
+let _latestViz=null,_vizAF=null,_vizAudioCtx=null,_vizAnalyser=null,_vizSource=null;
+function _vizStop(){if(_vizAF){cancelAnimationFrame(_vizAF);_vizAF=null;}document.querySelectorAll('.echo-viz.active').forEach(v=>{v.classList.remove('active');const o=v.querySelector('.viz-orb');if(o)o.classList.remove('pulse');});}
+function _vizStart(audioEl){_vizStop();let viz=_latestViz;if(!viz)return;let rgb=viz.dataset.rgb||'6,182,212';let orb=viz.querySelector('.viz-orb'),cv=viz.querySelector('canvas'),cx=cv.getContext('2d');const W=cv.width,H=cv.height;function _attach(v){viz=v;rgb=v.dataset.rgb||rgb;orb=v.querySelector('.viz-orb');cv=v.querySelector('canvas');cx=cv.getContext('2d');v.classList.add('active');if(orb){orb.style.background='radial-gradient(circle at 35% 35%,rgba('+rgb+',.95),rgba('+rgb+',.55) 50%,rgba(5,5,20,.9))';orb.classList.add('pulse');}}function _follow(){if(_latestViz&&_latestViz!==viz){viz.classList.remove('active');const o=viz.querySelector('.viz-orb');if(o){o.classList.remove('pulse');o.style.transform='';o.style.boxShadow='';}_attach(_latestViz);}}_attach(viz);try{if(!_vizAudioCtx||_vizAudioCtx.state==='closed')_vizAudioCtx=new(window.AudioContext||window.webkitAudioContext)();if(_vizAudioCtx.state==='suspended')_vizAudioCtx.resume().catch(()=>{});try{if(_vizSource)_vizSource.disconnect();}catch(e){}_vizSource=_vizAudioCtx.createMediaElementSource(audioEl);_vizAnalyser=_vizAudioCtx.createAnalyser();_vizAnalyser.fftSize=256;_vizAnalyser.smoothingTimeConstant=0.82;_vizSource.connect(_vizAnalyser);_vizAnalyser.connect(_vizAudioCtx.destination);}catch(e){_drawIdleViz(viz,cx,W,H,orb,rgb);return;}const buf=new Uint8Array(_vizAnalyser.frequencyBinCount);let stopped=false;audioEl.addEventListener('ended',()=>{stopped=true;_vizStop();},{once:true});(function frame(){if(stopped)return;_vizAF=requestAnimationFrame(frame);_follow();_vizAnalyser.getByteTimeDomainData(buf);cx.clearRect(0,0,W,H);const g=cx.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba('+rgb+',0)');g.addColorStop(.5,'rgba('+rgb+',.9)');g.addColorStop(1,'rgba('+rgb+',0)');cx.strokeStyle=g;cx.lineWidth=1.8;cx.shadowBlur=5;cx.shadowColor='rgba('+rgb+',.7)';cx.beginPath();const sl=W/buf.length;for(let i=0;i<buf.length;i++){const y=(buf[i]/128)*H/2;i===0?cx.moveTo(0,y):cx.lineTo(i*sl,y);}cx.stroke();cx.shadowBlur=0;let s=0;for(let i=0;i<buf.length;i++)s+=Math.abs(buf[i]-128);const amp=s/buf.length/128;orb.style.transform='scale('+(1+amp*.25)+')';orb.style.boxShadow='0 0 '+(6+amp*14)+'px rgba('+rgb+','+(.5+amp*.4)+')';})();}
+function _drawIdleViz(viz,cx,W,H,orb,rgb){rgb=rgb||'6,182,212';viz.classList.add('active');if(orb)orb.classList.add('pulse');let t=0,stopped=false;function _follow(){if(_latestViz&&_latestViz!==viz){viz.classList.remove('active');if(orb)orb.classList.remove('pulse');viz=_latestViz;rgb=viz.dataset.rgb||rgb;orb=viz.querySelector('.viz-orb');const c2=viz.querySelector('canvas');if(c2)cx=c2.getContext('2d');viz.classList.add('active');if(orb)orb.classList.add('pulse');}}(function frame(){if(stopped)return;_vizAF=requestAnimationFrame(frame);_follow();cx.clearRect(0,0,W,H);const g=cx.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba('+rgb+',0)');g.addColorStop(.5,'rgba('+rgb+',.4)');g.addColorStop(1,'rgba('+rgb+',0)');cx.strokeStyle=g;cx.lineWidth=1.5;cx.beginPath();for(let x=0;x<W;x++){const y=H/2+Math.sin(x/W*Math.PI*5+t)*4*Math.sin(x/W*Math.PI);x===0?cx.moveTo(x,y):cx.lineTo(x,y);}cx.stroke();t+=0.08;})();setTimeout(()=>{stopped=true;_vizStop();},30000);}
 
 function openOverlay(qi){
   _iosWarm();currentQIdx=qi;overlayOpen=true;
@@ -519,6 +601,7 @@ function openOverlay(qi){
   document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}
   document.getElementById('ov-title').textContent=`${CHAR.name} — ${QUESTIONS[qi].section}`;
   renderDots(qi);
+  const _q=QUESTIONS[qi],_ctx=document.getElementById('q-ctx');if(_ctx&&_q&&_q.type!=='writing'){let _rows='';if(_q.opts){const _wa=answers[qi];_rows='<div class="q-ctx-row">'+Object.keys(_q.opts).map(k=>{const _c=k===_wa?'wrong-opt':'neutral-opt';const _m=k===_wa?'✗':'';return `<span class="q-ctx-opt ${_c}">${_m} ${k}: ${_q.opts[k]||''}</span>`;}).join('')+'</div>';}_ctx.innerHTML=`<div class="q-ctx-text">${_q.text}</div>`+_rows;_ctx.style.display='block';}else if(_ctx){_ctx.style.display='none';}
   document.getElementById('ex-wrap').style.visibility='hidden';
   resetGotIt();
   document.getElementById('overlay').classList.add('open');
@@ -577,25 +660,31 @@ async function callAI(qi,lastAns){
   if(engagement==='disengaged')disengagedCount[qi]=(disengagedCount[qi]||0)+1;
   else if(turn>1)disengagedCount[qi]=0;
   const dc=disengagedCount[qi]||0;
+  const frustrated=/(too hard|i ?can'?t|i give up|gave up|don'?t know any ?more|this is (too )?hard|so hard|ugh+|i'?m tired|i am tired|bored|hate this|please stop|just tell me)/i.test(lastAns||'');
+  const mustResolve=turn>=cap||(turn>=4&&frustrated);
+  const _optVals=q.opts?Object.values(q.opts).map(v=>v.trim().toLowerCase()):[];
+  const _isPaste=_optVals.some(v=>v===(lastAns||'').trim().toLowerCase());
   let strict;
-  if(turn===1){
-    strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer outright):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT show a worked example. Do NOT explain the concept. Do NOT name the answer.\n3. Ask ONE small question that points at ONE specific word, number, or part of the original question. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`;
+  if(mustResolve){
+    strict=`FINAL ROUND — warmly give the correct answer with ONE line of clear reasoning showing WHY, then close with: "tap Got it when you are ready!" You MUST include the words "got it". Keep the FORMAT below — each line = spoken words ||| [✓] short cue. Max ${MAX_WORDS} words. No emoji. NEVER say: wrong, incorrect, silly, dumb.`;
+  } else if(turn===1){
+    strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer outright):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT show a worked example. Do NOT explain the concept. Do NOT name the answer.\n3. Ask ONE small question that points at ONE specific word, number, or part of the original question. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks in the spoken words. NEVER say: wrong, incorrect, silly, dumb.`;
   } else if(engagement==='disengaged' && dc<3){
-    strict=`TURN ${turn} — STUDENT IS DISENGAGED (they said "${lastAns}").\nThey are not engaging — said "idk" or a one-word non-answer.\n\nDO NOT re-teach. DO NOT explain. DO NOT give the answer. DO NOT name the answer.\nYour ONLY move: ask a SMALLER, EASIER question.\n- Point at ONE specific word, number, or letter in the original question.\n- Ask what they notice about THAT thing only.\n- Make the question so small they can answer in one word.\n- Be warm: "It is okay — let us go smaller."\n- Good moves: "Just look at the word 'because' — is it a tiny word or a big word?" / "Forget the rest, what is 5 + 5?"\nMax 50 words. No emoji. No asterisks.`;
+    strict=`TURN ${turn} — STUDENT IS DISENGAGED (they said "${lastAns}").\nThey are not engaging — said "idk" or a one-word non-answer.\n\nDO NOT re-teach. DO NOT explain. DO NOT give the answer. DO NOT name the answer.\nYour ONLY move: ask a SMALLER, EASIER question.\n- Point at ONE specific word, number, or letter in the original question.\n- Ask what they notice about THAT thing only.\n- Make the question so small they can answer in one word.\n- Be warm: "It is okay — let us go smaller."\n- Good moves: "Just look at the word 'because' — is it a tiny word or a big word?" / "Forget the rest, what is 5 + 5?"\nMax 50 words. No emoji. No asterisks in the spoken words.`;
   } else if(engagement==='disengaged' && dc>=3){
-    strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never give the full answer.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess instead of an open question: "Just guess — do you think it is more like A or more like B?"\n3. Make one option clearly closer to right but do not say which.\nMax 40 words. No emoji. No asterisks.`;
+    strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never give the full answer.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess instead of an open question: "Just guess — do you think it is more like A or more like B?"\n3. Make one option clearly closer to right but do not say which.\nMax 40 words. No emoji. No asterisks in the spoken words.`;
   } else {
-    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT or shows real understanding: celebrate specifically — name what they did well. ${vocabExit}\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the original question.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT:${_isPaste?' their words match an option exactly — pose ONE quick new same-skill example to confirm real understanding, then say "got it" once they get it.':' celebrate specifically, then '+vocabExit}\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the original question.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks in the spoken words.\n[Turn ${turn} of up to ${cap}.]`;
   }
+  strict += `\nCRITICAL OUTPUT FORMAT — HIGHEST PRIORITY. This rule overrides every instruction above about asterisks, markdown, or plain text. EVERY line of your reply MUST contain " ||| " exactly once. A reply with no "|||" is broken and will not display.\nFORMAT — reply as 1 to 4 short groups, ONE per line: spoken words, then "|||", then a labelled on-screen cue. Begin the cue with its label ([Joke], [Probe:], or [Guess:]); then a SHORT summary — the WHOLE cue UNDER 12 words — and wrap the single most important word in **double asterisks**. The spoken part carries the full teaching; the cue is only a glanceable anchor, never a transcript. [Joke]: show ONLY the setup question — NEVER the punchline (the punchline stays in the spoken words). [Probe:]: the Socratic question in kid words. [Guess:]: the two-option choice. Never repeat the same label on two lines in a row. Never leave a cue as a bare label. (Asterisks are ONLY for that one bold word in the cue — never in the spoken words.)\nExample: Why did the snake skip lunch? Because it was saving room for a big snack! ||| [Joke] why did the snake **skip** lunch?\nExample: Look at the little word right before the comma. ||| [Probe:] which word shows a **contrast**?`;
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
-    removeTyping();
-    if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:200,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
+    if(!r.ok){removeTyping();const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
     const text=(await r.json()).content[0].text;
-    streamEchoBubble(text);maybeEnableGotIt(text);
+    streamEchoGrouped(text);maybeEnableGotIt(text);
     const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;
     tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);
   }catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
@@ -630,7 +719,7 @@ function updateSubmit(){
 function handleSubmit(){
   let correct=0;const wrong=[];
   for(let i=0;i<TOTAL_QS;i++){if(answers[i]===QUESTIONS[i].correct)correct++;else wrong.push(i);}
-  if(wrong.length&&!remMode){startRemediation(wrong);return;}
+  if(wrong.length&&!retestDone){retestDone=true;wrongQs=wrong;startMiniRetest();return;}
   let pts=correct>=PASS_SCORE?3:0;
   for(let j=0;j<TOTAL_QS;j++){if(QUESTIONS[j].star&&firstAttempt?.[j]===QUESTIONS[j].correct)pts+=2;}
   if(writingDone)pts+=1;
@@ -694,9 +783,9 @@ async function openDictOverlay(word,def,eg){
   enableGotIt();document.getElementById('overlay').classList.add('open');
   dictHistory.push({role:'user',content:`Word: ${word}\nDefinition: ${def}${eg?'\nExample: '+eg:''}\nTeach this word in a fun, memorable way.`});
   showTyping();
-  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:250,system:CHAR.pers+'\nOpen with a funny joke about the word. Then explain simply. Max 80 words. No emoji. No markdown.',messages:dictHistory})});removeTyping();if(!res.ok)return;const text=(await res.json()).content[0].text;streamEchoBubble(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}
+  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:150,system:CHAR.pers+'\nOpen with a funny joke about the word. Then explain simply. Max 80 words. No emoji. No markdown.',messages:dictHistory})});removeTyping();if(!res.ok)return;const text=(await res.json()).content[0].text;streamEchoBubble(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}
 }
-async function sendDictReply(text){addBubble(text,'user');dictHistory.push({role:'user',content:text});showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+'\nNo emoji. No markdown. Max 70 words. Always advance — never repeat.',messages:dictHistory})});removeTyping();if(!r.ok)return;const text=(await r.json()).content[0].text;streamEchoBubble(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
+async function sendDictReply(text){addBubble(text,'user');dictHistory.push({role:'user',content:text});showTyping();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:120,system:CHAR.pers+'\nNo emoji. No markdown. Max 70 words. Always advance — never repeat.',messages:dictHistory})});removeTyping();if(!r.ok)return;const text=(await r.json()).content[0].text;streamEchoBubble(text);dictHistory.push({role:'assistant',content:text});}catch(e){removeTyping();}}
 
 // ── WRITING (Mon/Wed/Fri) ─────────────────────────────────────────────────────
 async function sendWriting(){
@@ -707,7 +796,7 @@ async function sendWriting(){
   if(btn)btn.disabled=true;if(fb){fb.style.display='block';fb.textContent=`${CHAR.name} is reading your writing…`;}
   const codes=typeof MISSION_PACK!=='undefined'?MISSION_PACK.codes.join(', '):'writing techniques';
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:CHAR.pers+`\nGive warm, specific feedback on a ${CHILD_AGE}-year-old's creative writing. They used: ${codes}. Celebrate what they did well. Give ONE specific improvement. Max ${MAX_WORDS} words. No emoji. No markdown.`,messages:[{role:'user',content:text}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:120,system:CHAR.pers+`\nGive warm, specific feedback on a ${CHILD_AGE}-year-old's creative writing. They used: ${codes}. Celebrate what they did well. Give ONE specific improvement. Max ${MAX_WORDS} words. No emoji. No markdown.`,messages:[{role:'user',content:text}]})});
     if(!r.ok){if(fb)fb.textContent='Connection error — try again.';if(btn)btn.disabled=false;return;}
     const reply=(await r.json()).content[0].text;
     if(fb)fb.textContent=reply;speak(reply);writingDone=true;if(btn)btn.textContent='✓ Sent to Echo';
