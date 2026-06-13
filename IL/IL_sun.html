@@ -145,6 +145,13 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .key-btns{display:flex;gap:8px}
 .key-save{flex:1;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:8px;padding:10px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif}
 .key-close{background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;cursor:pointer;font-family:'Nunito',sans-serif}
+.kw{font-weight:800;color:var(--kw,#fff)}
+.echo-viz{display:none;align-items:center;gap:7px;margin-top:5px}
+.echo-viz.active{display:flex}
+.echo-viz canvas{display:block;border-radius:4px}
+.echo-viz .viz-orb{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(103,232,249,.9),rgba(6,182,212,.6) 50%,rgba(5,5,20,.9));box-shadow:0 0 6px rgba(6,182,212,.5);flex-shrink:0;transition:box-shadow .1s,transform .1s}
+.echo-viz .viz-orb.pulse{animation:vizOrb .5s ease-in-out infinite alternate}
+@keyframes vizOrb{from{transform:scale(1)}to{transform:scale(1.12)}}
 </style>
 </head>
 <body>
@@ -249,60 +256,58 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'IL';
 const DAY      = 'Sunday';
-const WEEK     = 25;
+const WEEK     = 29;
 const PTS_KEY  = 'pts_IL';
 const BASE_PTS = 240;
-const DICT_WORD = 'wonder';
-const DICT_DEF  = 'Noun — a feeling of amazement and surprise at something beautiful or amazing.';
-const DICT_EG   = 'She stared at the rainbow with wonder in her eyes.';
+const DICT_WORD = 'brave';
+const DICT_DEF  = 'Adjective — willing to do something scary or difficult even when you feel afraid.';
+const DICT_EG   = 'It was brave of him to stand up and sing in front of the whole school.';
 const RULES_TIPS = [
-  'W1: Body Language Secret — show how a character feels by what their body does.',
-  'W2: Scene Setter — use one sound, smell, or sight to put the reader right there.',
-  'W3: Punch Sentence — a short, strong sentence at the end lands like a drumbeat.',
+  'W1: Body Language Secret — show how a character feels by what they do, not what they say.',
+  'W2: Scene Setter — give your reader one thing they can see, hear, or smell.',
+  'W3: The Punch Sentence — end with a short, strong sentence to make it powerful.',
 ];
 const PACK_1 = {
   id:'IL-A', title:'The Feeling Scene',
   codes:['W1.1','W4.1'],
-  technique:'Show a strong feeling using body language. Add one describing word to make it vivid.',
+  technique:'Show how a character feels through a small action. Use a comparison to make the feeling even clearer.',
 };
 const PACK_2 = {
-  id:'IL-B', title:'The Exciting Moment',
-  codes:['W3.1','W2.1'],
-  technique:'End with a short punch sentence. Use one sensory detail to put the reader in the moment.',
+  id:'IL-B', title:'The Place',
+  codes:['W2.6','W4.2'],
+  technique:'Pick one thing the character can see, hear, or smell. A comparison helps paint the picture.',
 };
 const QUESTIONS = {
-  // ── PACK 1 (0–4): IL-A — feeling, W1.1, W4.1 ────────────────────────────
   0:{ pack:1, code:'W1.1', correct:'A', star:false,
-      text:'Which sentence shows a character is happy using their body, not just a telling word?',
-      opts:{A:'She skipped down the path, humming to herself.',B:'She was very happy indeed.',C:'Happiness was all around her.',D:'She felt happy inside her heart.'} },
-  1:{ pack:1, code:'W4.1', correct:'C', star:false,
-      text:'Which describing word makes this sentence most vivid: "The dog had a ___ bark."',
-      opts:{A:'loud',B:'big',C:'thunderous',D:'very loud'} },
-  2:{ pack:1, code:'W1.1', correct:'B', star:false,
-      text:'Which sentence shows a character is worried using body language?',
-      opts:{A:'She was worried about the test.',B:'She kept twisting the sleeve of her jumper round and round.',C:'Worry filled her mind all morning.',D:'She felt very worried and did not know why.'} },
+      text:'Which sentence shows a character is happy without using the word happy?',
+      opts:{A:'She skipped all the way home and kept humming to herself.',B:'She was very happy when she got home.',C:'She felt happy inside.',D:'Everyone said she looked happy.'} },
+  1:{ pack:1, code:'W4.1', correct:'B', star:false,
+      text:'Which sentence uses a comparison to describe how fast a dog runs?',
+      opts:{A:'The dog ran very fast.',B:'The dog ran like a rocket across the grass.',C:'The dog was really quick.',D:'The dog ran away quickly.'} },
+  2:{ pack:1, code:'W1.1', correct:'C', star:false,
+      text:'A character is worried. Which sentence shows this through what they do?',
+      opts:{A:'She was worried about the test.',B:'She felt very worried and nervous.',C:'She kept biting her lip and looking at the clock.',D:'Everyone could see she was worried.'} },
   3:{ pack:1, code:'W4.1', correct:'D', star:false,
-      text:'Which word best describes how snow looks in a vivid way?',
-      opts:{A:'white',B:'cold',C:'nice',D:'glittering'} },
-  4:{ pack:1, code:'W1.1', correct:'A', star:true,
-      text:'★ STAR — Which sentence BEST shows a feeling using body language AND one strong describing word?',
-      opts:{A:'His whole face broke into a wide, enormous grin.',B:'He was extremely happy and very excited.',C:'He felt a great amount of happiness.',D:'He smiled because he was happy.'} },
-  // ── PACK 2 (5–9): IL-B — punch sentence, sensory detail, W3.1, W2.1 ──────
-  5:{ pack:2, code:'W3.1', correct:'B', star:false,
-      text:'Which is the best short punch sentence to end an exciting paragraph?',
-      opts:{A:'She ran very fast towards the finish line and crossed it in the end.',B:'She won.',C:'She managed to run across the finish line just in time.',D:'The race came to an end and she was the winner of the race.'} },
-  6:{ pack:2, code:'W2.1', correct:'C', star:false,
-      text:'Which sentence uses a sound to put the reader in the moment?',
-      opts:{A:'The kitchen was busy.',B:'Mum was making dinner in the kitchen.',C:'The kitchen clattered with pans and sizzled with the smell of onions.',D:'It smelled nice in the kitchen because Mum was cooking.'} },
-  7:{ pack:2, code:'W3.1', correct:'D', star:false,
-      text:'A writer wants to end a scary moment with a punch sentence. Which is best?',
-      opts:{A:'It was a very scary and frightening thing to happen to her that night.',B:'She was really scared by what had happened and did not know what to do.',C:'The scary thing that happened left her feeling very frightened indeed.',D:'The lights went out.'} },
-  8:{ pack:2, code:'W2.1', correct:'A', star:false,
-      text:'Which sentence uses a sight detail to put the reader in a forest?',
-      opts:{A:'Thin strips of sunlight fell between the branches onto the leafy ground.',B:'The forest was dark and had a lot of trees.',C:'She walked in the forest for a long time.',D:'There were many trees and it was quiet.'} },
-  9:{ pack:2, code:'W3.1', correct:'C', star:false,
-      text:'Which ending best uses a punch sentence after a description of a thunderstorm?',
-      opts:{A:'The storm went on for a very long time and was extremely loud and frightening.',B:'It kept raining and thundering for the rest of the evening until it finally stopped.',C:'Then silence.',D:'After that, everything slowly became quieter and the storm passed away.'} },
+      text:'Which comparison helps the reader picture a very big mountain?',
+      opts:{A:'The mountain was big.',B:'The mountain was very tall.',C:'They could see the mountain far away.',D:'The mountain rose up like a giant standing guard.'} },
+  4:{ pack:1, code:'W1.1', correct:'B', star:true,
+      text:'★ STAR — Which sentence uses a comparison AND body language together?',
+      opts:{A:'She was excited and jumped up and down.',B:'Her heart hammered like a drum as she grabbed her friend\'s hand.',C:'She was excited like most children are.',D:'She felt excited and happy inside.'} },
+  5:{ pack:2, code:'W2.6', correct:'C', star:false,
+      text:'Which sentence gives a place a smell to help the reader picture it?',
+      opts:{A:'The bakery was nice.',B:'The bakery had lots of bread in it.',C:'Warm bread smells drifted out of the bakery and into the street.',D:'She went into the bakery to buy something.'} },
+  6:{ pack:2, code:'W4.2', correct:'A', star:false,
+      text:'Which sentence uses a metaphor to describe the sea?',
+      opts:{A:'The sea was a shiny blue mirror stretching to the sky.',B:'The sea was very blue.',C:'The sea was as blue as the sky.',D:'She looked at the blue sea.'} },
+  7:{ pack:2, code:'W2.6', correct:'D', star:false,
+      text:'Which sentence helps you hear a place?',
+      opts:{A:'The market was busy.',B:'Lots of people were at the market.',C:'The market had lots of stalls selling things.',D:'Shouts, music, and the sizzle of cooking filled the market.'} },
+  8:{ pack:2, code:'W4.2', correct:'B', star:false,
+      text:'Which sentence uses a comparison to describe the moon?',
+      opts:{A:'The moon was bright in the sky.',B:'The moon was a lamp hanging in the dark sky.',C:'She looked up at the bright moon.',D:'The moon lit up the garden.'} },
+  9:{ pack:2, code:'W2.6', correct:'C', star:false,
+      text:'A writer wants to describe a cold morning. Which sentence uses a sense to show this?',
+      opts:{A:'It was a cold morning.',B:'The morning was very cold indeed.',C:'The frosty air stung her cheeks and the puddles had turned to glass.',D:'She did not like how cold the morning felt.'} },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -315,9 +320,9 @@ const MAX_WORDS  = CHILD==='IL' ? 50 : 60;
 
 const CHARS = {
   snake:{key:'snake',name:'Ssssam',emoji:'🐍',gotIt:"Sssuper! That's ssso good — onto the next one!",
-    pers:`You are Ssssam the Snake, an 11+ tutor for a ${CHILD_AGE}-year-old. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
+    pers:`You are Ssssam the Snake, an 11+ tutor for a ${CHILD_AGE}-year-old. Clever, warm, playful. Occasional soft sss sounds. NEVER use emoji. No markdown.`},
   shark:{key:'shark',name:'Finn',emoji:'🦈',gotIt:'Fin-tastic! Finn is doing a victory lap — next question!',
-    pers:`You are Finn the Shark, an 11+ tutor for a ${CHILD_AGE}-year-old. Energetic. Say Fin-tastic, Splashing great. NEVER use emoji. NEVER use * or **. No markdown. Plain spoken words only.`},
+    pers:`You are Finn the Shark, an 11+ tutor for a ${CHILD_AGE}-year-old. Energetic. Say Fin-tastic, Splashing great. NEVER use emoji. No markdown.`},
 };
 
 let answers={}, firstAttempt=null, tutorHistory={}, tutorTurns={}, disengagedCount={};
@@ -352,6 +357,7 @@ function speakWebSpeech(text){
     u.onend=()=>{
       if(myGen!==_speechGen)return;                 // stale — another speak() took over
       _currentUtt=null;
+      try{_vizStop();}catch(e){}
       try{const k=new SpeechSynthesisUtterance('\u00A0');k.volume=0.01;k.rate=16;window.speechSynthesis.speak(k);}catch(e){}
     };
     u.onerror=(ev)=>{
@@ -360,17 +366,46 @@ function speakWebSpeech(text){
       // genuine hardware error — fail silently, do not re-queue
     };
     window.speechSynthesis.speak(u);
+    _fireOnset();
+    if(_latestViz){const cv=_latestViz.querySelector('canvas');if(cv)_drawIdleViz(_latestViz,cv.getContext('2d'),cv.width,cv.height,_latestViz.querySelector('.viz-orb'),_latestViz.dataset.rgb);}
   },120);
 }
-async function speakOpenAI(text){try{_oaiController=new AbortController();const _body={model:OAI_TTS_MODEL,input:text,voice:CHAR.key==='snake'?'fable':'echo',response_format:'mp3'};if(OAI_TTS_MODEL.indexOf('tts-1')===0){_body.speed=CHAR.key==='snake'?.92:.97;}else{_body.instructions='Speak warmly, clearly and a little slowly, like a friendly tutor talking to a young child.';}const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify(_body)});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const MS=window.MediaSource;if(MS&&resp.body&&MS.isTypeSupported&&MS.isTypeSupported('audio/mpeg')){
-  // STREAMED playback (desktop/Android): start audio before full synthesis. iOS lacks standard MediaSource -> blob fallback below.
-  const ms=new MS();_oaiObjectUrl=URL.createObjectURL(ms);_oaiAudio=new Audio();_oaiAudio.src=_oaiObjectUrl;_oaiAudio.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;};
+function _oaiBody(text){const b={model:OAI_TTS_MODEL,input:text,voice:CHAR.key==='snake'?'fable':'echo',response_format:'mp3'};if(OAI_TTS_MODEL.indexOf('tts-1')===0){b.speed=CHAR.key==='snake'?.92:.97;}else{b.instructions='Speak warmly, clearly and a little slowly, like a friendly tutor talking to a young child.';}return b;}
+function _oaiFetch(text){return fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify(_oaiBody(text))});}
+function _splitForTTS(t){t=(t||'').trim();const m=t.match(/^[\s\S]{12,160}?[.!?](?=\s)/);if(m)return[m[0].trim(),t.slice(m[0].length).trim()];const w=t.split(/\s+/);if(w.length>20)return[w.slice(0,14).join(' '),w.slice(14).join(' ')];return[t,''];}
+async function speakOpenAI(text){try{_oaiController=new AbortController();
+const MS=window.MediaSource||window.ManagedMediaSource; // ManagedMediaSource = iPhone Safari 17.1+; standard MediaSource = desktop/Android
+if(MS&&MS.isTypeSupported&&MS.isTypeSupported('audio/mpeg')){
+  // STREAMED playback: audio starts on the FIRST mp3 chunk — not after full synthesis.
+  const resp=await _oaiFetch(text);
+  if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}
+  if(!resp.ok||!resp.body){speakWebSpeech(text);return;}
+  const ms=new MS();_oaiAudio=new Audio();if(window.ManagedMediaSource&&MS===window.ManagedMediaSource)_oaiAudio.disableRemotePlayback=true; // mandatory for MMS
+  _oaiObjectUrl=URL.createObjectURL(ms);_oaiAudio.src=_oaiObjectUrl;_oaiAudio.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;};
   await new Promise(res=>ms.addEventListener('sourceopen',res,{once:true}));
   const sb=ms.addSourceBuffer('audio/mpeg');const reader=resp.body.getReader();let started=false;
-  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});}pump();}catch(e){}};
+  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().then(()=>{_fireOnset();_vizStart(_oaiAudio);}).catch(()=>{try{_oaiController.abort();}catch(e){}if(_oaiAudio){_oaiAudio.src='';_oaiAudio=null;}speakWebSpeech(text);});}pump();}catch(e){}};
   pump();
 }else{
-  const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();
+  // No MediaSource at all (older iOS): PIPELINE two short requests — sentence 1 plays while the rest synthesises in parallel.
+  const parts=_splitForTTS(text);
+  const r1p=_oaiFetch(parts[0]);
+  const b2p=parts[1]?_oaiFetch(parts[1]).then(r=>r.ok?r.blob():null).catch(()=>null):null;
+  const r1=await r1p;
+  if(r1.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}
+  if(!r1.ok){speakWebSpeech(text);return;}
+  const b1=await r1.blob();
+  _oaiObjectUrl=URL.createObjectURL(b1);_oaiAudio=new Audio(_oaiObjectUrl);const a1=_oaiAudio;
+  a1.onended=async()=>{if(_oaiAudio!==a1)return; // hardStop() took over
+    if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}
+    if(!b2p){_oaiAudio=null;return;}
+    try{const b2=await b2p;if(!b2||_oaiAudio!==a1)return;
+      _oaiObjectUrl=URL.createObjectURL(b2);const a2=new Audio(_oaiObjectUrl);_oaiAudio=a2;
+      a2.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;_vizStop();};
+      await a2.play();_vizStart(a2);
+    }catch(e){}};
+  try{await a1.play();}catch(pe){_oaiAudio=null;speakWebSpeech(text);return;}
+  _fireOnset();_vizStart(a1);
 }}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
@@ -436,46 +471,83 @@ function streamEchoBubble(text){
 function streamEchoGrouped(raw){
   const b=document.getElementById('ov-bubbles');
   const lines=(raw||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  const groups=[];
-  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp=ln;}if(sp)groups.push({sp:sp,dp:dp||sp});});
-  if(!groups.length)groups.push({sp:raw||'',dp:raw||''});
-  const fullSpoken=groups.map(g=>g.sp).join(' ');
+  let groups=[];
+  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp='';}if(!sp)return;
+    if(!dp){const parts=sp.replace(/[*_`]/g,'').split(/\s+/);dp=parts.slice(0,8).join(' ')+(parts.length>8?'…':'');} // never dump the transcript / never a bare label
+    groups.push({sp:sp,dp:dp});});
+  if(!groups.length){const parts=(raw||'').split(/\s+/);groups.push({sp:raw||'',dp:parts.slice(0,8).join(' ')+(parts.length>8?'…':'')});}
+  groups=groups.filter((g,i)=>i===0||g.dp!==groups[i-1].dp); // drop back-to-back identical cues
+  const fullSpoken=groups.map(g=>g.sp).join(' ').replace(/\*+/g,'');
   speak(fullSpoken);
   setInputDisabled(true);
   const wc=g=>((g.sp.match(/\S+/g)||[]).length||1);
   const totalWords=groups.reduce((a,g)=>a+wc(g),0)||1;
   const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
-  const totalMs=(totalWords/baseWpm)*60000, SPEAK_DELAY=140;
-  let acc=0; const starts=groups.map(g=>{const s=(acc/totalWords)*totalMs;acc+=wc(g);return s;});
-  let shown=0,timeoutId=null,startAt=0;
-  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;b.scrollTop=b.scrollHeight;}
+  const totalMs=(totalWords/baseWpm)*60000;
+  let acc=0;const starts=groups.map(g=>{const s=(acc/totalWords)*totalMs;acc+=wc(g);return s;});
+  let shown=0,timeoutId=null,startAt=0,begun=false;
+  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;_onOnset=null;b.scrollTop=b.scrollHeight;}
   _streamCancel=complete;
-  function step(){
-    if(_streamCancel!==complete)return;
-    const elapsed=performance.now()-startAt;
-    while(shown<groups.length && elapsed>=starts[shown]){addBubble(groups[shown].dp,'echo');shown++;b.scrollTop=b.scrollHeight;}
-    if(shown<groups.length)timeoutId=setTimeout(step,80);
-    else timeoutId=setTimeout(complete,Math.max(0,totalMs-elapsed)+200);
-  }
-  timeoutId=setTimeout(()=>{if(_streamCancel!==complete)return;startAt=performance.now();step();},SPEAK_DELAY);
+  function step(){if(_streamCancel!==complete)return;const elapsed=performance.now()-startAt;while(shown<groups.length&&elapsed>=starts[shown]){addBubble(groups[shown].dp,'echo');shown++;b.scrollTop=b.scrollHeight;}if(shown<groups.length)timeoutId=setTimeout(step,80);else timeoutId=setTimeout(complete,Math.max(0,totalMs-elapsed)+200);}
+  function begin(){if(begun||_streamCancel!==complete)return;begun=true;removeTyping();startAt=performance.now();step();}
+  _onOnset=begin;                         // reveal text exactly when audio starts (keeps "thinking…" up until then)
+  timeoutId=setTimeout(begin,3500);       // fail-safe: reveal anyway if audio never fires
 }
 function resetGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.add('suppressed');g.disabled=true;}}
 function enableGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.remove('suppressed');g.disabled=false;}}
 function maybeEnableGotIt(t){if((t||'').toLowerCase().includes('got it'))enableGotIt();}
-function hardStop(){if(_streamCancel){const fn=_streamCancel;_streamCancel=null;fn();}_speechGen++;if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;}if(_oaiController){_oaiController.abort();_oaiController=null;}if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}try{window.speechSynthesis.pause();}catch(e){}try{window.speechSynthesis.cancel();}catch(e){}}
+function hardStop(){
+  _onOnset=null;try{_vizStop();}catch(e){}
+  if(_streamCancel){const fn=_streamCancel;_streamCancel=null;fn();}
+  _speechGen++;                                     // invalidate all pending speakWebSpeech callbacks
+  if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;} // null handlers before cancel
+  if(_oaiController){_oaiController.abort();_oaiController=null;}
+  if(_oaiAudio){_oaiAudio.pause();_oaiAudio.src='';_oaiAudio=null;}
+  if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}
+  try{window.speechSynthesis.pause();}catch(e){}
+  try{window.speechSynthesis.cancel();}catch(e){}
+}
 function toggleMic(){_iosWarm();if(micActive){recognition?.stop();micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';return;}if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){document.getElementById('speech-text').placeholder='Type here — mic not supported';return;}recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();recognition.lang='en-GB';recognition.interimResults=false;recognition.continuous=false;recognition.maxAlternatives=1;recognition.onresult=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent='✏️ Edit if needed, then tap Send!';const _t=e.results[0][0].transcript;const _ta=document.getElementById('speech-text');_ta.value=_ta.value.trim()?_ta.value.trim()+' '+_t:_t;};recognition.onerror=(e)=>{micActive=false;document.getElementById('mbtn').classList.remove('listening');document.getElementById('mstat').textContent=e.error==='not-allowed'?'Mic blocked — Settings → Safari → Microphone':e.error==='no-speech'?'Nothing heard — tap to try again':'Could not hear — type below';};recognition.onend=()=>{if(micActive){micActive=false;document.getElementById('mbtn').classList.remove('listening');}};micActive=true;document.getElementById('mbtn').classList.add('listening');document.getElementById('mstat').textContent='⏳ Get ready… 2 seconds…';recognition.start();setTimeout(()=>{if(micActive)document.getElementById('mstat').textContent='● Listening… speak now!';},2000);}
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
-function charTurns(){return 10;}
-function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
-function renderBeatLabel(t){if(!t)return '';const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return e(t).replace(/\[Joke\]/g,'<span class="beat-lbl beat-joke">[Joke]</span>').replace(/\[Watch me\]/g,'<span class="beat-lbl beat-watch">[Watch me]</span>').replace(/\[Try:([^\]]*?)\]/g,'<span class="beat-lbl beat-try">[Try:$1]</span>').replace(/\[\u2713\]/g,'<span class="beat-lbl beat-check">[✓]</span>').replace(/\[Notice:([^\]]*?)\]/g,'<span class="beat-lbl beat-notice">[Notice:$1]</span>').replace(/\[Probe:([^\]]*?)\]/g,'<span class="beat-lbl beat-probe">[Probe:$1]</span>').replace(/\[Probe\]/g,'<span class="beat-lbl beat-probe">[Probe]</span>').replace(/\[Guess:([^\]]*?)\]/g,'<span class="beat-lbl beat-guess">[Guess:$1]</span>').replace(/\[Guess\]/g,'<span class="beat-lbl beat-guess">[Guess]</span>');}
-function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;if(role==='echo'){d.innerHTML=renderBeatLabel(text);}else{d.textContent=text;}b.appendChild(d);b.scrollTop=b.scrollHeight;}
+const TURN_CAPS={IL:{Vocab:5,Dictionary:5,default:6},CL:{Vocab:5,Dictionary:5,default:6}};
+function charTurns(sec){const c=TURN_CAPS[CHILD]||TURN_CAPS.CL;return (sec&&c[sec])||c.default;}
+function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(QUESTIONS[qi]?.section),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
+function renderBeatLabel(t){if(!t)return '';const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return e(t).replace(/\[Joke\]/g,'<span class="beat-lbl beat-joke">[Joke]</span>').replace(/\[Watch me\]/g,'<span class="beat-lbl beat-watch">[Watch me]</span>').replace(/\[Try:([^\]]*?)\]/g,'<span class="beat-lbl beat-try">[Try:$1]</span>').replace(/\[✓\]/g,'<span class="beat-lbl beat-check">[✓]</span>').replace(/\[Notice:([^\]]*?)\]/g,'<span class="beat-lbl beat-notice">[Notice:$1]</span>').replace(/\[Probe:([^\]]*?)\]/g,'<span class="beat-lbl beat-probe">[Probe:$1]</span>').replace(/\[Probe\]/g,'<span class="beat-lbl beat-probe">[Probe]</span>').replace(/\[Guess:([^\]]*?)\]/g,'<span class="beat-lbl beat-guess">[Guess:$1]</span>').replace(/\[Guess\]/g,'<span class="beat-lbl beat-guess">[Guess]</span>').replace(/\*\*([^*]+?)\*\*/g,'<strong class="kw">$1</strong>');}
+function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;if(role==='echo'){const rgb=_cueRGB(text);d.style.setProperty('--kw','rgb('+rgb+')');d.innerHTML=renderBeatLabel(text);const viz=document.createElement('div');viz.className='echo-viz';viz.dataset.rgb=rgb;viz.innerHTML='<div class="viz-orb"></div><canvas width="150" height="22"></canvas>';d.appendChild(viz);_latestViz=viz;}else{d.textContent=text;}b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function removeTyping(){document.getElementById('typing-ind')?.remove();}
+// ── ECHO CUE COLOUR + SPEECH-ONSET PLUMBING ──────────────────────────────────
+const CUE_RGB={joke:'251,146,60',watch:'6,182,212',try:'168,85,247',check:'34,197,94',notice:'234,179,8',probe:'251,191,36',guess:'20,184,166'};
+function _cueRGB(t){t=t||'';if(/\[Joke\]/i.test(t))return CUE_RGB.joke;if(/\[Watch me\]/i.test(t))return CUE_RGB.watch;if(/\[Try:/i.test(t))return CUE_RGB.try;if(/\[Probe/i.test(t))return CUE_RGB.probe;if(/\[Guess/i.test(t))return CUE_RGB.guess;if(/\[✓\]/.test(t))return CUE_RGB.check;if(/\[Notice/i.test(t))return CUE_RGB.notice;return '6,182,212';}
+let _onOnset=null;                                  // fired the instant audio actually begins
+function _fireOnset(){const f=_onOnset;_onOnset=null;if(f){try{f();}catch(e){}}}
+// ── TTS WAVEFORM VISUALIZER (colour matches the cue) ─────────────────────────
+let _latestViz=null,_vizAF=null,_vizAudioCtx=null,_vizAnalyser=null,_vizSource=null;
+const _IOS=/iP(hone|od|ad)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+document.addEventListener('touchstart',()=>{try{if(_vizAudioCtx&&_vizAudioCtx.state==='suspended')_vizAudioCtx.resume();}catch(e){}},{passive:true});
+function _fakeAmp(t){return .3+.6*Math.abs(Math.sin(t*2.1))*(.55+.45*Math.sin(t*.73+1.7))*(.7+.3*Math.sin(t*5.3));}
+function _waveFrame(cx,W,H,rgb,t,amp){cx.clearRect(0,0,W,H);const g=cx.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba('+rgb+',0)');g.addColorStop(.5,'rgba('+rgb+',.9)');g.addColorStop(1,'rgba('+rgb+',0)');cx.strokeStyle=g;cx.lineWidth=1.8;cx.shadowBlur=5;cx.shadowColor='rgba('+rgb+',.7)';cx.beginPath();const a=amp*(H/2-2);for(let x=0;x<W;x++){const env=Math.sin(x/W*Math.PI);const y=H/2+Math.sin(x/W*Math.PI*6+t*7)*a*env;x===0?cx.moveTo(x,y):cx.lineTo(x,y);}cx.stroke();cx.shadowBlur=0;}
+function _vizStop(){if(_vizAF){cancelAnimationFrame(_vizAF);_vizAF=null;}document.querySelectorAll('.echo-viz.active').forEach(v=>{v.classList.remove('active');const o=v.querySelector('.viz-orb');if(o)o.classList.remove('pulse');});}
+function _vizStart(audioEl){_vizStop();let viz=_latestViz;if(!viz)return;let rgb=viz.dataset.rgb||'6,182,212';let orb=viz.querySelector('.viz-orb'),cv=viz.querySelector('canvas'),cx=cv.getContext('2d');const W=cv.width,H=cv.height;function _attach(v){viz=v;rgb=v.dataset.rgb||rgb;orb=v.querySelector('.viz-orb');cv=v.querySelector('canvas');cx=cv.getContext('2d');v.classList.add('active');if(orb){orb.style.background='radial-gradient(circle at 35% 35%,rgba('+rgb+',.95),rgba('+rgb+',.55) 50%,rgba(5,5,20,.9))';orb.classList.add('pulse');}}function _follow(){if(_latestViz&&_latestViz!==viz){viz.classList.remove('active');const o=viz.querySelector('.viz-orb');if(o){o.classList.remove('pulse');o.style.transform='';o.style.boxShadow='';}_attach(_latestViz);}}_attach(viz);
+let useAnalyser=false,buf=null;
+// IMPORTANT: never route audio through Web Audio on iOS — createMediaElementSource reroutes the element's
+// output through the AudioContext; if the ctx is suspended (or WebKit's MSE/blob silence bug hits) the TTS
+// goes MUTE. iOS gets the procedural wave; desktop/Android get the real analyser only when ctx is running.
+if(!_IOS){try{if(!_vizAudioCtx||_vizAudioCtx.state==='closed')_vizAudioCtx=new(window.AudioContext||window.webkitAudioContext)();if(_vizAudioCtx.state==='suspended'){try{_vizAudioCtx.resume();}catch(e){}}if(_vizAudioCtx.state==='running'){try{if(_vizSource)_vizSource.disconnect();}catch(e){}_vizSource=_vizAudioCtx.createMediaElementSource(audioEl);_vizAnalyser=_vizAudioCtx.createAnalyser();_vizAnalyser.fftSize=256;_vizAnalyser.smoothingTimeConstant=0.82;_vizSource.connect(_vizAnalyser);_vizAnalyser.connect(_vizAudioCtx.destination);buf=new Uint8Array(_vizAnalyser.frequencyBinCount);useAnalyser=true;}}catch(e){useAnalyser=false;}}
+let stopped=false;audioEl.addEventListener('ended',()=>{stopped=true;_vizStop();},{once:true});
+let t=0,flat=0,last=performance.now();
+(function frame(){if(stopped)return;_vizAF=requestAnimationFrame(frame);_follow();const now=performance.now(),dt=(now-last)/1000;last=now;t+=dt;let amp;
+if(useAnalyser){_vizAnalyser.getByteTimeDomainData(buf);let s=0;for(let i=0;i<buf.length;i++)s+=Math.abs(buf[i]-128);amp=s/buf.length/128;if(amp<0.004){flat+=dt;if(flat>0.9)useAnalyser=false;}else flat=0;
+  if(useAnalyser){cx.clearRect(0,0,W,H);const g=cx.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba('+rgb+',0)');g.addColorStop(.5,'rgba('+rgb+',.9)');g.addColorStop(1,'rgba('+rgb+',0)');cx.strokeStyle=g;cx.lineWidth=1.8;cx.shadowBlur=5;cx.shadowColor='rgba('+rgb+',.7)';cx.beginPath();const sl=W/buf.length;for(let i=0;i<buf.length;i++){const y=(buf[i]/128)*H/2;i===0?cx.moveTo(0,y):cx.lineTo(i*sl,y);}cx.stroke();cx.shadowBlur=0;orb.style.transform='scale('+(1+amp*.25)+')';orb.style.boxShadow='0 0 '+(6+amp*14)+'px rgba('+rgb+','+(.5+amp*.4)+')';return;}}
+amp=audioEl.paused&&!audioEl.ended?0.08:_fakeAmp(t);
+_waveFrame(cx,W,H,rgb,t,amp);orb.style.transform='scale('+(1+amp*.25)+')';orb.style.boxShadow='0 0 '+(6+amp*14)+'px rgba('+rgb+','+(.5+amp*.4)+')';})();}
+function _drawIdleViz(viz,cx,W,H,orb,rgb){rgb=rgb||'6,182,212';viz.classList.add('active');if(orb)orb.classList.add('pulse');let t=0,stopped=false,last=performance.now();function _follow(){if(_latestViz&&_latestViz!==viz){viz.classList.remove('active');if(orb)orb.classList.remove('pulse');viz=_latestViz;rgb=viz.dataset.rgb||rgb;orb=viz.querySelector('.viz-orb');const c2=viz.querySelector('canvas');if(c2)cx=c2.getContext('2d');viz.classList.add('active');if(orb)orb.classList.add('pulse');}}(function frame(){if(stopped)return;_vizAF=requestAnimationFrame(frame);_follow();const now=performance.now();t+=(now-last)/1000;last=now;const amp=_fakeAmp(t);_waveFrame(cx,W,H,rgb,t,amp);if(orb){orb.style.transform='scale('+(1+amp*.2)+')';orb.style.boxShadow='0 0 '+(6+amp*12)+'px rgba('+rgb+','+(.5+amp*.35)+')';}})();setTimeout(()=>{stopped=true;_vizStop();},30000);}
+
 
 function openOverlay(qi){_iosWarm();currentQIdx=qi;overlayOpen=true;tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;document.getElementById('ov-bubbles').innerHTML='';document.getElementById('speech-text').value='';document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}const pack=QUESTIONS[qi].pack===1?PACK_1:PACK_2;document.getElementById('ov-title').textContent=`${CHAR.name} — ${pack.title}`;renderDots(qi);const _q=QUESTIONS[qi],_ctx=document.getElementById('q-ctx');if(_ctx&&_q&&_q.type!=='writing'){let _rows='';if(_q.opts){const _wa=answers[qi];_rows='<div class="q-ctx-row">'+Object.keys(_q.opts).map(k=>{const _c=k===_wa?'wrong-opt':'neutral-opt';const _m=k===_wa?'✗':'';return `<span class="q-ctx-opt ${_c}">${_m} ${k}: ${_q.opts[k]||''}</span>`;}).join('')+'</div>';}_ctx.innerHTML=`<div class="q-ctx-text">${_q.text}</div>`+_rows;_ctx.style.display='block';}else if(_ctx){_ctx.style.display='none';}document.getElementById('ex-wrap').style.visibility='hidden';resetGotIt();document.getElementById('overlay').classList.add('open');callAI(qi);}
-function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;document.getElementById('overlay').classList.remove('open');const _ctx=document.getElementById('q-ctx');if(_ctx)_ctx.style.display='none';document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
-function gotIt(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),200);setTimeout(()=>{try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(CHAR.gotIt);if(_cachedVoice)u.voice=_cachedVoice;u.rate=CHAR.key==='snake'?.92:.98;u.pitch=CHAR.key==='snake'?.95:1.02;window.speechSynthesis.speak(u);}catch(e){}},100);}
+function closeOverlay(){hardStop();overlayOpen=false;currentQIdx=-1;_latestViz=null;document.getElementById('overlay').classList.remove('open');const _ctx=document.getElementById('q-ctx');if(_ctx)_ctx.style.display='none';document.getElementById('ex-wrap').style.visibility='visible';const r=document.getElementById('result');if(r.style.display!=='none')r.style.visibility='visible';}
+function gotIt(){hardStop();if(recognition){try{recognition.stop();}catch(e){}}micActive=false;document.getElementById('speech-text').value='';closeOverlay();if(remMode)setTimeout(()=>advanceRemediation(),200);setTimeout(()=>{try{speak(CHAR.gotIt);}catch(e){}},100);}
 function parentSkip(){if(!_skipPass){_doSkip();return;}showPassSheet(()=>_doSkip());}
 // ── v3.24 SKIP PASSCODE ────────────────────────────────────────────────────
 let _skipPass=localStorage.getItem('skip_passcode_v1')||null;  // stored as 4-char string
@@ -500,7 +572,7 @@ function classifyEngagement(text){
   if(!t)return 'disengaged';
   const tokens=t.split(/\s+/);
   if(/^(idk|dunno|dk|no\s*idea|don'?t\s*know|i\s*don'?t\s*know|i\s*dunno|nope|nah|na)$/.test(t))return 'disengaged';
-  if(tokens.length===1 && /^(yes|no|ok|okay|sure|maybe|huh|what|um|hmm|err|uh)$/.test(t))return 'disengaged';
+  if(tokens.length===1 && /^(yes|no|ok|okay|sure|maybe|huh|what|um|hmm|err|uh|good|great|nice|cool|fine|yeah|yep)$/.test(t))return 'disengaged';
   return 'normal';
 }
 async function callAI(qi,lastAns){
@@ -512,22 +584,25 @@ async function callAI(qi,lastAns){
   if(engagement==='disengaged')disengagedCount[qi]=(disengagedCount[qi]||0)+1;
   else if(turn>1)disengagedCount[qi]=0;
   const dc=disengagedCount[qi]||0;
+  const frustrated=/(too hard|i ?can'?t|i give up|gave up|don'?t know any ?more|this is (too )?hard|so hard|ugh+|i'?m tired|i am tired|bored|hate this|please stop|just tell me)/i.test(lastAns||'');
+  const mustResolve=turn>=cap||(turn>=4&&frustrated);
+  const _optVals=q.opts?Object.values(q.opts).map(v=>v.trim().toLowerCase()):[];
+  const _isPaste=_optVals.some(v=>v===(lastAns||'').trim().toLowerCase());
   let strict;
-  if(turn===1){
+  if(mustResolve){
+    strict=`FINAL ROUND — warmly give the correct answer with ONE line of clear reasoning showing WHY, then name what they have practised, and end EXACTLY with: "Tap Got it and move on!" You MUST include the words "got it". Max ${MAX_WORDS} words. No emoji. NEVER say: wrong, incorrect, silly, dumb.`;
+  } else if(turn===1){
     strict=`ROUND 1 — HOOK then I DO.
 1. Open with one short funny joke in this format: "${jFmt}..." about this writing idea. One line only. No greeting, no name.
 2. I DO (mostly direct, about 20 percent Socratic): in the same warm tone, take a plain sentence and improve it out loud using the same technique the question is about, choosing each word as you think aloud. Lead them clearly toward the answer, using the wording of the question they missed. Show the thinking — do not hide the method.
 3. End with ONE concrete find-it task from the text — name exactly what to look at or find. Do NOT use a vague "your turn together"; the invitation must name the specific task.
-FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a labelled cue — prefix with [Joke], [Watch me], or [Try: <specific task ≤6 words>]. Cue including label is ≤10 words. [Watch me] is a step pointer ("Find the words that..." / "Look at the line where..."), NOT a question. [Try: ...] must name the actual task — never just "your turn". Never echo the wording of the missed question as the cue. Example: Why did the snake skip lunch? It was saving room for a big snack! ||| [Joke] why does the snake snack?
-Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks in the spoken words. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else if(engagement==='disengaged' && dc>=3){
     strict=`ROUND ${turn} — STILL STUCK (they said "${lastAns}"). Stay on the SAME sentence. Be very warm: "You are doing brilliantly to stick with this." Give a TWO-option choice, not an open question: "Which is stronger — A, or B?" Make one clearly closer but do not say which. Keep it to one short group.
-FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a labelled cue — prefix with [Joke], [Watch me], or [Try: <specific task ≤6 words>]. Cue including label is ≤10 words. [Watch me] is a step pointer ("Find the words that..." / "Look at the line where..."), NOT a question. [Try: ...] must name the actual task — never just "your turn". Never echo the wording of the missed question as the cue. Example: Why did the snake skip lunch? It was saving room for a big snack! ||| [Joke] why does the snake snack?
-Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks in the spoken words. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else if(engagement==='disengaged'){
     strict=`ROUND ${turn} — NEEDS A SMALLER STEP (they said "${lastAns}"). Stay on the SAME sentence. Do NOT move on and do NOT give the whole answer. Add ONE more hint and ask a smaller question they can answer in a word or two — pick ONE word and ask if there is a stronger one. Be warm: "Let us take one tiny step."
-FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a labelled cue — prefix with [Joke], [Watch me], or [Try: <specific task ≤6 words>]. Cue including label is ≤10 words. [Watch me] is a step pointer ("Find the words that..." / "Look at the line where..."), NOT a question. [Try: ...] must name the actual task — never just "your turn". Never echo the wording of the missed question as the cue. Example: Why did the snake skip lunch? It was saving room for a big snack! ||| [Joke] why does the snake snack?
-Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks in the spoken words. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   } else {
     strict=`ROUND ${turn} of up to ${cap} — aim to finish around round 3. CHILD SAID: "${lastAns}".
 You are running I DO then WE DO then YOU DO. From the conversation so far, take the next step:
@@ -535,13 +610,15 @@ You are running I DO then WE DO then YOU DO. From the conversation so far, take 
 - YOU DO (about 80 percent Socratic, almost all theirs): after a good WE DO, show a THIRD sentence closely related to the previous two and ask them to improve it on their own; give NO hint; only nudge with ONE tiny question if they are stuck, never hand them the answer.
 - WRAP UP: after a good YOU DO (or by round ${cap}), name what they have mastered, then end EXACTLY with: "Tap Got it and move on!"
 Start your reply by celebrating, in one short line, what was right in their last answer.
-FORMAT — reply as 1 to 4 short groups, ONE per line. Each line is: the spoken words, then "|||", then a labelled cue — prefix with [Joke], [Watch me], or [Try: <specific task ≤6 words>]. Cue including label is ≤10 words. [Watch me] is a step pointer ("Find the words that..." / "Look at the line where..."), NOT a question. [Try: ...] must name the actual task — never just "your turn". Never echo the wording of the missed question as the cue. Example: Why did the snake skip lunch? It was saving room for a big snack! ||| [Joke] why does the snake snack?
-Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
+Max ${MAX_WORDS} spoken words. Plain English. No emoji. No asterisks in the spoken words. Say percent not %. NEVER say: wrong, incorrect, silly, dumb. NEVER end with "do you understand?" or "make sense?" or "okay?".`;
   }
+  if(_isPaste&&!mustResolve)strict+=`\nNOTE: the child's words match an answer option exactly — do NOT wrap up yet. Pose ONE quick NEW same-skill check first, and do NOT say the words "got it" in this reply.`;
+  if(!mustResolve)strict+=`\nIMPORTANT: only ever say the exact words "got it" when the child has JUST shown real understanding in their own words (their own correct answer or example — never a copied option, never filler like "good" or "yes"). While still teaching or checking, never use the phrase "got it".`;
+  strict += `\nCRITICAL OUTPUT FORMAT — HIGHEST PRIORITY. This rule overrides every instruction above about asterisks, markdown, or plain text. EVERY line of your reply MUST contain " ||| " exactly once. A reply with no "|||" is broken and will not display.\nFORMAT — reply as 1 to 4 short groups, ONE per line: spoken words, then "|||", then a labelled on-screen cue. Begin the cue with its label ([Joke], [Watch me], or [Try: <task>]); then a SHORT summary — the WHOLE cue UNDER 12 words — and wrap the single most important word in **double asterisks**. The spoken part carries the full teaching; the cue is only a glanceable anchor, never a transcript. [Joke]: show ONLY the setup question — NEVER the punchline (the punchline stays in the spoken words). [Watch me]: a step pointer ("Find the words that..." / "Look at the line where...") , NOT a question — never a bare label. [Try: ...]: must name the actual task — never just "your turn". Never echo the wording of the missed question as the cue. Never repeat the same label on two lines in a row. Never leave a cue as a bare label. (Asterisks are ONLY for that one bold word in the cue — never in the spoken words.)\nExample: Why did the snake skip lunch? Because it was saving room for a big snack! ||| [Joke] why did the snake **skip** lunch?\nExample: Find the two words that show the storm is coming. ||| [Try: find the **storm** clue words]`;
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Writing technique question — Mission Pack: ${pack.title}\nCodes: ${pack.codes.join(', ')}\nQuestion: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode tested: ${q.code}. Child answered incorrectly. Teach this writing technique now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:150,system:CHAR.pers+'\n\n'+strict,messages:msgs})});removeTyping();if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoGrouped(text);maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:200,system:CHAR.pers+'\n\n'+strict,messages:msgs})});if(!r.ok){removeTyping();const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}const text=(await r.json()).content[0].text;streamEchoGrouped(text);if(mustResolve||(turn>1&&engagement==='normal'&&!_isPaste))maybeEnableGotIt(text);const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;tutorTurns[qi]=(tutorTurns[qi]||0)+1;renderDots(qi);}catch(e){removeTyping();addBubble('Something went wrong — check your connection and try again.','echo');}
 }
 function sendTutorReply(text){addBubble(text,'user');const qi=currentQIdx,h=tutorHistory[qi]||[];h.push({role:'user',content:text});tutorHistory[qi]=h;callAI(qi,text);}
 
