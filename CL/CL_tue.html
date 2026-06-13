@@ -278,79 +278,71 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 <script>
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'CL';
-const DAY      = 'Monday';     // replace: 'Monday'|'Tuesday'|'Wednesday'|'Thursday'|'Friday'
-const WEEK     = 0;            // replace: week number e.g. 21
+const DAY      = 'Tuesday';
+const WEEK     = 29;
 const PTS_KEY  = 'pts_CL';
-const BASE_PTS = 0;            // replace: CL pts from session_summary POINTS section
-const DICT_WORD = 'resilient';
-const DICT_DEF  = 'Adjective — able to recover quickly from difficult situations.';
-const DICT_EG   = 'Despite everything that went wrong, she remained resilient and kept going.';
+const BASE_PTS = 950;
+const DICT_WORD = 'vehement';
+const DICT_DEF  = 'Adjective — expressed with great force, passion, or intensity.';
+const DICT_EG   = 'She gave a vehement denial when accused of cheating.';
 const RULES_TIPS = [
-  'E2.1: Replace with top severity code tip from session_summary.',
-  'M1.3: Replace with second severity tip.',
-  'E3.2: Replace with third priority tip.',
+  'E1.7: Silent letters — learn "necessary", "occasion", "parliament", "government" by heart.',
+  'E3.1: Commas in lists — separate each item; a comma before "and" is optional but be consistent.',
+  'M2.1: Mixed number fractions — convert to improper fractions before calculating.',
 ];
-// MISSION_PACK — include on Mon/Wed/Fri; remove this const entirely on Tue/Thu
-const MISSION_PACK = {
-  id:'M-A', title:'The Action Scene', codes:['W1.5','W3.1','W4.1'],
-  prompt:'Write 3 to 5 sentences of an action scene. Use body language, a comparison, and a vivid setting detail.',
-};
 const QUESTIONS = {
-  // ── VOCAB (0–3): from Vocab Tracker, untested first, Q3 = star ─────────────
   0:{ section:'Vocab', code:'E4.1', correct:'A', star:false,
-      text:'What does "stroll" mean?',
-      opts:{A:'To walk slowly and in a relaxed way',B:'To run very quickly',C:'To jump over an obstacle',D:'To sit quietly and think'},
-      vocabWord:'stroll' },
-  1:{ section:'Vocab', code:'E4.2', correct:'B', star:false,
-      text:'Which word means very bright and shining?',
-      opts:{A:'Dull',B:'Radiant',C:'Faded',D:'Gloomy'},
-      vocabWord:'radiant' },
-  2:{ section:'Vocab', code:'E4.3', correct:'C', star:false,
-      text:'What does "reluctant" mean?',
-      opts:{A:'Very happy and willing',B:'Completely certain',C:'Not willing to do something',D:'Moving extremely fast'},
-      vocabWord:'reluctant' },
-  3:{ section:'Vocab', code:'E4.4', correct:'D', star:true,
-      text:'★ STAR — The explorer was dauntless despite the danger. What does dauntless mean?',
-      opts:{A:'Easily frightened',B:'Moving with great care',C:'Completely exhausted',D:'Showing no fear whatsoever'},
-      vocabWord:'dauntless' },
-  // ── ENGLISH (4–9): replace with top-severity E codes from session_summary ───
-  4:{ section:'English', code:'E2.1', correct:'A', star:false,
-      text:'Which sentence uses a comma correctly?',
-      opts:{A:'After the rain, the garden smelled fresh.',B:'After, the rain the garden smelled fresh.',C:'After the rain the, garden smelled fresh.',D:'After the rain the garden smelled, fresh.'} },
-  5:{ section:'English', code:'E2.3', correct:'B', star:false,
-      text:'Which word is an adjective: The fierce dragon guarded the old castle.',
-      opts:{A:'Dragon',B:'Fierce',C:'Guarded',D:'Castle'} },
-  6:{ section:'English', code:'E3.2', correct:'C', star:false,
-      text:'Which sentence uses an apostrophe correctly?',
-      opts:{A:'The dogs tail wagged.',B:'The dogs\' tail wagged.',C:"The dog's tail wagged.",D:'The dogs tails wagged.'} },
-  7:{ section:'English', code:'E1.3', correct:'D', star:false,
+      text:'What does "austere" mean?',
+      opts:{A:'Plain, simple, and without decoration or luxury.',B:'Loud and impossible to ignore.',C:'Full of warmth and bright colour.',D:'Extremely confused or lost.'},
+      vocabWord:'austere' },
+  1:{ section:'Vocab', code:'E4.2', correct:'D', star:false,
+      text:'Which word means to express strong disagreement?',
+      opts:{A:'Concede.',B:'Comply.',C:'Affirm.',D:'Dispute.'},
+      vocabWord:'dispute' },
+  2:{ section:'Vocab', code:'E4.3', correct:'B', star:false,
+      text:'What does "meticulous" mean?',
+      opts:{A:'Moving very quickly and without warning.',B:'Showing great attention to detail and care.',C:'Completely unsure of what to do next.',D:'Feeling very tired and in need of rest.'},
+      vocabWord:'meticulous' },
+  3:{ section:'Vocab', code:'E4.4', correct:'C', star:true,
+      text:'★ STAR — The scientist proposed a plausible theory. What does plausible mean?',
+      opts:{A:'Extremely complicated and difficult to test.',B:'Already proven by earlier experiments.',C:'Seeming reasonable and likely to be true.',D:'Completely new and never suggested before.'},
+      vocabWord:'plausible' },
+  4:{ section:'English', code:'E5.2', correct:'D', star:false,
+      text:'The text says: "She smiled and said she was fine." What does this suggest?',
+      opts:{A:'The character is happy and everything is well.',B:'The character is telling a white lie to save time.',C:'The character does not want to answer any more questions.',D:'The character may be hiding a negative feeling beneath a calm exterior.'} },
+  5:{ section:'English', code:'E1.7', correct:'B', star:false,
       text:'Which spelling is correct?',
-      opts:{A:'Recieve',B:'Beleive',C:'Peice',D:'Achieve'} },
-  8:{ section:'English', code:'E2.5', correct:'A', star:false,
-      text:'Which is a compound sentence?',
-      opts:{A:'I was tired, but I kept going.',B:'Running through the rain.',C:'The tall, old oak tree.',D:'Because the sun was bright.'} },
-  9:{ section:'English', code:'E3.4', correct:'B', star:false,
-      text:'Where should the semicolon go: I love reading __ my sister prefers sport.',
-      opts:{A:'After love',B:'After reading',C:'After sister',D:'After prefers'} },
-  // ── MATHS (10–15): replace with top-severity M codes from session_summary ───
-  10:{ section:'Maths', code:'M1.3', correct:'C', star:false,
-       text:'What is 15 percent of 80?',
-       opts:{A:'10',B:'11',C:'12',D:'13'}, mathConcept:'percentages' },
-  11:{ section:'Maths', code:'M2.4', correct:'D', star:false,
-       text:'Which fraction is equivalent to three quarters?',
-       opts:{A:'6 over 10',B:'9 over 16',C:'4 over 6',D:'9 over 12'}, mathConcept:'fractions' },
-  12:{ section:'Maths', code:'M1.7', correct:'A', star:false,
-       text:'Round 4768 to the nearest hundred.',
-       opts:{A:'4800',B:'4700',C:'5000',D:'4770'}, mathConcept:'rounding' },
-  13:{ section:'Maths', code:'M3.2', correct:'B', star:false,
-       text:'Red to blue ratio is 2 to 5. There are 14 red beads. How many blue?',
-       opts:{A:'28',B:'35',C:'21',D:'40'}, mathConcept:'ratio' },
-  14:{ section:'Maths', code:'M5.3', correct:'C', star:false,
-       text:'Area of a rectangle 8 cm long and 5 cm wide?',
-       opts:{A:'26 square centimetres',B:'30 square centimetres',C:'40 square centimetres',D:'45 square centimetres'}, mathConcept:'area' },
-  15:{ section:'Maths', code:'M2.1', correct:'D', star:false,
-       text:'What is two thirds plus one quarter?',
-       opts:{A:'3 over 7',B:'8 over 12',C:'10 over 12',D:'11 over 12'}, mathConcept:'fractions' },
+      opts:{A:'Seperately.',B:'Separately.',C:'Separatly.',D:'Seperatly.'} },
+  6:{ section:'English', code:'E3.1', correct:'A', star:false,
+      text:'Which sentence uses a comma to separate a fronted adverbial correctly?',
+      opts:{A:'Before the match began, the teams warmed up on the pitch.',B:'Before the match began the teams, warmed up on the pitch.',C:'Before the match, began the teams warmed up on the pitch.',D:'Before the match began the teams warmed up, on the pitch.'} },
+  7:{ section:'English', code:'E2.4', correct:'C', star:false,
+      text:'Which sentence is in the passive voice?',
+      opts:{A:'The chef cooked a delicious meal.',B:'The storm destroyed the old bridge.',C:'The trophy was won by our team.',D:'The children finished the puzzle quickly.'} },
+  8:{ section:'English', code:'E5.4', correct:'B', star:false,
+      text:'A poet writes: "The moon hung like a lantern over the silent street." What is the most likely reason for this image?',
+      opts:{A:'To show that the street has no electric lights.',B:'To create a calm, solitary atmosphere using a familiar, comforting image.',C:'To tell the reader it is a festival evening.',D:'To contrast the brightness of the moon with the darkness of the road.'} },
+  9:{ section:'English', code:'E2.9', correct:'D', star:false,
+      text:'Which sentence uses the subjunctive mood correctly?',
+      opts:{A:'If she was taller, she could reach it.',B:'I wish he was here with us.',C:'She suggested that he goes home early.',D:'It is important that every student be on time.'} },
+  10:{ section:'Maths', code:'M2.1', correct:'C', star:false,
+       text:'What is 5 over 6 minus 1 over 4?',
+       opts:{A:'4 over 2',B:'7 over 12',C:'7 over 12',D:'4 over 12'}, mathConcept:'fractions' },
+  11:{ section:'Maths', code:'M1.1', correct:'A', star:false,
+       text:'What is the value of the digit 6 in the number 3 672 041?',
+       opts:{A:'600 000',B:'60 000',C:'6 000',D:'600'}, mathConcept:'place value' },
+  12:{ section:'Maths', code:'M3.3', correct:'B', star:false,
+       text:'A recipe for 4 people needs 320 grams of flour. How much flour is needed for 7 people?',
+       opts:{A:'520 grams',B:'560 grams',C:'540 grams',D:'580 grams'}, mathConcept:'proportion' },
+  13:{ section:'Maths', code:'M5.3', correct:'D', star:false,
+       text:'A triangle has a base of 10 centimetres and a height of 8 centimetres. What is its area?',
+       opts:{A:'80 square centimetres',B:'18 square centimetres',C:'32 square centimetres',D:'40 square centimetres'}, mathConcept:'area' },
+  14:{ section:'Maths', code:'M1.5', correct:'C', star:false,
+       text:'List these numbers in order from smallest to largest: minus 3, minus 8, 0, minus 1, 4.',
+       opts:{A:'0, minus 1, minus 3, minus 8, 4',B:'minus 1, minus 3, minus 8, 0, 4',C:'minus 8, minus 3, minus 1, 0, 4',D:'4, 0, minus 1, minus 3, minus 8'}, mathConcept:'negative numbers' },
+  15:{ section:'Maths', code:'M6.1', correct:'A', star:false,
+       text:'What is the mean of: 4, 7, 9, 12, 13?',
+       opts:{A:'9',B:'8',C:'10',D:'7'}, mathConcept:'averages' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -636,9 +628,11 @@ async function callAI(qi,lastAns){
   const dc=disengagedCount[qi]||0;
   const frustrated=/(too hard|i ?can'?t|i give up|gave up|don'?t know any ?more|this is (too )?hard|so hard|ugh+|i'?m tired|i am tired|bored|hate this|please stop|just tell me)/i.test(lastAns||'');
   const mustResolve=turn>=cap||(turn>=4&&frustrated);
+  const _optVals=q.opts?Object.values(q.opts).map(v=>v.trim().toLowerCase()):[];
+  const _isPaste=_optVals.some(v=>v===(lastAns||'').trim().toLowerCase());
   let strict;
   if(mustResolve){
-    strict=`FINAL ROUND — the child has tried hard enough. Do NOT ask another question.\n1. Warmly affirm their effort.\n2. Give the ANSWER clearly, with ONE short line of reasoning that shows WHY (link it to what they nearly had).\n3. Finish with: Great effort — tap Got it when you are ready! (your reply MUST contain the words "got it").\nMax ${MAX_WORDS} words. Plain English. No emoji. NEVER say: wrong, incorrect, silly, dumb.`;
+    strict=`FINAL ROUND — warmly give the correct answer with ONE line of clear reasoning showing WHY, then close with: "tap Got it when you are ready!" You MUST include the words "got it". Keep the FORMAT below — each line = spoken words ||| [✓] short cue. Max ${MAX_WORDS} words. No emoji. NEVER say: wrong, incorrect, silly, dumb.`;
   } else if(turn===1){
     strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer outright):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT show a worked example. Do NOT explain the concept. Do NOT name the answer.\n3. Ask ONE small question that points at ONE specific word, number, or part of the original question. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`;
   } else if(engagement==='disengaged' && dc<3){
@@ -646,14 +640,14 @@ async function callAI(qi,lastAns){
   } else if(engagement==='disengaged' && dc>=3){
     strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never give the full answer.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess instead of an open question: "Just guess — do you think it is more like A or more like B?"\n3. Make one option clearly closer to right but do not say which.\nMax 40 words. No emoji. No asterisks.`;
   } else {
-    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT: it could be a guess or a copied answer, so VERIFY before granting success — ${isV?vocabExit:'pose a NEW mini-example with different numbers or words that tests the SAME skill, and ask them to solve it'} — UNLESS you have ALREADY posed such a check and they just answered it correctly, in which case celebrate specifically and say "got it".\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the original question.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT:${_isPaste?' their words match an option exactly — pose ONE quick new same-skill example to confirm real understanding, then say "got it" once they get it.':' celebrate specifically, then '+vocabExit}\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the original question.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
   }
   strict += `\nFORMAT — reply as 1 to 4 short groups, ONE per line: spoken words, then "|||", then a labelled on-screen cue. Begin the cue with its label ([Joke], [Probe:], or [Guess:]); then a SHORT summary — the WHOLE cue UNDER 12 words — and wrap the single most important word in **double asterisks**. The spoken part carries the full teaching; the cue is only a glanceable anchor, never a transcript. [Joke]: show ONLY the setup question — NEVER the punchline (the punchline stays in the spoken words). [Probe:]: the Socratic question in kid words. [Guess:]: the two-option choice. Never repeat the same label on two lines in a row. Never leave a cue as a bare label. (Asterisks are ONLY for that one bold word in the cue — never in the spoken words.)\nExample: Why did the snake skip lunch? Because it was saving room for a big snack! ||| [Joke] why did the snake **skip** lunch?\nExample: Look at the little word right before the comma. ||| [Probe:] which word shows a **contrast**?`;
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:150,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:200,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
     if(!r.ok){removeTyping();const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
     const text=(await r.json()).content[0].text;
     streamEchoGrouped(text);maybeEnableGotIt(text);
