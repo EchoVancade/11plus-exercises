@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>CL Exercises</title>
+<title>IL Exercises</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ── CL THEME ── orange */
-:root{--hdr:linear-gradient(135deg,#FF6B35,#E85D04);--bg:#FFF8F0;--acc:#E85D04;--acc2:#FF6B35;--vocab:#7B2D8B}
+:root{--hdr:linear-gradient(135deg,#7c3aed,#5b21b6);--bg:#fdf6ff;--acc:#7c3aed;--acc2:#8b5cf6;--vocab:#5b21b6}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;padding-bottom:72px}
 body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
@@ -117,13 +117,6 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .beat-notice{background:rgba(234,179,8,.18);color:#fde047;border:1px solid rgba(234,179,8,.4)}
 .beat-probe{background:rgba(251,191,36,.18);color:#fcd34d;border:1px solid rgba(251,191,36,.4)}
 .beat-guess{background:rgba(20,184,166,.18);color:#5eead4;border:1px solid rgba(20,184,166,.4)}
-.kw{font-weight:800;color:var(--kw,#fff)}
-.echo-viz{display:none;align-items:center;gap:7px;margin-top:5px}
-.echo-viz.active{display:flex}
-.echo-viz canvas{display:block;border-radius:4px}
-.echo-viz .viz-orb{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(103,232,249,.9),rgba(6,182,212,.6) 50%,rgba(5,5,20,.9));box-shadow:0 0 6px rgba(6,182,212,.5);flex-shrink:0;transition:box-shadow .1s,transform .1s}
-.echo-viz .viz-orb.pulse{animation:vizOrb .5s ease-in-out infinite alternate}
-@keyframes vizOrb{from{transform:scale(1)}to{transform:scale(1.12)}}
 .typing{display:flex;gap:5px;align-items:center;padding:10px 12px;background:rgba(255,255,255,.08);border-radius:12px;align-self:flex-start}
 .typing span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:bop .8s infinite}
 .typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
@@ -161,13 +154,20 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .key-btns{display:flex;gap:8px}
 .key-save{flex:1;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;border:none;border-radius:8px;padding:10px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif}
 .key-close{background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;cursor:pointer;font-family:'Nunito',sans-serif}
+.kw{font-weight:800;color:var(--kw,#fff)}
+.echo-viz{display:none;align-items:center;gap:7px;margin-top:5px}
+.echo-viz.active{display:flex}
+.echo-viz canvas{display:block;border-radius:4px}
+.echo-viz .viz-orb{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(103,232,249,.9),rgba(6,182,212,.6) 50%,rgba(5,5,20,.9));box-shadow:0 0 6px rgba(6,182,212,.5);flex-shrink:0;transition:box-shadow .1s,transform .1s}
+.echo-viz .viz-orb.pulse{animation:vizOrb .5s ease-in-out infinite alternate}
+@keyframes vizOrb{from{transform:scale(1)}to{transform:scale(1.12)}}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="hdr">
-  <div class="hdr-l"><h1 id="hdr-title">CL Exercises</h1><p id="hdr-sub">Week 0</p></div>
+  <div class="hdr-l"><h1 id="hdr-title">IL Exercises</h1><p id="hdr-sub">Week 0</p></div>
   <div class="hdr-r">
     <span id="voice-pill" class="voice-pill">🔊 Device</span>
     <span id="hdr-char" class="hdr-char">?</span>
@@ -277,80 +277,72 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 
 <script>
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
-const CHILD    = 'CL';
-const DAY      = 'Monday';     // replace: 'Monday'|'Tuesday'|'Wednesday'|'Thursday'|'Friday'
-const WEEK     = 0;            // replace: week number e.g. 21
-const PTS_KEY  = 'pts_CL';
-const BASE_PTS = 0;            // replace: CL pts from session_summary POINTS section
-const DICT_WORD = 'resilient';
-const DICT_DEF  = 'Adjective — able to recover quickly from difficult situations.';
-const DICT_EG   = 'Despite everything that went wrong, she remained resilient and kept going.';
+const CHILD    = 'IL';
+const DAY      = 'Thursday';
+const WEEK     = 29;
+const PTS_KEY  = 'pts_IL';
+const BASE_PTS = 240;
+const DICT_WORD = 'wander';
+const DICT_DEF  = 'Verb — to walk slowly with no particular direction or plan.';
+const DICT_EG   = 'The little goat liked to wander through the fields all afternoon.';
 const RULES_TIPS = [
-  'E2.1: Replace with top severity code tip from session_summary.',
-  'M1.3: Replace with second severity tip.',
-  'E3.2: Replace with third priority tip.',
+  'E1.2: Remember — "friend" has an i before the e. Say "fri-end" slowly.',
+  'E2.2: A question always ends with a question mark.',
+  'M3.1: Multiplication is just fast adding — 3 times 4 means 4 add 4 add 4.',
 ];
-// MISSION_PACK — include on Mon/Wed/Fri; remove this const entirely on Tue/Thu
-const MISSION_PACK = {
-  id:'M-A', title:'The Action Scene', codes:['W1.5','W3.1','W4.1'],
-  prompt:'Write 3 to 5 sentences of an action scene. Use body language, a comparison, and a vivid setting detail.',
-};
 const QUESTIONS = {
-  // ── VOCAB (0–3): from Vocab Tracker, untested first, Q3 = star ─────────────
-  0:{ section:'Vocab', code:'E4.1', correct:'A', star:false,
-      text:'What does "stroll" mean?',
-      opts:{A:'To walk slowly and in a relaxed way',B:'To run very quickly',C:'To jump over an obstacle',D:'To sit quietly and think'},
-      vocabWord:'stroll' },
-  1:{ section:'Vocab', code:'E4.2', correct:'B', star:false,
-      text:'Which word means very bright and shining?',
-      opts:{A:'Dull',B:'Radiant',C:'Faded',D:'Gloomy'},
-      vocabWord:'radiant' },
-  2:{ section:'Vocab', code:'E4.3', correct:'C', star:false,
-      text:'What does "reluctant" mean?',
-      opts:{A:'Very happy and willing',B:'Completely certain',C:'Not willing to do something',D:'Moving extremely fast'},
-      vocabWord:'reluctant' },
+  0:{ section:'Vocab', code:'E4.1', correct:'B', star:false,
+      text:'What does "peculiar" mean?',
+      opts:{A:'Very beautiful and shiny.',B:'Strange and unusual.',C:'Very loud and scary.',D:'Soft and comfortable.'},
+      vocabWord:'peculiar' },
+  1:{ section:'Vocab', code:'E4.2', correct:'C', star:false,
+      text:'Which word means to look at something for a long time?',
+      opts:{A:'Glance.',B:'Blink.',C:'Stare.',D:'Wink.'},
+      vocabWord:'stare' },
+  2:{ section:'Vocab', code:'E4.3', correct:'A', star:false,
+      text:'What does "hollow" mean?',
+      opts:{A:'Empty inside.',B:'Very full.',C:'Very bright.',D:'Very small.'},
+      vocabWord:'hollow' },
   3:{ section:'Vocab', code:'E4.4', correct:'D', star:true,
-      text:'★ STAR — The explorer was dauntless despite the danger. What does dauntless mean?',
-      opts:{A:'Easily frightened',B:'Moving with great care',C:'Completely exhausted',D:'Showing no fear whatsoever'},
-      vocabWord:'dauntless' },
-  // ── ENGLISH (4–9): replace with top-severity E codes from session_summary ───
-  4:{ section:'English', code:'E2.1', correct:'A', star:false,
-      text:'Which sentence uses a comma correctly?',
-      opts:{A:'After the rain, the garden smelled fresh.',B:'After, the rain the garden smelled fresh.',C:'After the rain the, garden smelled fresh.',D:'After the rain the garden smelled, fresh.'} },
-  5:{ section:'English', code:'E2.3', correct:'B', star:false,
-      text:'Which word is an adjective: The fierce dragon guarded the old castle.',
-      opts:{A:'Dragon',B:'Fierce',C:'Guarded',D:'Castle'} },
-  6:{ section:'English', code:'E3.2', correct:'C', star:false,
-      text:'Which sentence uses an apostrophe correctly?',
-      opts:{A:'The dogs tail wagged.',B:'The dogs\' tail wagged.',C:"The dog's tail wagged.",D:'The dogs tails wagged.'} },
-  7:{ section:'English', code:'E1.3', correct:'D', star:false,
-      text:'Which spelling is correct?',
-      opts:{A:'Recieve',B:'Beleive',C:'Peice',D:'Achieve'} },
-  8:{ section:'English', code:'E2.5', correct:'A', star:false,
-      text:'Which is a compound sentence?',
-      opts:{A:'I was tired, but I kept going.',B:'Running through the rain.',C:'The tall, old oak tree.',D:'Because the sun was bright.'} },
-  9:{ section:'English', code:'E3.4', correct:'B', star:false,
-      text:'Where should the semicolon go: I love reading __ my sister prefers sport.',
-      opts:{A:'After love',B:'After reading',C:'After sister',D:'After prefers'} },
-  // ── MATHS (10–15): replace with top-severity M codes from session_summary ───
-  10:{ section:'Maths', code:'M1.3', correct:'C', star:false,
-       text:'What is 15 percent of 80?',
-       opts:{A:'10',B:'11',C:'12',D:'13'}, mathConcept:'percentages' },
-  11:{ section:'Maths', code:'M2.4', correct:'D', star:false,
-       text:'Which fraction is equivalent to three quarters?',
-       opts:{A:'6 over 10',B:'9 over 16',C:'4 over 6',D:'9 over 12'}, mathConcept:'fractions' },
-  12:{ section:'Maths', code:'M1.7', correct:'A', star:false,
-       text:'Round 4768 to the nearest hundred.',
-       opts:{A:'4800',B:'4700',C:'5000',D:'4770'}, mathConcept:'rounding' },
-  13:{ section:'Maths', code:'M3.2', correct:'B', star:false,
-       text:'Red to blue ratio is 2 to 5. There are 14 red beads. How many blue?',
-       opts:{A:'28',B:'35',C:'21',D:'40'}, mathConcept:'ratio' },
-  14:{ section:'Maths', code:'M5.3', correct:'C', star:false,
-       text:'Area of a rectangle 8 cm long and 5 cm wide?',
-       opts:{A:'26 square centimetres',B:'30 square centimetres',C:'40 square centimetres',D:'45 square centimetres'}, mathConcept:'area' },
-  15:{ section:'Maths', code:'M2.1', correct:'D', star:false,
-       text:'What is two thirds plus one quarter?',
-       opts:{A:'3 over 7',B:'8 over 12',C:'10 over 12',D:'11 over 12'}, mathConcept:'fractions' },
+      text:'★ STAR — The children were baffled by the magician\'s trick. What does baffled mean?',
+      opts:{A:'Very frightened.',B:'Very excited.',C:'Very bored.',D:'Very confused and puzzled.'},
+      vocabWord:'baffled' },
+  4:{ section:'English', code:'E1.2', correct:'C', star:false,
+      text:'Which word is spelled correctly?',
+      opts:{A:'Rabit.',B:'Rabbitt.',C:'Rabbit.',D:'Rabitt.'} },
+  5:{ section:'English', code:'E2.2', correct:'A', star:false,
+      text:'Which sentence is a command that tells someone to do something?',
+      opts:{A:'Please close the door.',B:'Is the door closed?',C:'The door is closed.',D:'I wonder if the door is closed.'} },
+  6:{ section:'English', code:'E1.1', correct:'D', star:false,
+      text:'Which sentence uses capital letters correctly?',
+      opts:{A:'On wednesday, lily visited france with her Teacher.',B:'on Wednesday, lily visited France with her teacher.',C:'On Wednesday, Lily visited France with her Teacher.',D:'On Wednesday, Lily visited France with her teacher.'} },
+  7:{ section:'English', code:'E3.2', correct:'B', star:false,
+      text:'Which sentence correctly shows that the bag belongs to the girl?',
+      opts:{A:"The girls bag is red.",B:"The girl's bag is red.",C:"The girls' bag is red.",D:"The girl bag's is red."} },
+  8:{ section:'English', code:'E2.3', correct:'C', star:false,
+      text:'Which word is an adjective in: The fluffy white clouds floated past.',
+      opts:{A:'Floated.',B:'Clouds.',C:'Fluffy.',D:'Past.'} },
+  9:{ section:'English', code:'E3.3', correct:'A', star:false,
+      text:'Which sentence ends with the correct punctuation mark?',
+      opts:{A:'What a beautiful rainbow?',B:'What a beautiful rainbow!',C:'What a beautiful rainbow.',D:'What, a beautiful rainbow!'} },
+  10:{ section:'Maths', code:'M3.1', correct:'D', star:false,
+       text:'What is 6 times 4?',
+       opts:{A:'20',B:'22',C:'18',D:'24'}, mathConcept:'multiplication' },
+  11:{ section:'Maths', code:'M1.1', correct:'B', star:false,
+       text:'What is 200 plus 60 plus 5?',
+       opts:{A:'260',B:'265',C:'256',D:'625'}, mathConcept:'place value' },
+  12:{ section:'Maths', code:'M1.7', correct:'C', star:false,
+       text:'Round 174 to the nearest hundred.',
+       opts:{A:'100',B:'170',C:'200',D:'180'}, mathConcept:'rounding' },
+  13:{ section:'Maths', code:'M1.3', correct:'A', star:false,
+       text:'What is a quarter of 20?',
+       opts:{A:'5',B:'4',C:'10',D:'8'}, mathConcept:'fractions of amounts' },
+  14:{ section:'Maths', code:'M5.1', correct:'B', star:false,
+       text:'A path is 9 metres long and 2 metres wide. What is its perimeter?',
+       opts:{A:'20 metres',B:'22 metres',C:'18 metres',D:'11 metres'}, mathConcept:'perimeter' },
+  15:{ section:'Maths', code:'M6.1', correct:'D', star:false,
+       text:'Mia has 12 stickers. She gives 5 to her friend. How many does she have left?',
+       opts:{A:'5',B:'6',C:'8',D:'7'}, mathConcept:'subtraction' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -611,6 +603,7 @@ amp=audioEl.paused&&!audioEl.ended?0.08:_fakeAmp(t);
 _waveFrame(cx,W,H,rgb,t,amp);orb.style.transform='scale('+(1+amp*.25)+')';orb.style.boxShadow='0 0 '+(6+amp*14)+'px rgba('+rgb+','+(.5+amp*.4)+')';})();}
 function _drawIdleViz(viz,cx,W,H,orb,rgb){rgb=rgb||'6,182,212';viz.classList.add('active');if(orb)orb.classList.add('pulse');let t=0,stopped=false,last=performance.now();function _follow(){if(_latestViz&&_latestViz!==viz){viz.classList.remove('active');if(orb)orb.classList.remove('pulse');viz=_latestViz;rgb=viz.dataset.rgb||rgb;orb=viz.querySelector('.viz-orb');const c2=viz.querySelector('canvas');if(c2)cx=c2.getContext('2d');viz.classList.add('active');if(orb)orb.classList.add('pulse');}}(function frame(){if(stopped)return;_vizAF=requestAnimationFrame(frame);_follow();const now=performance.now();t+=(now-last)/1000;last=now;const amp=_fakeAmp(t);_waveFrame(cx,W,H,rgb,t,amp);if(orb){orb.style.transform='scale('+(1+amp*.2)+')';orb.style.boxShadow='0 0 '+(6+amp*12)+'px rgba('+rgb+','+(.5+amp*.35)+')';}})();setTimeout(()=>{stopped=true;_vizStop();},30000);}
 
+
 function openOverlay(qi){
   _iosWarm();currentQIdx=qi;overlayOpen=true;
   tutorHistory[qi]=[];tutorTurns[qi]=0;disengagedCount[qi]=0;  // fresh each open — prevents alternating-message API error
@@ -695,7 +688,7 @@ async function callAI(qi,lastAns){
     strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT:${_isPaste?' their words match an option exactly — pose ONE quick NEW same-skill example to confirm real understanding. Do NOT say the words "got it" in this reply — only say "got it" in a LATER reply, after they answer your new example correctly.':' celebrate specifically, then '+vocabExit}\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the original question.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks in the spoken words.\n[Turn ${turn} of up to ${cap}.]`;
   }
   if(!mustResolve)strict+=`\nIMPORTANT: only ever say the exact words "got it" when the child has JUST shown real understanding in their own words (their own correct sentence, answer, or example — never a copied option, never filler like "good" or "yes"). While still teaching or checking, never use the phrase "got it".`;
-  strict += `\nCRITICAL OUTPUT FORMAT — HIGHEST PRIORITY. This rule overrides every instruction above about asterisks, markdown, or plain text. EVERY line of your reply MUST contain " ||| " exactly once. A reply with no "|||" is broken and will not display.\nFORMAT — reply as 1 to 4 short groups, ONE per line: spoken words, then "|||", then a labelled on-screen cue. Begin the cue with its label ([Joke], [Probe:], or [Guess:]); then a SHORT summary — the WHOLE cue UNDER 12 words — and wrap the single most important word in **double asterisks**. The spoken part carries the full teaching; the cue is only a glanceable anchor, never a transcript. [Joke]: show ONLY the setup question — NEVER the punchline (the punchline stays in the spoken words). [Probe:]: the Socratic question in kid words. [Guess:]: the two-option choice. Never repeat the same label on two lines in a row. Never leave a cue as a bare label. (Asterisks are ONLY for that one bold word in the cue — never in the spoken words.)\nExample: Why did the snake skip lunch? Because it was saving room for a big snack! ||| [Joke] why did the snake **skip** lunch?\nExample: Look at the little word right before the comma. ||| [Probe:] which word shows a **contrast**?`;
+  strict += `\nCRITICAL OUTPUT FORMAT — HIGHEST PRIORITY. This rule overrides every instruction above about asterisks, markdown, or plain text. EVERY line of your reply MUST contain " ||| " exactly once. A reply with no "|||" is broken and will not display.\nFORMAT — reply as 1 to 4 short groups, ONE per line: spoken words, then "|||", then a labelled on-screen cue. Begin the cue with its label ([Joke], [Probe:], or [Guess:]); after the label start the summary with ONE scaffold word — Point:, Question:, or Do: — then keep it SHORT — the WHOLE cue UNDER 12 words — and wrap the single most important word in **double asterisks**. The spoken part carries the full teaching; the cue is only a glanceable anchor, never a transcript. [Joke]: show ONLY the setup question — NEVER the punchline (the punchline stays in the spoken words). [Probe:]: the Socratic question in kid words. [Guess:]: the two-option choice. Never repeat the same label on two lines in a row. Never leave a cue as a bare label. (Asterisks are ONLY for that one bold word in the cue — never in the spoken words.)\nExample: Why did the snake skip lunch? Because it was saving room for a big snack! ||| [Joke] Question: why did the snake **skip** lunch?\nExample: Look at the little word right before the comma. ||| [Probe:] Do: **circle** the word before the comma`;
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
