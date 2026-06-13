@@ -117,6 +117,13 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 .beat-notice{background:rgba(234,179,8,.18);color:#fde047;border:1px solid rgba(234,179,8,.4)}
 .beat-probe{background:rgba(251,191,36,.18);color:#fcd34d;border:1px solid rgba(251,191,36,.4)}
 .beat-guess{background:rgba(20,184,166,.18);color:#5eead4;border:1px solid rgba(20,184,166,.4)}
+.kw{font-weight:800;color:var(--kw,#fff)}
+.echo-viz{display:none;align-items:center;gap:7px;margin-top:5px}
+.echo-viz.active{display:flex}
+.echo-viz canvas{display:block;border-radius:4px}
+.echo-viz .viz-orb{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(103,232,249,.9),rgba(6,182,212,.6) 50%,rgba(5,5,20,.9));box-shadow:0 0 6px rgba(6,182,212,.5);flex-shrink:0;transition:box-shadow .1s,transform .1s}
+.echo-viz .viz-orb.pulse{animation:vizOrb .5s ease-in-out infinite alternate}
+@keyframes vizOrb{from{transform:scale(1)}to{transform:scale(1.12)}}
 .typing{display:flex;gap:5px;align-items:center;padding:10px 12px;background:rgba(255,255,255,.08);border-radius:12px;align-self:flex-start}
 .typing span{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:bop .8s infinite}
 .typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
@@ -272,78 +279,75 @@ body.snake{--hi:#27AE60} body.shark{--hi:#2980B9}
 /* ▼▼▼ CONTENT ZONE — Claude replaces only this block each week ▼▼▼ */
 const CHILD    = 'CL';
 const DAY      = 'Friday';
-const WEEK     = 25;
+const WEEK     = 29;
 const PTS_KEY  = 'pts_CL';
 const BASE_PTS = 950;
-const DICT_WORD = 'luminous';
-const DICT_DEF  = 'Adjective — giving off a bright, steady light; easy to see in the dark.';
-const DICT_EG   = 'The luminous dial of the watch glowed softly in the dark bedroom.';
+const DICT_WORD = 'ephemeral';
+const DICT_DEF  = 'Adjective — lasting for only a very short time.';
+const DICT_EG   = 'The beauty of cherry blossom is ephemeral — it falls within two weeks.';
 const RULES_TIPS = [
-  'E5.2: Inference — the answer is hinted, not stated. Look at what characters DO, not just what they say.',
-  'M2.1: Adding fractions — make the bottom numbers the same first, then add only the top numbers.',
-  'E5.4: Sentence effect — a very short sentence after long ones creates tension. Ask yourself why the writer chose it.',
+  'E5.2: Inference — the best answer fits ALL the evidence in the text, not just one detail.',
+  'E3.1: Embedded clauses need commas both before AND after — "The girl, who was new, smiled."',
+  'M2.1: Fractions — simplify your answer fully when you have finished calculating.',
 ];
 const MISSION_PACK = {
-  id:'M-E', title:'The Argument',
-  codes:['W5.1','W3.6','W3.2'],
-  prompt:'Write 3 to 5 sentences arguing for or against something you care about. Use a rhetorical question, give one specific example, and end with a clear, direct point.',
+  id:'M-F', title:'Paint the Picture',
+  codes:['W5.4','W2.3','W4.2'],
+  prompt:'Write 3 to 5 sentences describing a landscape or scene using extended metaphor or personification. Every sentence should add another layer to the picture.',
 };
 const QUESTIONS = {
-  // ── VOCAB (0–3): untested words from Vocab Tracker, Q3 = star ───────────────
-  0:{ section:'Vocab', code:'E4.1', correct:'A', star:false,
-      text:'What does "brisk" mean?',
-      opts:{A:'Quick and energetic',B:'Slow and lazy',C:'Warm and gentle',D:'Loud and angry'},
-      vocabWord:'brisk' },
-  1:{ section:'Vocab', code:'E4.2', correct:'C', star:false,
-      text:'Which word means very bright and full of colour?',
-      opts:{A:'Dull',B:'Faint',C:'Vivid',D:'Plain'},
-      vocabWord:'vivid' },
+  0:{ section:'Vocab', code:'E4.1', correct:'D', star:false,
+      text:'What does "articulate" mean when used as an adjective?',
+      opts:{A:'Shy and reluctant to express opinions.',B:'Slow and deliberate in movement.',C:'Completely unwilling to listen to others.',D:'Able to express ideas clearly and fluently.'},
+      vocabWord:'articulate' },
+  1:{ section:'Vocab', code:'E4.2', correct:'A', star:false,
+      text:'Which word means showing a willingness to take risks?',
+      opts:{A:'Audacious.',B:'Cautious.',C:'Timid.',D:'Reluctant.'},
+      vocabWord:'audacious' },
   2:{ section:'Vocab', code:'E4.3', correct:'B', star:false,
-      text:'What does "feeble" mean?',
-      opts:{A:'Extremely strong',B:'Very weak and lacking power',C:'Surprisingly fast',D:'Unusually tall'},
-      vocabWord:'feeble' },
-  3:{ section:'Vocab', code:'E4.4', correct:'B', star:true,
-      text:'★ STAR — She was the most industrious pupil in the school. What does industrious mean?',
-      opts:{A:'Lazy and easily distracted',B:'Hard-working and diligent',C:'Clumsy and careless',D:'Shy and very quiet'},
-      vocabWord:'industrious' },
-  // ── ENGLISH (4–9): top-severity E codes — E5.2, E5.4, E1.7, E3.1, E5.1, E5.3 ──
+      text:'What does "lucid" mean?',
+      opts:{A:'Extremely long and full of detail.',B:'Clear and easy to understand.',C:'Full of dramatic and vivid language.',D:'Based on facts rather than feelings.'},
+      vocabWord:'lucid' },
+  3:{ section:'Vocab', code:'E4.4', correct:'C', star:true,
+      text:'★ STAR — The crowd watched with rapt attention. What does rapt mean?',
+      opts:{A:'Polite but slightly bored.',B:'Irritated and impatient.',C:'Completely absorbed and fascinated.',D:'Confused and uncertain what to expect.'},
+      vocabWord:'rapt' },
   4:{ section:'English', code:'E5.2', correct:'B', star:false,
-      text:'Read this: "Tom slammed the door and threw his bag across the room." What does this most likely suggest about Tom?',
-      opts:{A:'He is feeling calm and relaxed',B:'He is angry or very upset',C:'He is in a hurry to leave',D:'He is feeling sleepy'} },
-  5:{ section:'English', code:'E5.4', correct:'B', star:false,
-      text:'A writer uses a very short sentence after several long ones: "Then it stopped." Why would a writer do this?',
-      opts:{A:'To fill up space on the page',B:'To create tension and make the reader pause',C:'Because they ran out of ideas',D:'To ask the reader a question'} },
-  6:{ section:'English', code:'E1.7', correct:'C', star:false,
-      text:'Which word is spelled correctly?',
-      opts:{A:'Definately',B:'Seperate',C:'Necessary',D:'Occured'} },
-  7:{ section:'English', code:'E3.1', correct:'B', star:false,
-      text:'Which sentence uses commas correctly in a list?',
-      opts:{A:'I packed apples, oranges and, pears.',B:'I packed apples, oranges, and pears.',C:'I packed, apples oranges and pears.',D:'I packed apples oranges, and pears.'} },
-  8:{ section:'English', code:'E5.1', correct:'C', star:false,
-      text:'Read this: "The festival was cancelled because heavy rain flooded the field overnight." Why was the festival cancelled?',
-      opts:{A:'It was too hot and sunny',B:'Not enough people bought tickets',C:'Heavy rain flooded the field',D:'The performers did not arrive'} },
-  9:{ section:'English', code:'E5.3', correct:'B', star:false,
-      text:'Read this: "The hikers were parched after the long climb, so they drank greedily." What does parched most likely mean?',
-      opts:{A:'Very tired and aching',B:'Very thirsty',C:'Very cold',D:'Very happy and excited'} },
-  // ── MATHS (10–15): M2.1 x2 (top developing), M1.3, M1.7, M3.2, M5.3 ────────
-  10:{ section:'Maths', code:'M2.1', correct:'B', star:false,
-       text:'What is one half plus one third?',
-       opts:{A:'2 over 5',B:'5 over 6',C:'1 over 6',D:'2 over 6'}, mathConcept:'fractions' },
-  11:{ section:'Maths', code:'M2.1', correct:'B', star:false,
-       text:'What is three quarters minus one quarter?',
-       opts:{A:'One quarter',B:'One half',C:'One third',D:'Two thirds'}, mathConcept:'fractions' },
-  12:{ section:'Maths', code:'M1.3', correct:'B', star:false,
-       text:'What is 25 percent of 60?',
-       opts:{A:'12',B:'15',C:'20',D:'25'}, mathConcept:'percentages' },
-  13:{ section:'Maths', code:'M1.7', correct:'B', star:false,
-       text:'Round 3548 to the nearest hundred.',
-       opts:{A:'3500',B:'3600',C:'3550',D:'4000'}, mathConcept:'rounding' },
-  14:{ section:'Maths', code:'M3.2', correct:'B', star:false,
-       text:'Apples to oranges is 3 to 4. There are 12 apples. How many oranges?',
-       opts:{A:'9',B:'16',C:'12',D:'4'}, mathConcept:'ratio' },
-  15:{ section:'Maths', code:'M5.3', correct:'C', star:false,
-       text:'A rectangle is 7 cm long and 6 cm wide. What is its area?',
-       opts:{A:'13 square centimetres',B:'26 square centimetres',C:'42 square centimetres',D:'48 square centimetres'}, mathConcept:'area' },
+      text:'The text says a character "paused before answering, choosing her words carefully." What does this suggest?',
+      opts:{A:'The character has not understood the question.',B:'The character wants to be precise and is aware that her words matter.',C:'The character is rude and does not want to speak to the other person.',D:'The character has heard this question many times before.'} },
+  5:{ section:'English', code:'E5.4', correct:'A', star:false,
+      text:'A writer describes a character\'s old house as "wearing its age with quiet dignity." What is the most likely reason?',
+      opts:{A:'To personify the house and show it still has character and beauty despite being old.',B:'To suggest the house needs to be repaired as soon as possible.',C:'To contrast the house\'s appearance with the character\'s youthfulness.',D:'To tell the reader the house was built a very long time ago.'} },
+  6:{ section:'English', code:'E3.1', correct:'D', star:false,
+      text:'Which sentence uses the semicolon correctly?',
+      opts:{A:'She was tired; but she kept walking.',B:'She was tired; and hungry.',C:'She was tired, hungry; and cold.',D:'She was tired; she kept walking anyway.'} },
+  7:{ section:'English', code:'E1.7', correct:'C', star:false,
+      text:'Which spelling is correct?',
+      opts:{A:'Mischievious.',B:'Mischevious.',C:'Mischievous.',D:'Mischeivous.'} },
+  8:{ section:'English', code:'E2.8', correct:'B', star:false,
+      text:'Which sentence uses the past perfect tense correctly?',
+      opts:{A:'She has finished her homework before dinner.',B:'She had finished her homework before dinner arrived.',C:'She finished her homework before dinner.',D:'She was finishing her homework before dinner.'} },
+  9:{ section:'English', code:'E5.2', correct:'C', star:false,
+      text:'A character "stared at the letter without opening it for twenty minutes." What can you infer?',
+      opts:{A:'The character cannot read and is waiting for help.',B:'The character does not recognise the handwriting on the envelope.',C:'The character fears what the letter contains and is delaying finding out.',D:'The character has already read the letter and is deciding how to respond.'} },
+  10:{ section:'Maths', code:'M2.1', correct:'D', star:false,
+       text:'What is 3 over 8 plus 5 over 12?',
+       opts:{A:'8 over 20',B:'1 over 2',C:'17 over 24',D:'19 over 24'}, mathConcept:'fractions' },
+  11:{ section:'Maths', code:'M1.4', correct:'A', star:false,
+       text:'What is the lowest common multiple of 6 and 8?',
+       opts:{A:'24',B:'12',C:'48',D:'16'}, mathConcept:'multiples and factors' },
+  12:{ section:'Maths', code:'M3.4', correct:'B', star:false,
+       text:'A shirt costs 45 pounds. In a sale it is reduced by 20 percent. What is the sale price?',
+       opts:{A:'34 pounds',B:'36 pounds',C:'38 pounds',D:'40 pounds'}, mathConcept:'percentage decrease' },
+  13:{ section:'Maths', code:'M5.4', correct:'C', star:false,
+       text:'A circle has a radius of 5 centimetres. What is its area? (Use pi equals 3.14.)',
+       opts:{A:'15.7 square centimetres',B:'31.4 square centimetres',C:'78.5 square centimetres',D:'31.4 square centimetres'}, mathConcept:'area of a circle' },
+  14:{ section:'Maths', code:'M2.6', correct:'D', star:false,
+       text:'What is 0.375 written as a fraction in its simplest form?',
+       opts:{A:'3 over 10',B:'375 over 1000',C:'3 over 8',D:'3 over 8'}, mathConcept:'decimals and fractions' },
+  15:{ section:'Maths', code:'M7.2', correct:'A', star:false,
+       text:'A spinner has 5 equal sections: 2 red, 2 blue, 1 yellow. What is the probability it does NOT land on red?',
+       opts:{A:'3 over 5',B:'2 over 5',C:'1 over 5',D:'4 over 5'}, mathConcept:'probability' },
 };
 /* ▲▲▲ END CONTENT ZONE ▲▲▲ */
 
@@ -407,6 +411,8 @@ function speakWebSpeech(text){
       // genuine hardware error — fail silently, do not re-queue
     };
     window.speechSynthesis.speak(u);
+    _fireOnset();
+    if(_latestViz){const cv=_latestViz.querySelector('canvas');if(cv)_drawIdleViz(_latestViz,cv.getContext('2d'),cv.width,cv.height,_latestViz.querySelector('.viz-orb'),_latestViz.dataset.rgb);}
   },120);
 }
 async function speakOpenAI(text){try{_oaiController=new AbortController();const _body={model:OAI_TTS_MODEL,input:text,voice:CHAR.key==='snake'?'fable':'echo',response_format:'mp3'};if(OAI_TTS_MODEL.indexOf('tts-1')===0){_body.speed=CHAR.key==='snake'?.92:.97;}else{_body.instructions='Speak warmly, clearly and a little slowly, like a friendly tutor talking to a young child.';}const resp=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:_oaiController.signal,headers:{'Authorization':'Bearer '+OPENAI_KEY,'Content-Type':'application/json'},body:JSON.stringify(_body)});if(resp.status===401){localStorage.removeItem('openai_key_v1');OPENAI_KEY=null;updateVoicePill();speakWebSpeech(text);return;}if(!resp.ok){speakWebSpeech(text);return;}const MS=window.MediaSource;if(MS&&resp.body&&MS.isTypeSupported&&MS.isTypeSupported('audio/mpeg')){
@@ -414,10 +420,10 @@ async function speakOpenAI(text){try{_oaiController=new AbortController();const 
   const ms=new MS();_oaiObjectUrl=URL.createObjectURL(ms);_oaiAudio=new Audio();_oaiAudio.src=_oaiObjectUrl;_oaiAudio.onended=()=>{if(_oaiObjectUrl){URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;}_oaiAudio=null;};
   await new Promise(res=>ms.addEventListener('sourceopen',res,{once:true}));
   const sb=ms.addSourceBuffer('audio/mpeg');const reader=resp.body.getReader();let started=false;
-  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});}pump();}catch(e){}};
+  const pump=async()=>{try{const{done,value}=await reader.read();if(done){try{ms.endOfStream();}catch(e){}return;}await new Promise(res=>{sb.addEventListener('updateend',res,{once:true});sb.appendBuffer(value);});if(!started){started=true;_oaiAudio.play().catch(()=>{});_fireOnset();_vizStart(_oaiAudio);}pump();}catch(e){}};
   pump();
 }else{
-  const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();
+  const blob=await resp.blob();_oaiObjectUrl=URL.createObjectURL(blob);_oaiAudio=new Audio(_oaiObjectUrl);_oaiAudio.onended=()=>{URL.revokeObjectURL(_oaiObjectUrl);_oaiObjectUrl=null;_oaiAudio=null;};await _oaiAudio.play();_fireOnset();_vizStart(_oaiAudio);
 }}catch(e){if(e.name!=='AbortError')speakWebSpeech(text);}}
 async function speak(text){if(!text)return;const c=cleanForSpeech(text);hardStop();if(OPENAI_KEY){await speakOpenAI(c);}else{speakWebSpeech(c);}}
 function _warmAudio(){if(_audioWarmed)return;try{const a=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');a.volume=0;a.play().then(()=>{a.pause();_audioWarmed=true;}).catch(()=>{_audioWarmed=true;});}catch(e){_audioWarmed=true;}}
@@ -486,28 +492,33 @@ function streamEchoBubble(text){
 function streamEchoGrouped(raw){
   const b=document.getElementById('ov-bubbles');
   const lines=(raw||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  const groups=[];
-  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp=ln;}if(sp)groups.push({sp:sp,dp:dp||sp});});
-  if(!groups.length)groups.push({sp:raw||'',dp:raw||''});
-  const fullSpoken=groups.map(g=>g.sp).join(' ');
+  let groups=[];
+  lines.forEach(ln=>{const idx=ln.indexOf('|||');let sp,dp;if(idx>=0){sp=ln.slice(0,idx).trim();dp=ln.slice(idx+3).trim();}else{sp=ln;dp='';}if(!sp)return;
+    if(!dp){const parts=sp.replace(/[*_`]/g,'').split(/\s+/);dp=parts.slice(0,8).join(' ')+(parts.length>8?'…':'');} // never dump the transcript / never a bare label
+    groups.push({sp:sp,dp:dp});});
+  if(!groups.length){const parts=(raw||'').split(/\s+/);groups.push({sp:raw||'',dp:parts.slice(0,8).join(' ')+(parts.length>8?'…':'')});}
+  groups=groups.filter((g,i)=>i===0||g.dp!==groups[i-1].dp); // drop back-to-back identical cues
+  const fullSpoken=groups.map(g=>g.sp).join(' ').replace(/\*+/g,'');
   speak(fullSpoken);
   setInputDisabled(true);
   const wc=g=>((g.sp.match(/\S+/g)||[]).length||1);
   const totalWords=groups.reduce((a,g)=>a+wc(g),0)||1;
   const baseWpm=OPENAI_KEY?(CHAR.key==='snake'?150:160):165;
-  const totalMs=(totalWords/baseWpm)*60000,SPEAK_DELAY=140;
+  const totalMs=(totalWords/baseWpm)*60000;
   let acc=0;const starts=groups.map(g=>{const s=(acc/totalWords)*totalMs;acc+=wc(g);return s;});
-  let shown=0,timeoutId=null;
-  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;b.scrollTop=b.scrollHeight;}
+  let shown=0,timeoutId=null,startAt=0,begun=false;
+  function complete(){if(timeoutId)clearTimeout(timeoutId);while(shown<groups.length){addBubble(groups[shown].dp,'echo');shown++;}setInputDisabled(false);_streamCancel=null;_onOnset=null;b.scrollTop=b.scrollHeight;}
   _streamCancel=complete;
-  let startAt=0;
   function step(){if(_streamCancel!==complete)return;const elapsed=performance.now()-startAt;while(shown<groups.length&&elapsed>=starts[shown]){addBubble(groups[shown].dp,'echo');shown++;b.scrollTop=b.scrollHeight;}if(shown<groups.length)timeoutId=setTimeout(step,80);else timeoutId=setTimeout(complete,Math.max(0,totalMs-elapsed)+200);}
-  timeoutId=setTimeout(()=>{if(_streamCancel!==complete)return;startAt=performance.now();step();},SPEAK_DELAY);
+  function begin(){if(begun||_streamCancel!==complete)return;begun=true;removeTyping();startAt=performance.now();step();}
+  _onOnset=begin;                         // reveal text exactly when audio starts (keeps "thinking…" up until then)
+  timeoutId=setTimeout(begin,3500);       // fail-safe: reveal anyway if audio never fires
 }
 function resetGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.add('suppressed');g.disabled=true;}}
 function enableGotIt(){const g=document.querySelector('.gotit-btn');if(g){g.classList.remove('suppressed');g.disabled=false;}}
 function maybeEnableGotIt(t){if((t||'').toLowerCase().includes('got it'))enableGotIt();}
 function hardStop(){
+  _onOnset=null;try{_vizStop();}catch(e){}
   if(_streamCancel){const fn=_streamCancel;_streamCancel=null;fn();}
   _speechGen++;                                     // invalidate all pending speakWebSpeech callbacks
   if(_currentUtt){_currentUtt.onend=null;_currentUtt.onerror=null;_currentUtt=null;} // null handlers before cancel
@@ -535,12 +546,23 @@ function toggleMic(){
 function submitSpeech(){const txt=(document.getElementById('speech-text').value||'').trim();if(!txt)return;document.getElementById('speech-text').value='';if(recognition){try{recognition.stop();}catch(e){}}micActive=false;if(currentQIdx===-2){sendDictReply(txt);}else{sendTutorReply(txt);}}
 
 // ── OVERLAY ───────────────────────────────────────────────────────────────────
-function charTurns(sec){return CHILD==='IL'?5:(sec==='Vocab'||sec==='Dictionary'?6:7);}
+const TURN_CAPS={IL:{Vocab:5,Dictionary:5,default:5},CL:{Vocab:5,Dictionary:5,default:6}};
+function charTurns(sec){const c=TURN_CAPS[CHILD]||TURN_CAPS.CL;return (sec&&c[sec])||c.default;}
 function renderDots(qi){const t=tutorTurns[qi]||0,cap=charTurns(QUESTIONS[qi]?.section),d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<cap;i++){const s=document.createElement('span');s.className='dot'+(i<t?' used':'');d.appendChild(s);}}
-function renderBeatLabel(t){if(!t)return '';const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return e(t).replace(/\[Joke\]/g,'<span class="beat-lbl beat-joke">[Joke]</span>').replace(/\[Watch me\]/g,'<span class="beat-lbl beat-watch">[Watch me]</span>').replace(/\[Try:([^\]]*?)\]/g,'<span class="beat-lbl beat-try">[Try:$1]</span>').replace(/\[\u2713\]/g,'<span class="beat-lbl beat-check">[✓]</span>').replace(/\[Notice:([^\]]*?)\]/g,'<span class="beat-lbl beat-notice">[Notice:$1]</span>').replace(/\[Probe:([^\]]*?)\]/g,'<span class="beat-lbl beat-probe">[Probe:$1]</span>').replace(/\[Probe\]/g,'<span class="beat-lbl beat-probe">[Probe]</span>').replace(/\[Guess:([^\]]*?)\]/g,'<span class="beat-lbl beat-guess">[Guess:$1]</span>').replace(/\[Guess\]/g,'<span class="beat-lbl beat-guess">[Guess]</span>');}
-function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;if(role==='echo'){d.innerHTML=renderBeatLabel(text);}else{d.textContent=text;}b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function renderBeatLabel(t){if(!t)return '';const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');return e(t).replace(/\[Joke\]/g,'<span class="beat-lbl beat-joke">[Joke]</span>').replace(/\[Watch me\]/g,'<span class="beat-lbl beat-watch">[Watch me]</span>').replace(/\[Try:([^\]]*?)\]/g,'<span class="beat-lbl beat-try">[Try:$1]</span>').replace(/\[✓\]/g,'<span class="beat-lbl beat-check">[✓]</span>').replace(/\[Notice:([^\]]*?)\]/g,'<span class="beat-lbl beat-notice">[Notice:$1]</span>').replace(/\[Probe:([^\]]*?)\]/g,'<span class="beat-lbl beat-probe">[Probe:$1]</span>').replace(/\[Probe\]/g,'<span class="beat-lbl beat-probe">[Probe]</span>').replace(/\[Guess:([^\]]*?)\]/g,'<span class="beat-lbl beat-guess">[Guess:$1]</span>').replace(/\[Guess\]/g,'<span class="beat-lbl beat-guess">[Guess]</span>').replace(/\*\*([^*]+?)\*\*/g,'<strong class="kw">$1</strong>');}
+function addBubble(text,role){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='bub '+role;if(role==='echo'){const rgb=_cueRGB(text);d.style.setProperty('--kw','rgb('+rgb+')');d.innerHTML=renderBeatLabel(text);const viz=document.createElement('div');viz.className='echo-viz';viz.dataset.rgb=rgb;viz.innerHTML='<div class="viz-orb"></div><canvas width="150" height="22"></canvas>';d.appendChild(viz);_latestViz=viz;}else{d.textContent=text;}b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function showTyping(){const b=document.getElementById('ov-bubbles'),d=document.createElement('div');d.className='typing';d.id='typing-ind';d.innerHTML='<span></span><span></span><span></span>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
 function removeTyping(){document.getElementById('typing-ind')?.remove();}
+// ── ECHO CUE COLOUR + SPEECH-ONSET PLUMBING ──────────────────────────────────
+const CUE_RGB={joke:'251,146,60',watch:'6,182,212',try:'168,85,247',check:'34,197,94',notice:'234,179,8',probe:'251,191,36',guess:'20,184,166'};
+function _cueRGB(t){t=t||'';if(/\[Joke\]/i.test(t))return CUE_RGB.joke;if(/\[Watch me\]/i.test(t))return CUE_RGB.watch;if(/\[Try:/i.test(t))return CUE_RGB.try;if(/\[Probe/i.test(t))return CUE_RGB.probe;if(/\[Guess/i.test(t))return CUE_RGB.guess;if(/\[✓\]/.test(t))return CUE_RGB.check;if(/\[Notice/i.test(t))return CUE_RGB.notice;return '6,182,212';}
+let _onOnset=null;                                  // fired the instant audio actually begins
+function _fireOnset(){const f=_onOnset;_onOnset=null;if(f){try{f();}catch(e){}}}
+// ── TTS WAVEFORM VISUALIZER (colour matches the cue) ─────────────────────────
+let _latestViz=null,_vizAF=null,_vizAudioCtx=null,_vizAnalyser=null,_vizSource=null;
+function _vizStop(){if(_vizAF){cancelAnimationFrame(_vizAF);_vizAF=null;}document.querySelectorAll('.echo-viz.active').forEach(v=>{v.classList.remove('active');const o=v.querySelector('.viz-orb');if(o)o.classList.remove('pulse');});}
+function _vizStart(audioEl){_vizStop();const viz=_latestViz;if(!viz)return;const rgb=viz.dataset.rgb||'6,182,212';viz.classList.add('active');const orb=viz.querySelector('.viz-orb'),cv=viz.querySelector('canvas'),cx=cv.getContext('2d'),W=cv.width,H=cv.height;orb.style.background='radial-gradient(circle at 35% 35%,rgba('+rgb+',.95),rgba('+rgb+',.55) 50%,rgba(5,5,20,.9))';try{if(!_vizAudioCtx||_vizAudioCtx.state==='closed')_vizAudioCtx=new(window.AudioContext||window.webkitAudioContext)();if(_vizAudioCtx.state==='suspended')_vizAudioCtx.resume().catch(()=>{});try{if(_vizSource)_vizSource.disconnect();}catch(e){}_vizSource=_vizAudioCtx.createMediaElementSource(audioEl);_vizAnalyser=_vizAudioCtx.createAnalyser();_vizAnalyser.fftSize=256;_vizAnalyser.smoothingTimeConstant=0.82;_vizSource.connect(_vizAnalyser);_vizAnalyser.connect(_vizAudioCtx.destination);}catch(e){_drawIdleViz(viz,cx,W,H,orb,rgb);return;}const buf=new Uint8Array(_vizAnalyser.frequencyBinCount);let stopped=false;audioEl.addEventListener('ended',()=>{stopped=true;_vizStop();},{once:true});orb.classList.add('pulse');(function frame(){if(stopped)return;_vizAF=requestAnimationFrame(frame);_vizAnalyser.getByteTimeDomainData(buf);cx.clearRect(0,0,W,H);const g=cx.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba('+rgb+',0)');g.addColorStop(.5,'rgba('+rgb+',.9)');g.addColorStop(1,'rgba('+rgb+',0)');cx.strokeStyle=g;cx.lineWidth=1.8;cx.shadowBlur=5;cx.shadowColor='rgba('+rgb+',.7)';cx.beginPath();const sl=W/buf.length;for(let i=0;i<buf.length;i++){const y=(buf[i]/128)*H/2;i===0?cx.moveTo(0,y):cx.lineTo(i*sl,y);}cx.stroke();cx.shadowBlur=0;let s=0;for(let i=0;i<buf.length;i++)s+=Math.abs(buf[i]-128);const amp=s/buf.length/128;orb.style.transform='scale('+(1+amp*.25)+')';orb.style.boxShadow='0 0 '+(6+amp*14)+'px rgba('+rgb+','+(.5+amp*.4)+')';})();}
+function _drawIdleViz(viz,cx,W,H,orb,rgb){rgb=rgb||'6,182,212';viz.classList.add('active');if(orb)orb.classList.add('pulse');let t=0,stopped=false;(function frame(){if(stopped)return;_vizAF=requestAnimationFrame(frame);cx.clearRect(0,0,W,H);const g=cx.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba('+rgb+',0)');g.addColorStop(.5,'rgba('+rgb+',.4)');g.addColorStop(1,'rgba('+rgb+',0)');cx.strokeStyle=g;cx.lineWidth=1.5;cx.beginPath();for(let x=0;x<W;x++){const y=H/2+Math.sin(x/W*Math.PI*5+t)*4*Math.sin(x/W*Math.PI);x===0?cx.moveTo(x,y):cx.lineTo(x,y);}cx.stroke();t+=0.08;})();setTimeout(()=>{stopped=true;_vizStop();},30000);}
 
 function openOverlay(qi){
   _iosWarm();currentQIdx=qi;overlayOpen=true;
@@ -550,7 +572,7 @@ function openOverlay(qi){
   document.getElementById('mstat').textContent='Tap 🎤 to speak, or type below';if(!_skipPass){const sb=document.querySelector('.skip-btn');if(sb){sb.title='Tip: set a 4-digit passcode in ⚙ Config to lock Skip';}}
   document.getElementById('ov-title').textContent=`${CHAR.name} — ${QUESTIONS[qi].section}`;
   renderDots(qi);
-  const _q=QUESTIONS[qi],_ctx=document.getElementById('q-ctx');if(_ctx&&_q&&_q.type!=='writing'){let _rows='';if(_q.opts){const _wa=answers[qi];_rows='<div class="q-ctx-row">'+Object.keys(_q.opts).map(k=>{const _c=k===_wa?'wrong-opt':k===_q.correct?'right-opt':'neutral-opt';const _m=k===_wa?'✗':k===_q.correct?'✓':'';return `<span class="q-ctx-opt ${_c}">${_m} ${k}: ${_q.opts[k]||''}</span>`;}).join('')+'</div>';}_ctx.innerHTML=`<div class="q-ctx-text">${_q.text}</div>`+_rows;_ctx.style.display='block';}else if(_ctx){_ctx.style.display='none';}
+  const _q=QUESTIONS[qi],_ctx=document.getElementById('q-ctx');if(_ctx&&_q&&_q.type!=='writing'){let _rows='';if(_q.opts){const _wa=answers[qi];_rows='<div class="q-ctx-row">'+Object.keys(_q.opts).map(k=>{const _c=k===_wa?'wrong-opt':'neutral-opt';const _m=k===_wa?'✗':'';return `<span class="q-ctx-opt ${_c}">${_m} ${k}: ${_q.opts[k]||''}</span>`;}).join('')+'</div>';}_ctx.innerHTML=`<div class="q-ctx-text">${_q.text}</div>`+_rows;_ctx.style.display='block';}else if(_ctx){_ctx.style.display='none';}
   document.getElementById('ex-wrap').style.visibility='hidden';
   resetGotIt();
   document.getElementById('overlay').classList.add('open');
@@ -609,24 +631,29 @@ async function callAI(qi,lastAns){
   if(engagement==='disengaged')disengagedCount[qi]=(disengagedCount[qi]||0)+1;
   else if(turn>1)disengagedCount[qi]=0;
   const dc=disengagedCount[qi]||0;
+  const frustrated=/(too hard|i ?can'?t|i give up|gave up|don'?t know any ?more|this is (too )?hard|so hard|ugh+|i'?m tired|i am tired|bored|hate this|please stop|just tell me)/i.test(lastAns||'');
+  const mustResolve=turn>=cap||(turn>=4&&frustrated);
+  const _optVals=q.opts?Object.values(q.opts).map(v=>v.trim().toLowerCase()):[];
+  const _isPaste=_optVals.some(v=>v===(lastAns||'').trim().toLowerCase());
   let strict;
-  if(turn===1){
+  if(mustResolve){
+    strict=`FINAL ROUND — warmly give the correct answer with ONE line of clear reasoning showing WHY, then close with: "tap Got it when you are ready!" You MUST include the words "got it". Keep the FORMAT below — each line = spoken words ||| [✓] short cue. Max ${MAX_WORDS} words. No emoji. NEVER say: wrong, incorrect, silly, dumb.`;
+  } else if(turn===1){
     strict=`TURN 1 — HARD SOCRATIC MODE (you may NEVER give the answer outright):\n1. Open with a short funny joke using this format: "${jFmt}..." — stick to this format.\n2. Do NOT show a worked example. Do NOT explain the concept. Do NOT name the answer.\n3. Ask ONE small question that points at ONE specific word, number, or part of the original question. Make them notice ONE thing.\n4. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks. NEVER say: wrong, incorrect, silly, dumb.`;
   } else if(engagement==='disengaged' && dc<3){
     strict=`TURN ${turn} — STUDENT IS DISENGAGED (they said "${lastAns}").\nThey are not engaging — said "idk" or a one-word non-answer.\n\nDO NOT re-teach. DO NOT explain. DO NOT give the answer. DO NOT name the answer.\nYour ONLY move: ask a SMALLER, EASIER question.\n- Point at ONE specific word, number, or letter in the original question.\n- Ask what they notice about THAT thing only.\n- Make the question so small they can answer in one word.\n- Be warm: "It is okay — let us go smaller."\n- Good moves: "Just look at the word 'because' — is it a tiny word or a big word?" / "Forget the rest, what is 5 + 5?"\nMax 50 words. No emoji. No asterisks.`;
   } else if(engagement==='disengaged' && dc>=3){
     strict=`TURN ${turn} — STUDENT STUCK (disengaged ${dc} times in a row).\n\nSTILL Hard Socratic — never give the full answer.\n1. Be very warm: "You are doing great by sticking with me on this."\n2. Offer a TWO-option guess instead of an open question: "Just guess — do you think it is more like A or more like B?"\n3. Make one option clearly closer to right but do not say which.\nMax 40 words. No emoji. No asterisks.`;
   } else {
-    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT or shows real understanding: celebrate specifically — name what they did well. ${vocabExit}\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the original question.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
+    strict=`TURN ${turn} — STUDENT ANSWERED: "${lastAns}"\n\nHARD SOCRATIC MODE — you may NEVER give the answer outright.\n1. If their answer is RIGHT:${_isPaste?' their words match an option exactly — pose ONE quick new same-skill example to confirm real understanding, then say "got it" once they get it.':' celebrate specifically, then '+vocabExit}\n2. If wrong or close: do NOT give the answer. Ask ONE smaller, more specific question that nudges them closer. Point at a clue in the original question.\n3. NEVER end with "do you understand?" or "does that make sense?" or "okay?"\n4. NEVER say: wrong, incorrect, silly, dumb.\nMax ${MAX_WORDS} words. Plain English. No emoji. No asterisks.\n[Turn ${turn} of up to ${cap}.]`;
   }
-  strict += `\nFORMAT — reply as 1 to 4 short groups, ONE per line. Each line: spoken words, then "|||", then a labelled cue — prefix with [Joke], [Probe:], or [Guess:]. Cue (with label) ≤10 words. [Joke] cue is playful — not a content question. [Probe:] is the Socratic question. [Guess:] is the two-option binary.\nExample: Why did the snake skip lunch? It was saving room for a big snack! ||| [Joke] why does the snake snack?`;
+  strict += `\nFORMAT — reply as 1 to 4 short groups, ONE per line: spoken words, then "|||", then a labelled on-screen cue. Begin the cue with its label ([Joke], [Probe:], or [Guess:]); then a SHORT summary — the WHOLE cue UNDER 12 words — and wrap the single most important word in **double asterisks**. The spoken part carries the full teaching; the cue is only a glanceable anchor, never a transcript. [Joke]: show ONLY the setup question — NEVER the punchline (the punchline stays in the spoken words). [Probe:]: the Socratic question in kid words. [Guess:]: the two-option choice. Never repeat the same label on two lines in a row. Never leave a cue as a bare label. (Asterisks are ONLY for that one bold word in the cue — never in the spoken words.)\nExample: Why did the snake skip lunch? Because it was saving room for a big snack! ||| [Joke] why did the snake **skip** lunch?\nExample: Look at the little word right before the comma. ||| [Probe:] which word shows a **contrast**?`;
   const msgs=[...history];
   if(!msgs.length){const im={role:'user',content:`Question: ${q.text}\nCorrect answer: ${q.opts[q.correct]}\nCode: ${q.code}. Child answered incorrectly. Teach this now.`};msgs.push(im);tutorHistory[qi]=[im];}
   showTyping();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:150,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
-    removeTyping();
-    if(!r.ok){const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:200,system:CHAR.pers+'\n\n'+strict,messages:msgs})});
+    if(!r.ok){removeTyping();const s=r.status;addBubble(s===401?'API key rejected — tap ⚙ Settings to update it.':s===429?'Too many requests — wait a moment then try again.':'Connection error ('+s+') — check your internet.','echo');return;}
     const text=(await r.json()).content[0].text;
     streamEchoGrouped(text);maybeEnableGotIt(text);
     const h=tutorHistory[qi]||[];h.push({role:'assistant',content:text});tutorHistory[qi]=h;
